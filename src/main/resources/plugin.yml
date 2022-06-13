@@ -1,0 +1,15 @@
+name: TitanEnchants
+version: '${project.version}'
+main: com.nessxxiii.titanenchants.TitanEnchants
+api-version: 1.18
+authors: [ bfrisco, NessXXIII ]
+description: Custom enchantments for Theatria
+softdepend: [mcMMO]
+commands:
+  ancient:
+    description: Imbue enchantment on an item
+  benchants:
+    description: Enchants an item
+    usage: |
+      /<command> reload
+  powercrystal:
