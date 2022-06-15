@@ -52,6 +52,7 @@ public final class TitanEnchants extends JavaPlugin {
 
         Objects.requireNonNull(getCommand("ancient")).setExecutor(new PlayerCommands());
         Objects.requireNonNull(getCommand("powercrystal")).setExecutor(new AddPowerCrystal());
+
     }
 
     @Override
