@@ -2,11 +2,11 @@ package com.nessxxiii.titanenchants.util;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public class ItemInfo {
@@ -33,7 +33,7 @@ public class ItemInfo {
     public static final String IMBUED_TWO = "§8Ancient Power §x§F§F§0§0§4§CΩ II";
     public static final String IMBUED_THREE = "§8Ancient Power §x§F§F§0§0§4§CΩ III";
 
-    public static final List<String> TITAN_LORE = new ArrayList<>(){
+    public static final Set<String> TITAN_LORE = new HashSet<>(){
         {
             add(ANCIENT_RED);
             add(ANCIENT_YELLOW);
@@ -252,6 +252,17 @@ public class ItemInfo {
         return false;
     }
 
+    public static boolean isCharged(ItemStack item) {
+        List<String> loreList = item.getItemMeta().getLore();
+        if (loreList == null) return false;
+        for (String lore : loreList) {
+            if (CHARGED_LORE.contains(lore)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static boolean isImbued(ItemStack item) {
 
         List<String> loreList = item.getItemMeta().getLore();
@@ -331,5 +342,30 @@ public class ItemInfo {
             if (TITAN_LORE.contains(loreList.get(i))) return i;
         }
         return null;
+    }
+
+    public static void hasTitanSilkRedEnchants(Player player) {
+
+        Set<Material> redTitanSilk = new HashSet<>();
+        redTitanSilk.add(Material.DIAMOND_PICKAXE);
+        redTitanSilk.add(Material.NETHERITE_PICKAXE);
+        if (!redTitanSilk.contains(player.getInventory().getItemInMainHand().getType())
+                && !player.getInventory().getItemInMainHand().hasItemMeta()) return;
+        Map<Enchantment, Integer> allowedEnchantments = player.getInventory().getItemInMainHand().getEnchantments();
+        boolean hasSilk = allowedEnchantments.containsKey(Enchantment.SILK_TOUCH);
+        boolean hasUnbreaking = allowedEnchantments.containsKey(Enchantment.DURABILITY);
+        boolean hasEfficiency = allowedEnchantments.containsKey(Enchantment.DIG_SPEED);
+
+        if (hasSilk && hasUnbreaking && hasEfficiency) {
+            if (allowedEnchantments.get(Enchantment.DURABILITY) == 5
+                    && allowedEnchantments.get(Enchantment.SILK_TOUCH) == 1
+                    && allowedEnchantments.get(Enchantment.DIG_SPEED) == 9) {
+                player.sendMessage("This is a red silk titan pick!");
+            } else {
+                player.sendMessage("This is NOT a red silk titan pick!");
+            }
+        } else {
+            player.sendMessage("This is NOT a red silk titan pick!");
+        }
     }
 }

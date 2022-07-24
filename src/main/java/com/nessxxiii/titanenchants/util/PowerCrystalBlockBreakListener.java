@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.util;
 
-import org.bukkit.ChatColor;
+import com.nessxxiii.titanenchants.Items.ItemManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -9,12 +9,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PowerCrystalBlockBreakListener implements Listener {
 
@@ -34,19 +28,10 @@ public class PowerCrystalBlockBreakListener implements Listener {
         if (player.getInventory().getItemInMainHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)) return;
         Location loc = block.getLocation();
 
-        ItemStack powerCrystal = new ItemStack(Material.AMETHYST_SHARD);
-        List<String> lore = new ArrayList<>();
-        lore.add("§x§F§F§0§0§4§CAncient Charge");
-        powerCrystal.setLore(lore);
-        ItemMeta meta = powerCrystal.getItemMeta();
-        meta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Power Crystal");
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        powerCrystal.setItemMeta(meta);
-        powerCrystal.addUnsafeEnchantment(Enchantment.CHANNELING,1);
         int randomNumber = getRandomNumber(1,10);
         if (randomNumber < 5) {
             for (int i = 0; i < randomNumber; i++){
-                player.getLocation().getWorld().dropItem(loc, powerCrystal);
+                player.getLocation().getWorld().dropItem(loc, ItemManager.powerCrystal);
             }
 
         } else
