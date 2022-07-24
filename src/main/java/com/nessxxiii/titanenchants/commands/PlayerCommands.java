@@ -86,7 +86,7 @@ public class PlayerCommands implements CommandExecutor{
             player.sendMessage(ChatColor.GREEN + "Successfully reloaded config.");
             return true;
         }
-        if (!"crystal".equalsIgnoreCase(args[0])) {
+        if ("crystal".equalsIgnoreCase(args[0])) {
             if (!player.hasPermission("titan.echant.powercrystal.add")) {
                 player.sendMessage(ChatColor.RED + "No permission.");
                 return true;
