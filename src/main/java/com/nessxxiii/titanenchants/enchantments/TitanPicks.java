@@ -37,170 +37,98 @@ public class TitanPicks implements Listener {
     @EventHandler
     @SuppressWarnings("unused")
     public void onBlockBreakEvent(BlockBreakEvent event) {
+        //Initial validation, does this event even need to continue? if not return
+        if (!ItemInfo.isChargedOrImbuedTitanPick(event.getPlayer().getInventory().getItemInMainHand())) return;
         if (event.isCancelled()) return;
-        if (!ItemInfo.isAllowedType(event.getPlayer().getInventory().getItemInMainHand())) return;
+
+        //assign all the variables that will be used throughout the enchantment
         Player player = event.getPlayer();
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
-            Block blockBroken = event.getBlock();
-            Location initialBlockBrokenLocation = blockBroken.getLocation();
-            if (IGNORE_LOCATIONS.contains(event.getBlock().getLocation())) {
-                IGNORE_LOCATIONS.remove(event.getBlock().getLocation());
-                return;
+        ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+        Block blockBroken = event.getBlock();
+        Material blockBrokenMaterial = blockBroken.getType();
+        Inventory inventory = player.getInventory();
+        ItemStack drops = new ItemStack(blockBrokenMaterial);
+
+        if (IGNORE_LOCATIONS.contains(blockBroken.getLocation())) {
+            IGNORE_LOCATIONS.remove(blockBroken.getLocation());
+            return;
+        }
+        if (ItemInfo.isLevelOne(itemInMainHand)) {
+            if (inventory.firstEmpty() == -1) {
+                handleFullInventory(player, itemInMainHand);
             }
-            if (!ItemInfo.isTitanTool(item)) return;
-            if (!ItemInfo.isActiveImbued(item) && !ItemInfo.isActiveCharged(item)) return;
-            if (ItemInfo.isLevelOne(item)) {
-                if (player.getInventory().firstEmpty() == -1) {
-                    if (!ItemInfo.isImbued(item)) {
-                        ChargeManagement.decreaseChargeLore(item, player);
-                        player.sendMessage("decreasing charge");
-                    }
-                    handleFullInventory(player, item);
-                    Material material = blockBroken.getType();
-                    ItemStack drops = new ItemStack(material);
-                    Inventory inv = player.getInventory();
-                    blockBroken.setType(Material.AIR);
-                    event.setCancelled(true);
-                    inv.addItem(drops);
-                    player.updateInventory();
-                }
-            } else if (ItemInfo.isLevelTwo(item)) {
+            if (ItemInfo.isCharged(itemInMainHand)) {
+                ChargeManagement.decreaseChargeLore(itemInMainHand, player);
+                player.sendMessage("Debug: decreasing charge");
+            }
+            if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+                dropExperience(blockBroken);
+            }
+            blockBroken.setType(Material.AIR);
+            event.setCancelled(true);
+            inventory.addItem(drops);
+            player.updateInventory();
+        } else if (ItemInfo.isLevelTwo(itemInMainHand)) {
+            if (ItemInfo.isCharged(itemInMainHand)) {
                 player.sendMessage("decreasing charge");
-                ChargeManagement.decreaseChargeLore2(item, player);
-                for (Block block : getNearbyBlocks(initialBlockBrokenLocation)) {
-                    if (block.getLocation().equals(initialBlockBrokenLocation)) {
-                        continue;
-                    }
-                    if (ALLOWED_ITEMS.contains(block.getType())) {
-                        IGNORE_LOCATIONS.add(block.getLocation());
-                        BlockBreakEvent e = new BlockBreakEvent(block, player);
-                        Bukkit.getPluginManager().callEvent(e);
-                        if (!e.isCancelled()) {
-                            block.breakNaturally(item);
-                        }
+                ChargeManagement.decreaseChargeLore2(itemInMainHand, player);
+            }
+            for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
+                if (block.getLocation().equals(blockBroken.getLocation())) {
+                    continue;
+                }
+                if (ALLOWED_ITEMS.contains(block.getType())) {
+                    IGNORE_LOCATIONS.add(block.getLocation());
+                    BlockBreakEvent e = new BlockBreakEvent(block, player);
+                    Bukkit.getPluginManager().callEvent(e);
+                    if (!e.isCancelled()) {
+                        block.breakNaturally(itemInMainHand);
                     }
                 }
-            } else if (ItemInfo.isLevelThree(item)) {
-                if (player.getInventory().firstEmpty() == -1) {
-                    handleFullInventory(player, item);
-                }
+            }
+        } else if (ItemInfo.isLevelThree(itemInMainHand)) {
+            if (player.getInventory().firstEmpty() == -1) {
+                handleFullInventory(player, itemInMainHand);
+            }
+            if (ItemInfo.isCharged(itemInMainHand)) {
                 player.sendMessage("decreasing charge");
-                ChargeManagement.decreaseChargeLore3(item, player);
-                Material material = blockBroken.getType();
-                ItemStack drops = new ItemStack(material);
-                Inventory inv = player.getInventory();
-                blockBroken.setType(Material.AIR);
-                event.setCancelled(true);
-                inv.addItem(drops);
-                player.updateInventory();
-                for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
-                    if (block.getLocation().equals(event.getBlock().getLocation())) {
-                        continue;
-                    }
-
-                    if (ALLOWED_ITEMS.contains(block.getType())) {
-                        IGNORE_LOCATIONS.add(block.getLocation());
-
-                        BlockBreakEvent e = new BlockBreakEvent(block, event.getPlayer());
-                        Bukkit.getPluginManager().callEvent(e);
-                        if (!e.isCancelled()) {
-                            material = block.getType();
-                            drops = new ItemStack(material);
-                            block.setType(Material.AIR);
-                            inv.addItem(drops);
-                            player.updateInventory();
-                        }
-                    }
-                }
+                ChargeManagement.decreaseChargeLore3(itemInMainHand, player);
             }
-        } else if (!item.containsEnchantment(Enchantment.SILK_TOUCH)) {
-
-            if (event.isCancelled()) return;
-            Block blockBroken = event.getBlock();
-            Location initBlockLoc = blockBroken.getLocation();
-            if (IGNORE_LOCATIONS.contains(event.getBlock().getLocation())) {
-                IGNORE_LOCATIONS.remove(event.getBlock().getLocation());
-                return;
+            if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+                dropExperience(blockBroken);
             }
-            if (!ItemInfo.isTitanTool(item)) return;
-            if (!ItemInfo.isActiveImbued(item) && !ItemInfo.isActiveCharged(item)) return;
-            if (ItemInfo.isLevelOne(item)) {
-                if (player.getInventory().firstEmpty() == -1) {
-                    handleFullInventory(player, item);
+            blockBroken.setType(Material.AIR);
+            event.setCancelled(true);
+            inventory.addItem(drops);
+            player.updateInventory();
+            for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
+                if (block.getLocation().equals(event.getBlock().getLocation())) {
+                    continue;
                 }
-                /*            player.sendMessage("decreasing charge");*/
-                ChargeManagement.decreaseChargeLore(item, player);
-                Material material = blockBroken.getType();
-                ItemStack drops = new ItemStack(material);
-                Inventory inv = player.getInventory();
-                blockBroken.setType(Material.AIR);
-                event.setCancelled(true);
-                inv.addItem(drops);
-                player.updateInventory();
-            } else if (ItemInfo.isLevelTwo(item)) {
-                /*            player.sendMessage("decreasing charge");*/
-                ChargeManagement.decreaseChargeLore2(item, player);
-                for (Block block : getNearbyBlocks(initBlockLoc)) {
-                    if (block.getLocation().equals(initBlockLoc)) {
-                        continue;
-                    }
-                    if (ALLOWED_ITEMS.contains(block.getType())) {
-                        IGNORE_LOCATIONS.add(block.getLocation());
-                        BlockBreakEvent e = new BlockBreakEvent(block, player);
-                        Bukkit.getPluginManager().callEvent(e);
-                        if (!e.isCancelled()) {
-                            block.breakNaturally(item);
-                        }
-                    }
-                }
-            } else if (ItemInfo.isLevelThree(item)) {
-
-                if (player.getInventory().firstEmpty() == -1) {
-                    handleFullInventory(player, item);
-                }
-
-                /*            player.sendMessage("decreasing charge");*/
-                ChargeManagement.decreaseChargeLore3(item, player);
-                Material material = blockBroken.getType();
-                ItemStack drops = new ItemStack(material);
-                Inventory inv = player.getInventory();
-                blockBroken.setType(Material.AIR);
-                event.setCancelled(true);
-                inv.addItem(drops);
-                player.updateInventory();
-                for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
-                    if (block.getLocation().equals(event.getBlock().getLocation())) {
-                        continue;
-                    }
-
-                    if (ALLOWED_ITEMS.contains(block.getType())) {
-                        IGNORE_LOCATIONS.add(block.getLocation());
-
-                        BlockBreakEvent e = new BlockBreakEvent(block, event.getPlayer());
-                        Bukkit.getPluginManager().callEvent(e);
-                        if (!e.isCancelled()) {
-                            material = block.getType();
-                            drops = new ItemStack(material);
-                            block.setType(Material.AIR);
-                            inv.addItem(drops);
-                            player.updateInventory();
-                        }
+                if (ALLOWED_ITEMS.contains(block.getType())) {
+                    IGNORE_LOCATIONS.add(block.getLocation());
+                    BlockBreakEvent e = new BlockBreakEvent(block, event.getPlayer());
+                    Bukkit.getPluginManager().callEvent(e);
+                    if (!e.isCancelled()) {
+                        block.setType(Material.AIR);
+                        inventory.addItem(drops);
+                        player.updateInventory();
                     }
                 }
             }
         }
+
     }
 
     private void handleFullInventory(Player player, ItemStack item) {
         if (ItemInfo.isActiveCharged(item)) {
             ToggleAncientPower.disableEnchant(item);
             new TitanEnchantEffects().depletedChargeEffect(player);
-            player.sendMessage(ChatColor.RED + "Enchantment deactivated: your inv is full");
+            player.sendMessage(ChatColor.RED + "AncientPower deactivated: your inventory is full");
         } else if (ItemInfo.isActiveImbued(item)) {
             ToggleAncientPower.disableImbuedEnchant(item);
             new TitanEnchantEffects().depletedChargeEffect(player);
-            player.sendMessage(ChatColor.RED + "Enchantment deactivated: your inv is full");
+            player.sendMessage(ChatColor.RED + "AncientPower deactivated: your inventory is full");
         }
     }
 

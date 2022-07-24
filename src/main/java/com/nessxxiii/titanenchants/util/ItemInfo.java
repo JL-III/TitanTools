@@ -1,10 +1,13 @@
 package com.nessxxiii.titanenchants.util;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -33,6 +36,10 @@ public class ItemInfo {
     public static final String IMBUED_TWO = "§8Ancient Power §x§F§F§0§0§4§CΩ II";
     public static final String IMBUED_THREE = "§8Ancient Power §x§F§F§0§0§4§CΩ III";
 
+    public static final Component ANCIENT_RED_AS_COMPONENT = Component.text("§8Ancient Power§x§F§F§0§0§0§0 ♆");
+    public static final Component ANCIENT_YELLOW_AS_COMPONENT = Component.text("§8Ancient Power§x§F§F§E§C§2§7 ♆");
+    public static final Component ANCIENT_BLUE_AS_COMPONENT = Component.text("§8Ancient Power§x§6§D§5§E§F§F ♆");
+
     public static final Set<String> TITAN_LORE = new HashSet<>(){
         {
             add(ANCIENT_RED);
@@ -48,6 +55,14 @@ public class ItemInfo {
             add(IMBUED_ONE);
             add(IMBUED_TWO);
             add(IMBUED_THREE);
+        }
+    };
+
+    public static final Set<Component> TITAN_LORE_AS_COMPONENT = new HashSet<>(){
+        {
+            add(ANCIENT_RED_AS_COMPONENT);
+            add(ANCIENT_YELLOW_AS_COMPONENT);
+            add(ANCIENT_BLUE_AS_COMPONENT);
         }
     };
 
@@ -143,15 +158,12 @@ public class ItemInfo {
     };
 
     public static boolean isAllowedType(ItemStack item){
-
-        if (ALLOWED_TYPES.contains(item.getType())){
-            return true;
-        }
-        return false;
+        if (item == null) return false;
+        return (ALLOWED_TYPES.contains(item.getType()));
     }
 
     public static boolean isTitanTool(ItemStack item){
-
+        if(!item.hasItemMeta()) return false;
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
         for (String lore : loreList) {
@@ -185,6 +197,32 @@ public class ItemInfo {
         }
         return false;
     }
+
+/*    public static boolean isLevelOneVerbose(Player player){
+        ItemStack item = player.getInventory().getItemInMainHand();
+        List<String> loreList = item.getItemMeta().getLore();
+        if (loreList == null) return false;
+        for (String lore : loreList) {
+            if (LEVEL_ONE.contains(lore)) {
+                player.sendMessage(lore);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isLevelTwoVerbose(Player player){
+        ItemStack item = player.getInventory().getItemInMainHand();
+        List<String> loreList = item.getItemMeta().getLore();
+        if (loreList == null) return false;
+        for (String lore : loreList) {
+            if (LEVEL_TWO.contains(lore)) {
+                player.sendMessage(lore);
+                return true;
+            }
+        }
+        return false;
+    }*/
 
     public static boolean isLevelThree(ItemStack item){
 
@@ -344,28 +382,24 @@ public class ItemInfo {
         return null;
     }
 
-    public static void hasTitanSilkRedEnchants(Player player) {
-
-        Set<Material> redTitanSilk = new HashSet<>();
-        redTitanSilk.add(Material.DIAMOND_PICKAXE);
-        redTitanSilk.add(Material.NETHERITE_PICKAXE);
-        if (!redTitanSilk.contains(player.getInventory().getItemInMainHand().getType())
-                && !player.getInventory().getItemInMainHand().hasItemMeta()) return;
-        Map<Enchantment, Integer> allowedEnchantments = player.getInventory().getItemInMainHand().getEnchantments();
-        boolean hasSilk = allowedEnchantments.containsKey(Enchantment.SILK_TOUCH);
-        boolean hasUnbreaking = allowedEnchantments.containsKey(Enchantment.DURABILITY);
-        boolean hasEfficiency = allowedEnchantments.containsKey(Enchantment.DIG_SPEED);
-
-        if (hasSilk && hasUnbreaking && hasEfficiency) {
-            if (allowedEnchantments.get(Enchantment.DURABILITY) == 5
-                    && allowedEnchantments.get(Enchantment.SILK_TOUCH) == 1
-                    && allowedEnchantments.get(Enchantment.DIG_SPEED) == 9) {
-                player.sendMessage("This is a red silk titan pick!");
-            } else {
-                player.sendMessage("This is NOT a red silk titan pick!");
-            }
-        } else {
-            player.sendMessage("This is NOT a red silk titan pick!");
+    public static List<Component> getLore(Player player) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        List<Component> lore = new ArrayList<>();
+        if (!item.hasItemMeta()) return lore;
+        for (Component component : Objects.requireNonNull(item.lore())) {
+            lore.add(component);
+            player.sendMessage(component.asComponent() + ": added");
         }
+        return lore;
+    }
+
+    public static boolean isTitanPick(ItemStack item) {
+        return isTitanTool(item)
+                && isAllowedType(item);
+    }
+
+    public static boolean isChargedOrImbuedTitanPick(ItemStack item) {
+        if(!isTitanPick(item)) return false;
+        return (isImbued(item) || isCharged(item));
     }
 }

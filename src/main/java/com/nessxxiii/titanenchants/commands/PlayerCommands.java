@@ -1,5 +1,6 @@
 package com.nessxxiii.titanenchants.commands;
 
+import com.nessxxiii.titanenchants.Items.ItemManager;
 import com.nessxxiii.titanenchants.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
@@ -9,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -25,14 +27,18 @@ public class PlayerCommands implements CommandExecutor{
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
-
+        if (!(sender instanceof Player player)) return false;
+        if (!player.hasPermission("titan.enchants")) {
+            player.sendMessage(ChatColor.RED + "No permission.");
+            return true;
+        }
+        if (args.length == 0) return false;
         if ("imbue".equalsIgnoreCase(args[0]) ){
             Material coolDown = Material.JIGSAW;
-            if (!(sender instanceof Player player)) return false;
             player.sendMessage(ChatColor.RED + "------Debug------");
             ItemStack item = player.getInventory().getItemInMainHand();
             if (!ItemInfo.isTitanTool(item)) return false;
-            if (!player.hasPermission("titanenchants.imbue")) {
+            if (!player.hasPermission("titan.enchants.imbue")) {
                 player.sendMessage(ChatColor.RED + "No permission.");
                 return false;
             }
@@ -58,9 +64,37 @@ public class PlayerCommands implements CommandExecutor{
             }
             return false;
         }
-        if ("unbreaking".equalsIgnoreCase(args[0])) {
-            if (!(sender instanceof Player player)) return false;
-            ItemInfo.hasTitanSilkRedEnchants(player);
+        if ("check".equalsIgnoreCase(args[0])) {
+            if (!player.hasPermission("titan.enchants.check")) {
+                player.sendMessage(ChatColor.RED + "No permission.");
+                return false;
+            }
+            if(ItemInfo.isChargedOrImbuedTitanPick(player.getInventory().getItemInMainHand())) {
+                player.sendMessage("This is a titan pick and is imbued or charged");
+            }
+            else {
+                player.sendMessage("This is not a titan pick or is not imbued or charged");
+            }
+        }
+        if ("reload".equalsIgnoreCase(args[0])) {
+            if (!player.hasPermission("titan.enchants.reload")) {
+                player.sendMessage(ChatColor.RED + "No permission.");
+                return true;
+            }
+            plugin.getLogger().info("Reloading config...");
+            plugin.reloadConfig();
+            player.sendMessage(ChatColor.GREEN + "Successfully reloaded config.");
+            return true;
+        }
+        if (!"crystal".equalsIgnoreCase(args[0])) {
+            if (!player.hasPermission("titan.echant.powercrystal.add")) {
+                player.sendMessage(ChatColor.RED + "No permission.");
+                return true;
+            }
+            Inventory inv = player.getInventory();
+            inv.addItem(ItemManager.powerCrystal);
+            player.updateInventory();
+            return true;
         }
         return true;
     }

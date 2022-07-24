@@ -1,7 +1,6 @@
 package com.nessxxiii.titanenchants;
 
 import com.nessxxiii.titanenchants.Items.ItemManager;
-import com.nessxxiii.titanenchants.commands.AddPowerCrystal;
 import com.nessxxiii.titanenchants.commands.PlayerCommands;
 import com.nessxxiii.titanenchants.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.enchantments.TitanPicks;
@@ -38,8 +37,7 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PowerCrystalBlockBreakListener(),this);
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
 
-        Objects.requireNonNull(getCommand("ancient")).setExecutor(new PlayerCommands(this));
-        Objects.requireNonNull(getCommand("powercrystal")).setExecutor(new AddPowerCrystal());
+        Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
 
     }
 
