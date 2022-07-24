@@ -6,10 +6,7 @@ authors: [ bfrisco, NessXXIII ]
 description: Custom enchantments for Theatria
 softdepend: [mcMMO]
 commands:
-  ancient:
-    description: Imbue enchantment on an item
-  benchants:
-    description: Enchants an item
+  titan:
+    description: Dev tools for titanEnchants
     usage: |
       /<command> reload
-  powercrystal:

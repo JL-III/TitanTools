@@ -2,12 +2,14 @@ package com.nessxxiii.titanenchants;
 
 import com.nessxxiii.titanenchants.Items.ItemManager;
 import com.nessxxiii.titanenchants.commands.PlayerCommands;
+import com.nessxxiii.titanenchants.commands.PlayerCommandsTabComplete;
 import com.nessxxiii.titanenchants.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.enchantments.TitanPicks;
 import com.nessxxiii.titanenchants.util.ChargeManagement;
 import com.nessxxiii.titanenchants.util.McMMOManager;
 import com.nessxxiii.titanenchants.util.PowerCrystalBlockBreakListener;
 import org.bukkit.Bukkit;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,6 +40,7 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
 
         Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
+        Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
 
     }
 
