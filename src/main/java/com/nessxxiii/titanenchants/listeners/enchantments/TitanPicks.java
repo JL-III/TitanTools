@@ -1,5 +1,7 @@
-package com.nessxxiii.titanenchants.enchantments;
+package com.nessxxiii.titanenchants.listeners.enchantments;
 
+import com.nessxxiii.titanenchants.Items.ItemInfo;
+import com.nessxxiii.titanenchants.enchantmentManager.ChargeManagement;
 import com.nessxxiii.titanenchants.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.*;
 import org.bukkit.Bukkit;
@@ -58,7 +60,7 @@ public class TitanPicks implements Listener {
                 handleFullInventory(player, itemInMainHand);
             }
             if (ItemInfo.isCharged(itemInMainHand)) {
-                ChargeManagement.decreaseChargeLore(itemInMainHand, player);
+                ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
                 player.sendMessage("Debug: decreasing charge");
             }
             if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
@@ -71,7 +73,7 @@ public class TitanPicks implements Listener {
         } else if (ItemInfo.isLevelTwo(itemInMainHand)) {
             if (ItemInfo.isCharged(itemInMainHand)) {
                 player.sendMessage("decreasing charge");
-                ChargeManagement.decreaseChargeLore2(itemInMainHand, player);
+                ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
             }
             for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
                 if (block.getLocation().equals(blockBroken.getLocation())) {
@@ -92,7 +94,7 @@ public class TitanPicks implements Listener {
             }
             if (ItemInfo.isCharged(itemInMainHand)) {
                 player.sendMessage("decreasing charge");
-                ChargeManagement.decreaseChargeLore3(itemInMainHand, player);
+                ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
             }
             if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
                 dropExperience(blockBroken);

@@ -1,4 +1,4 @@
-package com.nessxxiii.titanenchants.util;
+package com.nessxxiii.titanenchants.Items;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;

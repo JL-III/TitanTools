@@ -2,7 +2,7 @@ package com.nessxxiii.titanenchants.commands;
 
 import com.nessxxiii.titanenchants.Items.ItemManager;
 import com.nessxxiii.titanenchants.enchantmentManager.ToggleAncientPower;
-import com.nessxxiii.titanenchants.util.ItemInfo;
+import com.nessxxiii.titanenchants.Items.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

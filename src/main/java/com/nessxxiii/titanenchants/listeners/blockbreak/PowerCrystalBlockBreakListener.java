@@ -1,4 +1,4 @@
-package com.nessxxiii.titanenchants.util;
+package com.nessxxiii.titanenchants.listeners.blockbreak;
 
 import com.nessxxiii.titanenchants.Items.ItemManager;
 import org.bukkit.Location;

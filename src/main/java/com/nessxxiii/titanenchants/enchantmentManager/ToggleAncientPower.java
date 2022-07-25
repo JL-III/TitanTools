@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.enchantmentManager;
 
-import com.nessxxiii.titanenchants.util.ItemInfo;
+import com.nessxxiii.titanenchants.Items.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -48,7 +48,7 @@ public class ToggleAncientPower implements Listener {
         }
     }
 
-    public static void toggleChargedEnchant(ItemStack item, Player player){
+    public static void toggleChargedEnchant(ItemStack item, Player player) {
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return;
         if (ItemInfo.getItemLevel(item) == 1) {
