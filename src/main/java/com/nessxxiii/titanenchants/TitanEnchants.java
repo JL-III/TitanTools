@@ -6,7 +6,7 @@ import com.nessxxiii.titanenchants.commands.PlayerCommandsTabComplete;
 import com.nessxxiii.titanenchants.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanPicks;
 import com.nessxxiii.titanenchants.enchantmentManager.ChargeManagement;
-import com.nessxxiii.titanenchants.util.McMMOManager;
+import com.nessxxiii.titanenchants.listeners.mcMMO.McMMOManager;
 import com.nessxxiii.titanenchants.listeners.blockbreak.PowerCrystalDrop;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;

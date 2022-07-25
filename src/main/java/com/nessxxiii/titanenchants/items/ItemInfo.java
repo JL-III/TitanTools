@@ -196,32 +196,6 @@ public class ItemInfo {
         return false;
     }
 
-/*    public static boolean isLevelOneVerbose(Player player){
-        ItemStack item = player.getInventory().getItemInMainHand();
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return false;
-        for (String lore : loreList) {
-            if (LEVEL_ONE.contains(lore)) {
-                player.sendMessage(lore);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean isLevelTwoVerbose(Player player){
-        ItemStack item = player.getInventory().getItemInMainHand();
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return false;
-        for (String lore : loreList) {
-            if (LEVEL_TWO.contains(lore)) {
-                player.sendMessage(lore);
-                return true;
-            }
-        }
-        return false;
-    }*/
-
     public static boolean isLevelThree(ItemStack item){
 
         List<String> loreList = item.getItemMeta().getLore();
@@ -257,7 +231,6 @@ public class ItemInfo {
         List<String> loreList = item.getItemMeta().getLore();
         for (String lore : loreList) {
             if (ACTIVE_IMBUED_LORE.contains(lore)) {
-                /*Bukkit.getServer().getConsoleSender().sendMessage("Inside successful AncientPowerActive check");*/
                 return true;
             }
         }
@@ -265,11 +238,9 @@ public class ItemInfo {
     }
 
     public static boolean isActiveCharged(ItemStack item){
-        /*Bukkit.getServer().getConsoleSender().sendMessage("Inside AncientChargeActive check");*/
         List<String> loreList = item.getItemMeta().getLore();
         for (String lore : loreList) {
             if (ACTIVE_CHARGED_LORE.contains(lore)) {
-                /*Bukkit.getServer().getConsoleSender().sendMessage("Inside successful AncientChargeActive check");*/
                 return true;
             }
         }
@@ -277,11 +248,9 @@ public class ItemInfo {
     }
 
     public static boolean isDormantCharged(ItemStack item){
-        /*Bukkit.getServer().getConsoleSender().sendMessage("Inside AncientChargeActive check");*/
         List<String> loreList = item.getItemMeta().getLore();
         for (String lore : loreList) {
             if (INACTIVE_LORE.contains(lore)) {
-                /*Bukkit.getServer().getConsoleSender().sendMessage("Inside successful AncientChargeActive check");*/
                 return true;
             }
         }

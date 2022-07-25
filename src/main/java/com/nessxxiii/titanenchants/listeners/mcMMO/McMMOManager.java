@@ -1,4 +1,4 @@
-package com.nessxxiii.titanenchants.util;
+package com.nessxxiii.titanenchants.listeners.mcMMO;
 
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;

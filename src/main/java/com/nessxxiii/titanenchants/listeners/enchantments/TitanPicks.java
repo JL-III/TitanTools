@@ -55,71 +55,79 @@ public class TitanPicks implements Listener {
             IGNORE_LOCATIONS.remove(blockBroken.getLocation());
             return;
         }
-        if (ItemInfo.isLevelOne(itemInMainHand)) {
-            if (inventory.firstEmpty() == -1) {
-                handleFullInventory(player, itemInMainHand);
-            }
-            if (ItemInfo.isCharged(itemInMainHand)) {
-                ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
-                player.sendMessage("Debug: decreasing charge");
-            }
-            if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
-                dropExperience(blockBroken);
-            }
-            blockBroken.setType(Material.AIR);
-            event.setCancelled(true);
-            inventory.addItem(drops);
-            player.updateInventory();
-        } else if (ItemInfo.isLevelTwo(itemInMainHand)) {
-            if (ItemInfo.isCharged(itemInMainHand)) {
-                player.sendMessage("decreasing charge");
-                ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
-            }
-            for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
-                if (block.getLocation().equals(blockBroken.getLocation())) {
-                    continue;
+
+        int itemLevel = ItemInfo.getItemLevel(itemInMainHand);
+
+        switch (itemLevel) {
+            case 1 -> {
+                if (inventory.firstEmpty() == -1) {
+                    handleFullInventory(player, itemInMainHand);
                 }
-                if (ALLOWED_ITEMS.contains(block.getType())) {
-                    IGNORE_LOCATIONS.add(block.getLocation());
-                    BlockBreakEvent e = new BlockBreakEvent(block, player);
-                    Bukkit.getPluginManager().callEvent(e);
-                    if (!e.isCancelled()) {
-                        block.breakNaturally(itemInMainHand);
+                if (ItemInfo.isCharged(itemInMainHand)) {
+                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
+                    player.sendMessage("Debug: decreasing charge");
+                }
+                if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+                    dropExperience(blockBroken);
+                }
+                blockBroken.setType(Material.AIR);
+                event.setCancelled(true);
+                inventory.addItem(drops);
+                player.updateInventory();
+            }
+            case 2 -> {
+                if (ItemInfo.isCharged(itemInMainHand)) {
+                    player.sendMessage("decreasing charge");
+                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
+                }
+                for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
+                    if (block.getLocation().equals(blockBroken.getLocation())) {
+                        continue;
+                    }
+                    if (ALLOWED_ITEMS.contains(block.getType())) {
+                        IGNORE_LOCATIONS.add(block.getLocation());
+                        BlockBreakEvent e = new BlockBreakEvent(block, player);
+                        Bukkit.getPluginManager().callEvent(e);
+                        if (!e.isCancelled()) {
+                            block.breakNaturally(itemInMainHand);
+                        }
                     }
                 }
             }
-        } else if (ItemInfo.isLevelThree(itemInMainHand)) {
-            if (player.getInventory().firstEmpty() == -1) {
-                handleFullInventory(player, itemInMainHand);
-            }
-            if (ItemInfo.isCharged(itemInMainHand)) {
-                player.sendMessage("decreasing charge");
-                ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
-            }
-            if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
-                dropExperience(blockBroken);
-            }
-            blockBroken.setType(Material.AIR);
-            event.setCancelled(true);
-            inventory.addItem(drops);
-            player.updateInventory();
-            for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
-                if (block.getLocation().equals(event.getBlock().getLocation())) {
-                    continue;
+            case 3 -> {
+                if (player.getInventory().firstEmpty() == -1) {
+                    handleFullInventory(player, itemInMainHand);
                 }
-                if (ALLOWED_ITEMS.contains(block.getType())) {
-                    IGNORE_LOCATIONS.add(block.getLocation());
-                    BlockBreakEvent e = new BlockBreakEvent(block, event.getPlayer());
-                    Bukkit.getPluginManager().callEvent(e);
-                    if (!e.isCancelled()) {
-                        block.setType(Material.AIR);
-                        inventory.addItem(drops);
-                        player.updateInventory();
+                if (ItemInfo.isCharged(itemInMainHand)) {
+                    player.sendMessage("decreasing charge");
+                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
+                }
+                if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+                    dropExperience(blockBroken);
+                }
+                blockBroken.setType(Material.AIR);
+                event.setCancelled(true);
+                inventory.addItem(drops);
+                player.updateInventory();
+                for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
+                    if (block.getLocation().equals(event.getBlock().getLocation())) {
+                        continue;
+                    }
+                    if (ALLOWED_ITEMS.contains(block.getType())) {
+                        IGNORE_LOCATIONS.add(block.getLocation());
+                        BlockBreakEvent e = new BlockBreakEvent(block, event.getPlayer());
+                        Bukkit.getPluginManager().callEvent(e);
+                        if (!e.isCancelled()) {
+                            block.setType(Material.AIR);
+                            inventory.addItem(drops);
+                            player.updateInventory();
+                        }
                     }
                 }
+            }
+            default -> {
             }
         }
-
     }
 
     private void handleFullInventory(Player player, ItemStack item) {
