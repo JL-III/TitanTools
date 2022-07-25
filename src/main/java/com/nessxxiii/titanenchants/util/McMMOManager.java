@@ -2,7 +2,7 @@ package com.nessxxiii.titanenchants.util;
 
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
-import com.nessxxiii.titanenchants.Items.ItemInfo;
+import com.nessxxiii.titanenchants.items.ItemInfo;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

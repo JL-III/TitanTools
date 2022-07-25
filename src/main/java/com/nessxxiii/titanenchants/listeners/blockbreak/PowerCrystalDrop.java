@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.blockbreak;
 
-import com.nessxxiii.titanenchants.Items.ItemManager;
+import com.nessxxiii.titanenchants.items.ItemManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -10,7 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 
-public class PowerCrystalBlockBreakListener implements Listener {
+public class PowerCrystalDrop implements Listener {
 
     @EventHandler
     public static void diamondBreak(BlockBreakEvent event){
@@ -23,13 +23,13 @@ public class PowerCrystalBlockBreakListener implements Listener {
             player.sendMessage("You are not in the correct world for this!");
             return;
         }
-        if (!player.hasPermission("benchants.powercrystaldrop")) return;
+        if (!player.hasPermission("titan.enchants.powercrystaldrop")) return;
         if (player.getInventory().getItemInMainHand().getType() == Material.DIAMOND_SHOVEL) return;
         if (player.getInventory().getItemInMainHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)) return;
         Location loc = block.getLocation();
 
         int randomNumber = getRandomNumber(1,10);
-        if (randomNumber < 5) {
+        if (randomNumber < 2) {
             for (int i = 0; i < randomNumber; i++){
                 player.getLocation().getWorld().dropItem(loc, ItemManager.powerCrystal);
             }

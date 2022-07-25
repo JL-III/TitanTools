@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.enchantmentManager;
 
-import com.nessxxiii.titanenchants.Items.ItemInfo;
+import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;

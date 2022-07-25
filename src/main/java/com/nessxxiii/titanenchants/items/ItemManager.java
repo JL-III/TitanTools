@@ -1,8 +1,7 @@
-package com.nessxxiii.titanenchants.Items;
+package com.nessxxiii.titanenchants.items;
 
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -37,16 +36,6 @@ public class ItemManager {
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.CHANNELING,1);
         powerCrystal = item;
-    }
-
-    public static void createTitanPickFortDiamond(Player player) {
-        Set<ItemStack> allowedMaterials = new HashSet<>();
-        allowedMaterials.add(new ItemStack(Material.DIAMOND_PICKAXE));
-        allowedMaterials.add(new ItemStack(Material.NETHERITE_PICKAXE));
-        Map<Enchantment, Integer> allowedEnchantments = player.getInventory().getItemInMainHand().getEnchantments();
-        if (allowedEnchantments.get(Enchantment.DURABILITY) == 10) {
-            player.sendMessage("This item is level 10 unbreaking");
-        }
     }
 
 }

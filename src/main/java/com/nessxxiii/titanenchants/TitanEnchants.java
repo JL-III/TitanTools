@@ -1,13 +1,13 @@
 package com.nessxxiii.titanenchants;
 
-import com.nessxxiii.titanenchants.Items.ItemManager;
+import com.nessxxiii.titanenchants.items.ItemManager;
 import com.nessxxiii.titanenchants.commands.PlayerCommands;
 import com.nessxxiii.titanenchants.commands.PlayerCommandsTabComplete;
 import com.nessxxiii.titanenchants.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanPicks;
 import com.nessxxiii.titanenchants.enchantmentManager.ChargeManagement;
 import com.nessxxiii.titanenchants.util.McMMOManager;
-import com.nessxxiii.titanenchants.listeners.blockbreak.PowerCrystalBlockBreakListener;
+import com.nessxxiii.titanenchants.listeners.blockbreak.PowerCrystalDrop;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -35,7 +35,7 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new TitanPicks(this),this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(this),this);
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(),this);
-        Bukkit.getPluginManager().registerEvents(new PowerCrystalBlockBreakListener(),this);
+        Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
 
         Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));

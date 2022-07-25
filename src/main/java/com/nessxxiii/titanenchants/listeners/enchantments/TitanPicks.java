@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantments;
 
-import com.nessxxiii.titanenchants.Items.ItemInfo;
+import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.enchantmentManager.ChargeManagement;
 import com.nessxxiii.titanenchants.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.*;

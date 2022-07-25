@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.enchantmentManager;
 
-import com.nessxxiii.titanenchants.Items.ItemInfo;
+import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,6 +17,7 @@ import java.util.List;
 public class ToggleAncientPower implements Listener {
 
     private Plugin plugin;
+    private static Player player;
 
     public ToggleAncientPower(Plugin plugin) {
         this.plugin = plugin;
@@ -26,76 +27,67 @@ public class ToggleAncientPower implements Listener {
     public static void activateClick(PlayerInteractEvent event) {
         if (!event.getAction().isRightClick()) return;
         event.getPlayer().sendMessage("Pass isrightclick sending to validateToggleAttempt ");
-        ValidateToggleAttempt validateToggleAttempt = new ValidateToggleAttempt(event);
-        if (validateToggleAttempt.processValidation()) {
+        player = event.getPlayer();
+
+        if (processPlayerStateValidation()) {
             Player player = event.getPlayer();
+            ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
             Material coolDown = Material.JIGSAW;
             player.sendMessage("Passed validate toggle attempt");
-            if (validateToggleAttempt.processItemValidation(player.getInventory().getItemInMainHand())
-                    && ItemInfo.isCharged (player.getInventory().getItemInMainHand())) {
+
+            if (processItemValidation(itemInMainHand)
+                    && ItemInfo.isCharged (itemInMainHand)) {
                 player.setCooldown(coolDown,25);
                 player.sendMessage("Your item is charged with ancient power");
                 event.setCancelled(true);
-                ToggleAncientPower.toggleChargedEnchant(player.getInventory().getItemInMainHand(),player);
-            } else if (validateToggleAttempt.processItemValidation(player.getInventory().getItemInMainHand())
-                    && ItemInfo.isImbued(player.getInventory().getItemInMainHand())) {
+                ToggleAncientPower.toggleEnchant(itemInMainHand,player,false);
+            } else if (processItemValidation(itemInMainHand)
+                    && ItemInfo.isImbued(itemInMainHand)) {
                 player.setCooldown(coolDown,25);
                 player.sendMessage("Your item is imbued with ancient power");
-                ToggleAncientPower.toggleImbuedEnchantment(player.getInventory().getItemInMainHand(), player);
+                ToggleAncientPower.toggleEnchant(itemInMainHand, player, true);
             } else {
                 player.sendMessage("You cannot toggle this item since it is not imbued or charged");
             }
         }
     }
 
-    public static void toggleChargedEnchant(ItemStack item, Player player) {
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return;
-        if (ItemInfo.getItemLevel(item) == 1) {
-            enchant1ToEnchant2(item);
-            new TitanEnchantEffects().disableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Titan Tool set to Enchant2");
-        } else if (ItemInfo.getItemLevel(item) == 2) {
-            enchant2ToEnchant3(item);
-            new TitanEnchantEffects().enableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Titan Tool set to Enchant3");
-        } else if (ItemInfo.getItemLevel(item) == 3) {
-            disableEnchant(item);
-            new TitanEnchantEffects().enableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Titan Tool set to dormant");
-        } else if (ItemInfo.isDormantCharged(item)) {
-            enableEnchantTo1(item);
-            new TitanEnchantEffects().enableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Titan Tool set to Enchant1");
+    public static void toggleEnchant(ItemStack item, Player player, boolean isImbued) {
+        String caseOneString = ItemInfo.IMBUED_TWO;
+        String caseTwoString = ItemInfo.IMBUED_THREE;
+        String caseThreeString = ItemInfo.IMBUED_INACTIVE;
+        String caseDormantString = ItemInfo.IMBUED_ONE;
+        int itemLevel = ItemInfo.getItemLevel(item);
+
+        if (!isImbued) {
+            caseOneString = ItemInfo.CHARGED_TWO;
+            caseTwoString = ItemInfo.CHARGED_THREE;
+            caseThreeString = ItemInfo.CHARGED_INACTIVE;
+            caseDormantString = ItemInfo.CHARGED_ONE;
         }
-
-    }
-
-    public static void enableEnchantTo1(ItemStack item) {
-        List<String> loreList = item.getItemMeta().getLore();
-        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.CHARGED_ONE);
-        ItemMeta meta = item.getItemMeta();
-        meta.setLore(loreList);
-        item.setItemMeta(meta);
-    }
-
-    public static void enchant1ToEnchant2(ItemStack item) {
-        List<String> loreList = item.getItemMeta().getLore();
-        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.CHARGED_TWO);
-        ItemMeta meta = item.getItemMeta();
-        meta.setLore(loreList);
-        item.setItemMeta(meta);
-    }
-
-    public static void enchant2ToEnchant3(ItemStack item) {
-        List<String> loreList = item.getItemMeta().getLore();
-        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.CHARGED_THREE);
-        ItemMeta meta = item.getItemMeta();
-        meta.setLore(loreList);
-        item.setItemMeta(meta);
+        switch (itemLevel) {
+            case 1 -> {
+                powerLevelConversion(item, caseOneString);
+                player.sendMessage(ChatColor.GREEN + "Titan Tool set to Enchant2");
+            }
+            case 2 -> {
+                powerLevelConversion(item, caseTwoString);
+                player.sendMessage(ChatColor.GREEN + "Titan Tool set to Enchant3");
+            }
+            case 3 -> {
+                powerLevelConversion(item, caseThreeString);
+                player.sendMessage(ChatColor.GREEN + "Titan Tool set to dormant");
+            }
+            default -> {
+                if (ItemInfo.isDormantCharged(item)) {
+                    powerLevelConversion(item, caseDormantString);
+                    player.sendMessage(ChatColor.GREEN + "Titan Tool set to Enchant1");
+                } else {
+                    player.sendMessage("An error has occurred");
+                }
+            }
+        }
+        new TitanEnchantEffects().enableEffect(player);
     }
 
     public static void disableEnchant(ItemStack item) {
@@ -116,54 +108,6 @@ public class ToggleAncientPower implements Listener {
         item.setItemMeta(meta);
     }
 
-    public static void toggleImbuedEnchantment(ItemStack item, Player player){
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return;
-        if (ItemInfo.getItemLevel(item) == 1) {
-            imbuedEnchant1ToEnchant2(item);
-            new TitanEnchantEffects().disableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Pick set to Enchant2");
-        } else if (ItemInfo.getItemLevel(item) == 2) {
-            imbuedEnchant2ToEnchant3(item);
-            new TitanEnchantEffects().enableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Pick set to Enchant3");
-        } else if (ItemInfo.getItemLevel(item) == 3) {
-            disableImbuedEnchant(item);
-            new TitanEnchantEffects().enableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Pick set to dormant");
-        } else if (ItemInfo.isDormantCharged(item)) {
-            enableImbuedEnchantTo1(item);
-            new TitanEnchantEffects().enableEffect(player);
-            player.sendMessage(ChatColor.GREEN + "Pick set to Enchant1");
-        }
-    }
-
-    public static void enableImbuedEnchantTo1(ItemStack item) {
-        List<String> loreList = item.getItemMeta().getLore();
-        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.IMBUED_ONE);
-        ItemMeta meta = item.getItemMeta();
-        meta.setLore(loreList);
-        item.setItemMeta(meta);
-    }
-
-    public static void imbuedEnchant1ToEnchant2(ItemStack item) {
-        List<String> loreList = item.getItemMeta().getLore();
-        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.IMBUED_TWO);
-        ItemMeta meta = item.getItemMeta();
-        meta.setLore(loreList);
-        item.setItemMeta(meta);
-    }
-    public static void imbuedEnchant2ToEnchant3(ItemStack item) {
-        List<String> loreList = item.getItemMeta().getLore();
-        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.IMBUED_THREE);
-        ItemMeta meta = item.getItemMeta();
-        meta.setLore(loreList);
-        item.setItemMeta(meta);
-    }
-
     public static void disableImbuedEnchant(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
@@ -173,4 +117,26 @@ public class ToggleAncientPower implements Listener {
         item.setItemMeta(meta);
     }
 
+    public static void powerLevelConversion(ItemStack item, String loreChange) {
+        List<String> loreList = item.getItemMeta().getLore();
+        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
+        loreList.set(index,loreChange);
+        ItemMeta meta = item.getItemMeta();
+        meta.setLore(loreList);
+        item.setItemMeta(meta);
+    }
+
+    private static boolean processPlayerStateValidation() {
+        if (!player.isSneaking()) return false;
+        Material coolDown = Material.JIGSAW;
+        if (player.hasCooldown(coolDown)) return false;
+        return player.hasPermission("titan.enchants.toggle");
+    }
+
+    private static boolean processItemValidation(ItemStack item){
+        if (!ItemInfo.hasCharge(item) && !ItemInfo.isImbued(item)) return false;
+        if (!ItemInfo.isAllowedType(item)) return false;
+        if (!item.hasItemMeta()) return false;
+        return ItemInfo.isTitanTool(item);
+    }
 }
