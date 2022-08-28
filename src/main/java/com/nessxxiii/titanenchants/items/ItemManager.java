@@ -13,14 +13,6 @@ public class ItemManager {
 
     public static ItemStack powerCrystal;
 
-    public ItemStack getPowerCrystal() {
-        return powerCrystal;
-    }
-
-    public void setPowerCrystal(ItemStack powerCrystal) {
-        this.powerCrystal = powerCrystal;
-    }
-
     public static void Init(){
         createPowerCrystal();
     }

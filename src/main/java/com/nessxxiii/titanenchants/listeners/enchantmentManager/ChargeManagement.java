@@ -1,4 +1,4 @@
-package com.nessxxiii.titanenchants.enchantmentManager;
+package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
