@@ -135,7 +135,7 @@ public class ToggleAncientPower implements Listener {
 
     private static boolean processItemValidation(ItemStack item){
         if (!ItemInfo.hasCharge(item) && !ItemInfo.isImbued(item)) return false;
-        if (!ItemInfo.isAllowedType(item)) return false;
+        if (!ItemInfo.isAllowedTitanType(item)) return false;
         if (!item.hasItemMeta()) return false;
         return ItemInfo.isTitanTool(item);
     }

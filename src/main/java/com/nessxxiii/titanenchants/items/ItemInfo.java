@@ -148,16 +148,42 @@ public class ItemInfo {
         }
     };
 
-    public static final List<Enum> ALLOWED_TYPES = new ArrayList<>(){
+    public static final List<Enum> ALLOWED_TITAN_TYPES = new ArrayList<>() {
+        {
+            add(Material.DIAMOND_PICKAXE);
+            add(Material.NETHERITE_PICKAXE);
+            add(Material.DIAMOND_SHOVEL);
+            add(Material.NETHERITE_SHOVEL);
+        }
+    };
+
+    public static final List<Enum> ALLOWED_PICK_TYPES = new ArrayList<>(){
         {
             add(Material.DIAMOND_PICKAXE);
             add(Material.NETHERITE_PICKAXE);
         }
     };
 
-    public static boolean isAllowedType(ItemStack item){
+    public static final List<Enum> ALLOWED_SHOVEL_TYPES = new ArrayList<>(){
+        {
+            add(Material.DIAMOND_PICKAXE);
+            add(Material.NETHERITE_PICKAXE);
+        }
+    };
+
+    public static boolean isAllowedTitanType(ItemStack item){
         if (item == null) return false;
-        return (ALLOWED_TYPES.contains(item.getType()));
+        return (ALLOWED_TITAN_TYPES.contains(item.getType()));
+    }
+
+    public static boolean isAllowedPickType(ItemStack item){
+        if (item == null) return false;
+        return (ALLOWED_PICK_TYPES.contains(item.getType()));
+    }
+
+    public static boolean isAllowedShovelType(ItemStack item){
+        if (item == null) return false;
+        return (ALLOWED_SHOVEL_TYPES.contains(item.getType()));
     }
 
     public static boolean isTitanTool(ItemStack item){
@@ -362,11 +388,20 @@ public class ItemInfo {
 
     public static boolean isTitanPick(ItemStack item) {
         return isTitanTool(item)
-                && isAllowedType(item);
+                && isAllowedPickType(item);
+    }
+
+    public static boolean isTitanShovel(ItemStack item) {
+        return isTitanTool(item) && isAllowedShovelType(item);
     }
 
     public static boolean isChargedOrImbuedTitanPick(ItemStack item) {
         if(!isTitanPick(item)) return false;
+        return (isImbued(item) || isCharged(item));
+    }
+
+    public static boolean isChargedOrImbuedTitanShovel(ItemStack item) {
+        if(!isTitanShovel(item)) return false;
         return (isImbued(item) || isCharged(item));
     }
 }

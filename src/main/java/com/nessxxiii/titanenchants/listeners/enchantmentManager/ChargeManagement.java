@@ -32,7 +32,7 @@ public class ChargeManagement implements Listener {
             if (itemClicked == null || itemClicked.getType() == Material.AIR) return;
             if (!ItemInfo.isPowerCrystal(itemOnCursor)) return;
             if (!ItemInfo.isTitanTool(itemClicked)) return;
-            if (!ItemInfo.isAllowedType(itemClicked)) return;
+            if (!ItemInfo.isAllowedTitanType(itemClicked)) return;
             if (ItemInfo.isImbued(itemClicked)) return;
             addChargeLore(itemClicked,numberOfCharge * 100);
             player.getItemOnCursor().setAmount(0);
