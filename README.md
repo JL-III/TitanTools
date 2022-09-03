@@ -1,4 +1,6 @@
-Titan enchants is a custom enchantment plugin for Theatria.
+#**TitanEnchants**
+
+##Titan enchants is a custom enchantment plugin for Theatria.
 
 Players can toggle through enchantments by holding shift and right clicking while holding an imbued or charged titan tool.
 
