@@ -6,7 +6,7 @@ Players can toggle through enchantments by holding shift and right clicking whil
 
 Players can charge their tools with power crystals by taking a powercrystal and placing them on top of their titan tool inside their inventory UI.
 
-Custom enchantments include:
+Custom enchantments include:\n
   Titan Picks:
     1: 1x1 block break with auto collect
     2: 3x3 block break
