@@ -28,7 +28,6 @@ public class TitanShovel implements Listener {
     private final Plugin PLUGIN;
 
     public TitanShovel(Plugin plugin) {
-
         this.PLUGIN = plugin;
         loadConfig();
     }

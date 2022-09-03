@@ -166,8 +166,8 @@ public class ItemInfo {
 
     public static final List<Enum> ALLOWED_SHOVEL_TYPES = new ArrayList<>(){
         {
-            add(Material.DIAMOND_PICKAXE);
-            add(Material.NETHERITE_PICKAXE);
+            add(Material.DIAMOND_SHOVEL);
+            add(Material.NETHERITE_SHOVEL);
         }
     };
 
