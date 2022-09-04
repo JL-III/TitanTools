@@ -12,9 +12,12 @@ import java.util.*;
 public class ItemManager {
 
     public static ItemStack powerCrystal;
+    public static ItemStack excavator;
 
     public static void Init(){
+
         createPowerCrystal();
+        createExcavator();
     }
 
     private static void createPowerCrystal() {
@@ -28,6 +31,20 @@ public class ItemManager {
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.CHANNELING,1);
         powerCrystal = item;
+    }
+
+    private static void createExcavator() {
+        ItemStack item = new ItemStack(Material.GOLDEN_PICKAXE);
+        List<String> lore = new ArrayList<>();
+        lore.add("A tool used to extract");
+        lore.add("Power Crystals from ore");
+        item.setLore(lore);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Excavation Tool");
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        item.setItemMeta(meta);
+        item.addUnsafeEnchantment(Enchantment.DURABILITY, 5);
+        excavator = item;
     }
 
 }

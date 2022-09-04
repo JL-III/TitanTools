@@ -17,6 +17,7 @@ public class PlayerCommandsTabComplete implements TabCompleter {
         commands.add("crystal");
         commands.add("check");
         commands.add("imbue");
+        commands.add("excavator");
         return commands;
     }
 }

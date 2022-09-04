@@ -87,12 +87,22 @@ public class PlayerCommands implements CommandExecutor{
             return true;
         }
         if ("crystal".equalsIgnoreCase(args[0])) {
-            if (!player.hasPermission("titan.echant.powercrystal.add")) {
+            if (!player.hasPermission("titan.enchants.powercrystal.add")) {
                 player.sendMessage(ChatColor.RED + "No permission.");
                 return true;
             }
             Inventory inv = player.getInventory();
             inv.addItem(ItemManager.powerCrystal);
+            player.updateInventory();
+            return true;
+        }
+        if ("excavator".equalsIgnoreCase(args[0])) {
+            if (!player.hasPermission("titan.enchants.excavator.add")) {
+                player.sendMessage(ChatColor.RED + "No permission.");
+                return true;
+            }
+            Inventory inv = player.getInventory();
+            inv.addItem(ItemManager.excavator);
             player.updateInventory();
             return true;
         }
