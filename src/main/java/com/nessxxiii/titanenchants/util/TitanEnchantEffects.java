@@ -38,7 +38,7 @@ public class TitanEnchantEffects {
             player.sendMessage("Particle spawned: " + i);
             i++;
         }
-        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 10, 1);
+        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 10, -1);
 
     }
 

@@ -29,16 +29,24 @@ public class TitanPicks implements Listener {
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
     private static final HashMap<Material, Integer> blockConversionQuantity = new HashMap<>(){{
         put(Material.EMERALD_ORE, 6);
+        put(Material.DEEPSLATE_EMERALD_ORE, 6);
         put(Material.IRON_ORE, 6);
+        put(Material.DEEPSLATE_IRON_ORE, 6);
         put(Material.COPPER_ORE, 25);
+        put(Material.DEEPSLATE_COPPER_ORE, 25);
         put(Material.GOLD_ORE, 6);
+        put(Material.DEEPSLATE_GOLD_ORE, 6);
         put(Material.NETHER_GOLD_ORE, 3);
     }};
     private static final HashMap<Material, Material> blockConversionTypes = new HashMap<>() {{
         put(Material.EMERALD_ORE, Material.EMERALD);
+        put(Material.DEEPSLATE_EMERALD_ORE, Material.EMERALD);
         put(Material.IRON_ORE, Material.IRON_INGOT);
+        put(Material.DEEPSLATE_IRON_ORE, Material.IRON_INGOT);
         put(Material.COPPER_ORE, Material.COPPER_INGOT);
+        put(Material.DEEPSLATE_COPPER_ORE, Material.COPPER_INGOT);
         put(Material.GOLD_ORE, Material.GOLD_INGOT);
+        put(Material.DEEPSLATE_GOLD_ORE, Material.GOLD_INGOT);
         put(Material.NETHER_GOLD_ORE, Material.GOLD_INGOT);
     }};
 
