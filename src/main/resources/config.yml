@@ -34,5 +34,5 @@ titanAxe:
 titanShovel:
   non-destroyable-items:
     [
-      "BEDROCK", "CHEST", "SHULKER_BOX"
+      "CHEST", "SHULKER_BOX"
     ]

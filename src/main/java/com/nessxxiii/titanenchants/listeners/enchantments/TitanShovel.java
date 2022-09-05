@@ -48,7 +48,9 @@ public class TitanShovel implements Listener {
         }
         Block clickedBlock = event.getClickedBlock();
         if (ItemInfo.isLevelOne(item)) {
-            if (clickedBlock.getType() == Material.BEDROCK) return;
+            player.sendMessage("MaterialType: " + clickedBlock.getType());
+            player.sendMessage("Y value of block: " + clickedBlock.getLocation().getY());
+            if (clickedBlock.getType() == Material.BEDROCK && clickedBlock.getLocation().getY() < -63) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX) {
                 clickedBlock.breakNaturally(item);
                 ChargeManagement.decreaseChargeLore(item, player, 1);
@@ -65,7 +67,7 @@ public class TitanShovel implements Listener {
 
         } else if (ItemInfo.isLevelTwo(item)){
             BlockFace blockFace = event.getBlockFace();
-            if (clickedBlock.getType() == Material.BEDROCK) return;
+            if (clickedBlock.getType() == Material.BEDROCK && clickedBlock.getLocation().getY() < -63) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX) {
                 clickedBlock.breakNaturally(item);
             }
@@ -85,15 +87,16 @@ public class TitanShovel implements Listener {
                     e = new BlockBreakEvent(blockLoop, event.getPlayer());
                     Bukkit.getPluginManager().callEvent(e);
                     if (!e.isCancelled()) {
-                        blockLoop.setType(Material.AIR);
-
+                        if (blockLoop.getLocation().getY() >= -63) {
+                            blockLoop.setType(Material.AIR);
+                        }
                     }
                 }
             }
 
         } else if (ItemInfo.isLevelThree(item)){
             BlockFace blockFace = event.getBlockFace();
-            if (clickedBlock.getType() == Material.BEDROCK) return;
+            if (clickedBlock.getType() == Material.BEDROCK && clickedBlock.getLocation().getY() < -63) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX) {
                 clickedBlock.breakNaturally(item);
             }
@@ -103,7 +106,7 @@ public class TitanShovel implements Listener {
             if (!e.isCancelled()) {
                 clickedBlock.setType(Material.AIR);
             }
-            ChargeManagement.decreaseChargeLore(item, player,2 );
+            ChargeManagement.decreaseChargeLore(item, player,3 );
             for (Block blockLoop : getNearbyBlocks3(clickedBlock.getLocation(), blockFace)) {
                 if (blockLoop.getLocation().equals(clickedBlock.getLocation())) {
                     continue;
@@ -113,8 +116,9 @@ public class TitanShovel implements Listener {
                     e = new BlockBreakEvent(blockLoop, event.getPlayer());
                     Bukkit.getPluginManager().callEvent(e);
                     if (!e.isCancelled()) {
-                        blockLoop.setType(Material.AIR);
-
+                        if (blockLoop.getLocation().getY() >= -63) {
+                            blockLoop.setType(Material.AIR);
+                        }
                     }
                 }
             }

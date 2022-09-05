@@ -1,5 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
+import com.gmail.nossr50.mcmmo.kyori.adventure.platform.facet.Facet;
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import net.kyori.adventure.text.Component;
@@ -97,7 +98,7 @@ public class ChargeManagement implements Listener {
                 item.setItemMeta(meta);
             } else
                 loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + remainingCharge);
-            player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CRemaining Charge: " + ChatColor.YELLOW + remainingCharge));
+            player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CPowerLvl: " + ChatColor.GREEN + amountTaken + " " + ChatColor.ITALIC + "§x§F§F§0§0§4§CCharge: " + ChatColor.YELLOW + remainingCharge));
             ItemMeta meta = item.getItemMeta();
             meta.setLore(loreList);
             item.setItemMeta(meta);
