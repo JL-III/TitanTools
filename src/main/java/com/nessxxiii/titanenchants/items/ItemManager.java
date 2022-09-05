@@ -44,6 +44,7 @@ public class ItemManager {
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.DURABILITY, 5);
+        item.addUnsafeEnchantment(Enchantment.MULTISHOT, 3);
         excavator = item;
     }
 
