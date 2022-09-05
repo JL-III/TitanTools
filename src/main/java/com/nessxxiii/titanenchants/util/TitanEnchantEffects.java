@@ -6,8 +6,6 @@ import org.bukkit.entity.Player;
 
 public class TitanEnchantEffects {
 
-
-
     public void enableEffect(Player player) {
 
         player.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,player.getEyeLocation(),100);
@@ -27,6 +25,5 @@ public class TitanEnchantEffects {
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 10, 1);
 
     }
-
 
 }

@@ -72,7 +72,6 @@ public class ChargeManagement implements Listener {
         if (ItemInfo.hasCharge(item)) {
             String string = loreList.get(chargeIndex);
             String string1 = string.substring(24);
-            player.sendMessage(string1);
             int previousCharge = Integer.parseInt(string1);
             int remainingCharge = previousCharge - amountTaken;
             if (remainingCharge < 1 && ItemInfo.getColor(item).equals("RED")) {

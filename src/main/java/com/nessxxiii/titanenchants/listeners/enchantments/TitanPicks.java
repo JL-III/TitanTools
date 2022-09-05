@@ -1,6 +1,7 @@
 package com.nessxxiii.titanenchants.listeners.enchantments;
 
 import com.nessxxiii.titanenchants.items.ItemInfo;
+import com.nessxxiii.titanenchants.items.ItemManager;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.*;
@@ -20,15 +21,27 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class TitanPicks implements Listener {
     public static final Set<Material> ALLOWED_ITEMS = new HashSet<>();
     public static final Set<Material> ENCHANTABLE_ITEMS = new HashSet<>();
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
+    private static final HashMap<Material, Integer> blockConversionQuantity = new HashMap<>(){{
+        put(Material.EMERALD_ORE, 6);
+        put(Material.IRON_ORE, 6);
+        put(Material.COPPER_ORE, 25);
+        put(Material.GOLD_ORE, 6);
+        put(Material.NETHER_GOLD_ORE, 3);
+    }};
+    private static final HashMap<Material, Material> blockConversionTypes = new HashMap<>() {{
+        put(Material.EMERALD_ORE, Material.EMERALD);
+        put(Material.IRON_ORE, Material.IRON_INGOT);
+        put(Material.COPPER_ORE, Material.COPPER_INGOT);
+        put(Material.GOLD_ORE, Material.GOLD_INGOT);
+        put(Material.NETHER_GOLD_ORE, Material.GOLD_INGOT);
+    }};
+
     private final Plugin PLUGIN;
 
     public TitanPicks(Plugin plugin) {
@@ -65,63 +78,114 @@ public class TitanPicks implements Listener {
                 }
                 if (ItemInfo.isCharged(itemInMainHand)) {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
-                    player.sendMessage("Debug: decreasing charge");
                 }
+
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+                    if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
+                        blockBroken.setType(Material.AIR);
+                        event.setCancelled(true);
+                        drops = new ItemStack(blockConversionTypes.get(blockBrokenMaterial), blockConversionQuantity.get(blockBrokenMaterial));
+                        inventory.addItem(drops);
+                        player.updateInventory();
+                    } else {
+                        Collection<ItemStack> itemDrops = blockBroken.getDrops(itemInMainHand);
+                        blockBroken.setType(Material.AIR);
+                        for (ItemStack itemStack : itemDrops) {
+                            inventory.addItem(itemStack);
+                            player.updateInventory();
+                        }
+                    }
                     dropExperience(blockBroken);
+                } else {
+                    blockBroken.setType(Material.AIR);
+                    event.setCancelled(true);
+                    inventory.addItem(drops);
+                    player.updateInventory();
                 }
-                blockBroken.setType(Material.AIR);
-                event.setCancelled(true);
-                inventory.addItem(drops);
-                player.updateInventory();
+
             }
             case 2 -> {
                 if (ItemInfo.isCharged(itemInMainHand)) {
-                    player.sendMessage("decreasing charge");
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
                 }
-                for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
-                    if (block.getLocation().equals(blockBroken.getLocation())) {
-                        continue;
+                if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+                    for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
+                        if (ALLOWED_ITEMS.contains(block.getType())) {
+                            IGNORE_LOCATIONS.add(block.getLocation());
+                            BlockBreakEvent e = new BlockBreakEvent(block, player);
+                            Bukkit.getPluginManager().callEvent(e);
+                            if (!e.isCancelled()) {
+                                if(blockConversionTypes.containsKey(block.getType())) {
+                                    drops = new ItemStack(blockConversionTypes.get(block.getType()), blockConversionQuantity.get(block.getType()));
+                                    block.setType(Material.AIR);
+                                    player.getLocation().getWorld().dropItemNaturally(block.getLocation(), drops);
+                                } else {
+                                    block.breakNaturally(player.getInventory().getItemInMainHand());
+                                }
+                            }
+                        }
                     }
-                    if (ALLOWED_ITEMS.contains(block.getType())) {
-                        IGNORE_LOCATIONS.add(block.getLocation());
-                        BlockBreakEvent e = new BlockBreakEvent(block, player);
-                        Bukkit.getPluginManager().callEvent(e);
-                        if (!e.isCancelled()) {
-                            block.breakNaturally(itemInMainHand);
+                } else {
+                    for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
+                        if (block.getLocation().equals(blockBroken.getLocation())) {
+                            continue;
+                        }
+                        if (ALLOWED_ITEMS.contains(block.getType())) {
+                            IGNORE_LOCATIONS.add(block.getLocation());
+                            BlockBreakEvent e = new BlockBreakEvent(block, player);
+                            Bukkit.getPluginManager().callEvent(e);
+                            if (!e.isCancelled()) {
+                                block.breakNaturally(itemInMainHand);
+                            }
                         }
                     }
                 }
+
             }
             case 3 -> {
                 if (player.getInventory().firstEmpty() == -1) {
                     handleFullInventory(player, itemInMainHand);
                 }
                 if (ItemInfo.isCharged(itemInMainHand)) {
-                    player.sendMessage("decreasing charge");
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
                 }
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
-                    dropExperience(blockBroken);
-                }
-                blockBroken.setType(Material.AIR);
-                event.setCancelled(true);
-                inventory.addItem(drops);
-                player.updateInventory();
-                for (Block block : getNearbyBlocks(event.getBlock().getLocation())) {
-                    if (block.getLocation().equals(event.getBlock().getLocation())) {
-                        continue;
-                    }
-                    if (ALLOWED_ITEMS.contains(block.getType())) {
-                        IGNORE_LOCATIONS.add(block.getLocation());
-                        BlockBreakEvent e = new BlockBreakEvent(block, event.getPlayer());
-                        Bukkit.getPluginManager().callEvent(e);
-                        if (!e.isCancelled()) {
-                            block.setType(Material.AIR);
-                            inventory.addItem(drops);
-                            player.updateInventory();
+                    for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
+                        if (ALLOWED_ITEMS.contains(block.getType())) {
+                            IGNORE_LOCATIONS.add(block.getLocation());
+                            BlockBreakEvent e = new BlockBreakEvent(block, player);
+                            Bukkit.getPluginManager().callEvent(e);
+                            if (!e.isCancelled()) {
+                                if(blockConversionTypes.containsKey(block.getType())) {
+                                    ItemStack dropsFromLoop = new ItemStack(blockConversionTypes.get(block.getType()), blockConversionQuantity.get(block.getType()));
+                                    inventory.addItem(dropsFromLoop);
+                                    player.updateInventory();
+                                } else {
+                                    Collection<ItemStack> dropsCollection = block.getDrops(itemInMainHand);
+                                    for (ItemStack itemStack : dropsCollection) {
+                                        inventory.addItem(itemStack);
+                                        player.updateInventory();
+                                    }
+                                }
+                                block.setType(Material.AIR);
+                            }
                         }
+                    }
+                } else {
+                    for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
+                        if (ALLOWED_ITEMS.contains(block.getType())) {
+                            IGNORE_LOCATIONS.add(block.getLocation());
+                            BlockBreakEvent e = new BlockBreakEvent(block, player);
+                            Bukkit.getPluginManager().callEvent(e);
+                            if (!e.isCancelled()) {
+                                Collection<ItemStack> dropsCollection = block.getDrops(itemInMainHand);
+                                for (ItemStack itemStack : dropsCollection) {
+                                    inventory.addItem(itemStack);
+                                    player.updateInventory();
+                                }
+                            }
+                        }
+                        block.setType(Material.AIR);
                     }
                 }
             }
@@ -209,4 +273,9 @@ public class TitanPicks implements Listener {
     private int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
+
+    private double getFortuneAmount(double fortuneLevel) {
+        return 1/(fortuneLevel + 2) + (fortuneLevel + 1)/2;
+    }
+
 }
