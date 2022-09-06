@@ -95,16 +95,14 @@ public class TitanPicks implements Listener {
                         getNewBlocksFromSmeltAndUpdateInventory(player, blockBrokenMaterial);
                         playSmeltVisualAndSoundEffect(player, blockBroken.getLocation());
                     } else {
-                        blockBroken.setType(Material.AIR);
                         updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, blockBroken);
+                        blockBroken.setType(Material.AIR);
                     }
                     dropExperience(blockBroken);
                 } else {
                     blockBroken.setType(Material.AIR);
-                    event.setCancelled(true);
                     updatePlayerInventory(player, new ItemStack(blockBrokenMaterial));
                 }
-
             }
             case 2 -> {
                 if (ItemInfo.isCharged(itemInMainHand)) {
