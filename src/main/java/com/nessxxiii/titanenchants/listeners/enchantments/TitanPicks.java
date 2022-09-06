@@ -68,7 +68,6 @@ public class TitanPicks implements Listener {
         Block blockBroken = event.getBlock();
         Material blockBrokenMaterial = blockBroken.getType();
         Inventory inventory = player.getInventory();
-        ItemStack drops = new ItemStack(blockBrokenMaterial);
 //        Collection<ItemStack> dropsCollection1 = blockBroken.getDrops(itemInMainHand);
 //        if (!dropsCollection1.isEmpty()) {
 //            player.sendMessage("Amount: " + dropsCollection1);
@@ -103,7 +102,7 @@ public class TitanPicks implements Listener {
                 } else {
                     blockBroken.setType(Material.AIR);
                     event.setCancelled(true);
-                    updatePlayerInventory(player, drops);
+                    updatePlayerInventory(player, new ItemStack(blockBrokenMaterial));
                 }
 
             }
@@ -121,8 +120,7 @@ public class TitanPicks implements Listener {
                                 if(blockConversionTypes.containsKey(block.getType())) {
                                     playSmeltVisualAndSoundEffect(player, block.getLocation());
                                     block.setType(Material.AIR);
-                                    drops = getDropsFromConversionTable(block.getType());
-                                    player.getLocation().getWorld().dropItemNaturally(block.getLocation(), drops);
+                                    player.getLocation().getWorld().dropItemNaturally(block.getLocation(), getDropsFromConversionTable(block.getType()));
                                 } else {
                                     block.breakNaturally(player.getInventory().getItemInMainHand());
                                 }
@@ -191,9 +189,7 @@ public class TitanPicks implements Listener {
     }
 
     private void getNewBlocksFromSmeltAndUpdateInventory(Player player, Material material) {
-        ItemStack drops;
-        drops = getDropsFromConversionTable(material);
-        updatePlayerInventory(player, drops);
+        updatePlayerInventory(player, getDropsFromConversionTable(material));
     }
 
     private void updateInventoryWithAllDropsFromBlockbreak(Player player, ItemStack itemInMainHand, Block block) {
