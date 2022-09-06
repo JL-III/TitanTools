@@ -1,12 +1,10 @@
 package com.nessxxiii.titanenchants.listeners.enchantments;
 
 import com.nessxxiii.titanenchants.items.ItemInfo;
-import com.nessxxiii.titanenchants.items.ItemManager;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,6 +25,7 @@ public class TitanPicks implements Listener {
     public static final Set<Material> ALLOWED_ITEMS = new HashSet<>();
     public static final Set<Material> ENCHANTABLE_ITEMS = new HashSet<>();
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
+    private static final TitanEnchantEffects EFFECTS = new TitanEnchantEffects();
     private static final HashMap<Material, Integer> blockConversionQuantity = new HashMap<>(){{
         put(Material.EMERALD_ORE, 6);
         put(Material.DEEPSLATE_EMERALD_ORE, 6);
@@ -91,8 +90,7 @@ public class TitanPicks implements Listener {
                     if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
                         blockBroken.setType(Material.AIR);
                         event.setCancelled(true);
-                        TitanEnchantEffects effect = new TitanEnchantEffects();
-                        effect.smeltWhileCollecting(player, blockBroken.getLocation());
+                        EFFECTS.playSmeltVisualAndSoundEffect(player, blockBroken.getLocation());
                         drops = new ItemStack(blockConversionTypes.get(blockBrokenMaterial), blockConversionQuantity.get(blockBrokenMaterial));
                         inventory.addItem(drops);
                         player.updateInventory();
@@ -126,8 +124,7 @@ public class TitanPicks implements Listener {
                             Bukkit.getPluginManager().callEvent(e);
                             if (!e.isCancelled()) {
                                 if(blockConversionTypes.containsKey(block.getType())) {
-                                    TitanEnchantEffects effect = new TitanEnchantEffects();
-                                    effect.smeltWhileCollecting(player, block.getLocation());
+                                    EFFECTS.playSmeltVisualAndSoundEffect(player, block.getLocation());
                                     drops = new ItemStack(blockConversionTypes.get(block.getType()), blockConversionQuantity.get(block.getType()));
                                     block.setType(Material.AIR);
                                     player.getLocation().getWorld().dropItemNaturally(block.getLocation(), drops);
@@ -169,10 +166,9 @@ public class TitanPicks implements Listener {
                             Bukkit.getPluginManager().callEvent(e);
                             if (!e.isCancelled()) {
                                 if(blockConversionTypes.containsKey(block.getType())) {
-                                    ItemStack dropsFromLoop = new ItemStack(blockConversionTypes.get(block.getType()), blockConversionQuantity.get(block.getType()));
-                                    TitanEnchantEffects effect = new TitanEnchantEffects();
-                                    effect.smeltWhileCollecting(player, block.getLocation());
-                                    inventory.addItem(dropsFromLoop);
+                                    drops = new ItemStack(blockConversionTypes.get(block.getType()), blockConversionQuantity.get(block.getType()));
+                                    EFFECTS.playSmeltVisualAndSoundEffect(player, block.getLocation());
+                                    inventory.addItem(drops);
                                     player.updateInventory();
                                 } else {
                                     Collection<ItemStack> dropsCollection = block.getDrops(itemInMainHand);

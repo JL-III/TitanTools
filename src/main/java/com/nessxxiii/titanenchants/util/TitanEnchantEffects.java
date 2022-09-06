@@ -31,7 +31,7 @@ public class TitanEnchantEffects {
 
     }
 
-    public void smeltWhileCollecting(Player player, Location location) {
+    public void playSmeltVisualAndSoundEffect(Player player, Location location) {
         for (Location locationIterate : getHollowCube(location, 0.2)) {
             player.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, locationIterate, 1, 0.0,0.0,0.0, 0.01);
         }

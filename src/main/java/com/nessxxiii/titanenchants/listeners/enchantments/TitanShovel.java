@@ -41,15 +41,12 @@ public class TitanShovel implements Listener {
         IGNORE_LOCATIONS.clear(); //Strange bug would occur with sand and gravel if IGNORE_LOCATIONS wasn't cleared
         Player player = event.getPlayer();
         ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
-        player.sendMessage("Inside shovel enchant");
         if (IGNORE_LOCATIONS.contains(event.getClickedBlock().getLocation())) {
             IGNORE_LOCATIONS.remove(event.getClickedBlock().getLocation());
             return;
         }
         Block clickedBlock = event.getClickedBlock();
         if (ItemInfo.isLevelOne(item)) {
-            player.sendMessage("MaterialType: " + clickedBlock.getType());
-            player.sendMessage("Y value of block: " + clickedBlock.getLocation().getY());
             if (clickedBlock.getType() == Material.BEDROCK && clickedBlock.getLocation().getY() < -63) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX) {
                 clickedBlock.breakNaturally(item);

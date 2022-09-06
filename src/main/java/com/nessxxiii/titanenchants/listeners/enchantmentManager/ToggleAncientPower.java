@@ -105,12 +105,12 @@ public class ToggleAncientPower implements Listener {
             case 3 -> {
                 powerLevelConversion(item, powerThreeToPowerTwo);
                 player.sendMessage(ChatColor.GREEN + "§CInventory is full - Ancient Power set to PowerLvl: " + (currentLevel - 1));
-                new TitanEnchantEffects().enableEffect(player);
+                new TitanEnchantEffects().disableEffect(player);
             }
             case 2 -> {
                 powerLevelConversion(item, powerTwoToPowerOne);
                 player.sendMessage(ChatColor.GREEN + "§CInventory is full - Ancient Power set to PowerLvl: " + (currentLevel - 1));
-                new TitanEnchantEffects().enableEffect(player);
+                new TitanEnchantEffects().disableEffect(player);
             }
             case 1 -> {
                 powerLevelConversion(item, powerOneToInactive);
