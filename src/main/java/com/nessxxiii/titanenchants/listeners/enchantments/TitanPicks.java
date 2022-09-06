@@ -32,8 +32,8 @@ public class TitanPicks implements Listener {
         put(Material.DEEPSLATE_EMERALD_ORE, 6);
         put(Material.IRON_ORE, 6);
         put(Material.DEEPSLATE_IRON_ORE, 6);
-        put(Material.COPPER_ORE, 25);
-        put(Material.DEEPSLATE_COPPER_ORE, 25);
+        put(Material.COPPER_ORE, 20);
+        put(Material.DEEPSLATE_COPPER_ORE, 20);
         put(Material.GOLD_ORE, 6);
         put(Material.DEEPSLATE_GOLD_ORE, 6);
         put(Material.NETHER_GOLD_ORE, 3);
@@ -60,29 +60,28 @@ public class TitanPicks implements Listener {
     @EventHandler
     @SuppressWarnings("unused")
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        //Initial validation, does this event even need to continue? if not return
         if (!ItemInfo.isChargedOrImbuedTitanPick(event.getPlayer().getInventory().getItemInMainHand())) return;
         if (event.isCancelled()) return;
-
-        //assign all the variables that will be used throughout the enchantment
         Player player = event.getPlayer();
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
         Block blockBroken = event.getBlock();
         Material blockBrokenMaterial = blockBroken.getType();
         Inventory inventory = player.getInventory();
         ItemStack drops = new ItemStack(blockBrokenMaterial);
-
+//        Collection<ItemStack> dropsCollection1 = blockBroken.getDrops(itemInMainHand);
+//        if (!dropsCollection1.isEmpty()) {
+//            player.sendMessage("Amount: " + dropsCollection1);
+//        }
         if (IGNORE_LOCATIONS.contains(blockBroken.getLocation())) {
             IGNORE_LOCATIONS.remove(blockBroken.getLocation());
             return;
         }
-
         int itemLevel = ItemInfo.getItemLevel(itemInMainHand);
 
         switch (itemLevel) {
             case 1 -> {
                 if (inventory.firstEmpty() == -1) {
-                    handleFullInventory(player, itemInMainHand);
+                    ToggleAncientPower.handleFullInventory(itemInMainHand, player, ItemInfo.isImbued(itemInMainHand), 1);
                 }
                 if (ItemInfo.isCharged(itemInMainHand)) {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
@@ -100,6 +99,7 @@ public class TitanPicks implements Listener {
                     } else {
                         Collection<ItemStack> itemDrops = blockBroken.getDrops(itemInMainHand);
                         blockBroken.setType(Material.AIR);
+                        player.sendMessage("Number of drops in blockBroken: " + itemDrops.size());
                         for (ItemStack itemStack : itemDrops) {
                             inventory.addItem(itemStack);
                             player.updateInventory();
@@ -156,7 +156,7 @@ public class TitanPicks implements Listener {
             }
             case 3 -> {
                 if (player.getInventory().firstEmpty() == -1) {
-                    handleFullInventory(player, itemInMainHand);
+                    ToggleAncientPower.handleFullInventory(itemInMainHand, player, ItemInfo.isImbued(itemInMainHand), 3);
                 }
                 if (ItemInfo.isCharged(itemInMainHand)) {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
@@ -170,6 +170,8 @@ public class TitanPicks implements Listener {
                             if (!e.isCancelled()) {
                                 if(blockConversionTypes.containsKey(block.getType())) {
                                     ItemStack dropsFromLoop = new ItemStack(blockConversionTypes.get(block.getType()), blockConversionQuantity.get(block.getType()));
+                                    TitanEnchantEffects effect = new TitanEnchantEffects();
+                                    effect.smeltWhileCollecting(player, block.getLocation());
                                     inventory.addItem(dropsFromLoop);
                                     player.updateInventory();
                                 } else {
@@ -203,18 +205,6 @@ public class TitanPicks implements Listener {
             }
             default -> {
             }
-        }
-    }
-
-    private void handleFullInventory(Player player, ItemStack item) {
-        if (ItemInfo.isActiveCharged(item)) {
-            ToggleAncientPower.disableEnchant(item);
-            new TitanEnchantEffects().depletedChargeEffect(player);
-            player.sendMessage(ChatColor.RED + "AncientPower deactivated: your inventory is full");
-        } else if (ItemInfo.isActiveImbued(item)) {
-            ToggleAncientPower.disableImbuedEnchant(item);
-            new TitanEnchantEffects().depletedChargeEffect(player);
-            player.sendMessage(ChatColor.RED + "AncientPower deactivated: your inventory is full");
         }
     }
 

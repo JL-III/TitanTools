@@ -39,6 +39,7 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(),this);
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
+//        Bukkit.getPluginManager().registerEvents(new SnakeTail(), this);
 
         Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
         Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());

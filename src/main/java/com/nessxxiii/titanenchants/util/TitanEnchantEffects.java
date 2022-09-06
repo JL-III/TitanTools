@@ -32,11 +32,8 @@ public class TitanEnchantEffects {
     }
 
     public void smeltWhileCollecting(Player player, Location location) {
-        int i = 0;
         for (Location locationIterate : getHollowCube(location, 0.2)) {
             player.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, locationIterate, 1, 0.0,0.0,0.0, 0.01);
-            player.sendMessage("Particle spawned: " + i);
-            i++;
         }
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 10, -1);
 

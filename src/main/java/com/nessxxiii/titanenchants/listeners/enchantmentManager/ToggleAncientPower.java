@@ -50,42 +50,74 @@ public class ToggleAncientPower implements Listener {
     }
 
     public static void toggleEnchant(ItemStack item, Player player, boolean isImbued) {
-        String caseOneString = ItemInfo.IMBUED_TWO;
-        String caseTwoString = ItemInfo.IMBUED_THREE;
-        String caseThreeString = ItemInfo.IMBUED_INACTIVE;
-        String caseDormantString = ItemInfo.IMBUED_ONE;
+        String inactiveToPowerOne = ItemInfo.IMBUED_ONE;
+        String powerOneToPowerTwo = ItemInfo.IMBUED_TWO;
+        String powerTwoToPowerThree = ItemInfo.IMBUED_THREE;
+        String powerThreeToInactive = ItemInfo.IMBUED_INACTIVE;
         int itemLevel = ItemInfo.getItemLevel(item);
 
         if (!isImbued) {
-            caseOneString = ItemInfo.CHARGED_TWO;
-            caseTwoString = ItemInfo.CHARGED_THREE;
-            caseThreeString = ItemInfo.CHARGED_INACTIVE;
-            caseDormantString = ItemInfo.CHARGED_ONE;
+            inactiveToPowerOne = ItemInfo.CHARGED_ONE;
+            powerOneToPowerTwo = ItemInfo.CHARGED_TWO;
+            powerTwoToPowerThree = ItemInfo.CHARGED_THREE;
+            powerThreeToInactive = ItemInfo.CHARGED_INACTIVE;
         }
         switch (itemLevel) {
             case 1 -> {
-                powerLevelConversion(item, caseOneString);
-                player.sendActionBar(ChatColor.GREEN + "Ancient power set to PowerLvl: " + (itemLevel + 1));
+                powerLevelConversion(item, powerOneToPowerTwo);
+                player.sendActionBar(ChatColor.GREEN + "Ancient Power set to PowerLvl: " + (itemLevel + 1));
                 new TitanEnchantEffects().enableEffect(player);
             }
             case 2 -> {
-                powerLevelConversion(item, caseTwoString);
-                player.sendActionBar(ChatColor.GREEN + "Ancient power set to PowerLvl: " + (itemLevel + 1));
+                powerLevelConversion(item, powerTwoToPowerThree);
+                player.sendActionBar(ChatColor.GREEN + "Ancient Power set to PowerLvl: " + (itemLevel + 1));
                 new TitanEnchantEffects().enableEffect(player);
             }
             case 3 -> {
-                powerLevelConversion(item, caseThreeString);
-                player.sendActionBar(ChatColor.GREEN + "Ancient power deactivated");
+                powerLevelConversion(item, powerThreeToInactive);
+                player.sendActionBar(ChatColor.GREEN + "Ancient Power deactivated");
                 new TitanEnchantEffects().disableEffect(player);
             }
             default -> {
                 if (ItemInfo.isDormantCharged(item)) {
-                    powerLevelConversion(item, caseDormantString);
-                    player.sendActionBar(ChatColor.GREEN + "Ancient power set to PowerLvl: " + (itemLevel + 2));
+                    powerLevelConversion(item, inactiveToPowerOne);
+                    player.sendActionBar(ChatColor.GREEN + "Ancient Power set to PowerLvl: " + (itemLevel + 2));
                     new TitanEnchantEffects().enableEffect(player);
                 } else {
                     player.sendActionBar("An error has occurred");
                 }
+            }
+        }
+
+    }
+
+    public static void handleFullInventory(ItemStack item, Player player, boolean isImbued, int currentLevel) {
+        String powerThreeToPowerTwo = ItemInfo.IMBUED_TWO;
+        String powerTwoToPowerOne = ItemInfo.IMBUED_ONE;
+        String powerOneToInactive = ItemInfo.IMBUED_INACTIVE;
+
+        if (!isImbued) {
+            powerThreeToPowerTwo = ItemInfo.CHARGED_TWO;
+            powerTwoToPowerOne = ItemInfo.CHARGED_ONE;
+            powerOneToInactive = ItemInfo.CHARGED_INACTIVE;
+        }
+        switch (currentLevel) {
+            case 3 -> {
+                powerLevelConversion(item, powerThreeToPowerTwo);
+                player.sendMessage(ChatColor.GREEN + "§CInventory is full - Ancient Power set to PowerLvl: " + (currentLevel - 1));
+                new TitanEnchantEffects().enableEffect(player);
+            }
+            case 2 -> {
+                powerLevelConversion(item, powerTwoToPowerOne);
+                player.sendMessage(ChatColor.GREEN + "§CInventory is full - Ancient Power set to PowerLvl: " + (currentLevel - 1));
+                new TitanEnchantEffects().enableEffect(player);
+            }
+            case 1 -> {
+                powerLevelConversion(item, powerOneToInactive);
+                player.sendMessage(ChatColor.GREEN + "§CInventory is full - Ancient Power deactivated");
+                new TitanEnchantEffects().disableEffect(player);
+            }
+            default -> {
             }
         }
 
