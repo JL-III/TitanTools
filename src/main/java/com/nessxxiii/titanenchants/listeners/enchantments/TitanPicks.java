@@ -81,6 +81,7 @@ public class TitanPicks implements Listener {
             case 1 -> {
                 if (inventory.firstEmpty() == -1) {
                     ToggleAncientPower.handleFullInventory(itemInMainHand, player, ItemInfo.isImbued(itemInMainHand), 1);
+                    return;
                 }
                 if (ItemInfo.isCharged(itemInMainHand)) {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
@@ -154,6 +155,7 @@ public class TitanPicks implements Listener {
             case 3 -> {
                 if (player.getInventory().firstEmpty() == -1) {
                     ToggleAncientPower.handleFullInventory(itemInMainHand, player, ItemInfo.isImbued(itemInMainHand), 3);
+                    return;
                 }
                 if (ItemInfo.isCharged(itemInMainHand)) {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
