@@ -17,6 +17,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
+import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.depletedChargeEffect;
+
 
 public class ChargeManagement implements Listener {
 
@@ -78,21 +80,21 @@ public class ChargeManagement implements Listener {
             if (remainingCharge < 1 && ItemInfo.getColor(item).equals("RED")) {
                 loreList.set(index,ItemInfo.ANCIENT_RED);
                 loreList.set(chargeIndex,ItemInfo.ANCIENT_DEPLETED);
-                new TitanEnchantEffects().depletedChargeEffect(player);
+                depletedChargeEffect(player);
                 ItemMeta meta = item.getItemMeta();
                 meta.setLore(loreList);
                 item.setItemMeta(meta);
             } else if (remainingCharge < 1 && ItemInfo.getColor(item).equals("YELLOW")) {
                 loreList.set(index, ItemInfo.ANCIENT_YELLOW);
                 loreList.set(chargeIndex,ItemInfo.ANCIENT_DEPLETED);
-                new TitanEnchantEffects().depletedChargeEffect(player);
+                depletedChargeEffect(player);
                 ItemMeta meta = item.getItemMeta();
                 meta.setLore(loreList);
                 item.setItemMeta(meta);
             } else if (remainingCharge < 1 && ItemInfo.getColor(item).equals("BLUE")) {
                 loreList.set(index, ItemInfo.ANCIENT_BLUE);
                 loreList.set(chargeIndex, ItemInfo.ANCIENT_DEPLETED);
-                new TitanEnchantEffects().depletedChargeEffect(player);
+                depletedChargeEffect(player);
                 ItemMeta meta = item.getItemMeta();
                 meta.setLore(loreList);
                 item.setItemMeta(meta);

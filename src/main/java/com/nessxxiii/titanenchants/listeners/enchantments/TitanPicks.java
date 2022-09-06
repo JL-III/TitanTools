@@ -21,11 +21,12 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 
+import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.playSmeltVisualAndSoundEffect;
+
 public class TitanPicks implements Listener {
     public static final Set<Material> ALLOWED_ITEMS = new HashSet<>();
     public static final Set<Material> ENCHANTABLE_ITEMS = new HashSet<>();
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
-    private static final TitanEnchantEffects EFFECTS = new TitanEnchantEffects();
     private static final HashMap<Material, Integer> blockConversionQuantity = new HashMap<>(){{
         put(Material.EMERALD_ORE, 6);
         put(Material.DEEPSLATE_EMERALD_ORE, 6);
@@ -91,7 +92,7 @@ public class TitanPicks implements Listener {
                     if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
                         blockBroken.setType(Material.AIR);
                         event.setCancelled(true);
-                        EFFECTS.playSmeltVisualAndSoundEffect(player, blockBroken.getLocation());
+                        playSmeltVisualAndSoundEffect(player, blockBroken.getLocation());
                         drops = new ItemStack(blockConversionTypes.get(blockBrokenMaterial), blockConversionQuantity.get(blockBrokenMaterial));
                         inventory.addItem(drops);
                         player.updateInventory();
@@ -125,7 +126,7 @@ public class TitanPicks implements Listener {
                             Bukkit.getPluginManager().callEvent(e);
                             if (!e.isCancelled()) {
                                 if(blockConversionTypes.containsKey(block.getType())) {
-                                    EFFECTS.playSmeltVisualAndSoundEffect(player, block.getLocation());
+                                    playSmeltVisualAndSoundEffect(player, block.getLocation());
                                     drops = new ItemStack(blockConversionTypes.get(block.getType()), blockConversionQuantity.get(block.getType()));
                                     block.setType(Material.AIR);
                                     player.getLocation().getWorld().dropItemNaturally(block.getLocation(), drops);
@@ -169,7 +170,7 @@ public class TitanPicks implements Listener {
                             if (!e.isCancelled()) {
                                 if(blockConversionTypes.containsKey(block.getType())) {
                                     drops = new ItemStack(blockConversionTypes.get(block.getType()), blockConversionQuantity.get(block.getType()));
-                                    EFFECTS.playSmeltVisualAndSoundEffect(player, block.getLocation());
+                                    playSmeltVisualAndSoundEffect(player, block.getLocation());
                                     inventory.addItem(drops);
                                     player.updateInventory();
                                 } else {

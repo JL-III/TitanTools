@@ -14,6 +14,9 @@ import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 
+import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.disableEffect;
+import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.enableEffect;
+
 public class ToggleAncientPower implements Listener {
 
     private Plugin plugin;
@@ -66,23 +69,23 @@ public class ToggleAncientPower implements Listener {
             case 1 -> {
                 powerLevelConversion(item, powerOneToPowerTwo);
                 player.sendActionBar(ChatColor.GREEN + "Ancient Power set to PowerLvl: " + (itemLevel + 1));
-                new TitanEnchantEffects().enableEffect(player);
+                enableEffect(player);
             }
             case 2 -> {
                 powerLevelConversion(item, powerTwoToPowerThree);
                 player.sendActionBar(ChatColor.GREEN + "Ancient Power set to PowerLvl: " + (itemLevel + 1));
-                new TitanEnchantEffects().enableEffect(player);
+                enableEffect(player);
             }
             case 3 -> {
                 powerLevelConversion(item, powerThreeToInactive);
                 player.sendActionBar(ChatColor.GREEN + "Ancient Power deactivated");
-                new TitanEnchantEffects().disableEffect(player);
+                disableEffect(player);
             }
             default -> {
                 if (ItemInfo.isDormantCharged(item)) {
                     powerLevelConversion(item, inactiveToPowerOne);
                     player.sendActionBar(ChatColor.GREEN + "Ancient Power set to PowerLvl: " + (itemLevel + 2));
-                    new TitanEnchantEffects().enableEffect(player);
+                    enableEffect(player);
                 } else {
                     player.sendActionBar("An error has occurred");
                 }
@@ -101,21 +104,22 @@ public class ToggleAncientPower implements Listener {
             powerTwoToPowerOne = ItemInfo.CHARGED_ONE;
             powerOneToInactive = ItemInfo.CHARGED_INACTIVE;
         }
+
         switch (currentLevel) {
             case 3 -> {
                 powerLevelConversion(item, powerThreeToPowerTwo);
                 player.sendMessage(ChatColor.GREEN + "§CInventory is full - Ancient Power set to PowerLvl: " + (currentLevel - 1));
-                new TitanEnchantEffects().disableEffect(player);
+                disableEffect(player);
             }
             case 2 -> {
                 powerLevelConversion(item, powerTwoToPowerOne);
                 player.sendMessage(ChatColor.GREEN + "§CInventory is full - Ancient Power set to PowerLvl: " + (currentLevel - 1));
-                new TitanEnchantEffects().disableEffect(player);
+                disableEffect(player);
             }
             case 1 -> {
                 powerLevelConversion(item, powerOneToInactive);
                 player.sendMessage(ChatColor.GREEN + "§CInventory is full - Ancient Power deactivated");
-                new TitanEnchantEffects().disableEffect(player);
+                disableEffect(player);
             }
             default -> {
             }

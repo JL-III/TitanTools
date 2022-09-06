@@ -11,35 +11,34 @@ import java.util.List;
 
 public class TitanEnchantEffects {
 
-    public void enableEffect(Player player) {
+    public static void enableEffect(Player player) {
 
         player.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,player.getEyeLocation(),100);
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE,10, 1);
 
     }
-    public void disableEffect(Player player) {
+    public static void disableEffect(Player player) {
 
         player.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,player.getEyeLocation(),100);
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE,10, 1);
 
     }
 
-    public void depletedChargeEffect(Player player) {
+    public static void depletedChargeEffect(Player player) {
 
         player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, player.getEyeLocation(), 100);
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 10, 1);
 
     }
 
-    public void playSmeltVisualAndSoundEffect(Player player, Location location) {
+    public static void playSmeltVisualAndSoundEffect(Player player, Location location) {
         for (Location locationIterate : getHollowCube(location, 0.2)) {
             player.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE, locationIterate, 1, 0.0,0.0,0.0, 0.01);
         }
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 10, -1);
-
     }
 
-    public List<Location> getHollowCube(Location loc, double particleDistance) {
+    public static List<Location> getHollowCube(Location loc, double particleDistance) {
         List<Location> result = Lists.newArrayList();
         World world = loc.getWorld();
         double minX = loc.getBlockX();
