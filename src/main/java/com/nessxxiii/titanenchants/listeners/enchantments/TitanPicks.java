@@ -21,6 +21,7 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.Function;
 
 import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.playSmeltVisualAndSoundEffect;
 
@@ -87,11 +88,9 @@ public class TitanPicks implements Listener {
                 if (ItemInfo.isCharged(itemInMainHand)) {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
                 }
-
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
                     if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
                         blockBroken.setType(Material.AIR);
-                        event.setCancelled(true);
                         getNewBlocksFromSmeltAndUpdateInventory(player, blockBrokenMaterial);
                         playSmeltVisualAndSoundEffect(player, blockBroken.getLocation());
                     } else {
@@ -109,18 +108,19 @@ public class TitanPicks implements Listener {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
                 }
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
-                    for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
-                        if (ALLOWED_ITEMS.contains(block.getType())) {
-                            IGNORE_LOCATIONS.add(block.getLocation());
-                            BlockBreakEvent e = new BlockBreakEvent(block, player);
+                    for (Block currentBlock : getNearbyBlocks(blockBroken.getLocation())) {
+                        if (ALLOWED_ITEMS.contains(currentBlock.getType())) {
+                            IGNORE_LOCATIONS.add(currentBlock.getLocation());
+                            BlockBreakEvent e = new BlockBreakEvent(currentBlock, player);
                             Bukkit.getPluginManager().callEvent(e);
                             if (!e.isCancelled()) {
-                                if(blockConversionTypes.containsKey(block.getType())) {
-                                    playSmeltVisualAndSoundEffect(player, block.getLocation());
-                                    block.setType(Material.AIR);
-                                    player.getLocation().getWorld().dropItemNaturally(block.getLocation(), getDropsFromConversionTable(block.getType()));
+                                if(blockConversionTypes.containsKey(currentBlock.getType())) {
+                                    playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
+                                    blockBrokenMaterial = currentBlock.getType();
+                                    currentBlock.setType(Material.AIR);
+                                    player.getLocation().getWorld().dropItemNaturally(currentBlock.getLocation(), getDropsFromConversionTable(blockBrokenMaterial));
                                 } else {
-                                    block.breakNaturally(player.getInventory().getItemInMainHand());
+                                    currentBlock.breakNaturally(itemInMainHand);
                                 }
                             }
                         }
@@ -201,6 +201,7 @@ public class TitanPicks implements Listener {
     private ItemStack getDropsFromConversionTable(Material material) {
         return new ItemStack(blockConversionTypes.get(material), blockConversionQuantity.get(material));
     }
+
 
     private void updatePlayerInventory(Player player, ItemStack drops) {
         player.getInventory().addItem(drops);

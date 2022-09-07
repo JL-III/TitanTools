@@ -25,9 +25,8 @@ public class McMMOManager implements Listener {
 
     @EventHandler
     public void cancelMcMMO(McMMOPlayerAbilityActivateEvent event){
-        player = event.getPlayer();
-        ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
-        if (ItemInfo.isActiveCharged(item) || ItemInfo.isActiveImbued(item)) {
+        if (ItemInfo.isActiveCharged(event.getPlayer().getInventory().getItemInMainHand())
+                || ItemInfo.isActiveImbued(event.getPlayer().getInventory().getItemInMainHand())) {
             event.setCancelled(true);
         }
 
@@ -35,19 +34,15 @@ public class McMMOManager implements Listener {
     @EventHandler
     public void cancelMcMMOMessage(McMMOPlayerNotificationEvent notificationEvent){
         if (!notificationEvent.getEventNotificationType().toString().equals("ToolReady")) return;
-        Bukkit.getServer().getConsoleSender().sendMessage(notificationEvent.getEventNotificationType().toString());
         ItemStack item = player.getInventory().getItemInMainHand();
-
         if (!item.hasItemMeta()) return;
         if(ItemInfo.isActiveCharged(item) || ItemInfo.isActiveImbued(item)) {
             notificationEvent.setCancelled(true);
             if (!player.hasCooldown(coolDown) && !player.isSneaking()) {
-                player.sendActionBar(Component.text("this seems to have no affect..."));
+                player.sendActionBar(Component.text("This seems to have no affect..."));
                 player.setCooldown(coolDown, 20 * 15);
             }
-
         }
-
     }
 
 }
