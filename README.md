@@ -8,15 +8,17 @@ Players can charge their tools with power crystals by taking a powercrystal and 
 
  Custom enchantments include:
  
- >(Fortune Pick auto smelts specific ores)
+
  - Titan Picks:
     - 1x1 block break with auto collect
     - 3x3 block break
     - 3x3 block break with auto collect
 
->(Shovel can delete bedrock above Y -63)
+
  - Titan Shovel:
     - Delete 1x1 block
     - Delete 3x3 blocks
     - Delete 5x5 blocks
 
+ >Fortune Pick auto smelts specific ores
+ >Shovel can delete bedrock above Y -63
