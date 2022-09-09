@@ -20,5 +20,6 @@ Players can charge their tools with power crystals by taking a powercrystal and 
     - Delete 3x3 blocks
     - Delete 5x5 blocks
 
- >Fortune Pick auto smelts specific ores
+ >Special Notes:
  >>Shovel can delete bedrock above Y -63
+ >>Fortune Pick auto smelts specific ores
