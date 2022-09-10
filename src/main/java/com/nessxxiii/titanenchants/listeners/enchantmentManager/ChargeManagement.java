@@ -2,6 +2,7 @@ package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
 import com.gmail.nossr50.mcmmo.kyori.adventure.platform.facet.Facet;
 import com.nessxxiii.titanenchants.items.ItemInfo;
+import com.nessxxiii.titanenchants.items.ItemManager;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
@@ -25,15 +26,16 @@ public class ChargeManagement implements Listener {
 
     @EventHandler
     public static void applyCharge(InventoryClickEvent event){
+        Player player = (Player) event.getWhoClicked();
+        if (event.getCurrentItem() == null) return;
+        ItemStack itemOnCursor = player.getItemOnCursor();
+        ItemStack itemClicked = event.getCurrentItem();
+        if (itemOnCursor.getItemMeta() == null) return;
+        int numberOfCharge = itemOnCursor.getAmount();
+        if (itemClicked.getType() == Material.AIR) return;
+        if (!ItemInfo.isPowerCrystal(itemOnCursor)) return;
 
-        if (event.isLeftClick()) {
-            Player player = (Player) event.getWhoClicked();
-            ItemStack itemOnCursor = player.getItemOnCursor();
-            ItemStack itemClicked = event.getCurrentItem();
-            if (itemOnCursor.getItemMeta() == null) return;
-            int numberOfCharge = itemOnCursor.getAmount();
-            if (itemClicked == null || itemClicked.getType() == Material.AIR) return;
-            if (!ItemInfo.isPowerCrystal(itemOnCursor)) return;
+        if (event.isLeftClick() && ItemInfo.isTitanTool(itemClicked)) {
             if (!ItemInfo.isTitanTool(itemClicked)) return;
             if (!ItemInfo.isAllowedTitanType(itemClicked)) return;
             if (ItemInfo.isImbued(itemClicked)) return;
@@ -42,6 +44,15 @@ public class ChargeManagement implements Listener {
             player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,player.getEyeLocation(),100);
             player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE,10, 1);
             event.setCancelled(true);
+        } else if (event.isLeftClick() && itemClicked.getType() == Material.SPONGE && !ItemInfo.isTitanSponge(itemClicked)) {
+            player.sendMessage("Titan sponge was clicked on.");
+
+            if (itemClicked.getAmount() >= numberOfCharge) {
+                itemOnCursor.setAmount(0);
+                itemClicked.setAmount(itemClicked.getAmount() - numberOfCharge);
+                player.getInventory().addItem(ItemManager.createTitanSponge(numberOfCharge));
+                player.updateInventory();
+            }
         }
     }
 

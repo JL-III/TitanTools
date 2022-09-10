@@ -2,9 +2,7 @@ package com.nessxxiii.titanenchants.listeners.enchantments;
 
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,6 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,7 +48,9 @@ public class TitanShovel implements Listener {
         }
         Block clickedBlock = event.getClickedBlock();
         if (ItemInfo.isLevelOne(itemInMainHand)) {
-            if (clickedBlock.getType() == Material.BEDROCK && clickedBlock.getLocation().getY() < -63) return;
+            if (clickedBlock.getType() == Material.BEDROCK
+                    && (clickedBlock.getLocation().getY() < -63 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
+                    || (clickedBlock.getLocation().getY() < 1 && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
                 clickedBlock.breakNaturally(itemInMainHand);
                 if (ItemInfo.isCharged(itemInMainHand)) {
@@ -70,7 +71,9 @@ public class TitanShovel implements Listener {
 
         } else if (ItemInfo.isLevelTwo(itemInMainHand)){
             BlockFace blockFace = event.getBlockFace();
-            if (clickedBlock.getType() == Material.BEDROCK && clickedBlock.getLocation().getY() < -63) return;
+            if (clickedBlock.getType() == Material.BEDROCK
+                    && (clickedBlock.getLocation().getY() < -63 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
+                    || (clickedBlock.getLocation().getY() < 1 && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
                 clickedBlock.breakNaturally(itemInMainHand);
             }
@@ -91,8 +94,10 @@ public class TitanShovel implements Listener {
                     IGNORE_LOCATIONS.add(blockLoop.getLocation());
                     e = new BlockBreakEvent(blockLoop, event.getPlayer());
                     Bukkit.getPluginManager().callEvent(e);
+
                     if (!e.isCancelled()) {
-                        if (blockLoop.getLocation().getY() >= -63) {
+                        if ((blockLoop.getLocation().getY() > -64 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
+                                || (blockLoop.getLocation().getY() > 0 && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) {
                             blockLoop.setType(Material.AIR);
                         }
                     }
@@ -101,7 +106,9 @@ public class TitanShovel implements Listener {
 
         } else if (ItemInfo.isLevelThree(itemInMainHand)){
             BlockFace blockFace = event.getBlockFace();
-            if (clickedBlock.getType() == Material.BEDROCK && clickedBlock.getLocation().getY() < -63) return;
+            if (clickedBlock.getType() == Material.BEDROCK
+                    && (clickedBlock.getLocation().getY() < -63 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
+                    || (clickedBlock.getLocation().getY() < 1 && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
                 clickedBlock.breakNaturally(itemInMainHand);
             }
@@ -123,7 +130,8 @@ public class TitanShovel implements Listener {
                     e = new BlockBreakEvent(blockLoop, event.getPlayer());
                     Bukkit.getPluginManager().callEvent(e);
                     if (!e.isCancelled()) {
-                        if (blockLoop.getLocation().getY() >= -63) {
+                        if ((blockLoop.getLocation().getY() > -64 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
+                                || (blockLoop.getLocation().getY() > 0 && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) {
                             blockLoop.setType(Material.AIR);
                         }
                     }

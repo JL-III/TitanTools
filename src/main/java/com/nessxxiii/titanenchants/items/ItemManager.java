@@ -13,11 +13,12 @@ public class ItemManager {
 
     public static ItemStack powerCrystal;
     public static ItemStack excavator;
+    public static ItemStack titanSponge;
 
     public static void Init(){
-
         createPowerCrystal();
         createExcavator();
+        createTitanSponge(1);
     }
 
     private static void createPowerCrystal() {
@@ -46,6 +47,22 @@ public class ItemManager {
         item.addUnsafeEnchantment(Enchantment.DURABILITY, 5);
         item.addUnsafeEnchantment(Enchantment.MULTISHOT, 3);
         excavator = item;
+    }
+
+    public static ItemStack createTitanSponge(int amount){
+
+        ItemStack item = new ItemStack(Material.SPONGE, amount);
+        ItemMeta meta = item.getItemMeta();
+        List<String> lore = new ArrayList<>();
+        lore.add(ItemInfo.LAVA);
+        meta.setLore(lore);
+        meta.setDisplayName(ItemInfo.SPONGE_DISPLAY_NAME);
+        meta.addEnchant(Enchantment.SILK_TOUCH,1,true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        item.setItemMeta(meta);
+        titanSponge = item;
+
+        return item;
     }
 
 }
