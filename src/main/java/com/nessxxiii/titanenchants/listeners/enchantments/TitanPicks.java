@@ -114,15 +114,16 @@ public class TitanPicks implements Listener {
                             IGNORE_LOCATIONS.add(currentBlock.getLocation());
                             BlockBreakEvent e = new BlockBreakEvent(currentBlock, player);
                             Bukkit.getPluginManager().callEvent(e);
+                            blockBrokenMaterial = currentBlock.getType();
                             if (!e.isCancelled()) {
-                                if(blockConversionTypes.containsKey(currentBlock.getType())) {
+                                if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
                                     playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
-                                    blockBrokenMaterial = currentBlock.getType();
                                     currentBlock.setType(Material.AIR);
                                     player.getLocation().getWorld().dropItemNaturally(currentBlock.getLocation(), getDropsFromConversionTable(blockBrokenMaterial));
                                 } else {
                                     currentBlock.breakNaturally(itemInMainHand);
                                 }
+                                dropExperience(blockBrokenMaterial, currentBlock.getLocation());
                             }
                         }
                     }
@@ -152,19 +153,21 @@ public class TitanPicks implements Listener {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
                 }
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
-                    for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
-                        if (ALLOWED_ITEMS.contains(block.getType())) {
-                            IGNORE_LOCATIONS.add(block.getLocation());
-                            BlockBreakEvent e = new BlockBreakEvent(block, player);
+                    for (Block currentBlock : getNearbyBlocks(blockBroken.getLocation())) {
+                        if (ALLOWED_ITEMS.contains(currentBlock.getType())) {
+                            IGNORE_LOCATIONS.add(currentBlock.getLocation());
+                            BlockBreakEvent e = new BlockBreakEvent(currentBlock, player);
                             Bukkit.getPluginManager().callEvent(e);
+                            blockBrokenMaterial = currentBlock.getType();
                             if (!e.isCancelled()) {
-                                if(blockConversionTypes.containsKey(block.getType())) {
-                                    getNewBlocksFromSmeltAndUpdateInventory(player, block.getType());
-                                    playSmeltVisualAndSoundEffect(player, block.getLocation());
+                                if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
+                                    getNewBlocksFromSmeltAndUpdateInventory(player, blockBrokenMaterial);
+                                    playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
                                 } else {
-                                    updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, block);
+                                    updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, currentBlock);
                                 }
-                                block.setType(Material.AIR);
+                                currentBlock.setType(Material.AIR);
+                                dropExperience(blockBrokenMaterial, currentBlock.getLocation());
                             }
                         }
                     }
