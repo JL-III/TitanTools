@@ -3,7 +3,6 @@ package com.nessxxiii.titanenchants.listeners.enchantments;
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
-import com.nessxxiii.titanenchants.util.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,7 +20,6 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.function.Function;
 
 import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.playSmeltVisualAndSoundEffect;
 
@@ -98,7 +96,9 @@ public class TitanPicks implements Listener {
                         updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, blockBroken);
                         blockBroken.setType(Material.AIR);
                     }
-                    dropExperience(blockBrokenMaterial, blockBroken.getLocation());
+                    if (calculateExperienceAmount(blockBrokenMaterial) > 0) {
+                        blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(calculateExperienceAmount(blockBrokenMaterial));
+                    }
                 } else {
                     blockBroken.setType(Material.AIR);
                     updatePlayerInventory(player, new ItemStack(blockBrokenMaterial));
@@ -109,6 +109,7 @@ public class TitanPicks implements Listener {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
                 }
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+                    int aggregateAmount = 0;
                     for (Block currentBlock : getNearbyBlocks(blockBroken.getLocation())) {
                         if (ALLOWED_ITEMS.contains(currentBlock.getType())) {
                             IGNORE_LOCATIONS.add(currentBlock.getLocation());
@@ -120,12 +121,17 @@ public class TitanPicks implements Listener {
                                     playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
                                     currentBlock.setType(Material.AIR);
                                     player.getLocation().getWorld().dropItemNaturally(currentBlock.getLocation(), getDropsFromConversionTable(blockBrokenMaterial));
+                                    aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
                                 } else {
                                     currentBlock.breakNaturally(itemInMainHand);
                                 }
-                                dropExperience(blockBrokenMaterial, currentBlock.getLocation());
+                                aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
                             }
                         }
+                    }
+                    if (aggregateAmount > 0) {
+                        player.sendMessage("Aggregate amount of exp: " + aggregateAmount);
+                        blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(aggregateAmount);
                     }
                 } else {
                     for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
@@ -153,6 +159,7 @@ public class TitanPicks implements Listener {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
                 }
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+                    int aggregateAmount = 0;
                     for (Block currentBlock : getNearbyBlocks(blockBroken.getLocation())) {
                         if (ALLOWED_ITEMS.contains(currentBlock.getType())) {
                             IGNORE_LOCATIONS.add(currentBlock.getLocation());
@@ -163,13 +170,18 @@ public class TitanPicks implements Listener {
                                 if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
                                     getNewBlocksFromSmeltAndUpdateInventory(player, blockBrokenMaterial);
                                     playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
+                                    aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
                                 } else {
                                     updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, currentBlock);
+                                    aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
                                 }
                                 currentBlock.setType(Material.AIR);
-                                dropExperience(blockBrokenMaterial, currentBlock.getLocation());
                             }
                         }
+                    }
+                    if (aggregateAmount > 0) {
+                        player.sendMessage("Aggregate amount of exp: " + aggregateAmount);
+                        blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(aggregateAmount);
                     }
                 } else {
                     for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
@@ -249,19 +261,18 @@ public class TitanPicks implements Listener {
         }
     }
 
-    private void dropExperience(Material material, Location location) {
+    private int calculateExperienceAmount(Material material) {
+
         int experience = switch (material) {
             case COAL_ORE, DEEPSLATE_COAL_ORE -> getRandomNumber(0, 2);
-            case NETHER_GOLD_ORE -> getRandomNumber(0, 1);
             case DIAMOND_ORE, DEEPSLATE_DIAMOND_ORE, EMERALD_ORE, DEEPSLATE_EMERALD_ORE -> getRandomNumber(3, 7);
             case LAPIS_ORE, DEEPSLATE_LAPIS_ORE, NETHER_QUARTZ_ORE -> getRandomNumber(2, 5);
             case REDSTONE_ORE, DEEPSLATE_REDSTONE_ORE -> getRandomNumber(1, 5);
+            case IRON_ORE, DEEPSLATE_IRON_ORE, GOLD_ORE, DEEPSLATE_GOLD_ORE, NETHER_GOLD_ORE, COPPER_ORE, DEEPSLATE_COPPER_ORE -> 6;
             default -> 0;
         };
 
-        if (experience > 0) {
-            location.getWorld().spawn(location, ExperienceOrb.class).setExperience(experience);
-        }
+        return experience;
     }
 
     private static List<Block> getNearbyBlocks(Location location) {
