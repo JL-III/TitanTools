@@ -90,6 +90,7 @@ public class TitanPicks implements Listener {
                 }
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
                     if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
+                        blockBrokenMaterial = blockBroken.getType();
                         blockBroken.setType(Material.AIR);
                         getNewBlocksFromSmeltAndUpdateInventory(player, blockBrokenMaterial);
                         playSmeltVisualAndSoundEffect(player, blockBroken.getLocation());
@@ -97,7 +98,7 @@ public class TitanPicks implements Listener {
                         updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, blockBroken);
                         blockBroken.setType(Material.AIR);
                     }
-                    dropExperience(blockBroken);
+                    dropExperience(blockBrokenMaterial, blockBroken.getLocation());
                 } else {
                     blockBroken.setType(Material.AIR);
                     updatePlayerInventory(player, new ItemStack(blockBrokenMaterial));
@@ -245,18 +246,18 @@ public class TitanPicks implements Listener {
         }
     }
 
-    private void dropExperience(Block block) {
-        int experience = switch (block.getType()) {
-            case COAL_ORE -> getRandomNumber(0, 2);
+    private void dropExperience(Material material, Location location) {
+        int experience = switch (material) {
+            case COAL_ORE, DEEPSLATE_COAL_ORE -> getRandomNumber(0, 2);
             case NETHER_GOLD_ORE -> getRandomNumber(0, 1);
-            case DIAMOND_ORE, EMERALD_ORE -> getRandomNumber(3, 7);
-            case LAPIS_LAZULI, NETHER_QUARTZ_ORE -> getRandomNumber(2, 5);
-            case REDSTONE_ORE -> getRandomNumber(1, 5);
+            case DIAMOND_ORE, DEEPSLATE_DIAMOND_ORE, EMERALD_ORE, DEEPSLATE_EMERALD_ORE -> getRandomNumber(3, 7);
+            case LAPIS_ORE, DEEPSLATE_LAPIS_ORE, NETHER_QUARTZ_ORE -> getRandomNumber(2, 5);
+            case REDSTONE_ORE, DEEPSLATE_REDSTONE_ORE -> getRandomNumber(1, 5);
             default -> 0;
         };
 
         if (experience > 0) {
-            block.getWorld().spawn(block.getLocation(), ExperienceOrb.class).setExperience(5);
+            location.getWorld().spawn(location, ExperienceOrb.class).setExperience(experience);
         }
     }
 

@@ -3,6 +3,7 @@ package com.nessxxiii.titanenchants;
 import com.nessxxiii.titanenchants.items.ItemManager;
 import com.nessxxiii.titanenchants.commands.PlayerCommands;
 import com.nessxxiii.titanenchants.commands.PlayerCommandsTabComplete;
+import com.nessxxiii.titanenchants.listeners.ItemDamageEvent;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanPicks;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
@@ -39,6 +40,7 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(),this);
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
+        Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
 //        Bukkit.getPluginManager().registerEvents(new SnakeTail(), this);
 
         Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
