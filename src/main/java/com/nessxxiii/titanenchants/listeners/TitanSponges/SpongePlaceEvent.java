@@ -85,7 +85,7 @@ public class SpongePlaceEvent implements Listener {
                     }
                 }
             }
-        }.runTaskLater(titanEnchants,10);
+        }.runTaskLater(titanEnchants,5);
 
     }
 }
