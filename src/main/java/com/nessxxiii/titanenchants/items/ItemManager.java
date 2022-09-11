@@ -54,7 +54,7 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.SPONGE, amount);
         ItemMeta meta = item.getItemMeta();
         List<String> lore = new ArrayList<>();
-        lore.add(ItemInfo.LAVA);
+        lore.add(ItemInfo.TITAN_SPONGE_LORE);
         meta.setLore(lore);
         meta.setDisplayName(ItemInfo.SPONGE_DISPLAY_NAME);
         meta.addEnchant(Enchantment.SILK_TOUCH,1,true);

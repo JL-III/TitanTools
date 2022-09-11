@@ -12,9 +12,13 @@ public class ListGenerators {
     public static List<Block> getSurroundingBlocks(Block blockPlaced) {
         List<Block> surroundingBlocks = new ArrayList<>();
         surroundingBlocks.add(blockPlaced.getRelative(BlockFace.DOWN,1));
+        surroundingBlocks.add(blockPlaced.getRelative(BlockFace.DOWN,2));
         surroundingBlocks.add(blockPlaced.getRelative(BlockFace.UP,1));
+        surroundingBlocks.add(blockPlaced.getRelative(BlockFace.UP,2));
         surroundingBlocks.add(blockPlaced.getRelative(BlockFace.EAST,1));
+        surroundingBlocks.add(blockPlaced.getRelative(BlockFace.EAST,2));
         surroundingBlocks.add(blockPlaced.getRelative(BlockFace.WEST,1));
+        surroundingBlocks.add(blockPlaced.getRelative(BlockFace.WEST,2));
         return surroundingBlocks;
     }
 

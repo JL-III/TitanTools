@@ -34,26 +34,14 @@ public class ChargeManagement implements Listener {
         int numberOfCharge = itemOnCursor.getAmount();
         if (itemClicked.getType() == Material.AIR) return;
         if (!ItemInfo.isPowerCrystal(itemOnCursor)) return;
-
-        if (event.isLeftClick() && ItemInfo.isTitanTool(itemClicked)) {
-            if (!ItemInfo.isTitanTool(itemClicked)) return;
-            if (!ItemInfo.isAllowedTitanType(itemClicked)) return;
-            if (ItemInfo.isImbued(itemClicked)) return;
-            addChargeLore(itemClicked,numberOfCharge * 100);
-            player.getItemOnCursor().setAmount(0);
-            player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,player.getEyeLocation(),100);
-            player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE,10, 1);
-            event.setCancelled(true);
-        } else if (event.isLeftClick() && itemClicked.getType() == Material.SPONGE && !ItemInfo.isTitanSponge(itemClicked)) {
-            player.sendMessage("Titan sponge was clicked on.");
-
-            if (itemClicked.getAmount() >= numberOfCharge) {
-                itemOnCursor.setAmount(0);
-                itemClicked.setAmount(itemClicked.getAmount() - numberOfCharge);
-                player.getInventory().addItem(ItemManager.createTitanSponge(numberOfCharge));
-                player.updateInventory();
-            }
-        }
+        if (!ItemInfo.isTitanTool(itemClicked)) return;
+        if (!ItemInfo.isAllowedTitanType(itemClicked)) return;
+        if (ItemInfo.isImbued(itemClicked)) return;
+        addChargeLore(itemClicked,numberOfCharge * 100);
+        player.getItemOnCursor().setAmount(0);
+        player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,player.getEyeLocation(),100);
+        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE,10, 1);
+        event.setCancelled(true);
     }
 
     public static void addChargeLore(ItemStack item, Integer amount){

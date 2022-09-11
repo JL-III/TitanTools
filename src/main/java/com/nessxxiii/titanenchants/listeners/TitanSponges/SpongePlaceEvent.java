@@ -43,54 +43,32 @@ public class SpongePlaceEvent implements Listener {
         if (!event.getHand().equals(HAND)) return;
         //has enchantment (only titan sponges should have an enchantment)
         if (!event.getItemInHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)) return;
-        Location location = blockPlaced.getLocation();
         //item placement event is cancelled to obtain the item in hand, it is then removed from players inv afterwards
-        List<Block> surroundingBlocks = ListGenerators.getSurroundingBlocks(blockPlaced);
-        if(player.isSneaking()) return;
-        if (player.hasCooldown(coolDown)) return;
+        if (player.hasCooldown(coolDown)) {
+            event.setCancelled(true);
+            player.sendMessage("Please wait " + player.getCooldown(coolDown)/20 + " seconds before using another Titan Sponge.");
+            return;
+        }
         boolean hasLavaOrWater = false;
-        for (Block blocks : surroundingBlocks){
+        for (Block blocks : ListGenerators.getSurroundingBlocks(blockPlaced)){
             if (blocks.getType() == Material.WATER || blocks.getType() == Material.LAVA){
                 hasLavaOrWater = true;
                 break;
             }
         }
-        if (!hasLavaOrWater) return;
-
-        ItemStack item = player.getInventory().getItemInMainHand();
-        Inventory inv = player.getInventory();
-
-        if (ItemInfo.isWater(item) ) {
-            List<Block> blockList = ListGenerators.generateSphere(location,15,false);
-            waterPickUp(location,blockList,player,inv,item,titanEnchants);
-            //Cooldown to reduce frequency of usage to once per second
-            player.setCooldown(coolDown, 20);
-        } else if (ItemInfo.isLava(item)) {
-            List<Block> blockList = ListGenerators.generateSphere(location,10,false);
-            lavaPickUp(location,blockList,player,inv,item);
-            //Cooldown to reduce frequency of usage to once per second
-            player.setCooldown(coolDown, 20);
-        }
-    }
-
-    public void waterPickUp(Location location, List<Block> blockList, Player player, Inventory inv, ItemStack item, TitanEnchants titanEnchants) {
-
-        int amountInStack = item.getAmount();
-        player.sendMessage("The item you are holding has water lore and you have : " + item.getAmount() + " in your hand");
-        List<Block> surroundingBlocks = ListGenerators.getSurroundingBlocks(location.getBlock());
-        boolean hasWater = false;
-
-        for (Block blocks : surroundingBlocks) {
-            if (blocks.getType() == Material.WATER) {
-                hasWater = true;
-                break;
-            }
-        }
-        if (!hasWater) {
-            player.sendMessage(ChatColor.RED + "You cannot use a Titan Water Sponge here!");
+        if (!hasLavaOrWater) {
+            player.sendMessage("You must place a Titan Sponge near water or lava.");
+            event.setCancelled(true);
             return;
         }
+        player.sendMessage("The item you are holding has water lore and you have : " + player.getInventory().getItemInMainHand().getAmount() + " in your hand");
+        drainLavaOrWater(ListGenerators.generateSphere(blockPlaced.getLocation(),15,false), titanEnchants);
+        //Cooldown to reduce frequency of usage to once per second
+        player.setCooldown(coolDown, 20);
 
+    }
+
+    public void drainLavaOrWater(List<Block> blockList, TitanEnchants titanEnchants) {
         for (Block blocks : blockList) {
             if (blocks.getType() == Material.KELP_PLANT ||
                     blocks.getType() == Material.TALL_SEAGRASS ||
@@ -98,44 +76,16 @@ public class SpongePlaceEvent implements Listener {
                 blocks.breakNaturally();
             }
         }
-        BukkitTask waterPickUp = new BukkitRunnable() {
+        BukkitTask runTaskLater = new BukkitRunnable() {
             @Override
             public void run() {
-                for (Block blocks : blockList) {
-                    if (blocks.getType() == Material.WATER) {
-                        blocks.setType(Material.AIR);
+                for (Block currentBlockInList : blockList) {
+                    if (currentBlockInList.getType() == Material.WATER || currentBlockInList.getType() == Material.LAVA) {
+                        currentBlockInList.setType(Material.AIR);
                     }
                 }
             }
-        }.runTaskLater(titanEnchants,3);
-        item.setAmount(amountInStack - 1);
-        player.updateInventory();
-        location.getBlock().setType(Material.AIR);
+        }.runTaskLater(titanEnchants,10);
 
     }
-
-    public void lavaPickUp(Location location, List<Block> blockList, Player player, Inventory inv, ItemStack item) {
-
-        player.sendMessage("The item you are holding has lava lore: " + item.getAmount() + " in your hand");
-        blockList = ListGenerators.generateSphere(location, 10, false);
-        boolean hasLava = false;
-        for (Block blocks : blockList) {
-            if (blocks.getType() == Material.LAVA) {
-                hasLava = true;
-                break;
-            }
-        }
-        if (!hasLava) {
-            player.sendMessage(ChatColor.RED + "You cannot use a Titan Lava Sponge here!");
-            return;
-        }
-
-        for (Block blocks : blockList) {
-            if (blocks.getType() == Material.LAVA) {
-                blocks.setType(Material.AIR);
-            }
-        }
-
-    }
-
 }
