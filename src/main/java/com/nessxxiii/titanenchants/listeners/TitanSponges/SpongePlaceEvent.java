@@ -2,31 +2,42 @@ package com.nessxxiii.titanenchants.listeners.TitanSponges;
 
 import com.nessxxiii.titanenchants.TitanEnchants;
 import com.nessxxiii.titanenchants.items.ItemInfo;
+import com.nessxxiii.titanenchants.util.DistributedFiller;
 import com.nessxxiii.titanenchants.util.ListGenerators;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import com.nessxxiii.titanenchants.util.WaterReplace;
+import com.nessxxiii.titanenchants.util.WorkloadRunnable;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.bukkit.inventory.EquipmentSlot.HAND;
 
 public class SpongePlaceEvent implements Listener {
 
     private final TitanEnchants titanEnchants;
+    private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
+    WorkloadRunnable workloadRunnable;
 
-    public SpongePlaceEvent(TitanEnchants titanEnchants) {
+    public SpongePlaceEvent(TitanEnchants titanEnchants, WorkloadRunnable workloadRunnable) {
         this.titanEnchants = titanEnchants;
+        this.workloadRunnable = workloadRunnable;
     }
 
     Material coolDown = Material.REDSTONE;
@@ -37,6 +48,12 @@ public class SpongePlaceEvent implements Listener {
         Player player = event.getPlayer();
         Block blockPlaced = event.getBlock();
 
+
+        if (IGNORE_LOCATIONS.contains(blockPlaced.getLocation())) {
+            IGNORE_LOCATIONS.remove(blockPlaced.getLocation());
+            return;
+        }
+
         //material is sponge
         if (blockPlaced.getType() != Material.SPONGE) return;
         //item is in main hand
@@ -46,7 +63,7 @@ public class SpongePlaceEvent implements Listener {
         //item placement event is cancelled to obtain the item in hand, it is then removed from players inv afterwards
         if (player.hasCooldown(coolDown)) {
             event.setCancelled(true);
-            player.sendMessage("Please wait " + player.getCooldown(coolDown)/20 + " seconds before using another Titan Sponge.");
+            player.sendMessage(ChatColor.RED + "Please wait " + player.getCooldown(coolDown)/20 + " seconds before using another Titan Sponge.");
             return;
         }
         boolean hasLavaOrWater = false;
@@ -61,31 +78,22 @@ public class SpongePlaceEvent implements Listener {
             event.setCancelled(true);
             return;
         }
-        player.sendMessage("The item you are holding has water lore and you have : " + player.getInventory().getItemInMainHand().getAmount() + " in your hand");
-        drainLavaOrWater(ListGenerators.generateSphere(blockPlaced.getLocation(),15,false), titanEnchants);
-        //Cooldown to reduce frequency of usage to once per second
-        player.setCooldown(coolDown, 20);
-
-    }
-
-    public void drainLavaOrWater(List<Block> blockList, TitanEnchants titanEnchants) {
-        for (Block blocks : blockList) {
-            if (blocks.getType() == Material.KELP_PLANT ||
-                    blocks.getType() == Material.TALL_SEAGRASS ||
-                    blocks.getType() == Material.SEAGRASS) {
-                blocks.breakNaturally();
-            }
+//        List<Block> blockList = ListGenerators.generateSphere(blockPlaced.getLocation(),15,false);
+//        List<Block> newListEven = new ArrayList<>();
+//        for (Block block : blockList) {
+//            if (block.getLocation().getX() % 2 == 0 && block.getLocation().getY() % 2 == 0 && block.getLocation().getZ() % 2 == 0) {
+//                newListEven.add(block);
+//            }
+//        }
+        if (new DistributedFiller(this.workloadRunnable).canRunSphere(player, blockPlaced, 12)) {
+            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.SPONGE,true);
+            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 11, Material.AIR, false);
+            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.AIR, false);
+        } else {
+            player.sendMessage(ChatColor.DARK_RED + "You are too close to a claim you do not have build permissions on, please move far away from it and try again or try using a normal sponge.");
+            event.setCancelled(true);
         }
-        BukkitTask runTaskLater = new BukkitRunnable() {
-            @Override
-            public void run() {
-                for (Block currentBlockInList : blockList) {
-                    if (currentBlockInList.getType() == Material.WATER || currentBlockInList.getType() == Material.LAVA) {
-                        currentBlockInList.setType(Material.AIR);
-                    }
-                }
-            }
-        }.runTaskLater(titanEnchants,5);
+        player.setCooldown(coolDown, 20);
 
     }
 }

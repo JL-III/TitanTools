@@ -11,6 +11,7 @@ import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanShovel;
 import com.nessxxiii.titanenchants.listeners.mcMMO.McMMOManager;
 import com.nessxxiii.titanenchants.listeners.blockbreak.PowerCrystalDrop;
+import com.nessxxiii.titanenchants.util.WorkloadRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -28,6 +29,7 @@ public final class TitanEnchants extends JavaPlugin {
     private final Logger LOGGER;
     private final FileConfiguration CONFIG;
     private final Plugin PLUGIN;
+    private final WorkloadRunnable workloadRunnable = new WorkloadRunnable();
 
     public TitanEnchants() {
         PLUGIN = this;
@@ -39,6 +41,7 @@ public final class TitanEnchants extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         ItemManager.Init();
+        Bukkit.getScheduler().runTaskTimer(this, this.workloadRunnable, 1, 1);
         Bukkit.getPluginManager().registerEvents(new TitanPicks(this),this);
         Bukkit.getPluginManager().registerEvents(new TitanShovel(this), this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(this),this);
@@ -46,7 +49,7 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new SpongePlaceEvent(this),this);
+        Bukkit.getPluginManager().registerEvents(new SpongePlaceEvent(this, workloadRunnable),this);
 //        Bukkit.getPluginManager().registerEvents(new SnakeTail(), this);
 
         Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
