@@ -36,6 +36,8 @@ public class DistributedFiller implements VolumeFiller {
         add(Material.SEAGRASS);
         add(Material.WATER);
         add(Material.LAVA);
+        //for testing
+//        add(Material.AIR);
 
     }};
 
@@ -98,13 +100,24 @@ public class DistributedFiller implements VolumeFiller {
             for (int y = by - radius; y <= by + radius; y++) {
                 for (int z = bz - radius; z <= bz + radius; z++) {
                     double distance = ((bx - x) * (bx - x) + ((bz - z) * (bz - z)) + ((by - y) * (by - y)));
-                    if (distance < radius * radius && !(distance < (radius - 1) * (radius - 1))) {
-                        BlockBreakEvent e = new BlockBreakEvent(location.getWorld().getBlockAt(x, y, z), player);
-                        Bukkit.getPluginManager().callEvent(e);
-                        if (e.isCancelled()) {
-                            return false;
+                    if ((distance < radius * radius ) && !(distance < (radius - 1) * (radius - 1)) ) {
+                        if  (
+                                ((x == bx - (radius - 1) || x == bx + (radius + 1)) && (z == location.getBlockZ()) || y == location.getBlockY() || x == location.getBlockX()) ||
+                                ((y == by - (radius - 1) || y == by + (radius - 1)) && ((x == location.getBlockX() || z == location.getBlockZ()) || y == location.getBlockY()) ||
+                                        //diagonals
+                                        (z - bz == x - bx ||  -(z - bz) == (x - bx) || (z - bz) == -(x - bx) )) ||
+                                ((z == bz - (radius - 1) || z == bz + (radius - 1)) && (x == location.getBlockX() || y == location.getBlockY()) || z == location.getBlockZ())
+                            ) {
+                            BlockBreakEvent e = new BlockBreakEvent(location.getWorld().getBlockAt(x, y, z), player);
+                            Bukkit.getPluginManager().callEvent(e);
+//                            if (!e.isCancelled()) {
+//                                WaterReplace waterReplace = new WaterReplace(location.getWorld().getUID(), x, y, z, Material.AMETHYST_BLOCK);
+//                                this.workloadRunnable.addWorkload(waterReplace);
+//                            }
+                            if (e.isCancelled()) {
+                                return false;
+                            }
                         }
-
                     }
                 }
             }

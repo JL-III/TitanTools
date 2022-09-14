@@ -78,13 +78,6 @@ public class SpongePlaceEvent implements Listener {
             event.setCancelled(true);
             return;
         }
-//        List<Block> blockList = ListGenerators.generateSphere(blockPlaced.getLocation(),15,false);
-//        List<Block> newListEven = new ArrayList<>();
-//        for (Block block : blockList) {
-//            if (block.getLocation().getX() % 2 == 0 && block.getLocation().getY() % 2 == 0 && block.getLocation().getZ() % 2 == 0) {
-//                newListEven.add(block);
-//            }
-//        }
         if (new DistributedFiller(this.workloadRunnable).canRunSphere(player, blockPlaced, 12)) {
             new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.SPONGE,true);
             new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 11, Material.AIR, false);

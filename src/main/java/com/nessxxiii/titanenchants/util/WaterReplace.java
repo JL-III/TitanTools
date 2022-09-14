@@ -25,6 +25,5 @@ public class WaterReplace implements Workload{
         Preconditions.checkState(world != null);
         world.getBlockAt(this.blockX, this.blockY, this.blockZ).setType(this.material);
         world.getBlockAt(this.blockX, this.blockY, this.blockZ).getState().update(true, false);
-
     }
 }
