@@ -96,6 +96,7 @@ public class DistributedFiller implements VolumeFiller {
         int bx = location.getBlockX();
         int by = location.getBlockY();
         int bz = location.getBlockZ();
+        int count = 1;
         for (int x = bx - radius; x <= bx + radius; x++) {
             for (int y = by - radius; y <= by + radius; y++) {
                 for (int z = bz - radius; z <= bz + radius; z++) {
@@ -110,10 +111,12 @@ public class DistributedFiller implements VolumeFiller {
                             ) {
                             BlockBreakEvent e = new BlockBreakEvent(location.getWorld().getBlockAt(x, y, z), player);
                             Bukkit.getPluginManager().callEvent(e);
-//                            if (!e.isCancelled()) {
-//                                WaterReplace waterReplace = new WaterReplace(location.getWorld().getUID(), x, y, z, Material.AMETHYST_BLOCK);
-//                                this.workloadRunnable.addWorkload(waterReplace);
-//                            }
+                            if (!e.isCancelled()) {
+                                WaterReplace waterReplace = new WaterReplace(location.getWorld().getUID(), x, y, z, Material.AMETHYST_BLOCK);
+                                this.workloadRunnable.addWorkload(waterReplace);
+                                Bukkit.getConsoleSender().sendMessage("Count for sphere: " + count);
+                                count++;
+                            }
                             if (e.isCancelled()) {
                                 return false;
                             }
@@ -126,41 +129,48 @@ public class DistributedFiller implements VolumeFiller {
     }
 
     @Override
-    public void fillCube(Location location, int radius, Material material, boolean hollow) {
-        Preconditions.checkArgument( location.getWorld() != null);
+    public boolean cubeCheck(Player player, Block block, int radius) {
 
-        World world = location.getWorld();
+        Location location = block.getLocation();
+        radius = radius - 1;
         int bx = location.getBlockX();
         int by = location.getBlockY();
         int bz = location.getBlockZ();
-        for (int x = location.getBlockX() - radius; x <= location.getBlockX() + radius; x++) {
-            for (int y = location.getBlockY() - radius; y <= location.getBlockY() + radius; y++) {
-                for (int z = location.getBlockZ() - radius; z <= location.getBlockZ() + radius; z++) {
-                    double distance = ((bx - x) * (bx - x) + ((bz - z) * (bz - z)) + ((by - y) * (by - y)));
-                    //                  (100 - (100 - 15)) * (100 - (100 - 15))
-                    //                  (100 - 85) * (100 - 85)
-                    //                  (15 * 15)
-                    //                  255
-                    if (hollow && (((x == location.getBlockX() - radius || x == location.getBlockX() + radius)
-                            && (MATERIALS_TO_REPLACE.contains(location.getWorld().getBlockAt(x, y, z).getType())))
-                            || ((y == location.getBlockY() - radius || y == location.getBlockY() + radius)
-                            && (MATERIALS_TO_REPLACE.contains(location.getWorld().getBlockAt(x, y, z).getType())))
-                            || ((z == location.getBlockZ() - radius || z == location.getBlockZ() + radius)
-                            && (MATERIALS_TO_REPLACE.contains(location.getWorld().getBlockAt(x, y, z).getType()))))
+        int positiveXBorder = bx + radius;
+        int negativeXBorder = bx - radius;
+        int positiveYBorder = by + radius;
+        int negativeYBorder = by - radius;
+        int positiveZBorder = bz + radius;
+        int negativeZBorder = bz - radius;
+
+        int count = 1;
+        for (int x = negativeXBorder; x <= positiveXBorder; x++) {
+            for (int y = negativeYBorder; y <= positiveYBorder; y++) {
+                for (int z = negativeZBorder; z <= positiveZBorder; z++) {
+
+
+                    if (
+                        //top conditional creates the top portion of the cube.
+                            (((y == negativeYBorder) || (y == positiveYBorder)) && (((x == negativeXBorder) || (x == positiveXBorder)) && ((bz - z) % 5 == 0) || ((z == negativeZBorder) || (z == positiveZBorder)) && ((bx - x) % 5 == 0)))
+                        //bottom conditional creates the pillars
+                            || (((z == negativeZBorder) || (z == positiveZBorder)) && ((x == negativeXBorder) || (x == positiveXBorder)) && (by - y) % 5 == 0)
                     ) {
-                        WaterReplace waterReplace = new WaterReplace(world.getUID(), x, y, z, material);
-                        this.workloadRunnable.addWorkload(waterReplace);
-                    }else {
-                        if (MATERIALS_TO_REPLACE.contains(location.getWorld().getBlockAt(x, y, z).getType())) {
-                            WaterReplace waterReplace = new WaterReplace(world.getUID(), x, y, z, material);
-                            this.workloadRunnable.addWorkload(waterReplace);
+                        BlockBreakEvent e = new BlockBreakEvent(location.getWorld().getBlockAt(x, y, z), player);
+                        Bukkit.getPluginManager().callEvent(e);
+//                            if (!e.isCancelled()) {
+//                                WaterReplace waterReplace = new WaterReplace(location.getWorld().getUID(), x, y, z, Material.DEEPSLATE);
+//                                this.workloadRunnable.addWorkload(waterReplace);
+//                                Bukkit.getConsoleSender().sendMessage("Count for cube: " + count);
+//                                count++;
+//                            }
+                        if (e.isCancelled()) {
+                            return false;
                         }
                     }
 
                 }
             }
         }
+        return true;
     }
-
-
 }

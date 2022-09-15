@@ -13,7 +13,7 @@ public interface VolumeFiller {
 
     void fillSphereWithCheck(Player player, Block initialBlock, int radius, Material material, boolean hollow);
 
-    void fillCube(Location location, int radius, Material material, boolean hollow);
+    boolean cubeCheck(Player player, Block block, int radius);
 
     boolean canRunSphere(Player player, Block initialBlock, int radius);
 }

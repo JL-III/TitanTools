@@ -78,7 +78,7 @@ public class SpongePlaceEvent implements Listener {
             event.setCancelled(true);
             return;
         }
-        if (new DistributedFiller(this.workloadRunnable).canRunSphere(player, blockPlaced, 12)) {
+        if (new DistributedFiller(this.workloadRunnable).cubeCheck(player, blockPlaced, 12)) {
             new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.SPONGE,true);
             new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 11, Material.AIR, false);
             new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.AIR, false);
