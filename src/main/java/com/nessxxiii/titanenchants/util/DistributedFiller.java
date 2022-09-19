@@ -1,6 +1,20 @@
 package com.nessxxiii.titanenchants.util;
 
 import com.google.common.base.Preconditions;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.world.block.BaseBlock;
+import com.sk89q.worldedit.world.block.BlockType;
 import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,9 +26,10 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -126,6 +141,35 @@ public class DistributedFiller implements VolumeFiller {
             }
         }
         return true;
+    }
+
+    @Override
+    public void schemRun(Player player, Block block, File file) {
+        ClipboardFormat format = ClipboardFormats.findByFile(file);
+        try (ClipboardReader reader = format.getReader(new FileInputStream(file))) {
+            Clipboard clipboard = reader.read();
+            int bx = block.getX();
+            int by = block.getY();
+            int bz = block.getZ();
+            int ox = clipboard.getOrigin().getBlockX();
+            int oy = clipboard.getOrigin().getBlockY();
+            int oz = clipboard.getOrigin().getBlockZ();
+            for (int x = clipboard.getMinimumPoint().getBlockX(); x <= clipboard.getMaximumPoint().getBlockX(); x++) {
+                for (int y = clipboard.getMinimumPoint().getBlockY(); y <= clipboard.getMaximumPoint().getBlockY(); y++) {
+                    for (int z = clipboard.getMinimumPoint().getBlockZ(); z <= clipboard.getMaximumPoint().getBlockZ(); z++) {
+                        BaseBlock schemBlock = clipboard.getFullBlock(BlockVector3.at(x, y, z));
+                        Material material = BukkitAdapter.adapt(schemBlock.getBlockType());
+                        if (schemBlock.getBlockType() != BlockType.REGISTRY.get("minecraft:air")) {
+                            WaterReplace waterReplace = new WaterReplace(block.getLocation().getWorld().getUID(),
+                                    x + (bx - ox), y + (by - oy), z + (bz - oz), material);
+                            this.workloadRunnable.addWorkload(waterReplace);
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

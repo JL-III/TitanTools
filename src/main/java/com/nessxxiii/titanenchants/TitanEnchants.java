@@ -12,11 +12,11 @@ import com.nessxxiii.titanenchants.listeners.enchantments.TitanShovel;
 import com.nessxxiii.titanenchants.listeners.mcMMO.McMMOManager;
 import com.nessxxiii.titanenchants.listeners.blockbreak.PowerCrystalDrop;
 import com.nessxxiii.titanenchants.util.WorkloadRunnable;
+import com.nessxxiii.titanenchants.util.CheckPlayerLocation;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,6 +30,7 @@ public final class TitanEnchants extends JavaPlugin {
     private final FileConfiguration CONFIG;
     private final Plugin PLUGIN;
     private final WorkloadRunnable workloadRunnable = new WorkloadRunnable();
+    private final CheckPlayerLocation checkPlayerLocation = new CheckPlayerLocation();
 
     public TitanEnchants() {
         PLUGIN = this;
@@ -42,6 +43,7 @@ public final class TitanEnchants extends JavaPlugin {
         // Plugin startup logic
         ItemManager.Init();
         Bukkit.getScheduler().runTaskTimer(this, this.workloadRunnable, 1, 1);
+        Bukkit.getScheduler().runTaskTimer(this, this.checkPlayerLocation, 100, 100);
         Bukkit.getPluginManager().registerEvents(new TitanPicks(this),this);
         Bukkit.getPluginManager().registerEvents(new TitanShovel(this), this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(this),this);
@@ -54,7 +56,6 @@ public final class TitanEnchants extends JavaPlugin {
 
         Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
         Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
-
         if (Bukkit.getRecipe(new NamespacedKey(this, "titanSponge")) == null) {
             ShapelessRecipe titanSpongeRecipe = new ShapelessRecipe(new NamespacedKey(this, "titanSponge"), ItemManager.titanSponge);
             titanSpongeRecipe.addIngredient(1, Material.SPONGE);

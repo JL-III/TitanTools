@@ -4,6 +4,8 @@ main: com.nessxxiii.titanenchants.TitanEnchants
 api-version: 1.19
 authors: [ bfrisco, NessXXIII ]
 description: Custom enchantments for Theatria
+depend:
+  - WorldEdit
 softdepend: [mcMMO]
 commands:
   titan:

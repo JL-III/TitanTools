@@ -1,9 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
-import com.gmail.nossr50.mcmmo.kyori.adventure.platform.facet.Facet;
 import com.nessxxiii.titanenchants.items.ItemInfo;
-import com.nessxxiii.titanenchants.items.ItemManager;
-import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

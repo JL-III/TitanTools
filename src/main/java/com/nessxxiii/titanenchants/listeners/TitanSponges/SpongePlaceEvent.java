@@ -6,6 +6,21 @@ import com.nessxxiii.titanenchants.util.DistributedFiller;
 import com.nessxxiii.titanenchants.util.ListGenerators;
 import com.nessxxiii.titanenchants.util.WaterReplace;
 import com.nessxxiii.titanenchants.util.WorkloadRunnable;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats;
+import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
+import com.sk89q.worldedit.function.operation.Operation;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.world.World;
+import com.sk89q.worldedit.world.block.BaseBlock;
+import com.sk89q.worldedit.world.block.BlockType;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.*;
@@ -22,6 +37,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -45,17 +63,15 @@ public class SpongePlaceEvent implements Listener {
     @EventHandler
     public void onPlaceEvent(BlockPlaceEvent event) {
 
+        if (event.getBlock().getType() != Material.SPONGE) return;
         Player player = event.getPlayer();
         Block blockPlaced = event.getBlock();
-
 
         if (IGNORE_LOCATIONS.contains(blockPlaced.getLocation())) {
             IGNORE_LOCATIONS.remove(blockPlaced.getLocation());
             return;
         }
 
-        //material is sponge
-        if (blockPlaced.getType() != Material.SPONGE) return;
         //item is in main hand
         if (!event.getHand().equals(HAND)) return;
         //has enchantment (only titan sponges should have an enchantment)
@@ -79,9 +95,12 @@ public class SpongePlaceEvent implements Listener {
             return;
         }
         if (new DistributedFiller(this.workloadRunnable).cubeCheck(player, blockPlaced, 12)) {
-            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.SPONGE,true);
-            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 11, Material.AIR, false);
-            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.AIR, false);
+            new DistributedFiller(this.workloadRunnable).schemRun(player, blockPlaced, new File("/home/container/plugins/WorldEdit/schematics/largebirch.schem"));
+            File file = new File(Bukkit.getServer().getPluginManager().getPlugin("WorldEdit").getDataFolder(), "/schematics/largebirch.schem");
+            Bukkit.getConsoleSender().sendMessage(file.getAbsolutePath());
+//            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.AMETHYST_BLOCK,true);
+//            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 11, Material.AIR, false);
+//            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.AIR, false);
         } else {
             player.sendMessage(ChatColor.DARK_RED + "You are too close to a claim you do not have build permissions on, please move far away from it and try again or try using a normal sponge.");
             event.setCancelled(true);
