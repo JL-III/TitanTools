@@ -2,6 +2,7 @@ package com.nessxxiii.titanenchants.listeners.TitanSponges;
 
 import com.nessxxiii.titanenchants.TitanEnchants;
 import com.nessxxiii.titanenchants.items.ItemInfo;
+import com.nessxxiii.titanenchants.items.ItemManager;
 import com.nessxxiii.titanenchants.util.DistributedFiller;
 import com.nessxxiii.titanenchants.util.ListGenerators;
 import com.nessxxiii.titanenchants.util.WaterReplace;
@@ -63,7 +64,12 @@ public class SpongePlaceEvent implements Listener {
     @EventHandler
     public void onPlaceEvent(BlockPlaceEvent event) {
 
-        if (event.getBlock().getType() != Material.SPONGE) return;
+        if (event.getBlock().getType() != Material.SPONGE) {
+//            if (event.getBlock().getType() == Material.BIRCH_SAPLING) {
+//                new DistributedFiller(this.workloadRunnable).schemRun(event.getPlayer(), event.getBlock(), new File("/home/container/plugins/WorldEdit/schematics/house.schem"));
+//            }
+            return;
+        }
         Player player = event.getPlayer();
         Block blockPlaced = event.getBlock();
 
@@ -74,9 +80,13 @@ public class SpongePlaceEvent implements Listener {
 
         //item is in main hand
         if (!event.getHand().equals(HAND)) return;
-        //has enchantment (only titan sponges should have an enchantment)
-        if (!event.getItemInHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)) return;
-        //item placement event is cancelled to obtain the item in hand, it is then removed from players inv afterwards
+//        if (!event.getItemInHand().getEnchantments().containsKey(Enchantment.SILK_TOUCH)) return;
+        if (!event.getItemInHand().equals(ItemManager.titanSponge)) {
+            player.sendMessage("This is not a titan sponge");
+            return;
+        }
+
+
         if (player.hasCooldown(coolDown)) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "Please wait " + player.getCooldown(coolDown)/20 + " seconds before using another Titan Sponge.");
@@ -95,12 +105,9 @@ public class SpongePlaceEvent implements Listener {
             return;
         }
         if (new DistributedFiller(this.workloadRunnable).cubeCheck(player, blockPlaced, 12)) {
-            new DistributedFiller(this.workloadRunnable).schemRun(player, blockPlaced, new File("/home/container/plugins/WorldEdit/schematics/largebirch.schem"));
-            File file = new File(Bukkit.getServer().getPluginManager().getPlugin("WorldEdit").getDataFolder(), "/schematics/largebirch.schem");
-            Bukkit.getConsoleSender().sendMessage(file.getAbsolutePath());
-//            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.AMETHYST_BLOCK,true);
-//            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 11, Material.AIR, false);
-//            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.AIR, false);
+            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.SPONGE,true);
+            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 11, Material.AIR, false);
+            new DistributedFiller(this.workloadRunnable).fillSphereWithCheck(player, blockPlaced, 12, Material.AIR, false);
         } else {
             player.sendMessage(ChatColor.DARK_RED + "You are too close to a claim you do not have build permissions on, please move far away from it and try again or try using a normal sponge.");
             event.setCancelled(true);

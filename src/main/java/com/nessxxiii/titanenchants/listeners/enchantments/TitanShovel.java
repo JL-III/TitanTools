@@ -47,10 +47,11 @@ public class TitanShovel implements Listener {
             return;
         }
         Block clickedBlock = event.getClickedBlock();
+
         if (ItemInfo.isLevelOne(itemInMainHand)) {
             if (clickedBlock.getType() == Material.BEDROCK
                     && (clickedBlock.getLocation().getY() < -63 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
-                    || (clickedBlock.getLocation().getY() < 1 && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
+                    || ((clickedBlock.getLocation().getY() < 1 || clickedBlock.getLocation().getY() > 126) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
                 clickedBlock.breakNaturally(itemInMainHand);
                 if (ItemInfo.isCharged(itemInMainHand)) {
@@ -73,7 +74,7 @@ public class TitanShovel implements Listener {
             BlockFace blockFace = event.getBlockFace();
             if (clickedBlock.getType() == Material.BEDROCK
                     && (clickedBlock.getLocation().getY() < -63 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
-                    || (clickedBlock.getLocation().getY() < 1 && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
+                    || ((clickedBlock.getLocation().getY() < 1 || clickedBlock.getLocation().getY() > 126) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
                 clickedBlock.breakNaturally(itemInMainHand);
             }
@@ -97,7 +98,7 @@ public class TitanShovel implements Listener {
 
                     if (!e.isCancelled()) {
                         if ((blockLoop.getLocation().getY() > -64 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
-                                || (blockLoop.getLocation().getY() > 0 && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) {
+                                || ((blockLoop.getLocation().getY() > 0 && blockLoop.getLocation().getY() < 127) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) {
                             blockLoop.setType(Material.AIR);
                         }
                     }
@@ -108,7 +109,7 @@ public class TitanShovel implements Listener {
             BlockFace blockFace = event.getBlockFace();
             if (clickedBlock.getType() == Material.BEDROCK
                     && (clickedBlock.getLocation().getY() < -63 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
-                    || (clickedBlock.getLocation().getY() < 1 && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
+                    || ((clickedBlock.getLocation().getY() < 1 || clickedBlock.getLocation().getY() > 126) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
                 clickedBlock.breakNaturally(itemInMainHand);
             }
@@ -131,7 +132,7 @@ public class TitanShovel implements Listener {
                     Bukkit.getPluginManager().callEvent(e);
                     if (!e.isCancelled()) {
                         if ((blockLoop.getLocation().getY() > -64 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
-                                || (blockLoop.getLocation().getY() > 0 && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) {
+                                || ((blockLoop.getLocation().getY() > 0 && blockLoop.getLocation().getY() < 127) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) {
                             blockLoop.setType(Material.AIR);
                         }
                     }

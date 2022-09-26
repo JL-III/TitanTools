@@ -43,7 +43,7 @@ public final class TitanEnchants extends JavaPlugin {
         // Plugin startup logic
         ItemManager.Init();
         Bukkit.getScheduler().runTaskTimer(this, this.workloadRunnable, 1, 1);
-        Bukkit.getScheduler().runTaskTimer(this, this.checkPlayerLocation, 100, 100);
+//        Bukkit.getScheduler().runTaskTimer(this, this.checkPlayerLocation, 100, 100);
         Bukkit.getPluginManager().registerEvents(new TitanPicks(this),this);
         Bukkit.getPluginManager().registerEvents(new TitanShovel(this), this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(this),this);
@@ -51,17 +51,17 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new SpongePlaceEvent(this, workloadRunnable),this);
+//        Bukkit.getPluginManager().registerEvents(new SpongePlaceEvent(this, workloadRunnable),this);
 //        Bukkit.getPluginManager().registerEvents(new SnakeTail(), this);
 
         Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
         Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
-        if (Bukkit.getRecipe(new NamespacedKey(this, "titanSponge")) == null) {
-            ShapelessRecipe titanSpongeRecipe = new ShapelessRecipe(new NamespacedKey(this, "titanSponge"), ItemManager.titanSponge);
-            titanSpongeRecipe.addIngredient(1, Material.SPONGE);
-            titanSpongeRecipe.addIngredient(1, ItemManager.powerCrystal);
-            Bukkit.addRecipe(titanSpongeRecipe);
-        }
+//        if (Bukkit.getRecipe(new NamespacedKey(this, "titanSponge")) == null) {
+//            ShapelessRecipe titanSpongeRecipe = new ShapelessRecipe(new NamespacedKey(this, "titanSponge"), ItemManager.titanSponge);
+//            titanSpongeRecipe.addIngredient(1, Material.SPONGE);
+//            titanSpongeRecipe.addIngredient(1, ItemManager.powerCrystal);
+//            Bukkit.addRecipe(titanSpongeRecipe);
+//        }
 
     }
 

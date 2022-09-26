@@ -1,11 +1,15 @@
 package com.nessxxiii.titanenchants.util;
 
+import com.destroystokyo.paper.event.server.ServerTickStartEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class WorkloadRunnable implements Runnable{
+public class WorkloadRunnable implements Runnable {
 
-    private static final double MAX_MILLIS_PER_TICK = .1;
+    private static final double MAX_MILLIS_PER_TICK = 1;
     private static final int MAX_NANOS_PER_TICK = (int) (MAX_MILLIS_PER_TICK * 1E6);
 
     private final Deque<Workload> workloadDeque = new ArrayDeque<>();
@@ -13,7 +17,6 @@ public class WorkloadRunnable implements Runnable{
     public void addWorkload(Workload workload) {
         this.workloadDeque.add(workload);
     }
-
 
     @Override
     public void run() {

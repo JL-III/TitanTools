@@ -13,7 +13,7 @@ public class CheckPlayerLocation implements Runnable {
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             //account for god mode or add permission
-            if (player.hasPermission("titan.enchants.helmet.exempt")) return;
+
             if (player.getWorld().getName().equalsIgnoreCase("world")
                     && (player.getInventory().getHelmet() == null || player.getInventory().getHelmet().getType() != Material.GLASS)
             ) {
