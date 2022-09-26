@@ -96,7 +96,7 @@ public class ChargeManagement implements Listener {
                 item.setItemMeta(meta);
             } else
                 loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + remainingCharge);
-            player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CPowerLvl: " + ChatColor.GREEN + amountTaken + " " + ChatColor.ITALIC + "§x§F§F§0§0§4§CCharge: " + ChatColor.YELLOW + remainingCharge));
+            player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CPowerLvl: " + ChatColor.GREEN + amountTaken + " " + ChatColor.ITALIC + "§x§F§F§0§0§4§CCharge: " + ChatColor.YELLOW + (remainingCharge >= 1 ? remainingCharge : 0)));
             ItemMeta meta = item.getItemMeta();
             meta.setLore(loreList);
             item.setItemMeta(meta);

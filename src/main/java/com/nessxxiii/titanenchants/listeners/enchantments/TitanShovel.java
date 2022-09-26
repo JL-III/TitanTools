@@ -1,7 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantments;
 
 import com.nessxxiii.titanenchants.items.ItemInfo;
-import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -14,7 +13,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -50,7 +48,7 @@ public class TitanShovel implements Listener {
 
         if (ItemInfo.isLevelOne(itemInMainHand)) {
             if (clickedBlock.getType() == Material.BEDROCK
-                    && (clickedBlock.getLocation().getY() < -63 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
+                    && ((clickedBlock.getLocation().getY() < -63) && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
                     || ((clickedBlock.getLocation().getY() < 1 || clickedBlock.getLocation().getY() > 126) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
                 clickedBlock.breakNaturally(itemInMainHand);
@@ -73,7 +71,7 @@ public class TitanShovel implements Listener {
         } else if (ItemInfo.isLevelTwo(itemInMainHand)){
             BlockFace blockFace = event.getBlockFace();
             if (clickedBlock.getType() == Material.BEDROCK
-                    && (clickedBlock.getLocation().getY() < -63 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
+                    && ((clickedBlock.getLocation().getY() < -63) && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
                     || ((clickedBlock.getLocation().getY() < 1 || clickedBlock.getLocation().getY() > 126) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
                 clickedBlock.breakNaturally(itemInMainHand);
@@ -108,7 +106,7 @@ public class TitanShovel implements Listener {
         } else if (ItemInfo.isLevelThree(itemInMainHand)){
             BlockFace blockFace = event.getBlockFace();
             if (clickedBlock.getType() == Material.BEDROCK
-                    && (clickedBlock.getLocation().getY() < -63 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
+                    && ((clickedBlock.getLocation().getY() < -63) && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
                     || ((clickedBlock.getLocation().getY() < 1 || clickedBlock.getLocation().getY() > 126) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
                 clickedBlock.breakNaturally(itemInMainHand);
