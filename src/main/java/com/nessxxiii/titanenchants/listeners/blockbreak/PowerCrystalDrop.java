@@ -7,6 +7,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Collection;
 
 public class PowerCrystalDrop implements Listener {
 
@@ -25,6 +28,7 @@ public class PowerCrystalDrop implements Listener {
             return;
         }
         if (!player.hasPermission("titan.enchants.powercrystaldrop")) return;
+        event.setCancelled(true);
         block.setType(Material.AIR);
         int randomNumber = getRandomNumber(1,10);
         if (randomNumber <= 3) {

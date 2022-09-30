@@ -37,11 +37,11 @@ public class ItemManager {
     private static void createExcavator() {
         ItemStack item = new ItemStack(Material.GOLDEN_PICKAXE);
         List<String> lore = new ArrayList<>();
-        lore.add("A tool used to extract");
-        lore.add("Power Crystals from ore");
+        lore.add("§x§f§b§b§5§0§0A tool used to extract");
+        lore.add("Power Crystals");
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.DARK_PURPLE + "" + ChatColor.BOLD + "Excavation Tool");
+        meta.setDisplayName(ItemInfo.EXCAVATION_TOOL_DISPLAY_NAME);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.DURABILITY, 5);
