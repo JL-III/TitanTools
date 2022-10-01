@@ -43,45 +43,50 @@ public class ChargeManagement implements Listener {
         if (ItemInfo.isImbued(itemClicked)) {
             return;
         }
-        Material cooldown = Material.COD_SPAWN_EGG;
-        if (player.hasCooldown(cooldown)) {
-            player.sendActionBar(Component.text(ChatColor.DARK_RED + "You must wait " + ChatColor.YELLOW + (player.getCooldown(cooldown) / 20) + ChatColor.DARK_RED + " seconds before attempting to use a powercrystal."));
-            return;
-        }
-        player.setCooldown(cooldown, 100);
         addChargeLore(itemClicked,numberOfCharge * 100);
         player.getItemOnCursor().setAmount(0);
         player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,player.getEyeLocation(),100);
         player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE,10, 1);
         event.setCancelled(true);
-        Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "*-----------------------------------------------------------------------*");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_GREEN + player.getName() + ChatColor.AQUA + " tried to add a power crystal.");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.AQUA + "Completed attempt to charge Titan Tool.");
-        Bukkit.getConsoleSender().sendMessage(itemClicked.displayName());
-        for (Component component : Objects.requireNonNull(itemClicked.getItemMeta().lore())) {
-            Bukkit.getConsoleSender().sendMessage(component);
-        }
-        Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "*-----------------------------------------------------------------------*");
     }
 
     public static void addChargeLore(ItemStack item, Integer amount){
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
         int chargeIndex = index + 1;
-
+        String itemColor = ItemInfo.getColor(item);
+        int finalCharge;
         if (ItemInfo.hasCharge(item)) {
             String string = loreList.get(chargeIndex);
             String string1 = string.substring(24);
             int previousCharge = Integer.parseInt(string1);
-            int newCharge = previousCharge + (amount);
-            loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + newCharge);
-            ItemMeta meta = item.getItemMeta();
-            meta.setLore(loreList);
-            item.setItemMeta(meta);
-            return;
-        } else
-        loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + (amount));
-        loreList.set(index,ItemInfo.CHARGED_ONE);
+            finalCharge = previousCharge + (amount);
+            Bukkit.getConsoleSender().sendMessage("1 Final Charge amount: " + finalCharge);
+        } else {
+            finalCharge = amount;
+            Bukkit.getConsoleSender().sendMessage("2 Final Charge amount: " + finalCharge);
+        }
+        if (itemColor != null) {
+            switch (itemColor)
+            {
+                case "RED" -> {
+                    loreList.set(index,ItemInfo.CHARGED_RED_ONE_COMPOSITE);
+                    loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_RED + finalCharge);
+                    Bukkit.getConsoleSender().sendMessage("3 Final Charge amount: " + finalCharge);
+                }
+                case "YELLOW" -> {
+                    loreList.set(index,ItemInfo.CHARGED_YELLOW_ONE_COMPOSITE);
+                    loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_YELLOW + finalCharge);
+                    Bukkit.getConsoleSender().sendMessage("3 Final Charge amount: " + finalCharge);
+                }
+                case "BLUE" -> {
+                    loreList.set(index,ItemInfo.CHARGED_BLUE_ONE_COMPOSITE);
+                    loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_BLUE + finalCharge);
+                    Bukkit.getConsoleSender().sendMessage("3 Final Charge amount: " + finalCharge);
+                }
+                default -> {}
+            }
+        }
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);

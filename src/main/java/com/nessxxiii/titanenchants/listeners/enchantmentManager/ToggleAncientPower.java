@@ -53,37 +53,24 @@ public class ToggleAncientPower implements Listener {
     }
 
     public static void toggleEnchant(ItemStack item, Player player, boolean isImbued) {
-        String inactiveToPowerOne = ItemInfo.IMBUED_ONE;
-        String powerOneToPowerTwo = ItemInfo.IMBUED_TWO;
-        String powerTwoToPowerThree = ItemInfo.IMBUED_THREE;
-        String powerThreeToInactive = ItemInfo.IMBUED_INACTIVE;
-        int itemLevel = ItemInfo.getItemLevel(item);
 
-        if (!isImbued) {
-            inactiveToPowerOne = ItemInfo.CHARGED_ONE;
-            powerOneToPowerTwo = ItemInfo.CHARGED_TWO;
-            powerTwoToPowerThree = ItemInfo.CHARGED_THREE;
-            powerThreeToInactive = ItemInfo.CHARGED_INACTIVE;
-        }
+        int itemLevel = ItemInfo.getItemLevel(item);
+        String color = ItemInfo.getColor(item);
+
         switch (itemLevel) {
-            case 1 -> {
-                powerLevelConversion(item, powerOneToPowerTwo);
-                player.sendActionBar(ChatColor.GREEN + "Ancient Power set to PowerLvl: " + (itemLevel + 1));
-                enableEffect(player);
-            }
-            case 2 -> {
-                powerLevelConversion(item, powerTwoToPowerThree);
+            case 1,2 -> {
+                powerLevelConversion(item, itemLevel, color, isImbued);
                 player.sendActionBar(ChatColor.GREEN + "Ancient Power set to PowerLvl: " + (itemLevel + 1));
                 enableEffect(player);
             }
             case 3 -> {
-                powerLevelConversion(item, powerThreeToInactive);
+                powerLevelConversion(item, itemLevel, color, isImbued);
                 player.sendActionBar(ChatColor.GREEN + "Ancient Power deactivated");
                 disableEffect(player);
             }
             default -> {
                 if (ItemInfo.isDormantCharged(item)) {
-                    powerLevelConversion(item, inactiveToPowerOne);
+                    powerLevelConversion(item, itemLevel, color, isImbued);
                     player.sendActionBar(ChatColor.GREEN + "Ancient Power set to PowerLvl: " + (itemLevel + 2));
                     enableEffect(player);
                 } else {
@@ -95,6 +82,9 @@ public class ToggleAncientPower implements Listener {
     }
 
     public static void handleFullInventory(ItemStack item, Player player, boolean isImbued, int currentLevel) {
+        int itemLevel = currentLevel;
+        String color = ItemInfo.getColor(item);
+
         String powerThreeToPowerTwo = ItemInfo.IMBUED_TWO;
         String powerTwoToPowerOne = ItemInfo.IMBUED_ONE;
         String powerOneToInactive = ItemInfo.IMBUED_INACTIVE;
@@ -106,18 +96,13 @@ public class ToggleAncientPower implements Listener {
         }
 
         switch (currentLevel) {
-            case 3 -> {
-                powerLevelConversion(item, powerThreeToPowerTwo);
-                player.sendMessage(ChatColor.GREEN + "§CInventory is full - Ancient Power set to PowerLvl: " + (currentLevel - 1));
-                disableEffect(player);
-            }
-            case 2 -> {
-                powerLevelConversion(item, powerTwoToPowerOne);
+            case 3,2 -> {
+                powerLevelConversion(item, itemLevel, color, isImbued);
                 player.sendMessage(ChatColor.GREEN + "§CInventory is full - Ancient Power set to PowerLvl: " + (currentLevel - 1));
                 disableEffect(player);
             }
             case 1 -> {
-                powerLevelConversion(item, powerOneToInactive);
+                powerLevelConversion(item, itemLevel, color, isImbued);
                 player.sendMessage(ChatColor.GREEN + "§CInventory is full - Ancient Power deactivated");
                 disableEffect(player);
             }
@@ -154,10 +139,35 @@ public class ToggleAncientPower implements Listener {
         item.setItemMeta(meta);
     }
 
-    public static void powerLevelConversion(ItemStack item, String loreChange) {
+    public static void powerLevelConversion(ItemStack item, int itemLevel, String color, boolean isImbued) {
+
+        StringBuilder sb = new StringBuilder();
+
+        switch (color)
+        {
+            case "RED" -> sb.append(ItemInfo.ANCIENT_POWER_RED);
+            case "YELLOW" -> sb.append(ItemInfo.ANCIENT_YELLOW);
+            case "BLUE" -> sb.append(ItemInfo.ANCIENT_POWER_BLUE);
+        }
+        if (!isImbued) {
+            switch (itemLevel)
+            {
+                case 1 -> sb.append(ItemInfo.CHARGED_ONE);
+                case 2 -> sb.append(ItemInfo.CHARGED_TWO);
+                case 3 -> sb.append(ItemInfo.CHARGED_THREE);
+            }
+        } else {
+            switch (itemLevel)
+            {
+                case 1 -> sb.append(ItemInfo.IMBUED_ONE);
+                case 2 -> sb.append(ItemInfo.IMBUED_TWO);
+                case 3 -> sb.append(ItemInfo.IMBUED_THREE);
+            }
+        }
+
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,loreChange);
+        loreList.set(index,sb.toString());
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);

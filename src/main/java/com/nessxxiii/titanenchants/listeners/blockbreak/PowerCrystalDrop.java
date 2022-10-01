@@ -7,9 +7,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.Collection;
 
 public class PowerCrystalDrop implements Listener {
 
@@ -23,20 +20,16 @@ public class PowerCrystalDrop implements Listener {
                 || !player.getInventory().getItemInMainHand().getEnchantments().equals(ItemManager.excavator.getEnchantments())) {
             return;
         }
-        if(!block.getLocation().getWorld().getName().equalsIgnoreCase("world")){
-            player.sendMessage("You are not in the correct world for this! If you are trying to excavate power crystals go to /warp mining.");
-            return;
-        }
         if (!player.hasPermission("titan.enchants.powercrystaldrop")) return;
         event.setCancelled(true);
         block.setType(Material.AIR);
         int randomNumber = getRandomNumber(1,10);
         if (randomNumber <= 3) {
             for (int i = 0; i < randomNumber; i++){
-                player.getLocation().getWorld().dropItemNaturally(block.getLocation(), ItemManager.powerCrystal);
+                player.getLocation().getWorld().dropItemNaturally(block.getLocation(), ItemManager.powerCrystalCommon);
             }
         } else {
-            player.getLocation().getWorld().dropItemNaturally(block.getLocation(), ItemManager.powerCrystal);
+            player.getLocation().getWorld().dropItemNaturally(block.getLocation(), ItemManager.powerCrystalCommon);
         }
     }
     private static int getRandomNumber(int min, int max) {

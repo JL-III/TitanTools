@@ -92,7 +92,12 @@ public class PlayerCommands implements CommandExecutor{
                 return true;
             }
             Inventory inv = player.getInventory();
-            inv.addItem(ItemManager.powerCrystal);
+            inv.addItem(ItemManager.powerCrystalCommon);
+            inv.addItem(ItemManager.powerCrystalUncommon);
+            inv.addItem(ItemManager.powerCrystalSuper);
+            inv.addItem(ItemManager.powerCrystalEpic);
+            inv.addItem(ItemManager.powerCrystalUltra);
+
             player.updateInventory();
             return true;
         }
@@ -116,6 +121,27 @@ public class PlayerCommands implements CommandExecutor{
             player.updateInventory();
             return true;
         }
+
+        if ("crystalcheck".equalsIgnoreCase(args[0])) {
+            ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+
+            player.sendMessage("Item is powercrystal: " + ItemInfo.isPowerCrystal(itemInMainHand));
+            player.sendMessage("PowerCrystal type: " + ItemInfo.getPowerCrystalType(itemInMainHand));
+        }
         return true;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
