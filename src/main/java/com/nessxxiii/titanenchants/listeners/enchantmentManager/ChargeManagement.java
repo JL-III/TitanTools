@@ -6,6 +6,7 @@ import net.kyori.adventure.text.TextComponent;
 import org.bukkit.*;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -25,6 +26,8 @@ public class ChargeManagement implements Listener {
     public static void applyCharge(InventoryClickEvent event){
         Player player = (Player) event.getWhoClicked();
         if (event.getCurrentItem() == null) return;
+
+//        if (!validation(event)) return;
 
         ItemStack itemOnCursor = player.getItemOnCursor();
         ItemStack itemClicked = event.getCurrentItem();
@@ -50,6 +53,11 @@ public class ChargeManagement implements Listener {
         event.setCancelled(true);
     }
 
+    private static boolean validation(Event event) {
+
+        return false;
+    }
+
     public static void addChargeLore(ItemStack item, Integer amount){
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
@@ -71,17 +79,17 @@ public class ChargeManagement implements Listener {
             {
                 case "RED" -> {
                     loreList.set(index,ItemInfo.CHARGED_RED_ONE_COMPOSITE);
-                    loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_RED + finalCharge);
+                    loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_RED + " " + finalCharge);
                     Bukkit.getConsoleSender().sendMessage("3 Final Charge amount: " + finalCharge);
                 }
                 case "YELLOW" -> {
                     loreList.set(index,ItemInfo.CHARGED_YELLOW_ONE_COMPOSITE);
-                    loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_YELLOW + finalCharge);
+                    loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_YELLOW + " " + finalCharge);
                     Bukkit.getConsoleSender().sendMessage("3 Final Charge amount: " + finalCharge);
                 }
                 case "BLUE" -> {
                     loreList.set(index,ItemInfo.CHARGED_BLUE_ONE_COMPOSITE);
-                    loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_BLUE + finalCharge);
+                    loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_BLUE + " " + finalCharge);
                     Bukkit.getConsoleSender().sendMessage("3 Final Charge amount: " + finalCharge);
                 }
                 default -> {}

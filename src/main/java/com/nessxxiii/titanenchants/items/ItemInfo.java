@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -41,9 +42,9 @@ public class ItemInfo {
     public static final String CHARGED_INACTIVE = "§8Ancient Power ♆";
     public static final String IMBUED_INACTIVE = "§8Ancient Power Ω";
 
-    public static final String ANCIENT_POWER_RED = "§8Ancient Power §x§F§F§0§0§4§C ";
-    public static final String ANCIENT_POWER_YELLOW = "§8Ancient Power §x§F§F§E§C§2§7 ";
-    public static final String ANCIENT_POWER_BLUE = "§8Ancient Power §x§6§D§5§E§F§F ";
+    public static final String ANCIENT_POWER_RED = "§8Ancient Power §x§F§F§0§0§4§C";
+    public static final String ANCIENT_POWER_YELLOW = "§8Ancient Power §x§F§F§E§C§2§7";
+    public static final String ANCIENT_POWER_BLUE = "§8Ancient Power §x§6§D§5§E§F§F";
 
     public static final String CHARGED_ONE = "♆ I";
     public static final String CHARGED_TWO = "♆ II";
@@ -458,28 +459,17 @@ public class ItemInfo {
         if (item.isSimilar(ItemManager.powerCrystalCommon)) return true;
         if (item.isSimilar(ItemManager.powerCrystalUncommon)) return true;
         if (item.isSimilar(ItemManager.powerCrystalSuper)) return true;
+        if (item.isSimilar(ItemManager.powerCrystalEpic)) return true;
         if (item.isSimilar(ItemManager.powerCrystalUltra)) return true;
         return false;
-
-//        if (item.getType() != Material.AMETHYST_SHARD) return false;
-//        List<String> loreList = item.getItemMeta().getLore();
-//        if (loreList == null) return false;
-//        if (!item.getEnchantments().equals(ItemManager.powerCrystalCommon.getEnchantments())) return false;
-//        if (!loreList.equals(ItemManager.powerCrystalCommon.getLore())){
-//            Bukkit.getConsoleSender().sendMessage("Lore list from item does not match power crystal lore");
-//            return false;
-//        }
-//        if (loreList.stream().anyMatch(lore -> lore.matches(POWER_CRYSTAL_COMMON_CHARGE))){
-//            return true;
-//        };
-//        return false;
     }
 
     public static int getPowerCrystalType(ItemStack item) {
-        if (item.isSimilar(ItemManager.powerCrystalCommon)) return 0;
-        if (item.isSimilar(ItemManager.powerCrystalUncommon)) return 1;
-        if (item.isSimilar(ItemManager.powerCrystalSuper)) return 2;
-        if (item.isSimilar(ItemManager.powerCrystalUltra)) return 3;
+        if (item.isSimilar(ItemManager.powerCrystalCommon)) return 5;
+        if (item.isSimilar(ItemManager.powerCrystalUncommon)) return 4;
+        if (item.isSimilar(ItemManager.powerCrystalSuper)) return 3;
+        if (item.isSimilar(ItemManager.powerCrystalEpic)) return 2;
+        if (item.isSimilar(ItemManager.powerCrystalUltra)) return 1;
         return -1;
     }
 
