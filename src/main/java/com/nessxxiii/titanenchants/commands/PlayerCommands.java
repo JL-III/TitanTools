@@ -1,21 +1,28 @@
 package com.nessxxiii.titanenchants.commands;
 
+import com.nessxxiii.titanenchants.TitanEnchants;
 import com.nessxxiii.titanenchants.items.ItemManager;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
+import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Set;
 
 public class PlayerCommands implements CommandExecutor{
 
@@ -128,6 +135,7 @@ public class PlayerCommands implements CommandExecutor{
             player.sendMessage("Item is powercrystal: " + ItemInfo.isPowerCrystal(itemInMainHand));
             player.sendMessage("PowerCrystal type: " + ItemInfo.getPowerCrystalType(itemInMainHand));
         }
+
         return true;
     }
 }

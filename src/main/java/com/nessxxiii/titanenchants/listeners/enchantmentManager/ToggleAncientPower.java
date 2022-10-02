@@ -150,14 +150,18 @@ public class ToggleAncientPower implements Listener {
             case "BLUE" -> sb.append(ItemInfo.ANCIENT_POWER_BLUE);
         }
         if (!isImbued) {
-            switch (itemLevel)
+            switch (itemLevel + 1)
             {
                 case 1 -> sb.append(ItemInfo.CHARGED_ONE);
                 case 2 -> sb.append(ItemInfo.CHARGED_TWO);
                 case 3 -> sb.append(ItemInfo.CHARGED_THREE);
+                case 4 -> {
+                    sb.delete(0, sb.length());
+                    sb.append(ItemInfo.CHARGED_INACTIVE);
+                }
             }
         } else {
-            switch (itemLevel)
+            switch (itemLevel + 1)
             {
                 case 1 -> sb.append(ItemInfo.IMBUED_ONE);
                 case 2 -> sb.append(ItemInfo.IMBUED_TWO);

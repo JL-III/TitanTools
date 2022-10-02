@@ -4,7 +4,6 @@ import com.nessxxiii.titanenchants.items.ItemManager;
 import com.nessxxiii.titanenchants.commands.PlayerCommands;
 import com.nessxxiii.titanenchants.commands.PlayerCommandsTabComplete;
 import com.nessxxiii.titanenchants.listeners.ItemDamageEvent;
-import com.nessxxiii.titanenchants.listeners.TitanSponges.SpongePlaceEvent;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanPicks;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
@@ -14,10 +13,7 @@ import com.nessxxiii.titanenchants.listeners.blockbreak.PowerCrystalDrop;
 import com.nessxxiii.titanenchants.util.WorkloadRunnable;
 import com.nessxxiii.titanenchants.util.CheckPlayerLocation;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -51,8 +47,11 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
+
 //        Bukkit.getPluginManager().registerEvents(new SpongePlaceEvent(this, workloadRunnable),this);
 //        Bukkit.getPluginManager().registerEvents(new SnakeTail(), this);
+
+
 
         Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
         Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
@@ -62,7 +61,6 @@ public final class TitanEnchants extends JavaPlugin {
 //            titanSpongeRecipe.addIngredient(1, ItemManager.powerCrystal);
 //            Bukkit.addRecipe(titanSpongeRecipe);
 //        }
-
     }
 
     @Override

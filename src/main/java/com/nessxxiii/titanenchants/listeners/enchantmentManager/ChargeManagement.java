@@ -2,11 +2,8 @@ package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.*;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -14,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
-import java.util.Objects;
 
 import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.depletedChargeEffect;
 
@@ -27,35 +23,45 @@ public class ChargeManagement implements Listener {
         Player player = (Player) event.getWhoClicked();
         if (event.getCurrentItem() == null) return;
 
-//        if (!validation(event)) return;
-
-        ItemStack itemOnCursor = player.getItemOnCursor();
-        ItemStack itemClicked = event.getCurrentItem();
-        if (itemOnCursor.getItemMeta() == null) return;
-        int numberOfCharge = itemOnCursor.getAmount();
-        if (itemClicked.getType() == Material.AIR) return;
-        if (!ItemInfo.isPowerCrystal(itemOnCursor)) return;
-        if (ItemInfo.isPowerCrystal(itemClicked)) return;
-
-        if (!ItemInfo.isTitanTool(itemClicked)) {
-            return;
+        if (isValidated(player.getItemOnCursor(), event.getCurrentItem())) {
+            ItemStack itemOnCursor = player.getItemOnCursor();
+            int chargeAmount = getChargeAmount(itemOnCursor, itemOnCursor.getAmount());
+            addChargeLore(event.getCurrentItem(),chargeAmount);
+            player.getItemOnCursor().setAmount(0);
+            player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,player.getEyeLocation(),100);
+            player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE,10, 1);
+            event.setCancelled(true);
         }
-        if (!ItemInfo.isAllowedTitanType(itemClicked)) {
-            return;
-        }
-        if (ItemInfo.isImbued(itemClicked)) {
-            return;
-        }
-        addChargeLore(itemClicked,numberOfCharge * 100);
-        player.getItemOnCursor().setAmount(0);
-        player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,player.getEyeLocation(),100);
-        player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE,10, 1);
-        event.setCancelled(true);
     }
 
-    private static boolean validation(Event event) {
+    private static int getChargeAmount(ItemStack itemOnCursor, int amount) {
 
-        return false;
+        int crystalType = ItemInfo.getPowerCrystalType(itemOnCursor);
+
+        return switch (crystalType) {
+            case 5 -> 5 * amount;
+            case 4 -> 50 * amount;
+            case 3 -> 100 * amount;
+            case 2 -> 250 * amount;
+            case 1 -> 1000 * amount;
+            default -> 0;
+        };
+
+    }
+
+    private static boolean isValidated(ItemStack itemOnCursor, ItemStack itemClicked) {
+        //item on cursor must be powercrystal
+        if (itemOnCursor.getItemMeta() == null) return false;
+        if (!ItemInfo.isPowerCrystal(itemOnCursor)) return false;
+
+        //item clicked is the titan tool
+        if (itemClicked.getType() == Material.AIR) return false;
+        if (ItemInfo.isPowerCrystal(itemClicked)) return false;
+        if (!ItemInfo.isTitanTool(itemClicked)) return false;
+        if (!ItemInfo.isAllowedTitanType(itemClicked)) return false;
+        if (ItemInfo.isImbued(itemClicked)) return false;
+
+        return true;
     }
 
     public static void addChargeLore(ItemStack item, Integer amount){
