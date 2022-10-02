@@ -1,6 +1,7 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
 import com.nessxxiii.titanenchants.items.ItemInfo;
+import com.nessxxiii.titanenchants.util.PowerCrystalType;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -20,14 +21,14 @@ public class ChargeManagement implements Listener {
 
     @EventHandler
     public static void applyCharge(InventoryClickEvent event){
-        Player player = (Player) event.getWhoClicked();
         if (event.getCurrentItem() == null) return;
+        Player player = (Player) event.getWhoClicked();
 
         if (isValidated(player.getItemOnCursor(), event.getCurrentItem())) {
             ItemStack itemOnCursor = player.getItemOnCursor();
             int chargeAmount = getChargeAmount(itemOnCursor, itemOnCursor.getAmount());
-            addChargeLore(event.getCurrentItem(),chargeAmount);
             player.getItemOnCursor().setAmount(0);
+            addChargeLore(event.getCurrentItem(),chargeAmount);
             player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,player.getEyeLocation(),100);
             player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE,10, 1);
             event.setCancelled(true);
@@ -36,17 +37,16 @@ public class ChargeManagement implements Listener {
 
     private static int getChargeAmount(ItemStack itemOnCursor, int amount) {
 
-        int crystalType = ItemInfo.getPowerCrystalType(itemOnCursor);
+        PowerCrystalType crystalType = ItemInfo.getPowerCrystalType(itemOnCursor);
 
         return switch (crystalType) {
-            case 5 -> 5 * amount;
-            case 4 -> 50 * amount;
-            case 3 -> 100 * amount;
-            case 2 -> 250 * amount;
-            case 1 -> 1000 * amount;
+            case COMMON -> 5 * amount;
+            case UNCOMMON -> 50 * amount;
+            case SUPER -> 100 * amount;
+            case EPIC -> 250 * amount;
+            case ULTRA -> 1000 * amount;
             default -> 0;
         };
-
     }
 
     private static boolean isValidated(ItemStack itemOnCursor, ItemStack itemClicked) {

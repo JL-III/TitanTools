@@ -1,10 +1,9 @@
 package com.nessxxiii.titanenchants.items;
 
+import com.nessxxiii.titanenchants.util.PowerCrystalType;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -464,13 +463,13 @@ public class ItemInfo {
         return false;
     }
 
-    public static int getPowerCrystalType(ItemStack item) {
-        if (item.isSimilar(ItemManager.powerCrystalCommon)) return 5;
-        if (item.isSimilar(ItemManager.powerCrystalUncommon)) return 4;
-        if (item.isSimilar(ItemManager.powerCrystalSuper)) return 3;
-        if (item.isSimilar(ItemManager.powerCrystalEpic)) return 2;
-        if (item.isSimilar(ItemManager.powerCrystalUltra)) return 1;
-        return -1;
+    public static PowerCrystalType getPowerCrystalType(ItemStack item) {
+        if (item.isSimilar(ItemManager.powerCrystalCommon)) return PowerCrystalType.COMMON;
+        if (item.isSimilar(ItemManager.powerCrystalUncommon)) return PowerCrystalType.UNCOMMON;
+        if (item.isSimilar(ItemManager.powerCrystalSuper)) return PowerCrystalType.SUPER;
+        if (item.isSimilar(ItemManager.powerCrystalEpic)) return PowerCrystalType.EPIC;
+        if (item.isSimilar(ItemManager.powerCrystalUltra)) return PowerCrystalType.ULTRA;
+        return PowerCrystalType.NULL;
     }
 
     public static boolean hasCharge(ItemStack item){
