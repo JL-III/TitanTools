@@ -52,29 +52,29 @@ public class ItemInfo {
     public static final String IMBUED_TWO = "Ω II";
     public static final String IMBUED_THREE = "Ω III";
 
-    public static final String CHARGED_RED_ONE_COMPOSITE = ANCIENT_POWER_RED + CHARGED_ONE;
-    public static final String CHARGED_RED_TWO_COMPOSITE = ANCIENT_POWER_RED + CHARGED_TWO;
-    public static final String CHARGED_RED_THREE_COMPOSITE = ANCIENT_POWER_RED + CHARGED_THREE;
+    public static final String CHARGED_RED_ONE = ANCIENT_POWER_RED + CHARGED_ONE;
+    public static final String CHARGED_RED_TWO = ANCIENT_POWER_RED + CHARGED_TWO;
+    public static final String CHARGED_RED_THREE = ANCIENT_POWER_RED + CHARGED_THREE;
 
-    public static final String IMBUED_RED_ONE_COMPOSITE = ANCIENT_POWER_RED + IMBUED_ONE;
-    public static final String IMBUED_RED_TWO_COMPOSITE = ANCIENT_POWER_RED + IMBUED_TWO;
-    public static final String IMBUED_RED_THREE_COMPOSITE = ANCIENT_POWER_RED + IMBUED_THREE;
+    public static final String IMBUED_RED_ONE = ANCIENT_POWER_RED + IMBUED_ONE;
+    public static final String IMBUED_RED_TWO = ANCIENT_POWER_RED + IMBUED_TWO;
+    public static final String IMBUED_RED_THREE = ANCIENT_POWER_RED + IMBUED_THREE;
 
-    public static final String CHARGED_YELLOW_ONE_COMPOSITE = ANCIENT_POWER_YELLOW + CHARGED_ONE;
-    public static final String CHARGED_YELLOW_TWO_COMPOSITE = ANCIENT_POWER_YELLOW + CHARGED_TWO;
-    public static final String CHARGED_YELLOW_THREE_COMPOSITE = ANCIENT_POWER_YELLOW + CHARGED_THREE;
+    public static final String CHARGED_YELLOW_ONE = ANCIENT_POWER_YELLOW + CHARGED_ONE;
+    public static final String CHARGED_YELLOW_TWO = ANCIENT_POWER_YELLOW + CHARGED_TWO;
+    public static final String CHARGED_YELLOW_THREE = ANCIENT_POWER_YELLOW + CHARGED_THREE;
 
-    public static final String IMBUED_YELLOW_ONE_COMPOSITE = ANCIENT_POWER_YELLOW + IMBUED_ONE;
-    public static final String IMBUED_YELLOW_TWO_COMPOSITE = ANCIENT_POWER_YELLOW + IMBUED_TWO;
-    public static final String IMBUED_YELLOW_THREE_COMPOSITE = ANCIENT_POWER_YELLOW + IMBUED_THREE;
+    public static final String IMBUED_YELLOW_ONE = ANCIENT_POWER_YELLOW + IMBUED_ONE;
+    public static final String IMBUED_YELLOW_TWO = ANCIENT_POWER_YELLOW + IMBUED_TWO;
+    public static final String IMBUED_YELLOW_THREE = ANCIENT_POWER_YELLOW + IMBUED_THREE;
 
-    public static final String CHARGED_BLUE_ONE_COMPOSITE = ANCIENT_POWER_BLUE+ CHARGED_ONE;
-    public static final String CHARGED_BLUE_TWO_COMPOSITE = ANCIENT_POWER_BLUE + CHARGED_TWO;
-    public static final String CHARGED_BLUE_THREE_COMPOSITE = ANCIENT_POWER_BLUE + CHARGED_THREE;
+    public static final String CHARGED_BLUE_ONE = ANCIENT_POWER_BLUE+ CHARGED_ONE;
+    public static final String CHARGED_BLUE_TWO = ANCIENT_POWER_BLUE + CHARGED_TWO;
+    public static final String CHARGED_BLUE_THREE = ANCIENT_POWER_BLUE + CHARGED_THREE;
 
-    public static final String IMBUED_BLUE_ONE_COMPOSITE = ANCIENT_POWER_BLUE + IMBUED_ONE;
-    public static final String IMBUED_BLUE_TWO_COMPOSITE = ANCIENT_POWER_BLUE + IMBUED_TWO;
-    public static final String IMBUED_BLUE_THREE_COMPOSITE = ANCIENT_POWER_BLUE + IMBUED_THREE;
+    public static final String IMBUED_BLUE_ONE = ANCIENT_POWER_BLUE + IMBUED_ONE;
+    public static final String IMBUED_BLUE_TWO = ANCIENT_POWER_BLUE + IMBUED_TWO;
+    public static final String IMBUED_BLUE_THREE = ANCIENT_POWER_BLUE + IMBUED_THREE;
 
 //future conversion to component types
 //    public static final Component ANCIENT_RED_AS_COMPONENT = Component.text("§8Ancient Power§x§F§F§0§0§0§0 ♆");
@@ -87,6 +87,30 @@ public class ItemInfo {
 
     public static final String TITAN_SPONGE_LORE = "§8Ancient Power §x§F§F§0§0§4§C♆";
 
+    public static final Map<String, String[]> CHARGED_LORE_MATRIX = new HashMap<>(){
+        final String[] RED_ARRAY = {CHARGED_INACTIVE, CHARGED_RED_ONE, CHARGED_RED_TWO, CHARGED_RED_THREE};
+        final String[] YELLOW_ARRAY = {CHARGED_INACTIVE, CHARGED_YELLOW_ONE, CHARGED_YELLOW_TWO, CHARGED_YELLOW_THREE};
+        final String[] BLUE_ARRAY = {CHARGED_INACTIVE, CHARGED_BLUE_ONE, CHARGED_BLUE_TWO, CHARGED_BLUE_THREE};
+        {
+            put("RED", RED_ARRAY);
+            put("YELLOW", YELLOW_ARRAY);
+            put("BLUE", BLUE_ARRAY);
+
+        }
+    };
+
+    public static final Map<String, String[]> IMBUED_LORE_MATRIX = new HashMap<>(){
+        final String[] RED_ARRAY = {IMBUED_INACTIVE, IMBUED_RED_ONE, IMBUED_RED_TWO, IMBUED_RED_THREE};
+        final String[] YELLOW_ARRAY = {IMBUED_INACTIVE, IMBUED_YELLOW_ONE, IMBUED_YELLOW_TWO, IMBUED_YELLOW_THREE};
+        final String[] BLUE_ARRAY = {IMBUED_INACTIVE, IMBUED_BLUE_ONE, IMBUED_BLUE_TWO, IMBUED_BLUE_THREE};
+        {
+            put("RED", RED_ARRAY);
+            put("YELLOW", YELLOW_ARRAY);
+            put("BLUE", BLUE_ARRAY);
+
+        }
+    };
+
     public static final Set<String> TITAN_LORE = new HashSet<>(){
         {
             add(ANCIENT_RED);
@@ -97,29 +121,29 @@ public class ItemInfo {
             add(IMBUED_INACTIVE);
             //composites were created for flexibility with validation checks
             //and charge management.
-            add(CHARGED_RED_ONE_COMPOSITE);
-            add(CHARGED_RED_TWO_COMPOSITE);
-            add(CHARGED_RED_THREE_COMPOSITE);
+            add(CHARGED_RED_ONE);
+            add(CHARGED_RED_TWO);
+            add(CHARGED_RED_THREE);
 
-            add(CHARGED_YELLOW_ONE_COMPOSITE);
-            add(CHARGED_YELLOW_TWO_COMPOSITE);
-            add(CHARGED_YELLOW_THREE_COMPOSITE);
+            add(CHARGED_YELLOW_ONE);
+            add(CHARGED_YELLOW_TWO);
+            add(CHARGED_YELLOW_THREE);
 
-            add(CHARGED_BLUE_ONE_COMPOSITE);
-            add(CHARGED_BLUE_TWO_COMPOSITE);
-            add(CHARGED_BLUE_THREE_COMPOSITE);
+            add(CHARGED_BLUE_ONE);
+            add(CHARGED_BLUE_TWO);
+            add(CHARGED_BLUE_THREE);
 
-            add(IMBUED_RED_ONE_COMPOSITE);
-            add(IMBUED_RED_TWO_COMPOSITE);
-            add(IMBUED_RED_THREE_COMPOSITE);
+            add(IMBUED_RED_ONE);
+            add(IMBUED_RED_TWO);
+            add(IMBUED_RED_THREE);
 
-            add(IMBUED_YELLOW_ONE_COMPOSITE);
-            add(IMBUED_YELLOW_TWO_COMPOSITE);
-            add(IMBUED_YELLOW_THREE_COMPOSITE);
+            add(IMBUED_YELLOW_ONE);
+            add(IMBUED_YELLOW_TWO);
+            add(IMBUED_YELLOW_THREE);
 
-            add(IMBUED_BLUE_ONE_COMPOSITE);
-            add(IMBUED_BLUE_TWO_COMPOSITE);
-            add(IMBUED_BLUE_THREE_COMPOSITE);
+            add(IMBUED_BLUE_ONE);
+            add(IMBUED_BLUE_TWO);
+            add(IMBUED_BLUE_THREE);
 
         }
     };
@@ -142,96 +166,97 @@ public class ItemInfo {
 
     public static final List<String> ACTIVE_LORE = new ArrayList<>(){
         {
-            add(CHARGED_RED_ONE_COMPOSITE);
-            add(CHARGED_RED_TWO_COMPOSITE);
-            add(CHARGED_RED_THREE_COMPOSITE);
+            add(CHARGED_RED_ONE);
+            add(CHARGED_RED_TWO);
+            add(CHARGED_RED_THREE);
 
-            add(CHARGED_YELLOW_ONE_COMPOSITE);
-            add(CHARGED_YELLOW_TWO_COMPOSITE);
-            add(CHARGED_YELLOW_THREE_COMPOSITE);
+            add(CHARGED_YELLOW_ONE);
+            add(CHARGED_YELLOW_TWO);
+            add(CHARGED_YELLOW_THREE);
 
-            add(CHARGED_BLUE_ONE_COMPOSITE);
-            add(CHARGED_BLUE_TWO_COMPOSITE);
-            add(CHARGED_BLUE_THREE_COMPOSITE);
+            add(CHARGED_BLUE_ONE);
+            add(CHARGED_BLUE_TWO);
+            add(CHARGED_BLUE_THREE);
 
-            add(IMBUED_RED_ONE_COMPOSITE);
-            add(IMBUED_RED_TWO_COMPOSITE);
-            add(IMBUED_RED_THREE_COMPOSITE);
+            add(IMBUED_RED_ONE);
+            add(IMBUED_RED_TWO);
+            add(IMBUED_RED_THREE);
 
-            add(IMBUED_YELLOW_ONE_COMPOSITE);
-            add(IMBUED_YELLOW_TWO_COMPOSITE);
-            add(IMBUED_YELLOW_THREE_COMPOSITE);
+            add(IMBUED_YELLOW_ONE);
+            add(IMBUED_YELLOW_TWO);
+            add(IMBUED_YELLOW_THREE);
 
-            add(IMBUED_BLUE_ONE_COMPOSITE);
-            add(IMBUED_BLUE_TWO_COMPOSITE);
-            add(IMBUED_BLUE_THREE_COMPOSITE);
+            add(IMBUED_BLUE_ONE);
+            add(IMBUED_BLUE_TWO);
+            add(IMBUED_BLUE_THREE);
         }
     };
 
     public static final List<String> IMBUED_LORE = new ArrayList<>(){
         {
             add(IMBUED_INACTIVE);
-            add(IMBUED_RED_ONE_COMPOSITE);
-            add(IMBUED_RED_TWO_COMPOSITE);
-            add(IMBUED_RED_THREE_COMPOSITE);
+            add(IMBUED_RED_ONE);
+            add(IMBUED_RED_TWO);
+            add(IMBUED_RED_THREE);
 
-            add(IMBUED_YELLOW_ONE_COMPOSITE);
-            add(IMBUED_YELLOW_TWO_COMPOSITE);
-            add(IMBUED_YELLOW_THREE_COMPOSITE);
+            add(IMBUED_YELLOW_ONE);
+            add(IMBUED_YELLOW_TWO);
+            add(IMBUED_YELLOW_THREE);
 
-            add(IMBUED_BLUE_ONE_COMPOSITE);
-            add(IMBUED_BLUE_TWO_COMPOSITE);
-            add(IMBUED_BLUE_THREE_COMPOSITE);
+            add(IMBUED_BLUE_ONE);
+            add(IMBUED_BLUE_TWO);
+            add(IMBUED_BLUE_THREE);
         }
     };
 
     public static final List<String> ACTIVE_IMBUED_LORE = new ArrayList<>(){
         {
-            add(IMBUED_RED_ONE_COMPOSITE);
-            add(IMBUED_RED_TWO_COMPOSITE);
-            add(IMBUED_RED_THREE_COMPOSITE);
+            add(IMBUED_RED_ONE);
+            add(IMBUED_RED_TWO);
+            add(IMBUED_RED_THREE);
 
-            add(IMBUED_YELLOW_ONE_COMPOSITE);
-            add(IMBUED_YELLOW_TWO_COMPOSITE);
-            add(IMBUED_YELLOW_THREE_COMPOSITE);
+            add(IMBUED_YELLOW_ONE);
+            add(IMBUED_YELLOW_TWO);
+            add(IMBUED_YELLOW_THREE);
 
-            add(IMBUED_BLUE_ONE_COMPOSITE);
-            add(IMBUED_BLUE_TWO_COMPOSITE);
-            add(IMBUED_BLUE_THREE_COMPOSITE);
+            add(IMBUED_BLUE_ONE);
+            add(IMBUED_BLUE_TWO);
+            add(IMBUED_BLUE_THREE);
         }
     };
 
     public static final List<String> CHARGED_LORE = new ArrayList<>(){
         {
             add(CHARGED_INACTIVE);
-            add(CHARGED_RED_ONE_COMPOSITE);
-            add(CHARGED_RED_TWO_COMPOSITE);
-            add(CHARGED_RED_THREE_COMPOSITE);
 
-            add(CHARGED_YELLOW_ONE_COMPOSITE);
-            add(CHARGED_YELLOW_TWO_COMPOSITE);
-            add(CHARGED_YELLOW_THREE_COMPOSITE);
+            add(CHARGED_RED_ONE);
+            add(CHARGED_RED_TWO);
+            add(CHARGED_RED_THREE);
 
-            add(CHARGED_BLUE_ONE_COMPOSITE);
-            add(CHARGED_BLUE_TWO_COMPOSITE);
-            add(CHARGED_BLUE_THREE_COMPOSITE);
+            add(CHARGED_YELLOW_ONE);
+            add(CHARGED_YELLOW_TWO);
+            add(CHARGED_YELLOW_THREE);
+
+            add(CHARGED_BLUE_ONE);
+            add(CHARGED_BLUE_TWO);
+            add(CHARGED_BLUE_THREE);
 
         }
     };
 
     public static final List<String> ACTIVE_CHARGED_LORE = new ArrayList<>(){
         {
-            add(CHARGED_RED_ONE_COMPOSITE);
-            add(CHARGED_RED_TWO_COMPOSITE);
-            add(CHARGED_RED_THREE_COMPOSITE);
+            add(CHARGED_RED_ONE);
+            add(CHARGED_RED_TWO);
+            add(CHARGED_RED_THREE);
 
-            add(CHARGED_YELLOW_ONE_COMPOSITE);
-            add(CHARGED_YELLOW_TWO_COMPOSITE);
-            add(CHARGED_YELLOW_THREE_COMPOSITE);
+            add(CHARGED_YELLOW_ONE);
+            add(CHARGED_YELLOW_TWO);
+            add(CHARGED_YELLOW_THREE);
 
-            add(CHARGED_BLUE_ONE_COMPOSITE);
-            add(CHARGED_BLUE_TWO_COMPOSITE);
-            add(CHARGED_BLUE_THREE_COMPOSITE);
+            add(CHARGED_BLUE_ONE);
+            add(CHARGED_BLUE_TWO);
+            add(CHARGED_BLUE_THREE);
 
         }
     };
@@ -246,39 +271,39 @@ public class ItemInfo {
     public static final List<String> LEVEL_ONE = new ArrayList<>(){
         {
 
-            add(CHARGED_RED_ONE_COMPOSITE);
-            add(CHARGED_YELLOW_ONE_COMPOSITE);
-            add(CHARGED_BLUE_ONE_COMPOSITE);
+            add(CHARGED_RED_ONE);
+            add(CHARGED_YELLOW_ONE);
+            add(CHARGED_BLUE_ONE);
 
-            add(IMBUED_RED_ONE_COMPOSITE);
-            add(IMBUED_YELLOW_ONE_COMPOSITE);
-            add(IMBUED_BLUE_ONE_COMPOSITE);
+            add(IMBUED_RED_ONE);
+            add(IMBUED_YELLOW_ONE);
+            add(IMBUED_BLUE_ONE);
 
         }
     };
 
     public static final List<String> LEVEL_TWO = new ArrayList<>(){
         {
-            add(CHARGED_RED_TWO_COMPOSITE);
-            add(CHARGED_YELLOW_TWO_COMPOSITE);
-            add(CHARGED_BLUE_TWO_COMPOSITE);
+            add(CHARGED_RED_TWO);
+            add(CHARGED_YELLOW_TWO);
+            add(CHARGED_BLUE_TWO);
 
-            add(IMBUED_RED_TWO_COMPOSITE);
-            add(IMBUED_YELLOW_TWO_COMPOSITE);
-            add(IMBUED_BLUE_TWO_COMPOSITE);
+            add(IMBUED_RED_TWO);
+            add(IMBUED_YELLOW_TWO);
+            add(IMBUED_BLUE_TWO);
 
         }
     };
 
     public static final List<String> LEVEL_THREE = new ArrayList<>(){
         {
-            add(CHARGED_RED_THREE_COMPOSITE);
-            add(CHARGED_YELLOW_THREE_COMPOSITE);
-            add(CHARGED_BLUE_THREE_COMPOSITE);
+            add(CHARGED_RED_THREE);
+            add(CHARGED_YELLOW_THREE);
+            add(CHARGED_BLUE_THREE);
 
-            add(IMBUED_RED_THREE_COMPOSITE);
-            add(IMBUED_YELLOW_THREE_COMPOSITE);
-            add(IMBUED_BLUE_THREE_COMPOSITE);
+            add(IMBUED_RED_THREE);
+            add(IMBUED_YELLOW_THREE);
+            add(IMBUED_BLUE_THREE);
 
         }
     };
@@ -383,7 +408,7 @@ public class ItemInfo {
                 return 3;
             }
         }
-        return -1;
+        return 0;
 
     }
 
@@ -472,7 +497,7 @@ public class ItemInfo {
         return PowerCrystalType.NULL;
     }
 
-    public static boolean hasCharge(ItemStack item){
+    public static boolean isChargedAndActive(ItemStack item){
         if (!item.hasItemMeta()) return false;
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
@@ -500,6 +525,12 @@ public class ItemInfo {
             }
         }
         return null;
+    }
+
+    public static Map<String, Integer> getColorAndPowerLevel(ItemStack item) {
+        Map<String, Integer> colorAndPower = new HashMap<>();
+        colorAndPower.put(getColor(item), getItemLevel(item));
+        return colorAndPower;
     }
 
     public static Integer getAncientPowerLoreIndex(List<String> loreList) {

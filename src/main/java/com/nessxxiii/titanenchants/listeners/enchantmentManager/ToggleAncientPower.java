@@ -1,7 +1,7 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
 import com.nessxxiii.titanenchants.items.ItemInfo;
-import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -141,37 +141,23 @@ public class ToggleAncientPower implements Listener {
 
     public static void powerLevelConversion(ItemStack item, int itemLevel, String color, boolean isImbued) {
 
-        StringBuilder sb = new StringBuilder();
+        String loreToAdd;
+        int itemLevelToGet = itemLevel <= 2 ? itemLevel + 1 : 0;
 
-        switch (color)
-        {
-            case "RED" -> sb.append(ItemInfo.ANCIENT_POWER_RED);
-            case "YELLOW" -> sb.append(ItemInfo.ANCIENT_YELLOW);
-            case "BLUE" -> sb.append(ItemInfo.ANCIENT_POWER_BLUE);
-        }
-        if (!isImbued) {
-            switch (itemLevel + 1)
-            {
-                case 1 -> sb.append(ItemInfo.CHARGED_ONE);
-                case 2 -> sb.append(ItemInfo.CHARGED_TWO);
-                case 3 -> sb.append(ItemInfo.CHARGED_THREE);
-                case 4 -> {
-                    sb.delete(0, sb.length());
-                    sb.append(ItemInfo.CHARGED_INACTIVE);
-                }
-            }
+
+        if (isImbued) {
+            loreToAdd = ItemInfo.IMBUED_LORE_MATRIX.get(color)[itemLevelToGet];
         } else {
-            switch (itemLevel + 1)
-            {
-                case 1 -> sb.append(ItemInfo.IMBUED_ONE);
-                case 2 -> sb.append(ItemInfo.IMBUED_TWO);
-                case 3 -> sb.append(ItemInfo.IMBUED_THREE);
-            }
+            loreToAdd = ItemInfo.CHARGED_LORE_MATRIX.get(color)[itemLevelToGet];
         }
+        Bukkit.getConsoleSender().sendMessage("Item imbued status: " + isImbued);
+        Bukkit.getConsoleSender().sendMessage("Item powerLevel: " + itemLevel);
+        Bukkit.getConsoleSender().sendMessage("ItemLevel to get: " + itemLevelToGet);
+        Bukkit.getConsoleSender().sendMessage("Item Color: " + color);
 
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,sb.toString());
+        loreList.set(index, loreToAdd);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
@@ -185,7 +171,7 @@ public class ToggleAncientPower implements Listener {
     }
 
     private static boolean processItemValidation(ItemStack item){
-        if (!ItemInfo.hasCharge(item) && !ItemInfo.isImbued(item)) return false;
+        if (!ItemInfo.isCharged(item) && !ItemInfo.isImbued(item)) return false;
         if (!ItemInfo.isAllowedTitanType(item)) return false;
         if (!item.hasItemMeta()) return false;
         return ItemInfo.isTitanTool(item);

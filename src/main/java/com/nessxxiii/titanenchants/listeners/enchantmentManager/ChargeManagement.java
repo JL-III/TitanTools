@@ -1,7 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
 import com.nessxxiii.titanenchants.items.ItemInfo;
-import com.nessxxiii.titanenchants.util.PowerCrystalType;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -37,9 +36,7 @@ public class ChargeManagement implements Listener {
 
     private static int getChargeAmount(ItemStack itemOnCursor, int amount) {
 
-        PowerCrystalType crystalType = ItemInfo.getPowerCrystalType(itemOnCursor);
-
-        return switch (crystalType) {
+        return switch (ItemInfo.getPowerCrystalType(itemOnCursor)) {
             case COMMON -> 5 * amount;
             case UNCOMMON -> 50 * amount;
             case SUPER -> 100 * amount;
@@ -70,7 +67,7 @@ public class ChargeManagement implements Listener {
         int chargeIndex = index + 1;
         String itemColor = ItemInfo.getColor(item);
         int finalCharge;
-        if (ItemInfo.hasCharge(item)) {
+        if (ItemInfo.isChargedAndActive(item)) {
             String string = loreList.get(chargeIndex);
             String string1 = string.substring(24);
             int previousCharge = Integer.parseInt(string1);
@@ -84,19 +81,19 @@ public class ChargeManagement implements Listener {
             switch (itemColor)
             {
                 case "RED" -> {
-                    loreList.set(index,ItemInfo.CHARGED_RED_ONE_COMPOSITE);
+                    loreList.set(index,ItemInfo.CHARGED_RED_ONE);
                     loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_RED + " " + finalCharge);
-                    Bukkit.getConsoleSender().sendMessage("3 Final Charge amount: " + finalCharge);
+                    Bukkit.getConsoleSender().sendMessage("3 RED Final Charge amount: " + finalCharge);
                 }
                 case "YELLOW" -> {
-                    loreList.set(index,ItemInfo.CHARGED_YELLOW_ONE_COMPOSITE);
+                    loreList.set(index,ItemInfo.CHARGED_YELLOW_ONE);
                     loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_YELLOW + " " + finalCharge);
-                    Bukkit.getConsoleSender().sendMessage("3 Final Charge amount: " + finalCharge);
+                    Bukkit.getConsoleSender().sendMessage("3 YELLOW Final Charge amount: " + finalCharge);
                 }
                 case "BLUE" -> {
-                    loreList.set(index,ItemInfo.CHARGED_BLUE_ONE_COMPOSITE);
+                    loreList.set(index,ItemInfo.CHARGED_BLUE_ONE);
                     loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_BLUE + " " + finalCharge);
-                    Bukkit.getConsoleSender().sendMessage("3 Final Charge amount: " + finalCharge);
+                    Bukkit.getConsoleSender().sendMessage("3 BLUE Final Charge amount: " + finalCharge);
                 }
                 default -> {}
             }
@@ -110,7 +107,7 @@ public class ChargeManagement implements Listener {
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
         Integer chargeIndex = index + 1;
-        if (ItemInfo.hasCharge(item)) {
+        if (ItemInfo.isChargedAndActive(item)) {
             String string = loreList.get(chargeIndex);
             String string1 = string.substring(24);
             int previousCharge = Integer.parseInt(string1);
