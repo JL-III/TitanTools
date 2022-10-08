@@ -58,6 +58,7 @@ public class ChargeManagement implements Listener {
         if (!ItemInfo.isAllowedTitanType(itemClicked)) return false;
         if (ItemInfo.isImbued(itemClicked)) return false;
 
+
         return true;
     }
 
