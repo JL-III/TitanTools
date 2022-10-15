@@ -17,7 +17,7 @@ public class ItemManager {
     public static ItemStack powerCrystalEpic;
     public static ItemStack powerCrystalUltra;
     public static ItemStack excavator;
-    public static ItemStack titanSponge;
+
 
     public static void Init(){
         createPowerCrystalCommon();
@@ -26,7 +26,6 @@ public class ItemManager {
         createPowerCrystalEpic();
         createPowerCrystalUltra();
         createExcavator();
-        createTitanSponge(1);
     }
 
     private static void createPowerCrystalCommon() {
@@ -114,20 +113,6 @@ public class ItemManager {
         excavator = item;
     }
 
-    public static ItemStack createTitanSponge(int amount){
 
-        ItemStack item = new ItemStack(Material.SPONGE, amount);
-        ItemMeta meta = item.getItemMeta();
-        List<String> lore = new ArrayList<>();
-        lore.add(ItemInfo.TITAN_SPONGE_LORE);
-        meta.setLore(lore);
-        meta.setDisplayName(ItemInfo.SPONGE_DISPLAY_NAME);
-        meta.addEnchant(Enchantment.SILK_TOUCH,1,true);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        item.setItemMeta(meta);
-        titanSponge = item;
-
-        return item;
-    }
 
 }

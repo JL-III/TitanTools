@@ -83,10 +83,6 @@ public class ItemInfo {
 
     public static final String EXCAVATION_TOOL_DISPLAY_NAME = "§x§f§b§b§5§0§0§lE§x§f§6§a§7§1§3§lx§x§f§1§9§9§2§7§lc§x§e§c§8§b§3§a§la§x§e§7§7§d§4§e§lv§x§e§2§6§f§6§1§la§x§d§d§6§1§7§5§lt§x§d§9§5§4§8§8§li§x§d§4§4§6§9§c§lo§x§c§f§3§8§a§f§ln §x§c§a§2§a§c§3§lT§x§c§5§1§c§d§6§lo§x§c§0§0§e§e§a§lo§x§b§b§0§0§f§d§ll   ";
 
-    public static final String SPONGE_DISPLAY_NAME = "§x§7§F§0§0§0§0§k %§x§8§8§0§0§0§1§l T§x§9§2§0§0§0§2§lh§x§9§B§0§0§0§3§le§x§A§5§0§0§0§4§l T§x§A§E§0§0§0§4§li§x§B§8§0§0§0§4§lt§x§C§2§0§0§0§4§la§x§C§C§0§0§0§3§ln§x§D§6§0§0§0§3§l S§x§E§0§0§0§0§2§lp§x§E§A§0§0§0§2§lo§x§F§5§0§0§0§1§ln§x§F§5§0§0§0§1§lg§x§F§5§0§0§0§1§le§x§F§5§0§0§0§1§l§k %";
-
-    public static final String TITAN_SPONGE_LORE = "§8Ancient Power §x§F§F§0§0§4§C♆";
-
     public static final Map<String, String[]> CHARGED_LORE_MATRIX = new HashMap<>(){
         final String[] RED_ARRAY = {CHARGED_INACTIVE, CHARGED_RED_ONE, CHARGED_RED_TWO, CHARGED_RED_THREE};
         final String[] YELLOW_ARRAY = {CHARGED_INACTIVE, CHARGED_YELLOW_ONE, CHARGED_YELLOW_TWO, CHARGED_YELLOW_THREE};
@@ -571,16 +567,4 @@ public class ItemInfo {
         return (isImbued(item) || isCharged(item));
     }
 
-    public static boolean isTitanSponge(ItemStack item){
-
-        if (item.getItemMeta() == null) return false;
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return false;
-        for (String lore : loreList) {
-            if (TITAN_SPONGE_LORE.contains(lore)) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
