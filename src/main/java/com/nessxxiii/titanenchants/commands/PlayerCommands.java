@@ -118,16 +118,6 @@ public class PlayerCommands implements CommandExecutor{
             player.updateInventory();
             return true;
         }
-        if ("sponge".equalsIgnoreCase(args[0])) {
-            if (!player.hasPermission("titan.enchants.sponge.add")) {
-                player.sendMessage(ChatColor.RED + "No permission.");
-                return true;
-            }
-            Inventory inv = player.getInventory();
-            inv.addItem(ItemManager.titanSponge);
-            player.updateInventory();
-            return true;
-        }
 
         if ("crystalcheck".equalsIgnoreCase(args[0])) {
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
