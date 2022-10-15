@@ -27,7 +27,7 @@ public class ChargeManagement implements Listener {
             ItemStack itemOnCursor = player.getItemOnCursor();
             int chargeAmount = getChargeAmount(itemOnCursor, itemOnCursor.getAmount());
             player.getItemOnCursor().setAmount(0);
-            addChargeLore(event.getCurrentItem(),chargeAmount);
+            addChargeLore(player, event.getCurrentItem(),chargeAmount);
             player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,player.getEyeLocation(),100);
             player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE,10, 1);
             event.setCancelled(true);
@@ -62,46 +62,60 @@ public class ChargeManagement implements Listener {
         return true;
     }
 
-    public static void addChargeLore(ItemStack item, Integer amount){
+    public static void addChargeLore(Player player, ItemStack item, Integer amount){
+        if (!item.getItemMeta().hasLore()) {
+            Bukkit.getConsoleSender().sendMessage("Error occurred when adding Charge, no lore was found on item.");
+            return;
+        }
         List<String> loreList = item.getItemMeta().getLore();
-        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
+        int index = ItemInfo.getAncientPowerLoreIndex(loreList);
+        if (index == -1) {
+            Bukkit.getConsoleSender().sendMessage("Error trying to find lore index, returned with -1");
+            return;
+        }
         int chargeIndex = index + 1;
         String itemColor = ItemInfo.getColor(item);
         int finalCharge;
         if (ItemInfo.isChargedAndActive(item)) {
-            String string = loreList.get(chargeIndex);
-            String string1 = string.substring(24);
-            int previousCharge = Integer.parseInt(string1);
+            int previousCharge = Integer.parseInt(loreList.get(chargeIndex).substring(24));
             finalCharge = previousCharge + (amount);
-            Bukkit.getConsoleSender().sendMessage("1 Final Charge amount: " + finalCharge);
         } else {
             finalCharge = amount;
-            Bukkit.getConsoleSender().sendMessage("2 Final Charge amount: " + finalCharge);
         }
         if (itemColor != null) {
+            String indexString;
+            String chargeIndexString;
             switch (itemColor)
             {
                 case "RED" -> {
-                    loreList.set(index,ItemInfo.CHARGED_RED_ONE);
-                    loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_RED + " " + finalCharge);
-                    Bukkit.getConsoleSender().sendMessage("3 RED Final Charge amount: " + finalCharge);
+                    indexString = ItemInfo.CHARGED_RED_ONE;
+                    chargeIndexString = ItemInfo.ANCIENT_CHARGE_RED;
                 }
                 case "YELLOW" -> {
-                    loreList.set(index,ItemInfo.CHARGED_YELLOW_ONE);
-                    loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_YELLOW + " " + finalCharge);
-                    Bukkit.getConsoleSender().sendMessage("3 YELLOW Final Charge amount: " + finalCharge);
+                    indexString = ItemInfo.CHARGED_YELLOW_ONE;
+                    chargeIndexString = ItemInfo.ANCIENT_CHARGE_YELLOW;
                 }
                 case "BLUE" -> {
-                    loreList.set(index,ItemInfo.CHARGED_BLUE_ONE);
-                    loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE_BLUE + " " + finalCharge);
-                    Bukkit.getConsoleSender().sendMessage("3 BLUE Final Charge amount: " + finalCharge);
+                    indexString = ItemInfo.CHARGED_BLUE_ONE;
+                    chargeIndexString = ItemInfo.ANCIENT_CHARGE_BLUE;
                 }
-                default -> {}
+                default -> {
+                    indexString = "Error";
+                    chargeIndexString = "Error";
+                }
             }
+            if (indexString.equals("Error")) {
+                Bukkit.getConsoleSender().sendMessage("Error occurred while adding charged lore.");
+                return;
+            }
+            loreList.set(index, indexString);
+            loreList.set(chargeIndex, chargeIndexString + " " + finalCharge);
+            ItemMeta meta = item.getItemMeta();
+            meta.setLore(loreList);
+            item.setItemMeta(meta);
+            Bukkit.getConsoleSender().sendMessage(player.getName() + " Used a power crystal: " + amount);
+            Bukkit.getConsoleSender().sendMessage(indexString + " " + chargeIndexString + " " + finalCharge);
         }
-        ItemMeta meta = item.getItemMeta();
-        meta.setLore(loreList);
-        item.setItemMeta(meta);
     }
 
     public static void decreaseChargeLore(ItemStack item, Player player, Integer amountTaken){
@@ -113,6 +127,7 @@ public class ChargeManagement implements Listener {
             String string1 = string.substring(24);
             int previousCharge = Integer.parseInt(string1);
             int remainingCharge = previousCharge - amountTaken;
+            String color = ItemInfo.getColor(item);
             if (remainingCharge < 1 && ItemInfo.getColor(item).equals("RED")) {
                 loreList.set(index,ItemInfo.ANCIENT_RED);
                 loreList.set(chargeIndex,ItemInfo.ANCIENT_DEPLETED);

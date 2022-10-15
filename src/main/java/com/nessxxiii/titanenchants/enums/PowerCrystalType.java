@@ -1,4 +1,4 @@
-package com.nessxxiii.titanenchants.util;
+package com.nessxxiii.titanenchants.enums;
 
 public enum PowerCrystalType {
 

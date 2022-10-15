@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.items;
 
-import com.nessxxiii.titanenchants.util.PowerCrystalType;
+import com.nessxxiii.titanenchants.enums.PowerCrystalType;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -529,12 +529,12 @@ public class ItemInfo {
         return colorAndPower;
     }
 
-    public static Integer getAncientPowerLoreIndex(List<String> loreList) {
+    public static int getAncientPowerLoreIndex(List<String> loreList) {
 //     Bukkit.getServer().getConsoleSender().sendMessage("inside of getAncientPowerLoreIndex");
         for (int i = 0; i < loreList.size(); i++){
             if (TITAN_LORE.contains(loreList.get(i))) return i;
         }
-        return null;
+        return -1;
     }
 
     public static List<Component> getLore(Player player) {
