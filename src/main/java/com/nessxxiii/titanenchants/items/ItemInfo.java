@@ -21,6 +21,8 @@ public class ItemInfo {
     public static final String ANCIENT_CHARGE_YELLOW = "§8Charge:§x§F§F§E§C§2§7";
     public static final String ANCIENT_CHARGE_BLUE = "§8Charge:§x§6§D§5§E§F§F";
 
+    public static final String CHARGE_STRING = "§8Charge:";
+
     public static final String POWER_CRYSTAL_COMMON_CHARGE = "§x§F§F§0§0§4§CAncient Charge 5";
     public static final String POWER_CRYSTAL_TYPE_COMMON = ChatColor.DARK_PURPLE + "Type: " + ChatColor.GRAY + "Common";
     public static final String POWER_CRYSTAL_UNCOMMON_CHARGE = "§x§F§F§0§0§4§CAncient Charge 50";
@@ -38,12 +40,16 @@ public class ItemInfo {
     public static final String YELLOW = "§x§F§F§E§C§2§7";
     public static final String BLUE = "§x§6§D§5§E§F§F";
 
+    public static final String CHARGED = "♆";
+
     public static final String CHARGED_INACTIVE = "§8Ancient Power ♆";
     public static final String IMBUED_INACTIVE = "§8Ancient Power Ω";
 
     public static final String ANCIENT_POWER_RED = "§8Ancient Power §x§F§F§0§0§4§C";
     public static final String ANCIENT_POWER_YELLOW = "§8Ancient Power §x§F§F§E§C§2§7";
     public static final String ANCIENT_POWER_BLUE = "§8Ancient Power §x§6§D§5§E§F§F";
+
+    public static final String ANCIENT_POWER_STRING = "§8Ancient Power ";
 
     public static final String CHARGED_ONE = "♆ I";
     public static final String CHARGED_TWO = "♆ II";
@@ -516,11 +522,27 @@ public class ItemInfo {
         if (loreList == null) return null;
         for (String lore : loreList) {
             if (lore.matches("(.*)" + RED + "(.*)")) {
-                return "RED";
+                return RED;
             } else if (lore.matches("(.*)" + YELLOW + "(.*)")) {
-                return "YELLOW";
+                return YELLOW;
             } else if (lore.matches("(.*)" + BLUE + "(.*)")) {
-                return "BLUE";
+                return BLUE;
+            }
+        }
+        return null;
+    }
+
+    public static String getColorStringForDecreaseChargeLore(ItemStack item){
+        if (!item.hasItemMeta()) return null;
+        List<String> loreList = item.getItemMeta().getLore();
+        if (loreList == null) return null;
+        for (String lore : loreList) {
+            if (lore.matches("(.*)" + RED + "(.*)")) {
+                return RED;
+            } else if (lore.matches("(.*)" + YELLOW + "(.*)")) {
+                return YELLOW;
+            } else if (lore.matches("(.*)" + BLUE + "(.*)")) {
+                return ItemInfo.BLUE;
             }
         }
         return null;

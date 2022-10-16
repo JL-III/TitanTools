@@ -4,6 +4,7 @@ import com.nessxxiii.titanenchants.items.ItemInfo;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.*;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -67,7 +68,7 @@ public class ChargeManagement implements Listener {
         int index = ItemInfo.getAncientPowerLoreIndex(loreList);
 
         int chargeIndex = index + 1;
-        String itemColor = ItemInfo.getColor(item);
+        String color = ItemInfo.getColor(item);
         int previousCharge;
         int finalCharge;
         if (ItemInfo.isCharged(item)) {
@@ -77,38 +78,15 @@ public class ChargeManagement implements Listener {
             finalCharge = amount;
             previousCharge = 0;
         }
-        if (itemColor != null) {
-            String indexString;
-            String chargeIndexString;
-            switch (itemColor)
-            {
-                case "RED" -> {
-                    indexString = ItemInfo.CHARGED_RED_ONE;
-                    chargeIndexString = ItemInfo.ANCIENT_CHARGE_RED;
-                }
-                case "YELLOW" -> {
-                    indexString = ItemInfo.CHARGED_YELLOW_ONE;
-                    chargeIndexString = ItemInfo.ANCIENT_CHARGE_YELLOW;
-                }
-                case "BLUE" -> {
-                    indexString = ItemInfo.CHARGED_BLUE_ONE;
-                    chargeIndexString = ItemInfo.ANCIENT_CHARGE_BLUE;
-                }
-                default -> {
-                    indexString = "Error";
-                    chargeIndexString = "Error";
-                }
-            }
-            if (indexString.equals("Error")) {
-                Bukkit.getConsoleSender().sendMessage("Error occurred while adding charged lore.");
-                return;
-            }
-            loreList.set(index, indexString);
-            loreList.set(chargeIndex, chargeIndexString + " " + finalCharge);
+        if (color != null) {
+            loreList.set(index, ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED_ONE);
+            loreList.set(chargeIndex, ItemInfo.CHARGE_STRING + color + " " + finalCharge);
             ItemMeta meta = item.getItemMeta();
             meta.setLore(loreList);
             item.setItemMeta(meta);
-            printLog(player, item, previousCharge, amount, finalCharge, indexString, chargeIndexString);
+            printLog(player, item, previousCharge, amount, finalCharge,
+                    ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED_ONE,
+                    ItemInfo.CHARGE_STRING + color);
         }
     }
 
@@ -118,48 +96,19 @@ public class ChargeManagement implements Listener {
 
         if (ItemInfo.isChargedAndActive(item)) {
             int remainingCharge = Integer.parseInt(loreList.get(index + 1).substring(24)) - amountTaken;
-            String color = ItemInfo.getColor(item);
+            String color = ItemInfo.getColorStringForDecreaseChargeLore(item);
             ItemMeta meta = item.getItemMeta();
             if (remainingCharge < 1) {
-                String indexString;
-                switch (color)
-                {
-                    case "RED" -> {
-                        indexString = ItemInfo.ANCIENT_RED;
-                    }
-                    case "YELLOW" -> {
-                        indexString = ItemInfo.ANCIENT_YELLOW;
-                    }
-                    case "BLUE" -> {
-                        indexString = ItemInfo.ANCIENT_BLUE;
-                    }
-                    default -> {
-                        indexString = "Error";
-                    }
-                }
-                loreList.set(index, indexString);
+                loreList.set(index, ItemInfo.ANCIENT_POWER_STRING + color + " " + ItemInfo.CHARGED);
                 loreList.set(index + 1, ItemInfo.ANCIENT_DEPLETED);
                 depletedChargeEffect(player);
+                Bukkit.getConsoleSender().sendMessage("Inside the less than one branch");
             } else {
-                String chargeColorString;
-                switch (color)
-                {
-                    case "RED" -> {
-                        chargeColorString = ItemInfo.RED;
-                    }
-                    case "YELLOW" -> {
-                        chargeColorString = ItemInfo.YELLOW;
-                    }
-                    case "BLUE" -> {
-                        chargeColorString = ItemInfo.BLUE;
-                    }
-                    default -> {
-                        chargeColorString = "";
-                    }
-                }
-                loreList.set(index + 1, ItemInfo.ANCIENT_CHARGE + chargeColorString + " " + remainingCharge);
+                loreList.set(index + 1, ItemInfo.CHARGE_STRING + color + " " + remainingCharge);
                 player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CPowerLvl: " + ChatColor.GREEN + amountTaken + " "
                         + ChatColor.ITALIC + "§x§F§F§0§0§4§CCharge: " + ChatColor.YELLOW + (remainingCharge > 1 ? remainingCharge : 0)));
+                Bukkit.getConsoleSender().sendMessage("Inside the else branch");
+                Bukkit.getConsoleSender().sendMessage(ItemInfo.CHARGE_STRING + color + " " + remainingCharge);
             }
             meta.setLore(loreList);
             item.setItemMeta(meta);
