@@ -144,16 +144,12 @@ public class ToggleAncientPower implements Listener {
         String loreToAdd;
         int itemLevelToGet = itemLevel <= 2 ? itemLevel + 1 : 0;
 
-
         if (isImbued) {
             loreToAdd = ItemInfo.IMBUED_LORE_MATRIX.get(color)[itemLevelToGet];
         } else {
             loreToAdd = ItemInfo.CHARGED_LORE_MATRIX.get(color)[itemLevelToGet];
         }
-        Bukkit.getConsoleSender().sendMessage("Item imbued status: " + isImbued);
-        Bukkit.getConsoleSender().sendMessage("Item powerLevel: " + itemLevel);
-        Bukkit.getConsoleSender().sendMessage("ItemLevel to get: " + itemLevelToGet);
-        Bukkit.getConsoleSender().sendMessage("Item Color: " + color);
+        printLog(isImbued, itemLevel, itemLevelToGet, color);
 
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
@@ -176,4 +172,12 @@ public class ToggleAncientPower implements Listener {
         if (!item.hasItemMeta()) return false;
         return ItemInfo.isTitanTool(item);
     }
+
+    public static void printLog(boolean isImbued, int itemLevel, int itemLevelToGet, String color) {
+        Bukkit.getConsoleSender().sendMessage("Item imbued status: " + isImbued);
+        Bukkit.getConsoleSender().sendMessage("Item powerLevel: " + itemLevel);
+        Bukkit.getConsoleSender().sendMessage("ItemLevel to get: " + itemLevelToGet);
+        Bukkit.getConsoleSender().sendMessage("Item Color: " + color);
+    }
+
 }

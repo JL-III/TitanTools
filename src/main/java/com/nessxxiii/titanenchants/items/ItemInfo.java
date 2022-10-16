@@ -344,6 +344,7 @@ public class ItemInfo {
 
     public static boolean isTitanTool(ItemStack item){
         if(!item.hasItemMeta()) return false;
+        if(!item.getItemMeta().hasLore()) return false;
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;
         for (String lore : loreList) {
@@ -439,6 +440,8 @@ public class ItemInfo {
         return false;
     }
 
+    //Checks if item has a charge already, this  is important in order to ensure the previous charge is obtained
+    //before setting a charge to a new value.
     public static boolean isCharged(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
         if (loreList == null) return false;

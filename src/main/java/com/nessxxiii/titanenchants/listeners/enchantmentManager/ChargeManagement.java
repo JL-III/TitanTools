@@ -58,27 +58,19 @@ public class ChargeManagement implements Listener {
         if (!ItemInfo.isTitanTool(itemClicked)) return false;
         if (!ItemInfo.isAllowedTitanType(itemClicked)) return false;
         if (ItemInfo.isImbued(itemClicked)) return false;
-
-
         return true;
     }
 
     public static void addChargeLore(Player player, ItemStack item, Integer amount){
-        if (!item.getItemMeta().hasLore()) {
-            Bukkit.getConsoleSender().sendMessage("Error occurred when adding Charge, no lore was found on item.");
-            return;
-        }
+
         List<String> loreList = item.getItemMeta().getLore();
         int index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        if (index == -1) {
-            Bukkit.getConsoleSender().sendMessage("Error trying to find lore index, returned with -1");
-            return;
-        }
+
         int chargeIndex = index + 1;
         String itemColor = ItemInfo.getColor(item);
         int previousCharge;
         int finalCharge;
-        if (ItemInfo.isChargedAndActive(item)) {
+        if (ItemInfo.isCharged(item)) {
             previousCharge = Integer.parseInt(loreList.get(chargeIndex).substring(24));
             finalCharge = previousCharge + (amount);
         } else {
@@ -116,51 +108,69 @@ public class ChargeManagement implements Listener {
             ItemMeta meta = item.getItemMeta();
             meta.setLore(loreList);
             item.setItemMeta(meta);
-            Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + player.getName() + "§x§f§b§0§0§f§1" + " used a PowerCrystal on: " + ChatColor.AQUA + item.getType().name());
-            Bukkit.getConsoleSender().sendMessage(item.getItemMeta().hasDisplayName() ? Component.text("Name: ", TextColor.color(5, 250, 83)).append(item.getItemMeta().displayName()) : Component.text("No display name to show", TextColor.color(168, 50, 50)));
-            Bukkit.getConsoleSender().sendMessage("§x§f§b§0§0§f§1" + "Prev Charge " + ChatColor.GREEN + previousCharge + "§x§f§b§0§0§f§1" + " PCrystal Charge: " + ChatColor.GREEN + amount);
-            Bukkit.getConsoleSender().sendMessage(indexString + " " + chargeIndexString + " " + finalCharge);
+            printLog(player, item, previousCharge, amount, finalCharge, indexString, chargeIndexString);
         }
     }
 
     public static void decreaseChargeLore(ItemStack item, Player player, Integer amountTaken){
         List<String> loreList = item.getItemMeta().getLore();
-        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        Integer chargeIndex = index + 1;
+        int index = ItemInfo.getAncientPowerLoreIndex(loreList);
+
         if (ItemInfo.isChargedAndActive(item)) {
-            String string = loreList.get(chargeIndex);
-            String string1 = string.substring(24);
-            int previousCharge = Integer.parseInt(string1);
-            int remainingCharge = previousCharge - amountTaken;
+            int remainingCharge = Integer.parseInt(loreList.get(index + 1).substring(24)) - amountTaken;
             String color = ItemInfo.getColor(item);
-            if (remainingCharge < 1 && ItemInfo.getColor(item).equals("RED")) {
-                loreList.set(index,ItemInfo.ANCIENT_RED);
-                loreList.set(chargeIndex,ItemInfo.ANCIENT_DEPLETED);
-                depletedChargeEffect(player);
-                ItemMeta meta = item.getItemMeta();
-                meta.setLore(loreList);
-                item.setItemMeta(meta);
-            } else if (remainingCharge < 1 && ItemInfo.getColor(item).equals("YELLOW")) {
-                loreList.set(index, ItemInfo.ANCIENT_YELLOW);
-                loreList.set(chargeIndex,ItemInfo.ANCIENT_DEPLETED);
-                depletedChargeEffect(player);
-                ItemMeta meta = item.getItemMeta();
-                meta.setLore(loreList);
-                item.setItemMeta(meta);
-            } else if (remainingCharge < 1 && ItemInfo.getColor(item).equals("BLUE")) {
-                loreList.set(index, ItemInfo.ANCIENT_BLUE);
-                loreList.set(chargeIndex, ItemInfo.ANCIENT_DEPLETED);
-                depletedChargeEffect(player);
-                ItemMeta meta = item.getItemMeta();
-                meta.setLore(loreList);
-                item.setItemMeta(meta);
-            } else
-                loreList.set(chargeIndex,ItemInfo.ANCIENT_CHARGE + " " + remainingCharge);
-            player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CPowerLvl: " + ChatColor.GREEN + amountTaken + " "
-                    + ChatColor.ITALIC + "§x§F§F§0§0§4§CCharge: " + ChatColor.YELLOW + (remainingCharge >= 1 ? remainingCharge : 0)));
             ItemMeta meta = item.getItemMeta();
+            if (remainingCharge < 1) {
+                String indexString;
+                switch (color)
+                {
+                    case "RED" -> {
+                        indexString = ItemInfo.ANCIENT_RED;
+                    }
+                    case "YELLOW" -> {
+                        indexString = ItemInfo.ANCIENT_YELLOW;
+                    }
+                    case "BLUE" -> {
+                        indexString = ItemInfo.ANCIENT_BLUE;
+                    }
+                    default -> {
+                        indexString = "Error";
+                    }
+                }
+                loreList.set(index, indexString);
+                loreList.set(index + 1, ItemInfo.ANCIENT_DEPLETED);
+                depletedChargeEffect(player);
+            } else {
+                String chargeColorString;
+                switch (color)
+                {
+                    case "RED" -> {
+                        chargeColorString = ItemInfo.RED;
+                    }
+                    case "YELLOW" -> {
+                        chargeColorString = ItemInfo.YELLOW;
+                    }
+                    case "BLUE" -> {
+                        chargeColorString = ItemInfo.BLUE;
+                    }
+                    default -> {
+                        chargeColorString = "";
+                    }
+                }
+                loreList.set(index + 1, ItemInfo.ANCIENT_CHARGE + chargeColorString + " " + remainingCharge);
+                player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CPowerLvl: " + ChatColor.GREEN + amountTaken + " "
+                        + ChatColor.ITALIC + "§x§F§F§0§0§4§CCharge: " + ChatColor.YELLOW + (remainingCharge > 1 ? remainingCharge : 0)));
+            }
             meta.setLore(loreList);
             item.setItemMeta(meta);
         }
     }
+
+    public static void printLog(Player player, ItemStack item, int previousCharge, int amount, int finalCharge, String indexString, String chargeIndexString) {
+        Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + player.getName() + "§x§f§b§0§0§f§1" + " used a PowerCrystal on: " + ChatColor.AQUA + item.getType().name());
+        Bukkit.getConsoleSender().sendMessage(item.getItemMeta().hasDisplayName() ? Component.text("Name: ", TextColor.color(5, 250, 83)).append(item.getItemMeta().displayName()) : Component.text("No display name to show", TextColor.color(168, 50, 50)));
+        Bukkit.getConsoleSender().sendMessage("§x§f§b§0§0§f§1" + "Prev Charge " + ChatColor.GREEN + previousCharge + "§x§f§b§0§0§f§1" + " PCrystal Charge: " + ChatColor.GREEN + amount);
+        Bukkit.getConsoleSender().sendMessage(indexString + " " + chargeIndexString + " " + finalCharge);
+    }
+
 }
