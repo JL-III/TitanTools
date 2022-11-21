@@ -10,7 +10,7 @@ import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanShovel;
 import com.nessxxiii.titanenchants.listeners.mcMMO.McMMOManager;
 import com.nessxxiii.titanenchants.listeners.blockbreak.PowerCrystalDrop;
-import com.nessxxiii.titanenchants.util.CheckPlayerLocation;
+
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -25,7 +25,6 @@ public final class TitanEnchants extends JavaPlugin {
     private final FileConfiguration CONFIG;
     private final Plugin PLUGIN;
 
-    private final CheckPlayerLocation checkPlayerLocation = new CheckPlayerLocation();
 
     public TitanEnchants() {
         PLUGIN = this;

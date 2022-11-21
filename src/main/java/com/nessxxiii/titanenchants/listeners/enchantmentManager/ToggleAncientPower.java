@@ -1,6 +1,7 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
 import com.nessxxiii.titanenchants.items.ItemInfo;
+import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -35,15 +36,14 @@ public class ToggleAncientPower implements Listener {
             Player player = event.getPlayer();
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
             Material coolDown = Material.JIGSAW;
-//            player.sendMessage("Passed validate toggle attempt");
+            player.sendMessage("Passed validate toggle attempt");
 
-            if (processItemValidation(itemInMainHand)
-                    && ItemInfo.isCharged (itemInMainHand)) {
+            if (processItemValidation(itemInMainHand) && ItemInfo.isCharged(itemInMainHand)) {
                 player.setCooldown(coolDown,25);
+                player.sendMessage("if statement line 43 activate click");
                 event.setCancelled(true);
                 ToggleAncientPower.toggleEnchant(itemInMainHand,player,false);
-            } else if (processItemValidation(itemInMainHand)
-                    && ItemInfo.isImbued(itemInMainHand)) {
+            } else if (processItemValidation(itemInMainHand) && ItemInfo.isImbued(itemInMainHand)) {
                 player.setCooldown(coolDown,25);
                 ToggleAncientPower.toggleEnchant(itemInMainHand, player, true);
             } else {
@@ -55,7 +55,7 @@ public class ToggleAncientPower implements Listener {
     public static void toggleEnchant(ItemStack item, Player player, boolean isImbued) {
 
         int itemLevel = ItemInfo.getItemLevel(item);
-        String color = ItemInfo.getColor(item);
+        String color = ItemInfo.getColorForAddChargeLore(item);
 
         switch (itemLevel) {
             case 1,2 -> {
@@ -83,7 +83,7 @@ public class ToggleAncientPower implements Listener {
 
     public static void handleFullInventory(ItemStack item, Player player, boolean isImbued, int currentLevel) {
         int itemLevel = currentLevel;
-        String color = ItemInfo.getColor(item);
+        String color = ItemInfo.getColorForAddChargeLore(item);
 
         String powerThreeToPowerTwo = ItemInfo.IMBUED_TWO;
         String powerTwoToPowerOne = ItemInfo.IMBUED_ONE;
@@ -150,13 +150,20 @@ public class ToggleAncientPower implements Listener {
             loreToAdd = ItemInfo.CHARGED_LORE_MATRIX.get(color)[itemLevelToGet];
         }
         printLog(isImbued, itemLevel, itemLevelToGet, color);
-
         List<String> loreList = item.getItemMeta().getLore();
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
         loreList.set(index, loreToAdd);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
+        NBTItem nbti = new NBTItem(item);
+        nbti.setInteger("itemLevel", itemLevelToGet);
+        if (itemLevelToGet == 0) {
+            nbti.setBoolean("isActive", false);
+        } else if (!nbti.getBoolean("isActive")) {
+            nbti.setBoolean("isActive", true);
+        }
+        nbti.applyNBT(item);
     }
 
     private static boolean processPlayerStateValidation() {
@@ -167,10 +174,23 @@ public class ToggleAncientPower implements Listener {
     }
 
     private static boolean processItemValidation(ItemStack item){
-        if (!ItemInfo.isCharged(item) && !ItemInfo.isImbued(item)) return false;
-        if (!ItemInfo.isAllowedTitanType(item)) return false;
-        if (!item.hasItemMeta()) return false;
-        return ItemInfo.isTitanTool(item);
+        if (!ItemInfo.isCharged(item) && !ItemInfo.isImbued(item)) {
+            Bukkit.getConsoleSender().sendMessage("item was not charged and not imbued");
+            return false;
+        }
+        if (!ItemInfo.isAllowedTitanType(item)) {
+            Bukkit.getConsoleSender().sendMessage("Item is not allowed titan type");
+            return false;
+        }
+        if (!item.hasItemMeta()) {
+            Bukkit.getConsoleSender().sendMessage("Item does not have item meta");
+            return false;
+        }
+        if (!ItemInfo.isTitanTool(item)) {
+            Bukkit.getConsoleSender().sendMessage("Item is not a titan tool");
+            return false;
+        }
+        return true;
     }
 
     public static void printLog(boolean isImbued, int itemLevel, int itemLevelToGet, String color) {

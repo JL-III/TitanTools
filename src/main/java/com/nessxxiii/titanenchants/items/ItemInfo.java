@@ -1,11 +1,15 @@
 package com.nessxxiii.titanenchants.items;
 
 import com.nessxxiii.titanenchants.enums.PowerCrystalType;
+
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
 
 import java.util.*;
 
@@ -21,7 +25,7 @@ public class ItemInfo {
     public static final String ANCIENT_CHARGE_YELLOW = "§8Charge:§x§F§F§E§C§2§7";
     public static final String ANCIENT_CHARGE_BLUE = "§8Charge:§x§6§D§5§E§F§F";
 
-    public static final String CHARGE_STRING = "§8Charge:";
+    public static final String CHARGE_STRING = "§8Charge: ";
 
     public static final String POWER_CRYSTAL_COMMON_CHARGE = "§x§F§F§0§0§4§CAncient Charge 5";
     public static final String POWER_CRYSTAL_TYPE_COMMON = ChatColor.DARK_PURPLE + "Type: " + ChatColor.GRAY + "Common";
@@ -40,23 +44,23 @@ public class ItemInfo {
     public static final String YELLOW = "§x§F§F§E§C§2§7";
     public static final String BLUE = "§x§6§D§5§E§F§F";
 
-    public static final String CHARGED = "♆";
+    public static final String CHARGED = " ♆";
 
     public static final String CHARGED_INACTIVE = "§8Ancient Power ♆";
     public static final String IMBUED_INACTIVE = "§8Ancient Power Ω";
 
-    public static final String ANCIENT_POWER_RED = "§8Ancient Power §x§F§F§0§0§4§C";
-    public static final String ANCIENT_POWER_YELLOW = "§8Ancient Power §x§F§F§E§C§2§7";
-    public static final String ANCIENT_POWER_BLUE = "§8Ancient Power §x§6§D§5§E§F§F";
+    public static final String ANCIENT_POWER_RED = "§8Ancient Power§x§F§F§0§0§0§0";
+    public static final String ANCIENT_POWER_YELLOW = "§8Ancient Power§x§F§F§E§C§2§7";
+    public static final String ANCIENT_POWER_BLUE = "§8Ancient Power§x§6§D§5§E§F§F";
 
-    public static final String ANCIENT_POWER_STRING = "§8Ancient Power ";
+    public static final String ANCIENT_POWER_STRING = "§8Ancient Power";
 
-    public static final String CHARGED_ONE = "♆ I";
-    public static final String CHARGED_TWO = "♆ II";
-    public static final String CHARGED_THREE = "♆ III";
-    public static final String IMBUED_ONE = "Ω I";
-    public static final String IMBUED_TWO = "Ω II";
-    public static final String IMBUED_THREE = "Ω III";
+    public static final String CHARGED_ONE = " ♆ I";
+    public static final String CHARGED_TWO = " ♆ II";
+    public static final String CHARGED_THREE = " ♆ III";
+    public static final String IMBUED_ONE = " Ω I";
+    public static final String IMBUED_TWO = " Ω II";
+    public static final String IMBUED_THREE = " Ω III";
 
     public static final String CHARGED_RED_ONE = ANCIENT_POWER_RED + CHARGED_ONE;
     public static final String CHARGED_RED_TWO = ANCIENT_POWER_RED + CHARGED_TWO;
@@ -270,7 +274,7 @@ public class ItemInfo {
         }
     };
 
-    public static final List<String> LEVEL_ONE = new ArrayList<>(){
+    public static final Set<String> LEVEL_ONE = new HashSet<>(){
         {
 
             add(CHARGED_RED_ONE);
@@ -284,7 +288,7 @@ public class ItemInfo {
         }
     };
 
-    public static final List<String> LEVEL_TWO = new ArrayList<>(){
+    public static final Set<String> LEVEL_TWO = new HashSet<>(){
         {
             add(CHARGED_RED_TWO);
             add(CHARGED_YELLOW_TWO);
@@ -297,7 +301,7 @@ public class ItemInfo {
         }
     };
 
-    public static final List<String> LEVEL_THREE = new ArrayList<>(){
+    public static final Set<String> LEVEL_THREE = new HashSet<>(){
         {
             add(CHARGED_RED_THREE);
             add(CHARGED_YELLOW_THREE);
@@ -333,6 +337,11 @@ public class ItemInfo {
         }
     };
 
+//    public static int isActive(ItemStack item) {
+//        NBTItem nbtItem = new NBTItem(item);
+//        return nbtItem.getInteger("getLevel");
+//    }
+
     public static boolean isAllowedTitanType(ItemStack item){
         if (item == null) return false;
         return (ALLOWED_TITAN_TYPES.contains(item.getType()));
@@ -349,23 +358,46 @@ public class ItemInfo {
     }
 
     public static boolean isTitanTool(ItemStack item){
-        if(!item.hasItemMeta()) return false;
-        if(!item.getItemMeta().hasLore()) return false;
-        List<String> loreList = item.getItemMeta().getLore();
+        List<String> loreList = getLore(item);
         if (loreList == null) return false;
         for (String lore : loreList) {
             if (TITAN_LORE.contains(lore)) {
                 return true;
             }
         }
+        Bukkit.getConsoleSender().sendMessage("is not titan tool");
         return false;
     }
 
-    public static boolean isLevelOne(ItemStack item){
+    public static boolean checkLore(ItemStack item, List<String> LORE){
+        for (String toolLore : getLore(item)) {
+            if (LORE.contains(toolLore)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return false;
-        for (String lore : loreList) {
+    public static List<String> getLore(ItemStack item) {
+        if (item.hasItemMeta() && item.getItemMeta().hasLore()) {
+            return item.getItemMeta().getLore();
+        }
+        return null;
+    }
+
+    public static boolean setLore(ItemStack item, List<String> loreList) {
+        if (item.hasItemMeta()) {
+            ItemMeta meta = item.getItemMeta();
+            meta.setLore(loreList);
+            item.setItemMeta(meta);
+            return true;
+        }
+        return false;
+    }
+
+
+    public static boolean isLevelOne(ItemStack item){
+        for (String lore : getLore(item)) {
             if (LEVEL_ONE.contains(lore)) {
                 return true;
             }
@@ -374,10 +406,7 @@ public class ItemInfo {
     }
 
     public static boolean isLevelTwo(ItemStack item){
-
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return false;
-        for (String lore : loreList) {
+        for (String lore : getLore(item)) {
             if (LEVEL_TWO.contains(lore)) {
                 return true;
             }
@@ -386,10 +415,7 @@ public class ItemInfo {
     }
 
     public static boolean isLevelThree(ItemStack item){
-
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return false;
-        for (String lore : loreList) {
+        for (String lore : getLore(item)) {
             if (LEVEL_THREE.contains(lore)) {
                 return true;
             }
@@ -398,11 +424,7 @@ public class ItemInfo {
     }
 
     public static int getItemLevel(ItemStack item){
-
-        if (!item.hasItemMeta()) return -1;
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return -1;
-        for (String lore : loreList) {
+        for (String lore : getLore(item)) {
             if (LEVEL_ONE.contains(lore)) {
                 return 1;
             } else if (LEVEL_TWO.contains(lore)) {
@@ -416,9 +438,7 @@ public class ItemInfo {
     }
 
     public static boolean isActiveImbued(ItemStack item){
-
-        List<String> loreList = item.getItemMeta().getLore();
-        for (String lore : loreList) {
+        for (String lore : getLore(item)) {
             if (ACTIVE_IMBUED_LORE.contains(lore)) {
                 return true;
             }
@@ -427,8 +447,7 @@ public class ItemInfo {
     }
 
     public static boolean isActiveCharged(ItemStack item){
-        List<String> loreList = item.getItemMeta().getLore();
-        for (String lore : loreList) {
+        for (String lore : getLore(item)) {
             if (ACTIVE_CHARGED_LORE.contains(lore)) {
                 return true;
             }
@@ -437,8 +456,7 @@ public class ItemInfo {
     }
 
     public static boolean isDormantCharged(ItemStack item){
-        List<String> loreList = item.getItemMeta().getLore();
-        for (String lore : loreList) {
+        for (String lore : getLore(item)) {
             if (INACTIVE_LORE.contains(lore)) {
                 return true;
             }
@@ -449,9 +467,7 @@ public class ItemInfo {
     //Checks if item has a charge already, this  is important in order to ensure the previous charge is obtained
     //before setting a charge to a new value.
     public static boolean isCharged(ItemStack item) {
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return false;
-        for (String lore : loreList) {
+        for (String lore : getLore(item)) {
             if (CHARGED_LORE.contains(lore)) {
                 return true;
             }
@@ -460,10 +476,7 @@ public class ItemInfo {
     }
 
     public static boolean isImbued(ItemStack item) {
-
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return false;
-        for (String lore : loreList) {
+        for (String lore : getLore(item)) {
             if (IMBUED_LORE.contains(lore)) {
                 return true;
             }
@@ -472,10 +485,7 @@ public class ItemInfo {
     }
 
     public static boolean isUnImbued(ItemStack item) {
-
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return false;
-        for (String lore : loreList) {
+        for (String lore : getLore(item)) {
             if (UNIMBUED_LORE.contains(lore)) {
                 return true;
             }
@@ -503,13 +513,11 @@ public class ItemInfo {
     }
 
     public static boolean isChargedAndActive(ItemStack item){
-        if (!item.hasItemMeta()) return false;
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return false;
-        Material type = item.getType();
-        Material powerCrystal = Material.AMETHYST_SHARD;
+        //TODO 11/21/2022 check to see if the type check is needed.
+        if (item.getType() == Material.AMETHYST_SHARD) return false;
+        List<String> loreList = getLore(item);
         for (String lore : loreList) {
-            if (ACTIVE_CHARGED_LORE.contains(lore)  && (type != powerCrystal)) {
+            if (ACTIVE_CHARGED_LORE.contains(lore)) {
                 return true;
             }
         }
@@ -517,10 +525,7 @@ public class ItemInfo {
     }
 
     public static String getColor(ItemStack item){
-        if (!item.hasItemMeta()) return null;
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return null;
-        for (String lore : loreList) {
+        for (String lore : getLore(item)) {
             if (lore.matches("(.*)" + RED + "(.*)")) {
                 return RED;
             } else if (lore.matches("(.*)" + YELLOW + "(.*)")) {
@@ -532,17 +537,14 @@ public class ItemInfo {
         return null;
     }
 
-    public static String getColorStringForDecreaseChargeLore(ItemStack item){
-        if (!item.hasItemMeta()) return null;
-        List<String> loreList = item.getItemMeta().getLore();
-        if (loreList == null) return null;
-        for (String lore : loreList) {
+    public static String getColorForAddChargeLore(ItemStack item){
+        for (String lore : getLore(item)) {
             if (lore.matches("(.*)" + RED + "(.*)")) {
-                return RED;
+                return "RED";
             } else if (lore.matches("(.*)" + YELLOW + "(.*)")) {
-                return YELLOW;
+                return "YELLOW";
             } else if (lore.matches("(.*)" + BLUE + "(.*)")) {
-                return ItemInfo.BLUE;
+                return "BLUE";
             }
         }
         return null;

@@ -67,10 +67,7 @@ public class TitanPicks implements Listener {
         Block blockBroken = event.getBlock();
         Material blockBrokenMaterial = blockBroken.getType();
         Inventory inventory = player.getInventory();
-//        Collection<ItemStack> dropsCollection1 = blockBroken.getDrops(itemInMainHand);
-//        if (!dropsCollection1.isEmpty()) {
-//            player.sendMessage("Amount: " + dropsCollection1);
-//        }
+
         if (IGNORE_LOCATIONS.contains(blockBroken.getLocation())) {
             IGNORE_LOCATIONS.remove(blockBroken.getLocation());
             return;

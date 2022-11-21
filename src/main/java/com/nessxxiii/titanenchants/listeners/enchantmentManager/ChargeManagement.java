@@ -1,10 +1,10 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
 import com.nessxxiii.titanenchants.items.ItemInfo;
+import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.*;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +14,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.depletedChargeEffect;
+//import static com.nessxxiii.titanenchants.util.NBTUtils.*;
+import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.*;
 
 
 public class ChargeManagement implements Listener {
@@ -24,14 +25,12 @@ public class ChargeManagement implements Listener {
     public static void applyCharge(InventoryClickEvent event){
         if (event.getCurrentItem() == null) return;
         Player player = (Player) event.getWhoClicked();
-
         if (isValidated(player.getItemOnCursor(), event.getCurrentItem())) {
             ItemStack itemOnCursor = player.getItemOnCursor();
             int chargeAmount = getChargeAmount(itemOnCursor, itemOnCursor.getAmount());
             player.getItemOnCursor().setAmount(0);
             addChargeLore(player, event.getCurrentItem(),chargeAmount);
-            player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK,player.getEyeLocation(),100);
-            player.getWorld().playSound(player.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE,10, 1);
+//            setHasChargeBooleanToTrue(event.getCurrentItem());
             event.setCancelled(true);
         }
     }
@@ -52,13 +51,14 @@ public class ChargeManagement implements Listener {
         //item on cursor must be powercrystal
         if (itemOnCursor.getItemMeta() == null) return false;
         if (!ItemInfo.isPowerCrystal(itemOnCursor)) return false;
-
+        Bukkit.getConsoleSender().sendMessage("Checking is validated");
         //item clicked is the titan tool
-        if (itemClicked.getType() == Material.AIR) return false;
+        if (itemClicked.getType() == Material.AIR || itemClicked.getType() == null) return false;
         if (ItemInfo.isPowerCrystal(itemClicked)) return false;
         if (!ItemInfo.isTitanTool(itemClicked)) return false;
         if (!ItemInfo.isAllowedTitanType(itemClicked)) return false;
         if (ItemInfo.isImbued(itemClicked)) return false;
+        Bukkit.getConsoleSender().sendMessage("Returned true");
         return true;
     }
 
@@ -80,10 +80,10 @@ public class ChargeManagement implements Listener {
         }
         if (color != null) {
             loreList.set(index, ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED_ONE);
-            loreList.set(chargeIndex, ItemInfo.CHARGE_STRING + color + " " + finalCharge);
-            ItemMeta meta = item.getItemMeta();
-            meta.setLore(loreList);
-            item.setItemMeta(meta);
+            loreList.set(chargeIndex, ItemInfo.CHARGE_STRING + color + finalCharge);
+            ItemInfo.setLore(item, loreList);
+//            setIsActiveBooleanToTrue(item);
+            TitanEnchantEffects.addChargeEffect(player);
             printLog(player, item, previousCharge, amount, finalCharge,
                     ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED_ONE,
                     ItemInfo.CHARGE_STRING + color);
@@ -93,25 +93,26 @@ public class ChargeManagement implements Listener {
     public static void decreaseChargeLore(ItemStack item, Player player, Integer amountTaken){
         List<String> loreList = item.getItemMeta().getLore();
         int index = ItemInfo.getAncientPowerLoreIndex(loreList);
-
         if (ItemInfo.isChargedAndActive(item)) {
             int remainingCharge = Integer.parseInt(loreList.get(index + 1).substring(24)) - amountTaken;
-            String color = ItemInfo.getColorStringForDecreaseChargeLore(item);
+            String color = ItemInfo.getColor(item);
             ItemMeta meta = item.getItemMeta();
             if (remainingCharge < 1) {
-                loreList.set(index, ItemInfo.ANCIENT_POWER_STRING + color + " " + ItemInfo.CHARGED);
+                loreList.set(index, ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED);
                 loreList.set(index + 1, ItemInfo.ANCIENT_DEPLETED);
                 depletedChargeEffect(player);
-                Bukkit.getConsoleSender().sendMessage("Inside the less than one branch");
+
             } else {
-                loreList.set(index + 1, ItemInfo.CHARGE_STRING + color + " " + remainingCharge);
+                loreList.set(index + 1, ItemInfo.CHARGE_STRING + color + remainingCharge);
                 player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CPowerLvl: " + ChatColor.GREEN + amountTaken + " "
                         + ChatColor.ITALIC + "§x§F§F§0§0§4§CCharge: " + ChatColor.YELLOW + (remainingCharge > 1 ? remainingCharge : 0)));
-                Bukkit.getConsoleSender().sendMessage("Inside the else branch");
-                Bukkit.getConsoleSender().sendMessage(ItemInfo.CHARGE_STRING + color + " " + remainingCharge);
             }
             meta.setLore(loreList);
             item.setItemMeta(meta);
+//            if (remainingCharge < 1) {
+//                setHasChargeBooleanToFalse(item);
+//                setIsActiveBooleanToFalse(item);
+//            }
         }
     }
 
