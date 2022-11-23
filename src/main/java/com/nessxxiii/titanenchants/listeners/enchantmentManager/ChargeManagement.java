@@ -14,7 +14,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
-//import static com.nessxxiii.titanenchants.util.NBTUtils.*;
 import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.*;
 
 
@@ -30,7 +29,6 @@ public class ChargeManagement implements Listener {
             int chargeAmount = getChargeAmount(itemOnCursor, itemOnCursor.getAmount());
             player.getItemOnCursor().setAmount(0);
             addChargeLore(player, event.getCurrentItem(),chargeAmount);
-//            setHasChargeBooleanToTrue(event.getCurrentItem());
             event.setCancelled(true);
         }
     }
@@ -82,7 +80,6 @@ public class ChargeManagement implements Listener {
             loreList.set(index, ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED_ONE);
             loreList.set(chargeIndex, ItemInfo.CHARGE_STRING + color + finalCharge);
             ItemInfo.setLore(item, loreList);
-//            setIsActiveBooleanToTrue(item);
             TitanEnchantEffects.addChargeEffect(player);
             printLog(player, item, previousCharge, amount, finalCharge,
                     ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED_ONE,
@@ -109,10 +106,6 @@ public class ChargeManagement implements Listener {
             }
             meta.setLore(loreList);
             item.setItemMeta(meta);
-//            if (remainingCharge < 1) {
-//                setHasChargeBooleanToFalse(item);
-//                setIsActiveBooleanToFalse(item);
-//            }
         }
     }
 

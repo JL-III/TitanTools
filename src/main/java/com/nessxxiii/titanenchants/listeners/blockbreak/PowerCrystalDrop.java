@@ -15,6 +15,7 @@ public class PowerCrystalDrop implements Listener {
         Block block = event.getBlock();
         if (block.getType() != Material.AMETHYST_BLOCK) return;
         Player player = event.getPlayer();
+        //TODO break this out into a method called validateDiamondBreak
         if (player.getInventory().getItemInMainHand() == null || player.getInventory().getItemInMainHand().getType().equals(Material.AIR)) return;
         if(player.getInventory().getItemInMainHand().getLore() == null || !player.getInventory().getItemInMainHand().getItemMeta().getLore().equals(ItemManager.excavator.getItemMeta().getLore())
                 || !player.getInventory().getItemInMainHand().getEnchantments().equals(ItemManager.excavator.getEnchantments())) {
@@ -22,6 +23,7 @@ public class PowerCrystalDrop implements Listener {
         }
         if (!player.hasPermission("titan.enchants.powercrystaldrop")) return;
         event.setCancelled(true);
+        //TODO break this out into a method called handleDropPowerCrystal
         block.setType(Material.AIR);
         int randomNumber = getRandomNumber(1,10);
         if (randomNumber <= 3) {

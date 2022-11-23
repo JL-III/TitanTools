@@ -102,7 +102,8 @@ public class ItemManager {
         ItemStack item = new ItemStack(Material.GOLDEN_PICKAXE);
         List<String> lore = new ArrayList<>();
         lore.add("§x§f§b§b§5§0§0A tool used to extract");
-        lore.add(ChatColor.DARK_PURPLE + "Power Crystals");
+        lore.add(ChatColor.DARK_PURPLE + "Power Crystals from");
+        lore.add(ChatColor.DARK_PURPLE + "amethyst blocks");
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ItemInfo.EXCAVATION_TOOL_DISPLAY_NAME);

@@ -50,22 +50,23 @@ public class TitanShovel implements Listener {
             if (clickedBlock.getType() == Material.BEDROCK
                     && ((clickedBlock.getLocation().getY() < -63) && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
                     || ((clickedBlock.getLocation().getY() < 1 || clickedBlock.getLocation().getY() > 126) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
+            BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
+            Bukkit.getPluginManager().callEvent(e);
+            if (e.isCancelled()) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
                 clickedBlock.breakNaturally(itemInMainHand);
                 if (ItemInfo.isCharged(itemInMainHand)) {
                     decreaseChargeLore(itemInMainHand, player, 1);
                 }
                 return;
-            }
-            if (DISALLOWED_ITEMS.contains(clickedBlock.getType())) return;
-            BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
-            Bukkit.getPluginManager().callEvent(e);
-            if (!e.isCancelled()) {
+            } else {
+                if (DISALLOWED_ITEMS.contains(clickedBlock.getType())) return;
                 clickedBlock.setType(Material.AIR);
-                if (ItemInfo.isCharged(itemInMainHand)) {
-                    decreaseChargeLore(itemInMainHand, player, 1);
-                }
             }
+            if (ItemInfo.isCharged(itemInMainHand)) {
+                decreaseChargeLore(itemInMainHand, player, 1);
+            }
+
 
 
         } else if (ItemInfo.isLevelTwo(itemInMainHand)){
@@ -73,13 +74,13 @@ public class TitanShovel implements Listener {
             if (clickedBlock.getType() == Material.BEDROCK
                     && ((clickedBlock.getLocation().getY() < -63) && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
                     || ((clickedBlock.getLocation().getY() < 1 || clickedBlock.getLocation().getY() > 126) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
-            if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
-                clickedBlock.breakNaturally(itemInMainHand);
-            }
             BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
             Bukkit.getPluginManager().callEvent(e);
             if (e.isCancelled()) return;
-            if (!e.isCancelled()) {
+            if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
+                clickedBlock.breakNaturally(itemInMainHand);
+            } else {
+                if (DISALLOWED_ITEMS.contains(clickedBlock.getType())) return;
                 clickedBlock.setType(Material.AIR);
             }
             if (ItemInfo.isCharged(itemInMainHand)) {
@@ -108,13 +109,13 @@ public class TitanShovel implements Listener {
             if (clickedBlock.getType() == Material.BEDROCK
                     && ((clickedBlock.getLocation().getY() < -63) && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
                     || ((clickedBlock.getLocation().getY() < 1 || clickedBlock.getLocation().getY() > 126) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
-            if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
-                clickedBlock.breakNaturally(itemInMainHand);
-            }
             BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
             Bukkit.getPluginManager().callEvent(e);
             if (e.isCancelled()) return;
-            if (!e.isCancelled()) {
+            if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
+                clickedBlock.breakNaturally(itemInMainHand);
+            } else {
+                if (DISALLOWED_ITEMS.contains(clickedBlock.getType())) return;
                 clickedBlock.setType(Material.AIR);
             }
             if (ItemInfo.isCharged(itemInMainHand)) {

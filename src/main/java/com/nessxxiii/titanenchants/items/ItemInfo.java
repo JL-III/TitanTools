@@ -3,7 +3,6 @@ package com.nessxxiii.titanenchants.items;
 import com.nessxxiii.titanenchants.enums.PowerCrystalType;
 
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -337,11 +336,6 @@ public class ItemInfo {
         }
     };
 
-//    public static int isActive(ItemStack item) {
-//        NBTItem nbtItem = new NBTItem(item);
-//        return nbtItem.getInteger("getLevel");
-//    }
-
     public static boolean isAllowedTitanType(ItemStack item){
         if (item == null) return false;
         return (ALLOWED_TITAN_TYPES.contains(item.getType()));
@@ -358,14 +352,11 @@ public class ItemInfo {
     }
 
     public static boolean isTitanTool(ItemStack item){
-        List<String> loreList = getLore(item);
-        if (loreList == null) return false;
-        for (String lore : loreList) {
+        for (String lore : getLore(item)) {
             if (TITAN_LORE.contains(lore)) {
                 return true;
             }
         }
-        Bukkit.getConsoleSender().sendMessage("is not titan tool");
         return false;
     }
 
@@ -434,7 +425,6 @@ public class ItemInfo {
             }
         }
         return 0;
-
     }
 
     public static boolean isActiveImbued(ItemStack item){
@@ -515,8 +505,7 @@ public class ItemInfo {
     public static boolean isChargedAndActive(ItemStack item){
         //TODO 11/21/2022 check to see if the type check is needed.
         if (item.getType() == Material.AMETHYST_SHARD) return false;
-        List<String> loreList = getLore(item);
-        for (String lore : loreList) {
+        for (String lore : getLore(item)) {
             if (ACTIVE_CHARGED_LORE.contains(lore)) {
                 return true;
             }
@@ -537,7 +526,7 @@ public class ItemInfo {
         return null;
     }
 
-    public static String getColorForAddChargeLore(ItemStack item){
+    public static String getColorStringLiteral(ItemStack item){
         for (String lore : getLore(item)) {
             if (lore.matches("(.*)" + RED + "(.*)")) {
                 return "RED";

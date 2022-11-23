@@ -3,6 +3,7 @@ package com.nessxxiii.titanenchants.listeners.enchantments;
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
+import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -21,9 +22,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.playSmeltVisualAndSoundEffect;
-
 public class TitanPicks implements Listener {
+
+    private final Plugin PLUGIN;
+
+    public TitanPicks(Plugin plugin) {
+        this.PLUGIN = plugin;
+        loadConfig();
+    }
+
     public static final Set<Material> ALLOWED_ITEMS = new HashSet<>();
     public static final Set<Material> ENCHANTABLE_ITEMS = new HashSet<>();
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
@@ -50,13 +57,6 @@ public class TitanPicks implements Listener {
         put(Material.NETHER_GOLD_ORE, Material.GOLD_INGOT);
     }};
 
-    private final Plugin PLUGIN;
-
-    public TitanPicks(Plugin plugin) {
-        this.PLUGIN = plugin;
-        loadConfig();
-    }
-
     @EventHandler
     @SuppressWarnings("unused")
     public void onBlockBreakEvent(BlockBreakEvent event) {
@@ -76,8 +76,10 @@ public class TitanPicks implements Listener {
 
         switch (itemLevel) {
             case 1 -> {
+                //TODO could possibly handle full inventories differently, especially when a player spreads out specific items to allow for a
+                //TODO sort of "auto sorting" situation.
                 if (inventory.firstEmpty() == -1) {
-                    ToggleAncientPower.handleFullInventory(itemInMainHand, player, ItemInfo.isImbued(itemInMainHand), 1);
+                    ToggleAncientPower.handleFullInventory(itemInMainHand, player, ItemInfo.isImbued(itemInMainHand), itemLevel);
                     return;
                 }
                 if (ItemInfo.isCharged(itemInMainHand)) {
@@ -88,7 +90,7 @@ public class TitanPicks implements Listener {
                         blockBrokenMaterial = blockBroken.getType();
                         blockBroken.setType(Material.AIR);
                         getNewBlocksFromSmeltAndUpdateInventory(player, blockBrokenMaterial);
-                        playSmeltVisualAndSoundEffect(player, blockBroken.getLocation());
+                        TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, blockBroken.getLocation());
                     } else {
                         updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, blockBroken);
                         blockBroken.setType(Material.AIR);
@@ -115,7 +117,7 @@ public class TitanPicks implements Listener {
                             blockBrokenMaterial = currentBlock.getType();
                             if (!e.isCancelled()) {
                                 if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
-                                    playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
+                                    TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
                                     currentBlock.setType(Material.AIR);
                                     player.getLocation().getWorld().dropItemNaturally(currentBlock.getLocation(), getDropsFromConversionTable(blockBrokenMaterial));
                                     aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
@@ -126,6 +128,7 @@ public class TitanPicks implements Listener {
                             }
                         }
                     }
+                    //TODO new exp merging with old orb before setting the amount of exp?
                     if (aggregateAmount > 0) {
                         player.sendMessage("Aggregate amount of exp: " + aggregateAmount);
                         blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(aggregateAmount);
@@ -147,9 +150,11 @@ public class TitanPicks implements Listener {
                 }
 
             }
+            //TODO when inventory is full tool is turned off completely but player is told it is set to power level 2
             case 3 -> {
+                //TODO check when a partial stack is picked up or when nothing is picked up at all and change behavior
                 if (player.getInventory().firstEmpty() == -1) {
-                    ToggleAncientPower.handleFullInventory(itemInMainHand, player, ItemInfo.isImbued(itemInMainHand), 3);
+                    ToggleAncientPower.handleFullInventory(itemInMainHand, player, ItemInfo.isImbued(itemInMainHand), itemLevel);
                     return;
                 }
                 if (ItemInfo.isCharged(itemInMainHand)) {
@@ -166,7 +171,7 @@ public class TitanPicks implements Listener {
                             if (!e.isCancelled()) {
                                 if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
                                     getNewBlocksFromSmeltAndUpdateInventory(player, blockBrokenMaterial);
-                                    playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
+                                    TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
                                     aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
                                 } else {
                                     updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, currentBlock);

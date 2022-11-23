@@ -16,21 +16,16 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PlayerCommands implements CommandExecutor{
 
     private Plugin plugin;
 
-    public PlayerCommands(Plugin plugin){
+    public PlayerCommands(Plugin plugin) {
         this.plugin = plugin;
     };
 
@@ -43,8 +38,7 @@ public class PlayerCommands implements CommandExecutor{
         }
         if (args.length == 0) return false;
         if ("imbue".equalsIgnoreCase(args[0]) ){
-            Material coolDown = Material.JIGSAW;
-            player.sendMessage(ChatColor.RED + "------Debug------");
+            Material coolDown = Material.SQUID_SPAWN_EGG;
             ItemStack item = player.getInventory().getItemInMainHand();
             if (!ItemInfo.isTitanTool(item)) return false;
             if (!player.hasPermission("titan.enchants.imbue")) {
@@ -56,23 +50,24 @@ public class PlayerCommands implements CommandExecutor{
                 return false;
             }
             if (!player.hasCooldown(coolDown)) {
-                player.sendMessage(ChatColor.GREEN + "Are you sure you want to imbue this tool for $1,000,000?");
+                player.sendMessage(ChatColor.GREEN + "Are you sure you want to imbue this tool?");
                 player.sendMessage(ChatColor.GREEN + "Retype the command to confirm");
                 player.setCooldown(coolDown, 200);
                 return false;
             }
-            List<String> loreList = item.getItemMeta().getLore();
-            if (loreList == null) return false;
+            List<String> loreList = ItemInfo.getLore(item);
             for (String lore : loreList) {
                 if (ItemInfo.UNIMBUED_LORE.contains(lore)) {
                     ToggleAncientPower.imbue(item);
-                    new TitanEnchantEffects().enableEffect(player);
+                    TitanEnchantEffects.enableEffect(player);
                     plugin.getLogger().info(player.getName() + " has imbued a titan tool...");
                     return true;
                 }
             }
             return false;
         }
+
+
         if ("check".equalsIgnoreCase(args[0])) {
             if (!player.hasPermission("titan.enchants.check")) {
                 player.sendMessage(ChatColor.RED + "No permission.");
@@ -129,42 +124,43 @@ public class PlayerCommands implements CommandExecutor{
             return true;
         }
 
-        if ("message".equalsIgnoreCase(args[0])) {
-            var mm = MiniMessage.miniMessage();
+//        if ("message".equalsIgnoreCase(args[0])) {
+//            var mm = MiniMessage.miniMessage();
+//
+//            Component parsed = mm.deserialize("Hello <rainbow>world</rainbow>, isn't <blue><u><click:open_url:'https://docs.adventure.kyori.net/minimessage'>MiniMessage</click></u></blue> fun?");
+//
+//            player.sendMessage(parsed);
+//            return true;
+//        }
 
-            Component parsed = mm.deserialize("Hello <rainbow>world</rainbow>, isn't <blue><u><click:open_url:'https://docs.adventure.kyori.net/minimessage'>MiniMessage</click></u></blue> fun?");
+        //TODO move this method to TheatriaUtils
+//        if ("lastseen".equalsIgnoreCase(args[0])) {
+//            OfflinePlayer[] allPlayers = Bukkit.getOfflinePlayers();
+//
+//            Arrays.sort(allPlayers, Comparator.comparing(OfflinePlayer::getLastLogin));
+//
+//            for (OfflinePlayer offlinePlayer : allPlayers) {
+//                Calendar calendar = Calendar.getInstance();
+//                calendar.setTimeInMillis(offlinePlayer.getLastLogin());
+//                Bukkit.getConsoleSender().sendMessage(calendar.get(Calendar.MONTH) + "/" +
+//                        calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR) + "  " + offlinePlayer.getName());
+//            }
+//        }
 
-            player.sendMessage(parsed);
-            return true;
-        }
-
-        if ("lastseen".equalsIgnoreCase(args[0])) {
-            OfflinePlayer[] allPlayers = Bukkit.getOfflinePlayers();
-
-            Arrays.sort(allPlayers, Comparator.comparing(OfflinePlayer::getLastLogin));
-
-            for (OfflinePlayer offlinePlayer : allPlayers) {
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(offlinePlayer.getLastLogin());
-                Bukkit.getConsoleSender().sendMessage(calendar.get(Calendar.MONTH) + "/" +
-                        calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR) + "  " + offlinePlayer.getName());
-            }
-        }
-
-        if ("hasCharge".equalsIgnoreCase(args[0])) {
-            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
-            player.sendMessage("Item has charge: " + item.getBoolean("hasCharge"));
-        }
-
-        if ("isActive".equalsIgnoreCase(args[0])) {
-            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
-            player.sendMessage("Item is Active: " + item.getBoolean("isActive"));
-        }
-
-        if ("getLevel".equalsIgnoreCase(args[0])) {
-            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
-            player.sendMessage("Item level: " + item.getInteger("itemLevel"));
-        }
+//        if ("hasCharge".equalsIgnoreCase(args[0])) {
+//            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
+//            player.sendMessage("Item has charge: " + item.getBoolean("hasCharge"));
+//        }
+//
+//        if ("isActive".equalsIgnoreCase(args[0])) {
+//            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
+//            player.sendMessage("Item is Active: " + item.getBoolean("isActive"));
+//        }
+//
+//        if ("getLevel".equalsIgnoreCase(args[0])) {
+//            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
+//            player.sendMessage("Item level: " + item.getInteger("itemLevel"));
+//        }
 
         if ("getInfo".equalsIgnoreCase(args[0])) {
             NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());

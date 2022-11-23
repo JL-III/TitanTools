@@ -19,6 +19,7 @@ public class McMMOManager implements Listener {
 
     @EventHandler
     public void onRightClick(PlayerInteractEvent event){
+        //TODO is this doing anything???
         if(!event.getAction().isRightClick())return;
         player = event.getPlayer();
     }
@@ -29,8 +30,8 @@ public class McMMOManager implements Listener {
                 || ItemInfo.isActiveImbued(event.getPlayer().getInventory().getItemInMainHand())) {
             event.setCancelled(true);
         }
-
     }
+
     @EventHandler
     public void cancelMcMMOMessage(McMMOPlayerNotificationEvent notificationEvent){
         if (!notificationEvent.getEventNotificationType().toString().equals("ToolReady")) return;
@@ -39,7 +40,7 @@ public class McMMOManager implements Listener {
         if(ItemInfo.isActiveCharged(item) || ItemInfo.isActiveImbued(item)) {
             notificationEvent.setCancelled(true);
             if (!player.hasCooldown(coolDown) && !player.isSneaking()) {
-                player.sendActionBar(Component.text("This seems to have no affect..."));
+                player.sendActionBar(Component.text(""));
                 player.setCooldown(coolDown, 20 * 15);
             }
         }
