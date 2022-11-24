@@ -130,7 +130,7 @@ public class TitanPicks implements Listener {
                     }
                     //TODO new exp merging with old orb before setting the amount of exp?
                     if (aggregateAmount > 0) {
-                        player.sendMessage("Aggregate amount of exp: " + aggregateAmount);
+//                        player.sendMessage("Aggregate amount of exp: " + aggregateAmount);
                         blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(aggregateAmount);
                     }
                 } else {
@@ -182,7 +182,7 @@ public class TitanPicks implements Listener {
                         }
                     }
                     if (aggregateAmount > 0) {
-                        player.sendMessage("Aggregate amount of exp: " + aggregateAmount);
+//                        player.sendMessage("Aggregate amount of exp: " + aggregateAmount);
                         blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(aggregateAmount);
                     }
                 } else {

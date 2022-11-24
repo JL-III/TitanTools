@@ -49,14 +49,14 @@ public class ChargeManagement implements Listener {
         //item on cursor must be powercrystal
         if (itemOnCursor.getItemMeta() == null) return false;
         if (!ItemInfo.isPowerCrystal(itemOnCursor)) return false;
-        Bukkit.getConsoleSender().sendMessage("Checking is validated");
+//        Bukkit.getConsoleSender().sendMessage("Checking is validated");
         //item clicked is the titan tool
         if (itemClicked.getType() == Material.AIR || itemClicked.getType() == null) return false;
         if (ItemInfo.isPowerCrystal(itemClicked)) return false;
         if (!ItemInfo.isTitanTool(itemClicked)) return false;
         if (!ItemInfo.isAllowedTitanType(itemClicked)) return false;
         if (ItemInfo.isImbued(itemClicked)) return false;
-        Bukkit.getConsoleSender().sendMessage("Returned true");
+//        Bukkit.getConsoleSender().sendMessage("Returned true");
         return true;
     }
 
@@ -81,9 +81,9 @@ public class ChargeManagement implements Listener {
             loreList.set(chargeIndex, ItemInfo.CHARGE_STRING + color + finalCharge);
             ItemInfo.setLore(item, loreList);
             TitanEnchantEffects.addChargeEffect(player);
-            printLog(player, item, previousCharge, amount, finalCharge,
-                    ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED_ONE,
-                    ItemInfo.CHARGE_STRING + color);
+//            printLog(player, item, previousCharge, amount, finalCharge,
+//                    ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED_ONE,
+//                    ItemInfo.CHARGE_STRING + color);
         }
     }
 

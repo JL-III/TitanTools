@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.*;
 
 
-public class ItemManager {
+public class ItemCreator {
 
     public static ItemStack powerCrystalCommon;
     public static ItemStack powerCrystalUncommon;
@@ -26,9 +26,10 @@ public class ItemManager {
         createPowerCrystalEpic();
         createPowerCrystalUltra();
         createExcavator();
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "[TitanEnchants] " + ChatColor.GREEN + "items have been initialized.");
     }
 
-    private static void createPowerCrystalCommon() {
+    public static void createPowerCrystalCommon() {
         ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         List<String> lore = new ArrayList<>();
         lore.add(ItemInfo.POWER_CRYSTAL_COMMON_CHARGE);

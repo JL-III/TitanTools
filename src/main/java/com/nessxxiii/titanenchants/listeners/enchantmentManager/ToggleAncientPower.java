@@ -154,19 +154,19 @@ public class ToggleAncientPower implements Listener {
     //TODO perhaps there is a method to get all info on a pick immediately and store in a temporary object to reference throughout the methods
     private static boolean processItemValidation(ItemStack item){
         if (!ItemInfo.isCharged(item) && !ItemInfo.isImbued(item)) {
-            Bukkit.getConsoleSender().sendMessage("item was not charged and not imbued");
+//            Bukkit.getConsoleSender().sendMessage("item was not charged and not imbued");
             return false;
         }
         if (!ItemInfo.isAllowedTitanType(item)) {
-            Bukkit.getConsoleSender().sendMessage("Item is not allowed titan type");
+//            Bukkit.getConsoleSender().sendMessage("Item is not allowed titan type");
             return false;
         }
         if (!item.hasItemMeta()) {
-            Bukkit.getConsoleSender().sendMessage("Item does not have item meta");
+//            Bukkit.getConsoleSender().sendMessage("Item does not have item meta");
             return false;
         }
         if (!ItemInfo.isTitanTool(item)) {
-            Bukkit.getConsoleSender().sendMessage("Item is not a titan tool");
+//            Bukkit.getConsoleSender().sendMessage("Item is not a titan tool");
             return false;
         }
         return true;

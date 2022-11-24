@@ -1,14 +1,10 @@
 package com.nessxxiii.titanenchants.commands;
 
-import com.nessxxiii.titanenchants.TitanEnchants;
-import com.nessxxiii.titanenchants.items.ItemManager;
+import com.nessxxiii.titanenchants.items.ItemCreator;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import de.tr7zw.nbtapi.NBTItem;
-import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -96,13 +92,26 @@ public class PlayerCommands implements CommandExecutor{
                 return true;
             }
             Inventory inv = player.getInventory();
-            inv.addItem(ItemManager.powerCrystalCommon);
-            inv.addItem(ItemManager.powerCrystalUncommon);
-            inv.addItem(ItemManager.powerCrystalSuper);
-            inv.addItem(ItemManager.powerCrystalEpic);
-            inv.addItem(ItemManager.powerCrystalUltra);
+            if (args.length == 1) {
+                inv.addItem(ItemCreator.powerCrystalCommon);
+                inv.addItem(ItemCreator.powerCrystalUncommon);
+                inv.addItem(ItemCreator.powerCrystalSuper);
+                inv.addItem(ItemCreator.powerCrystalEpic);
+                inv.addItem(ItemCreator.powerCrystalUltra);
+                player.updateInventory();
+            } else if (args.length == 2) {
+                try {
+                    int amount = Integer.parseInt(args[1]);
+                    for (int i = 0; i < amount; i++) {
+                        inv.addItem(ItemCreator.powerCrystalCommon);
+                    }
+                } catch (Exception ex) {
+                    player.sendMessage("You must provide an integer amount.");
+                }
+                player.updateInventory();
+            }
 
-            player.updateInventory();
+
             return true;
         }
         if ("excavator".equalsIgnoreCase(args[0])) {
@@ -111,12 +120,12 @@ public class PlayerCommands implements CommandExecutor{
                 return true;
             }
             Inventory inv = player.getInventory();
-            inv.addItem(ItemManager.excavator);
+            inv.addItem(ItemCreator.excavator);
             player.updateInventory();
             return true;
         }
 
-        if ("crystalcheck".equalsIgnoreCase(args[0])) {
+        if ("crystalcheck".equalsIgnoreCase(args[0]) && player.hasPermission("titan.enchants.crystalcheck")) {
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
 
             player.sendMessage("Item is powercrystal: " + ItemInfo.isPowerCrystal(itemInMainHand));
@@ -145,21 +154,6 @@ public class PlayerCommands implements CommandExecutor{
 //                Bukkit.getConsoleSender().sendMessage(calendar.get(Calendar.MONTH) + "/" +
 //                        calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR) + "  " + offlinePlayer.getName());
 //            }
-//        }
-
-//        if ("hasCharge".equalsIgnoreCase(args[0])) {
-//            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
-//            player.sendMessage("Item has charge: " + item.getBoolean("hasCharge"));
-//        }
-//
-//        if ("isActive".equalsIgnoreCase(args[0])) {
-//            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
-//            player.sendMessage("Item is Active: " + item.getBoolean("isActive"));
-//        }
-//
-//        if ("getLevel".equalsIgnoreCase(args[0])) {
-//            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
-//            player.sendMessage("Item level: " + item.getInteger("itemLevel"));
 //        }
 
         if ("getInfo".equalsIgnoreCase(args[0])) {
