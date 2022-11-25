@@ -1,6 +1,7 @@
 package com.nessxxiii.titanenchants.listeners.blockbreak;
 
 import com.nessxxiii.titanenchants.items.ItemCreator;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -36,10 +37,11 @@ public class PowerCrystalDrop implements Listener {
     private static void handleDropPowerCrystal(Location playerLocation, Location blockLocation) {
         int randomNumber = getRandomNumber(1,100);
         if (randomNumber > 95) {
-            if (randomNumber > 99) {
-                playerLocation.getWorld().dropItemNaturally(blockLocation, ItemCreator.powerCrystalSuper);
-                return;
-            }
+//            if (randomNumber > 99) {
+//                playerLocation.getWorld().dropItemNaturally(blockLocation, ItemCreator.powerCrystalSuper);
+//                Bukkit.getConsoleSender().sendMessage("Random number: " + randomNumber);
+//                return;
+//            }
             playerLocation.getWorld().dropItemNaturally(blockLocation, ItemCreator.powerCrystalUncommon);
             return;
         }

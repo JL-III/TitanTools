@@ -4,7 +4,6 @@ import com.nessxxiii.titanenchants.items.ItemCreator;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
-import de.tr7zw.nbtapi.NBTItem;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,7 +32,7 @@ public class PlayerCommands implements CommandExecutor{
             return true;
         }
         if (args.length == 0) return false;
-        if ("imbue".equalsIgnoreCase(args[0]) ){
+        if ("imbue".equalsIgnoreCase(args[0])) {
             Material coolDown = Material.SQUID_SPAWN_EGG;
             ItemStack item = player.getInventory().getItemInMainHand();
             if (!ItemInfo.isTitanTool(item)) return false;
@@ -69,10 +68,9 @@ public class PlayerCommands implements CommandExecutor{
                 player.sendMessage(ChatColor.RED + "No permission.");
                 return false;
             }
-            if(ItemInfo.isChargedOrImbuedTitanPick(player.getInventory().getItemInMainHand())) {
+            if (ItemInfo.isChargedOrImbuedTitanPick(player.getInventory().getItemInMainHand())) {
                 player.sendMessage("This is a titan pick and is imbued or charged");
-            }
-            else {
+            } else {
                 player.sendMessage("This is not a titan pick or is not imbued or charged");
             }
         }
@@ -155,15 +153,7 @@ public class PlayerCommands implements CommandExecutor{
 //                        calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR) + "  " + offlinePlayer.getName());
 //            }
 //        }
-
-        if ("getInfo".equalsIgnoreCase(args[0])) {
-            NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
-            player.sendMessage("hasCharge: " + item.getBoolean("hasCharge"));
-            player.sendMessage("isImbued: " + item.getBoolean("isImbued"));
-            player.sendMessage("isActive: " + item.getBoolean("isActive"));
-            player.sendMessage("itemLevel: " + item.getInteger("itemLevel"));
-        }
-        return true;
+    return true;
     }
 }
 
