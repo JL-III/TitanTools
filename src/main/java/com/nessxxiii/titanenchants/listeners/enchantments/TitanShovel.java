@@ -105,27 +105,33 @@ public class TitanShovel implements Listener {
             }
 
         } else if (ItemInfo.isLevelThree(itemInMainHand)){
-            BlockFace blockFace = event.getBlockFace();
-            if (clickedBlock.getType() == Material.BEDROCK
-                    && ((clickedBlock.getLocation().getY() < -63) && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
-                    || ((clickedBlock.getLocation().getY() < 1 || clickedBlock.getLocation().getY() > 126) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
+            Material clickedBlockType = clickedBlock.getType();
+            Location clickedBlockLocation = clickedBlock.getLocation();
+            if (clickedBlockType == Material.BEDROCK
+                    && ((clickedBlockLocation.getY() < -63) && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
+                    || ((clickedBlockLocation.getY() < 1 || clickedBlockLocation.getY() > 126) && clickedBlockLocation.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
             BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
             Bukkit.getPluginManager().callEvent(e);
             if (e.isCancelled()) return;
-            if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
+            if (clickedBlockType == Material.CHEST || clickedBlockType == Material.SHULKER_BOX || clickedBlockType == Material.BARREL) {
                 clickedBlock.breakNaturally(itemInMainHand);
             } else {
-                if (DISALLOWED_ITEMS.contains(clickedBlock.getType())) return;
+                if (DISALLOWED_ITEMS.contains(clickedBlockType)) return;
                 clickedBlock.setType(Material.AIR);
             }
             if (ItemInfo.isCharged(itemInMainHand)) {
                 decreaseChargeLore(itemInMainHand, player,3 );
             }
-            for (Block blockLoop : getNearbyBlocks3(clickedBlock.getLocation(), blockFace)) {
-                if (blockLoop.getLocation().equals(clickedBlock.getLocation())) {
+            for (Block blockLoop : getNearbyBlocks3(clickedBlockLocation, event.getBlockFace())) {
+                if (blockLoop.getLocation().equals(clickedBlockLocation)) {
                     continue;
                 }
-                if (!DISALLOWED_ITEMS.contains(blockLoop.getType())) {
+                if (blockLoop.getLocation().getY() <= -65 && !clickedBlockLocation.getWorld().getEnvironment().equals(World.Environment.NETHER)) {
+                    continue;
+                } else if (blockLoop.getLocation().getY() <= -1 && clickedBlockLocation.getWorld().getEnvironment().equals(World.Environment.NETHER)) {
+                    continue;
+                }
+                if (!DISALLOWED_ITEMS.contains(clickedBlockType)) {
                     IGNORE_LOCATIONS.add(blockLoop.getLocation());
                     e = new BlockBreakEvent(blockLoop, event.getPlayer());
                     Bukkit.getPluginManager().callEvent(e);
