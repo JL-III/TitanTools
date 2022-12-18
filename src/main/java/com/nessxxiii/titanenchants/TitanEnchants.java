@@ -1,9 +1,11 @@
 package com.nessxxiii.titanenchants;
 
+import com.nessxxiii.titanenchants.commands.KitCommands;
 import com.nessxxiii.titanenchants.items.ItemCreator;
 import com.nessxxiii.titanenchants.commands.PlayerCommands;
 import com.nessxxiii.titanenchants.commands.PlayerCommandsTabComplete;
 import com.nessxxiii.titanenchants.listeners.ItemDamageEvent;
+import com.nessxxiii.titanenchants.listeners.JoinListener;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanPicks;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
@@ -44,6 +46,8 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
+        Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands());
         Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
         Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");

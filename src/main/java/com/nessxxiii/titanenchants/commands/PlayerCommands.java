@@ -26,7 +26,9 @@ public class PlayerCommands implements CommandExecutor{
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
-        if (!(sender instanceof Player player)) return false;
+        if (!(sender instanceof Player player)) {
+            return false;
+        }
         if (!player.hasPermission("titan.enchants")) {
             player.sendMessage(ChatColor.RED + "No permission.");
             return true;
@@ -96,6 +98,7 @@ public class PlayerCommands implements CommandExecutor{
                 inv.addItem(ItemCreator.powerCrystalSuper);
                 inv.addItem(ItemCreator.powerCrystalEpic);
                 inv.addItem(ItemCreator.powerCrystalUltra);
+//                inv.addItem(ItemCreator.powerCrystalTEST);
                 player.updateInventory();
             } else if (args.length == 2) {
                 try {
@@ -108,10 +111,9 @@ public class PlayerCommands implements CommandExecutor{
                 }
                 player.updateInventory();
             }
-
-
             return true;
         }
+
         if ("excavator".equalsIgnoreCase(args[0])) {
             if (!player.hasPermission("titan.enchants.excavator.add")) {
                 player.sendMessage(ChatColor.RED + "No permission.");
