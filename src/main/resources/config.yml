@@ -1,6 +1,7 @@
 # Please don't change the version manually.
 version: 1
 
+resource-pack: ""
 # https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 
 durability:

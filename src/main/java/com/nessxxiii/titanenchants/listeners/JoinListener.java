@@ -1,14 +1,29 @@
 package com.nessxxiii.titanenchants.listeners;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinListener implements Listener {
 
+    FileConfiguration fileConfiguration;
+
+    public JoinListener(FileConfiguration fileConfiguration) {
+        this.fileConfiguration = fileConfiguration;
+    }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
-        event.getPlayer().setResourcePack("https://www.dropbox.com/scl/fo/e5rksqxy5rvu0lzltnte0/h?dl=1&rlkey=hg2zik51ltbdcxgyoo2b9jix7");
+        if (!event.getPlayer().hasPlayedBefore()) {
+            try {
+                event.getPlayer().setResourcePack(fileConfiguration.getString("resource-pack"));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
 }

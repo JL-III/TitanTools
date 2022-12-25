@@ -8,9 +8,14 @@ import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Cat;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,15 +24,24 @@ import java.util.*;
 public class PlayerCommands implements CommandExecutor{
 
     private Plugin plugin;
+    private FileConfiguration fileConfig;
 
-    public PlayerCommands(Plugin plugin) {
+    public PlayerCommands(Plugin plugin, FileConfiguration fileConfig) {
         this.plugin = plugin;
+        this.fileConfig = fileConfig;
     };
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         if (!(sender instanceof Player player)) {
             return false;
+        }
+        if ("pack".equalsIgnoreCase(args[0])) {
+            try {
+                player.setResourcePack(fileConfig.getString("resource-pack"));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         }
         if (!player.hasPermission("titan.enchants")) {
             player.sendMessage(ChatColor.RED + "No permission.");
@@ -63,18 +77,64 @@ public class PlayerCommands implements CommandExecutor{
             }
             return false;
         }
+        if ("debug".equalsIgnoreCase(args[0])) {
+            if (!player.hasPermission("titan.enchants.debug")) {
+                player.sendMessage(ChatColor.RED + "No permission.");
+                return false;
+            }
+            player.sendMessage("Current RP link: " + fileConfig.getString("resource-pack") );
+            if (player.getInventory().getItemInMainHand().getType() == Material.AIR) return true;
+            if (player.getInventory().getItemInMainHand().hasItemMeta() && player.getInventory().getItemInMainHand().getItemMeta().hasCustomModelData()) {
+                player.sendMessage("Current custom model data: " + player.getInventory().getItemInMainHand().getItemMeta().getCustomModelData());
+            } else {
+                player.sendMessage("This item does not have custom model data.");
+            }
+        }
 
+        if ("save".equalsIgnoreCase(args[0]) && args.length == 2) {
+            if (!player.hasPermission("titan.enchants.save")) {
+                player.sendMessage(ChatColor.RED + "No permission.");
+                return false;
+            }
+            if (player.getInventory().getItemInMainHand().getType() == Material.AIR) return true;
+            plugin.getConfig().set(args[1], player.getInventory().getItemInMainHand());
+            plugin.saveConfig();
+            plugin.getLogger().info("Reloading config...");
+            fileConfig = plugin.getConfig();
+        }
+
+        if ("model".equalsIgnoreCase(args[0])) {
+            if (!player.hasPermission("titan.enchants.setmodeldata")) {
+                player.sendMessage(ChatColor.RED + "No permission.");
+                return false;
+            }
+            if (player.getInventory().getItemInMainHand().getType() == Material.AIR) return true;
+            Integer customModelData = null;
+            try {
+                if (player.getInventory().getItemInMainHand().hasItemMeta() && player.getInventory().getItemInMainHand().getItemMeta().hasCustomModelData()) {
+                    player.sendMessage("Previous custom model data: " + ChatColor.YELLOW + player.getInventory().getItemInMainHand().getItemMeta().getCustomModelData());
+                }
+                customModelData = Integer.parseInt(args[1]);
+                player.sendMessage("Setting custom model data to: " + ChatColor.GREEN + customModelData);
+                ItemMeta meta = player.getInventory().getItemInMainHand().getItemMeta();
+                meta.setCustomModelData(customModelData);
+                player.getInventory().getItemInMainHand().setItemMeta(meta);
+            } catch (Exception ex) {
+                player.sendMessage("Setting custom model data to: " + customModelData);
+                ItemMeta meta = player.getInventory().getItemInMainHand().getItemMeta();
+                meta.setCustomModelData(customModelData);
+                player.getInventory().getItemInMainHand().setItemMeta(meta);
+            }
+        }
 
         if ("check".equalsIgnoreCase(args[0])) {
             if (!player.hasPermission("titan.enchants.check")) {
                 player.sendMessage(ChatColor.RED + "No permission.");
                 return false;
             }
-            if (ItemInfo.isChargedOrImbuedTitanPick(player.getInventory().getItemInMainHand())) {
-                player.sendMessage("This is a titan pick and is imbued or charged");
-            } else {
-                player.sendMessage("This is not a titan pick or is not imbued or charged");
-            }
+            player.sendMessage("TitanPick isChargedOrImbued: " + ItemInfo.isChargedOrImbuedTitanPick(player.getInventory().getItemInMainHand()));
+            player.sendMessage("Current Custom model data: " + player.getInventory().getItemInMainHand().getItemMeta().getCustomModelData());
+
         }
         if ("reload".equalsIgnoreCase(args[0])) {
             if (!player.hasPermission("titan.enchants.reload")) {
@@ -83,6 +143,7 @@ public class PlayerCommands implements CommandExecutor{
             }
             plugin.getLogger().info("Reloading config...");
             plugin.reloadConfig();
+            fileConfig = plugin.getConfig();
             player.sendMessage(ChatColor.GREEN + "Successfully reloaded config.");
             return true;
         }
@@ -133,14 +194,14 @@ public class PlayerCommands implements CommandExecutor{
             return true;
         }
 
-//        if ("message".equalsIgnoreCase(args[0])) {
-//            var mm = MiniMessage.miniMessage();
-//
-//            Component parsed = mm.deserialize("Hello <rainbow>world</rainbow>, isn't <blue><u><click:open_url:'https://docs.adventure.kyori.net/minimessage'>MiniMessage</click></u></blue> fun?");
-//
-//            player.sendMessage(parsed);
-//            return true;
-//        }
+        if ("spawn".equalsIgnoreCase(args[0]) && player.hasPermission("titan.enchants.spawn")) {
+            Cat entity = (Cat) player.getWorld().spawnEntity(player.getLocation(), EntityType.CAT);
+            entity.setOwner(player);
+            entity.setAge(-2);
+            entity.setAgeLock(true);
+            entity.setInvulnerable(true);
+            entity.setMetadata("customModelData", new FixedMetadataValue(plugin, 1234567));
+        }
 
         //TODO move this method to TheatriaUtils
 //        if ("lastseen".equalsIgnoreCase(args[0])) {

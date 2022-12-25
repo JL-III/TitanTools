@@ -1,5 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
+import com.nessxxiii.titanenchants.items.CustomModelData;
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import net.kyori.adventure.text.Component;
@@ -9,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -61,10 +63,8 @@ public class ChargeManagement implements Listener {
     }
 
     public static void addChargeLore(Player player, ItemStack item, Integer amount){
-
         List<String> loreList = item.getItemMeta().getLore();
         int index = ItemInfo.getAncientPowerLoreIndex(loreList);
-
         int chargeIndex = index + 1;
         String color = ItemInfo.getColor(item);
         int previousCharge;
@@ -74,16 +74,15 @@ public class ChargeManagement implements Listener {
             finalCharge = previousCharge + (amount);
         } else {
             finalCharge = amount;
-            previousCharge = 0;
         }
         if (color != null) {
             loreList.set(index, ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED_ONE);
             loreList.set(chargeIndex, ItemInfo.CHARGE_STRING + color + finalCharge);
+            ItemMeta meta = item.getItemMeta();
+            meta.setCustomModelData(CustomModelData.CHARGED_TITAN_TOOL);
+            item.setItemMeta(meta);
             ItemInfo.setLore(item, loreList);
             TitanEnchantEffects.addChargeEffect(player);
-//            printLog(player, item, previousCharge, amount, finalCharge,
-//                    ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED_ONE,
-//                    ItemInfo.CHARGE_STRING + color);
         }
     }
 
@@ -97,8 +96,8 @@ public class ChargeManagement implements Listener {
             if (remainingCharge < 1) {
                 loreList.set(index, ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED);
                 loreList.set(index + 1, ItemInfo.ANCIENT_DEPLETED);
+                meta.setCustomModelData(CustomModelData.UNCHARGED_TITAN_TOOL);
                 depletedChargeEffect(player);
-
             } else {
                 loreList.set(index + 1, ItemInfo.CHARGE_STRING + color + remainingCharge);
                 player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CPowerLvl: " + ChatColor.GREEN + amountTaken + " "

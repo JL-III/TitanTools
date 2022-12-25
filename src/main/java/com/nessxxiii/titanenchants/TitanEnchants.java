@@ -39,6 +39,7 @@ public final class TitanEnchants extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
 //        Bukkit.getScheduler().runTaskTimer(this, this.checkPlayerLocation, 100, 100);
+        this.saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new TitanPicks(this),this);
         Bukkit.getPluginManager().registerEvents(new TitanShovel(this), this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(this),this);
@@ -46,9 +47,9 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new JoinListener(), this);
-        Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands());
-        Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
+        Bukkit.getPluginManager().registerEvents(new JoinListener(CONFIG), this);
+        Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(LOGGER));
+        Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this, CONFIG));
         Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "   _____   _____   _        ");
@@ -57,9 +58,10 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("");
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "               NessXXIII");
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");
-
-        ItemCreator.Init();
+        new ItemCreator(this);
+//        ItemCreator.Init();
     }
+
 
     @Override
     public void onDisable() {
