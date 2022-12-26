@@ -10,3 +10,5 @@ commands:
     description: Dev tools for titanEnchants
     usage: |
       /<command> reload
+  tkit:
+  atitan:

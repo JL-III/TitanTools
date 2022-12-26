@@ -1,9 +1,12 @@
 package com.nessxxiii.titanenchants;
 
+import com.nessxxiii.titanenchants.commands.AdminCommands;
+import com.nessxxiii.titanenchants.commands.KitCommands;
 import com.nessxxiii.titanenchants.items.ItemCreator;
 import com.nessxxiii.titanenchants.commands.PlayerCommands;
 import com.nessxxiii.titanenchants.commands.PlayerCommandsTabComplete;
 import com.nessxxiii.titanenchants.listeners.ItemDamageEvent;
+import com.nessxxiii.titanenchants.listeners.JoinListener;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanPicks;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
@@ -23,20 +26,22 @@ import java.util.logging.Logger;
 public final class TitanEnchants extends JavaPlugin {
 
     private final Logger LOGGER;
-    private final FileConfiguration CONFIG;
     private final Plugin PLUGIN;
+    private PlayerCommands playerCommands;
 
 
     public TitanEnchants() {
         PLUGIN = this;
         LOGGER = getLogger();
-        CONFIG = getConfig();
+        playerCommands = new PlayerCommands(this);
+
     }
 
     @Override
     public void onEnable() {
         // Plugin startup logic
 //        Bukkit.getScheduler().runTaskTimer(this, this.checkPlayerLocation, 100, 100);
+        this.saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new TitanPicks(this),this);
         Bukkit.getPluginManager().registerEvents(new TitanShovel(this), this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(this),this);
@@ -44,7 +49,11 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
-        Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
+        Bukkit.getPluginManager().registerEvents(new JoinListener(this), this);
+        Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(LOGGER));
+        Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, playerCommands));
+
+        Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
         Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "   _____   _____   _        ");
@@ -53,13 +62,16 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("");
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "               NessXXIII");
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");
-
-        ItemCreator.Init();
+        new ItemCreator(this);
+//        ItemCreator.Init();
     }
+
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
     }
+
+    public PlayerCommands getPlayerCommands() { return this.playerCommands; }
 
 }

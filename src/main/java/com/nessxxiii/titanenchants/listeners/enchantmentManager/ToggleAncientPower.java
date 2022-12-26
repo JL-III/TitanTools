@@ -1,5 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
+import com.nessxxiii.titanenchants.items.CustomModelData;
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -129,6 +130,9 @@ public class ToggleAncientPower implements Listener {
         List<String> loreList = ItemInfo.getLore(item);
         Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
         String color = ItemInfo.getColorStringLiteral(item);
+        ItemMeta meta = item.getItemMeta();
+        meta.setCustomModelData(CustomModelData.IMBUED_TITAN_TOOL);
+        item.setItemMeta(meta);
         loreList.set(index, ItemInfo.IMBUED_LORE_MATRIX.get(color)[1]);
         ItemInfo.setLore(item, loreList);
     }
