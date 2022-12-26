@@ -3,7 +3,6 @@ package com.nessxxiii.titanenchants.items;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,6 +13,7 @@ import java.util.*;
 
 public class ItemCreator {
 
+    private FileConfiguration fileConfiguration;
     public static ItemStack powerCrystalCommon;
     public static ItemStack powerCrystalUncommon;
     public static ItemStack powerCrystalSuper;
@@ -24,8 +24,7 @@ public class ItemCreator {
     public static ItemStack nightFish;
     public static ItemStack etherealFragment;
     public static ItemStack christmasPick;
-    private Plugin plugin;
-    private FileConfiguration fileConfiguration;
+    public static ItemStack gingerbreadMan;
     public static ItemStack titanPickRedFortune;
     public static ItemStack titanPickRedSilk;
     public static ItemStack titanPickYellowFortune;
@@ -33,10 +32,16 @@ public class ItemCreator {
     public static ItemStack titanPickBlueFortune;
     public static ItemStack titanPickBlueSilk;
     public static ItemStack titanShovelRed;
+    public static ItemStack titanAxeRed;
+    public static ItemStack titanAxeYellow;
+    public static ItemStack titanAxeBlue;
+    public static ItemStack titanSwordRed;
+    public static ItemStack titanSwordYellow;
+    public static ItemStack titanSwordBlue;
+    public static ItemStack titanRodRed;
 
     public ItemCreator(Plugin plugin) {
-        this.plugin = plugin;
-        this.fileConfiguration = plugin.getConfig();
+        fileConfiguration = plugin.getConfig();
         titanPickRedFortune = (ItemStack) fileConfiguration.get("titanpickredfortune");
         titanPickRedSilk = (ItemStack) fileConfiguration.get("titanpickredsilk");
         titanPickYellowFortune = (ItemStack) fileConfiguration.get("titanpickyellowfortune");
@@ -44,6 +49,13 @@ public class ItemCreator {
         titanPickBlueFortune = (ItemStack) fileConfiguration.get("titanpickbluefortune");
         titanPickBlueSilk = (ItemStack) fileConfiguration.get("titanpickbluesilk");
         titanShovelRed = (ItemStack) fileConfiguration.get("titanshovelred");
+        titanAxeRed = (ItemStack) fileConfiguration.get("titanaxered");
+        titanAxeYellow = (ItemStack) fileConfiguration.get("titanaxeyellow");
+        titanAxeBlue = (ItemStack) fileConfiguration.get("titanaxeblue");
+        titanSwordRed = (ItemStack) fileConfiguration.get("titanswordred");
+        titanSwordYellow = (ItemStack) fileConfiguration.get("titanswordyellow");
+        titanSwordBlue = (ItemStack) fileConfiguration.get("titanswordblue");
+        titanRodRed = (ItemStack) fileConfiguration.get("titanrodred");
         Init();
     }
 
@@ -58,6 +70,7 @@ public class ItemCreator {
         createNightFish();
         createEtherealFragment();
         createChristmasPick();
+        createGingerbreadMan();
         Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_PURPLE + "[TitanEnchants] " + ChatColor.GREEN + "items have been initialized.");
     }
 
@@ -188,15 +201,15 @@ public class ItemCreator {
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.LIGHT_PURPLE + "" +  ChatColor.ITALIC + "" + ChatColor.BOLD + "Ethereal Fragment");
         List<String> lore = new ArrayList<>();
-        lore.add("Pieces of a strange");
+        lore.add("Pieces of strange");
         lore.add("material... collect 16");
         lore.add("and you can trade");
         lore.add("it in for a special tool");
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+//        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setLore(lore);
         meta.setCustomModelData(CustomModelData.ETHEREAL_FRAGMENT);
         item.setItemMeta(meta);
-        item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+//        item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
         etherealFragment = item;
     }
 
@@ -224,6 +237,21 @@ public class ItemCreator {
         item.addUnsafeEnchantment(Enchantment.MENDING, 1);
         item.addUnsafeEnchantment(Enchantment.DURABILITY, 5);
         christmasPick = item;
+    }
+
+    private static void createGingerbreadMan() {
+        ItemStack item = new ItemStack(Material.COOKIE);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName("§x§6§e§f§b§0§0§l§oT§x§6§7§f§7§0§7§l§oh§x§6§0§f§4§0§e§l§oe §x§5§9§f§0§1§5§l§oG§x§5§3§e§d§1§c§l§oi§x§4§c§e§9§2§3§l§on§x§4§5§e§5§2§a§l§og§x§3§e§e§2§3§1§l§oe§x§3§7§d§e§3§8§l§or§x§3§0§d§a§3§f§l§ob§x§2§9§d§7§4§6§l§or§x§2§2§d§3§4§d§l§oe§x§1§c§d§0§5§4§l§oa§x§1§5§c§c§5§b§l§od §x§0§e§c§8§6§2§l§oM§x§0§7§c§5§6§9§l§oa§x§0§0§c§1§7§0§l§on");
+        List<String> lore = new ArrayList<>();
+        lore.add("§x§0§f§b§c§0§0M§x§0§e§c§1§0§0e§x§0§e§c§5§0§0r§x§0§d§c§a§0§0r§x§0§c§c§f§0§0y §x§0§b§d§3§0§0C§x§0§b§d§8§0§0h§x§0§a§d§d§0§0r§x§0§9§e§1§0§0i§x§0§9§e§6§0§0s§x§0§8§e§a§0§0t§x§0§7§e§f§0§0m§x§0§6§f§4§0§0a§x§0§6§f§8§0§0s§x§0§5§f§d§0§0!");
+        lore.add("§x§0§f§b§c§0§0-§x§0§e§c§1§0§0T§x§0§d§c§7§0§0h§x§0§d§c§c§0§0e§x§0§c§d§2§0§0a§x§0§b§d§7§0§0t§x§0§a§d§d§0§0r§x§0§9§e§2§0§0i§x§0§8§e§7§0§0a §x§0§8§e§d§0§02§x§0§7§f§2§0§00§x§0§6§f§8§0§02§x§0§5§f§d§0§02");
+        lore.add("§x§f§f§0§0§0§0H§x§f§f§1§e§1§eo §x§f§e§3§c§3§cH§x§f§e§5§b§5§bo §x§f§e§7§9§7§9H§x§f§d§9§7§9§7o§x§f§d§b§5§b§5!");
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        meta.setLore(lore);
+        meta.setCustomModelData(CustomModelData.GINGERBREAD_MAN);
+        item.setItemMeta(meta);
+        gingerbreadMan = item;
     }
 
 }

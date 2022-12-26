@@ -45,5 +45,6 @@ public class CustomModelData {
 
     //CUSTOM ITEMS
     public static final int CHRISTMAS_PICK = 5000000;
+    public static final int GINGERBREAD_MAN = 5000001;
 
 }

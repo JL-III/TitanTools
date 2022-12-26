@@ -1,5 +1,6 @@
 package com.nessxxiii.titanenchants;
 
+import com.nessxxiii.titanenchants.commands.AdminCommands;
 import com.nessxxiii.titanenchants.commands.KitCommands;
 import com.nessxxiii.titanenchants.items.ItemCreator;
 import com.nessxxiii.titanenchants.commands.PlayerCommands;
@@ -25,14 +26,12 @@ import java.util.logging.Logger;
 public final class TitanEnchants extends JavaPlugin {
 
     private final Logger LOGGER;
-    private final FileConfiguration CONFIG;
     private final Plugin PLUGIN;
 
 
     public TitanEnchants() {
         PLUGIN = this;
         LOGGER = getLogger();
-        CONFIG = getConfig();
     }
 
     @Override
@@ -47,9 +46,10 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new JoinListener(CONFIG), this);
+        Bukkit.getPluginManager().registerEvents(new JoinListener(this), this);
         Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(LOGGER));
-        Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this, CONFIG));
+        Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this));
+        Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
         Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "   _____   _____   _        ");
