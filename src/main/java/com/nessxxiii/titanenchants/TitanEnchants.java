@@ -27,11 +27,14 @@ public final class TitanEnchants extends JavaPlugin {
 
     private final Logger LOGGER;
     private final Plugin PLUGIN;
+    private PlayerCommands playerCommands;
 
 
     public TitanEnchants() {
         PLUGIN = this;
         LOGGER = getLogger();
+        playerCommands = new PlayerCommands(this);
+
     }
 
     @Override
@@ -48,8 +51,9 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
         Bukkit.getPluginManager().registerEvents(new JoinListener(this), this);
         Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(LOGGER));
-        Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this));
-        Objects.requireNonNull(getCommand("titan")).setExecutor(new PlayerCommands(this));
+        Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, playerCommands));
+
+        Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
         Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");
         Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "   _____   _____   _        ");
@@ -67,5 +71,7 @@ public final class TitanEnchants extends JavaPlugin {
     public void onDisable() {
         // Plugin shutdown logic
     }
+
+    public PlayerCommands getPlayerCommands() { return this.playerCommands; }
 
 }

@@ -34,13 +34,14 @@ public class CustomModelData {
     private static final int ETHEREAL_KEY = 3000004;
     private static final int CASINO_KEY = 3000005;
 
+    //CRATE GUI ITEMS
+    private static final int DENARII = 6000000;
 
     //HELPER ITEMS
     public static final int SUN_FISH = 3000002;
     public static final int NIGHT_FISH = 3000003;
 
     //ETHEREAL ITEMS
-
     public static final int ETHEREAL_FRAGMENT = 4000000;
 
     //CUSTOM ITEMS

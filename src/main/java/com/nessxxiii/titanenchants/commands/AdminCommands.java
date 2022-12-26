@@ -25,13 +25,15 @@ import java.util.List;
 public class AdminCommands implements CommandExecutor {
 
     private Plugin plugin;
+    private PlayerCommands playerCommands;
     private FileConfiguration fileConfig;
     private final String permissionPrefix = "titan.enchants.admincommands";
     private final String NO_PERMISSION = ChatColor.RED + "No Permission.";
 
-    public AdminCommands(Plugin plugin) {
+    public AdminCommands(Plugin plugin, PlayerCommands playerCommands) {
         this.plugin = plugin;
         this.fileConfig = plugin.getConfig();
+        this.playerCommands = playerCommands;
     };
 
     @Override
@@ -139,6 +141,7 @@ public class AdminCommands implements CommandExecutor {
             plugin.getLogger().info("Reloading config...");
             plugin.reloadConfig();
             fileConfig = plugin.getConfig();
+            playerCommands.reload();
             player.sendMessage(ChatColor.GREEN + "Successfully reloaded config.");
             return true;
         }

@@ -9,6 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+
 
 public class PlayerCommands implements CommandExecutor{
 
@@ -19,6 +22,11 @@ public class PlayerCommands implements CommandExecutor{
         this.plugin = plugin;
         this.fileConfig = plugin.getConfig();
     };
+
+    public void reload() {
+        this.fileConfig = plugin.getConfig();
+    }
+
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
@@ -35,6 +43,7 @@ public class PlayerCommands implements CommandExecutor{
                 if (fileConfig.getString("resource-pack") == null) {
                     throw new RuntimeException("File does not exist, please make sure the link is correct.");
                 }
+
                 player.setResourcePack(fileConfig.getString("resource-pack"));
             } catch (Exception ex) {
                 ex.printStackTrace();
