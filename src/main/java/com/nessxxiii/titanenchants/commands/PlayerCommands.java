@@ -50,6 +50,18 @@ public class PlayerCommands implements CommandExecutor{
             }
             return true;
         }
+        if ("unpack".equalsIgnoreCase(args[0]) && player.hasPermission("titan.enchants.playercommands.unpack")) {
+            try {
+                if (fileConfig.getString("resource-pack") == null) {
+                    throw new RuntimeException("File does not exist, please make sure the link is correct.");
+                }
+
+                player.setResourcePack("");
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return true;
+        }
 
         //TODO move this method to TheatriaUtils
 //        if ("lastseen".equalsIgnoreCase(args[0])) {
