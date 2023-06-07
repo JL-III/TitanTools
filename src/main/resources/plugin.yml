@@ -1,0 +1,4 @@
+name: TitanTools
+version: '${project.version}'
+main: com.playtheatria.jliii.titantools.TitanTools
+api-version: 1.19
