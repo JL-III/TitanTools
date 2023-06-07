@@ -3,7 +3,6 @@ package com.nessxxiii.titanenchants.items;
 import com.nessxxiii.titanenchants.enums.PowerCrystalType;
 
 import net.kyori.adventure.text.Component;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -92,11 +91,6 @@ public class ItemInfo {
     public static final String IMBUED_BLUE_TWO = ANCIENT_POWER_BLUE + IMBUED_TWO;
     public static final String IMBUED_BLUE_THREE = ANCIENT_POWER_BLUE + IMBUED_THREE;
 
-//future conversion to component types
-//    public static final Component ANCIENT_RED_AS_COMPONENT = Component.text("§8Ancient Power§x§F§F§0§0§0§0 ♆");
-//    public static final Component ANCIENT_YELLOW_AS_COMPONENT = Component.text("§8Ancient Power§x§F§F§E§C§2§7 ♆");
-//    public static final Component ANCIENT_BLUE_AS_COMPONENT = Component.text("§8Ancient Power§x§6§D§5§E§F§F ♆");
-
     public static final String EXCAVATION_TOOL_DISPLAY_NAME = "§x§f§b§b§5§0§0§lE§x§f§6§a§7§1§3§lx§x§f§1§9§9§2§7§lc§x§e§c§8§b§3§a§la§x§e§7§7§d§4§e§lv§x§e§2§6§f§6§1§la§x§d§d§6§1§7§5§lt§x§d§9§5§4§8§8§li§x§d§4§4§6§9§c§lo§x§c§f§3§8§a§f§ln §x§c§a§2§a§c§3§lT§x§c§5§1§c§d§6§lo§x§c§0§0§e§e§a§lo§x§b§b§0§0§f§d§ll   ";
 
     public static final Map<String, String[]> CHARGED_LORE_MATRIX = new HashMap<>(){
@@ -159,14 +153,6 @@ public class ItemInfo {
 
         }
     };
-//future conversion to component types
-//    public static final Set<Component> TITAN_LORE_AS_COMPONENT = new HashSet<>(){
-//        {
-//            add(ANCIENT_RED_AS_COMPONENT);
-//            add(ANCIENT_YELLOW_AS_COMPONENT);
-//            add(ANCIENT_BLUE_AS_COMPONENT);
-//        }
-//    };
 
     public static final List<String> UNIMBUED_LORE = new ArrayList<>(){
         {
