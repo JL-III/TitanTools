@@ -1,9 +1,9 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
-import com.nessxxiii.titanenchants.items.CustomModelData;
-import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
+import com.playtheatria.jliii.generalutils.items.CustomModelData;
 import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
+import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.*;
@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -56,51 +55,51 @@ public class ChargeManagement implements Listener {
         //item clicked is the titan tool
         if (itemClicked.getType() == Material.AIR || itemClicked.getType() == null) return false;
         if (PowerCrystalInfo.isPowerCrystal(itemClicked)) return false;
-        if (!ItemInfo.isTitanTool(itemClicked)) return false;
-        if (!ItemInfo.isAllowedTitanType(itemClicked)) return false;
-        if (ItemInfo.isImbued(itemClicked)) return false;
+        if (!TitanItemInfo.isTitanTool(itemClicked)) return false;
+        if (!TitanItemInfo.isAllowedTitanType(itemClicked)) return false;
+        if (TitanItemInfo.isImbued(itemClicked)) return false;
 //        Bukkit.getConsoleSender().sendMessage("Returned true");
         return true;
     }
 
     public static void addChargeLore(Player player, ItemStack item, Integer amount){
         List<String> loreList = item.getItemMeta().getLore();
-        int index = ItemInfo.getAncientPowerLoreIndex(loreList);
+        int index = TitanItemInfo.getAncientPowerLoreIndex(loreList);
         int chargeIndex = index + 1;
-        String color = ItemInfo.getColor(item);
+        String color = TitanItemInfo.getColor(item);
         int previousCharge;
         int finalCharge;
-        if (ItemInfo.isCharged(item)) {
+        if (TitanItemInfo.isCharged(item)) {
             previousCharge = Integer.parseInt(loreList.get(chargeIndex).substring(24));
             finalCharge = previousCharge + (amount);
         } else {
             finalCharge = amount;
         }
         if (color != null) {
-            loreList.set(index, ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED_ONE);
-            loreList.set(chargeIndex, ItemInfo.CHARGE_STRING + color + finalCharge);
+            loreList.set(index, TitanItemInfo.ANCIENT_POWER_STRING + color + TitanItemInfo.CHARGED_ONE);
+            loreList.set(chargeIndex, TitanItemInfo.CHARGE_STRING + color + finalCharge);
             ItemMeta meta = item.getItemMeta();
             meta.setCustomModelData(CustomModelData.CHARGED_TITAN_TOOL);
             item.setItemMeta(meta);
-            ItemInfo.setLore(item, loreList);
+            TitanItemInfo.setLore(item, loreList);
             TitanEnchantEffects.addChargeEffect(player);
         }
     }
 
     public static void decreaseChargeLore(ItemStack item, Player player, Integer amountTaken){
         List<String> loreList = item.getItemMeta().getLore();
-        int index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        if (ItemInfo.isChargedAndActive(item)) {
+        int index = TitanItemInfo.getAncientPowerLoreIndex(loreList);
+        if (TitanItemInfo.isChargedAndActive(item)) {
             int remainingCharge = Integer.parseInt(loreList.get(index + 1).substring(24)) - amountTaken;
-            String color = ItemInfo.getColor(item);
+            String color = TitanItemInfo.getColor(item);
             ItemMeta meta = item.getItemMeta();
             if (remainingCharge < 1) {
-                loreList.set(index, ItemInfo.ANCIENT_POWER_STRING + color + ItemInfo.CHARGED);
-                loreList.set(index + 1, ItemInfo.ANCIENT_DEPLETED);
+                loreList.set(index, TitanItemInfo.ANCIENT_POWER_STRING + color + TitanItemInfo.CHARGED);
+                loreList.set(index + 1, TitanItemInfo.ANCIENT_DEPLETED);
                 meta.setCustomModelData(CustomModelData.UNCHARGED_TITAN_TOOL);
                 depletedChargeEffect(player);
             } else {
-                loreList.set(index + 1, ItemInfo.CHARGE_STRING + color + remainingCharge);
+                loreList.set(index + 1, TitanItemInfo.CHARGE_STRING + color + remainingCharge);
                 player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CPowerLvl: " + ChatColor.GREEN + amountTaken + " "
                         + ChatColor.ITALIC + "§x§F§F§0§0§4§CCharge: " + ChatColor.YELLOW + (remainingCharge > 1 ? remainingCharge : 0)));
             }

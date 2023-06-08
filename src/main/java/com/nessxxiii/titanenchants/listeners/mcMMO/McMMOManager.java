@@ -1,12 +1,9 @@
 package com.nessxxiii.titanenchants.listeners.mcMMO;
 
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
-import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
-import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityEvent;
-import com.nessxxiii.titanenchants.items.ItemInfo;
+import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,8 +25,8 @@ public class McMMOManager implements Listener {
 
     @EventHandler
     public void cancelMcMMO(McMMOPlayerAbilityActivateEvent event){
-        if (ItemInfo.isActiveCharged(event.getPlayer().getInventory().getItemInMainHand())
-                || ItemInfo.isActiveImbued(event.getPlayer().getInventory().getItemInMainHand())) {
+        if (TitanItemInfo.isActiveCharged(event.getPlayer().getInventory().getItemInMainHand())
+                || TitanItemInfo.isActiveImbued(event.getPlayer().getInventory().getItemInMainHand())) {
             event.setCancelled(true);
         }
     }
@@ -39,7 +36,7 @@ public class McMMOManager implements Listener {
         if (!notificationEvent.getEventNotificationType().toString().equals("ToolReady")) return;
         ItemStack item = player.getInventory().getItemInMainHand();
         if (!item.hasItemMeta()) return;
-        if(ItemInfo.isActiveCharged(item) || ItemInfo.isActiveImbued(item)) {
+        if(TitanItemInfo.isActiveCharged(item) || TitanItemInfo.isActiveImbued(item)) {
             notificationEvent.setCancelled(true);
             if (!player.hasCooldown(coolDown) && !player.isSneaking()) {
                 player.sendActionBar(Component.text(""));
