@@ -71,6 +71,10 @@
             <id>enginehub-maven</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -85,6 +89,11 @@
             <artifactId>lombok</artifactId>
             <version>1.18.22</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.JL-III</groupId>
+            <artifactId>GeneralUtils</artifactId>
+            <version>v1.0.2-alpha-1</version>
         </dependency>
     </dependencies>
 </project>

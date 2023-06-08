@@ -1,7 +1,5 @@
 package com.nessxxiii.titanenchants.items;
 
-import com.nessxxiii.titanenchants.enums.PowerCrystalType;
-
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -474,25 +472,6 @@ public class ItemInfo {
             }
         }
         return false;
-    }
-
-    public static boolean isPowerCrystal(ItemStack item) {
-
-        if (item.isSimilar(ItemCreator.powerCrystalCommon)) return true;
-        if (item.isSimilar(ItemCreator.powerCrystalUncommon)) return true;
-        if (item.isSimilar(ItemCreator.powerCrystalSuper)) return true;
-        if (item.isSimilar(ItemCreator.powerCrystalEpic)) return true;
-        if (item.isSimilar(ItemCreator.powerCrystalUltra)) return true;
-        return false;
-    }
-
-    public static PowerCrystalType getPowerCrystalType(ItemStack item) {
-        if (item.isSimilar(ItemCreator.powerCrystalCommon)) return PowerCrystalType.COMMON;
-        if (item.isSimilar(ItemCreator.powerCrystalUncommon)) return PowerCrystalType.UNCOMMON;
-        if (item.isSimilar(ItemCreator.powerCrystalSuper)) return PowerCrystalType.SUPER;
-        if (item.isSimilar(ItemCreator.powerCrystalEpic)) return PowerCrystalType.EPIC;
-        if (item.isSimilar(ItemCreator.powerCrystalUltra)) return PowerCrystalType.ULTRA;
-        return PowerCrystalType.NULL;
     }
 
     public static boolean isChargedAndActive(ItemStack item){

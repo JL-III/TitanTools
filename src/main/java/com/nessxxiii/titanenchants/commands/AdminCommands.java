@@ -4,6 +4,7 @@ import com.nessxxiii.titanenchants.items.ItemCreator;
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
+import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -186,8 +187,8 @@ public class AdminCommands implements CommandExecutor {
 
         if ("crystalcheck".equalsIgnoreCase(args[0]) && player.hasPermission(permissionStringMaker("crystalcheck"))) {
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-            player.sendMessage("Item is powercrystal: " + ItemInfo.isPowerCrystal(itemInMainHand));
-            player.sendMessage("PowerCrystal type: " + ItemInfo.getPowerCrystalType(itemInMainHand));
+            player.sendMessage("Item is powercrystal: " + PowerCrystalInfo.isPowerCrystal(itemInMainHand));
+            player.sendMessage("PowerCrystal type: " + PowerCrystalInfo.getPowerCrystalType(itemInMainHand));
             return true;
         }
 

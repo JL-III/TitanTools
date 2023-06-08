@@ -3,6 +3,7 @@ package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 import com.nessxxiii.titanenchants.items.CustomModelData;
 import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
+import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.*;
@@ -37,7 +38,7 @@ public class ChargeManagement implements Listener {
 
     private static int getChargeAmount(ItemStack itemOnCursor, int amount) {
 
-        return switch (ItemInfo.getPowerCrystalType(itemOnCursor)) {
+        return switch (PowerCrystalInfo.getPowerCrystalType(itemOnCursor)) {
             case COMMON -> 5 * amount;
             case UNCOMMON -> 50 * amount;
             case SUPER -> 100 * amount;
@@ -50,11 +51,11 @@ public class ChargeManagement implements Listener {
     private static boolean isValidated(ItemStack itemOnCursor, ItemStack itemClicked) {
         //item on cursor must be powercrystal
         if (itemOnCursor.getItemMeta() == null) return false;
-        if (!ItemInfo.isPowerCrystal(itemOnCursor)) return false;
+        if (!PowerCrystalInfo.isPowerCrystal(itemOnCursor)) return false;
 //        Bukkit.getConsoleSender().sendMessage("Checking is validated");
         //item clicked is the titan tool
         if (itemClicked.getType() == Material.AIR || itemClicked.getType() == null) return false;
-        if (ItemInfo.isPowerCrystal(itemClicked)) return false;
+        if (PowerCrystalInfo.isPowerCrystal(itemClicked)) return false;
         if (!ItemInfo.isTitanTool(itemClicked)) return false;
         if (!ItemInfo.isAllowedTitanType(itemClicked)) return false;
         if (ItemInfo.isImbued(itemClicked)) return false;
