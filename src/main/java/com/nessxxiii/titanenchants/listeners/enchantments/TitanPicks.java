@@ -1,9 +1,9 @@
 package com.nessxxiii.titanenchants.listeners.enchantments;
 
-import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
+import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -60,7 +60,7 @@ public class TitanPicks implements Listener {
     @EventHandler
     @SuppressWarnings("unused")
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        if (!ItemInfo.isChargedOrImbuedTitanPick(event.getPlayer().getInventory().getItemInMainHand())) return;
+        if (!TitanItemInfo.isChargedOrImbuedTitanPick(event.getPlayer().getInventory().getItemInMainHand())) return;
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
@@ -72,17 +72,17 @@ public class TitanPicks implements Listener {
             IGNORE_LOCATIONS.remove(blockBroken.getLocation());
             return;
         }
-        int itemLevel = ItemInfo.getItemLevel(itemInMainHand);
+        int itemLevel = TitanItemInfo.getItemLevel(itemInMainHand);
 
         switch (itemLevel) {
             case 1 -> {
                 //TODO could possibly handle full inventories differently, especially when a player spreads out specific items to allow for a
                 //TODO sort of "auto sorting" situation.
                 if (inventory.firstEmpty() == -1) {
-                    ToggleAncientPower.handleFullInventory(itemInMainHand, player, ItemInfo.isImbued(itemInMainHand), itemLevel);
+                    ToggleAncientPower.handleFullInventory(itemInMainHand, player, TitanItemInfo.isImbued(itemInMainHand), itemLevel);
                     return;
                 }
-                if (ItemInfo.isCharged(itemInMainHand)) {
+                if (TitanItemInfo.isCharged(itemInMainHand)) {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
                 }
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
@@ -104,7 +104,7 @@ public class TitanPicks implements Listener {
                 }
             }
             case 2 -> {
-                if (ItemInfo.isCharged(itemInMainHand)) {
+                if (TitanItemInfo.isCharged(itemInMainHand)) {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
                 }
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
@@ -154,10 +154,10 @@ public class TitanPicks implements Listener {
             case 3 -> {
                 //TODO check when a partial stack is picked up or when nothing is picked up at all and change behavior
                 if (player.getInventory().firstEmpty() == -1) {
-                    ToggleAncientPower.handleFullInventory(itemInMainHand, player, ItemInfo.isImbued(itemInMainHand), itemLevel);
+                    ToggleAncientPower.handleFullInventory(itemInMainHand, player, TitanItemInfo.isImbued(itemInMainHand), itemLevel);
                     return;
                 }
-                if (ItemInfo.isCharged(itemInMainHand)) {
+                if (TitanItemInfo.isCharged(itemInMainHand)) {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
                 }
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {

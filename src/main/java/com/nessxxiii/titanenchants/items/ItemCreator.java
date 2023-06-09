@@ -1,5 +1,8 @@
 package com.nessxxiii.titanenchants.items;
 
+import com.playtheatria.jliii.generalutils.items.CustomModelData;
+import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
+import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
 import org.bukkit.*;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
@@ -77,11 +80,11 @@ public class ItemCreator {
     public static void createPowerCrystalCommon() {
         ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         List<String> lore = new ArrayList<>();
-        lore.add(ItemInfo.POWER_CRYSTAL_COMMON_CHARGE);
-        lore.add(ItemInfo.POWER_CRYSTAL_TYPE_COMMON);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_COMMON_CHARGE);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_COMMON);
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ItemInfo.POWER_CRYSTAL_DISPLAY);
+        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_COMMON);
         item.setItemMeta(meta);
@@ -92,11 +95,11 @@ public class ItemCreator {
     private static void createPowerCrystalUncommon() {
         ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         List<String> lore = new ArrayList<>();
-        lore.add(ItemInfo.POWER_CRYSTAL_UNCOMMON_CHARGE);
-        lore.add(ItemInfo.POWER_CRYSTAL_TYPE_UNCOMMON);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_UNCOMMON_CHARGE);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_UNCOMMON);
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ItemInfo.POWER_CRYSTAL_DISPLAY);
+        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_UNCOMMON);
         item.setItemMeta(meta);
@@ -107,11 +110,11 @@ public class ItemCreator {
     private static void createPowerCrystalSuper() {
         ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         List<String> lore = new ArrayList<>();
-        lore.add(ItemInfo.POWER_CRYSTAL_SUPER_CHARGE);
-        lore.add(ItemInfo.POWER_CRYSTAL_TYPE_SUPER);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_SUPER_CHARGE);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_SUPER);
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ItemInfo.POWER_CRYSTAL_DISPLAY);
+        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_SUPER);
         item.setItemMeta(meta);
@@ -122,11 +125,11 @@ public class ItemCreator {
     private static void createPowerCrystalEpic() {
         ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         List<String> lore = new ArrayList<>();
-        lore.add(ItemInfo.POWER_CRYSTAL_EPIC_CHARGE);
-        lore.add(ItemInfo.POWER_CRYSTAL_TYPE_EPIC);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_EPIC_CHARGE);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_EPIC);
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ItemInfo.POWER_CRYSTAL_DISPLAY);
+        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_EPIC);
         item.setItemMeta(meta);
@@ -137,11 +140,11 @@ public class ItemCreator {
     private static void createPowerCrystalUltra() {
         ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         List<String> lore = new ArrayList<>();
-        lore.add(ItemInfo.POWER_CRYSTAL_ULTRA_CHARGE);
-        lore.add(ItemInfo.POWER_CRYSTAL_TYPE_ULTRA);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_ULTRA_CHARGE);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_ULTRA);
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ItemInfo.POWER_CRYSTAL_DISPLAY);
+        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_ULTRA);
         item.setItemMeta(meta);
@@ -157,7 +160,7 @@ public class ItemCreator {
         lore.add("§x§f§b§b§5§0§0amethyst blocks");
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ItemInfo.EXCAVATION_TOOL_DISPLAY_NAME);
+        meta.setDisplayName(TitanItemInfo.EXCAVATION_TOOL_DISPLAY_NAME);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setCustomModelData(CustomModelData.EXCAVATOR);
         item.setItemMeta(meta);

@@ -1,7 +1,7 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
-import com.nessxxiii.titanenchants.items.CustomModelData;
-import com.nessxxiii.titanenchants.items.ItemInfo;
+import com.playtheatria.jliii.generalutils.items.CustomModelData;
+import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -37,11 +37,11 @@ public class ToggleAncientPower implements Listener {
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
             Material coolDown = Material.JIGSAW;
             if (processItemValidation(itemInMainHand)) {
-                if (ItemInfo.isCharged(itemInMainHand)) {
+                if (TitanItemInfo.isCharged(itemInMainHand)) {
                     player.setCooldown(coolDown,25);
                     event.setCancelled(true);
                     ToggleAncientPower.toggleEnchant(itemInMainHand, player,false);
-                } else if (ItemInfo.isImbued(itemInMainHand)) {
+                } else if (TitanItemInfo.isImbued(itemInMainHand)) {
                     player.setCooldown(coolDown,25);
                     ToggleAncientPower.toggleEnchant(itemInMainHand, player, true);
                 }
@@ -51,8 +51,8 @@ public class ToggleAncientPower implements Listener {
 
     public static void toggleEnchant(ItemStack item, Player player, boolean isImbued) {
 
-        int itemLevel = ItemInfo.getItemLevel(item);
-        String color = ItemInfo.getColorStringLiteral(item);
+        int itemLevel = TitanItemInfo.getItemLevel(item);
+        String color = TitanItemInfo.getColorStringLiteral(item);
 
         switch (itemLevel) {
             case 1, 2 -> {
@@ -66,7 +66,7 @@ public class ToggleAncientPower implements Listener {
                 disableEffect(player);
             }
             default -> {
-                if (ItemInfo.isDormantCharged(item)) {
+                if (TitanItemInfo.isDormantCharged(item)) {
                     powerLevelConversion(item, itemLevel, color, isImbued, true);
                     player.sendActionBar(ChatColor.GREEN + "Ancient Power set to PowerLvl: " + (itemLevel + 1));
                     enableEffect(player);
@@ -78,7 +78,7 @@ public class ToggleAncientPower implements Listener {
     }
 
     public static void handleFullInventory(ItemStack item, Player player, boolean isImbued, int currentLevel) {
-        String color = ItemInfo.getColorStringLiteral(item);
+        String color = TitanItemInfo.getColorStringLiteral(item);
 
         switch (currentLevel) {
             case 3,2 -> {
@@ -105,42 +105,42 @@ public class ToggleAncientPower implements Listener {
             itemLevelToGet = itemLevel >= 1 ? itemLevel - 1 : 0;
         }
         if (isImbued) {
-            loreToAdd = ItemInfo.IMBUED_LORE_MATRIX.get(color)[itemLevelToGet];
+            loreToAdd = TitanItemInfo.IMBUED_LORE_MATRIX.get(color)[itemLevelToGet];
         } else {
-            loreToAdd = ItemInfo.CHARGED_LORE_MATRIX.get(color)[itemLevelToGet];
+            loreToAdd = TitanItemInfo.CHARGED_LORE_MATRIX.get(color)[itemLevelToGet];
         }
 //        printLog(isImbued, itemLevel, itemLevelToGet, color);
-        List<String> loreList = ItemInfo.getLore(item);
-        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
+        List<String> loreList = TitanItemInfo.getLore(item);
+        Integer index = TitanItemInfo.getAncientPowerLoreIndex(loreList);
         loreList.set(index, loreToAdd);
-        ItemInfo.setLore(item, loreList);
+        TitanItemInfo.setLore(item, loreList);
     }
 
 
     public static void disableEnchant(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
-        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.CHARGED_INACTIVE);
+        Integer index = TitanItemInfo.getAncientPowerLoreIndex(loreList);
+        loreList.set(index,TitanItemInfo.CHARGED_INACTIVE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
     }
 
     public static void imbue(ItemStack item){
-        List<String> loreList = ItemInfo.getLore(item);
-        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        String color = ItemInfo.getColorStringLiteral(item);
+        List<String> loreList = TitanItemInfo.getLore(item);
+        Integer index = TitanItemInfo.getAncientPowerLoreIndex(loreList);
+        String color = TitanItemInfo.getColorStringLiteral(item);
         ItemMeta meta = item.getItemMeta();
         meta.setCustomModelData(CustomModelData.IMBUED_TITAN_TOOL);
         item.setItemMeta(meta);
-        loreList.set(index, ItemInfo.IMBUED_LORE_MATRIX.get(color)[1]);
-        ItemInfo.setLore(item, loreList);
+        loreList.set(index, TitanItemInfo.IMBUED_LORE_MATRIX.get(color)[1]);
+        TitanItemInfo.setLore(item, loreList);
     }
 
     public static void disableImbuedEnchant(ItemStack item) {
         List<String> loreList = item.getItemMeta().getLore();
-        Integer index = ItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,ItemInfo.IMBUED_INACTIVE);
+        Integer index = TitanItemInfo.getAncientPowerLoreIndex(loreList);
+        loreList.set(index,TitanItemInfo.IMBUED_INACTIVE);
         ItemMeta meta = item.getItemMeta();
         meta.setLore(loreList);
         item.setItemMeta(meta);
@@ -156,11 +156,11 @@ public class ToggleAncientPower implements Listener {
     //TODO items are checked twice here, is there a way to reduce the checks?
     //TODO perhaps there is a method to get all info on a pick immediately and store in a temporary object to reference throughout the methods
     private static boolean processItemValidation(ItemStack item){
-        if (!ItemInfo.isCharged(item) && !ItemInfo.isImbued(item)) {
+        if (!TitanItemInfo.isCharged(item) && !TitanItemInfo.isImbued(item)) {
 //            Bukkit.getConsoleSender().sendMessage("item was not charged and not imbued");
             return false;
         }
-        if (!ItemInfo.isAllowedTitanType(item)) {
+        if (!TitanItemInfo.isAllowedTitanType(item)) {
 //            Bukkit.getConsoleSender().sendMessage("Item is not allowed titan type");
             return false;
         }
@@ -168,7 +168,7 @@ public class ToggleAncientPower implements Listener {
 //            Bukkit.getConsoleSender().sendMessage("Item does not have item meta");
             return false;
         }
-        if (!ItemInfo.isTitanTool(item)) {
+        if (!TitanItemInfo.isTitanTool(item)) {
 //            Bukkit.getConsoleSender().sendMessage("Item is not a titan tool");
             return false;
         }

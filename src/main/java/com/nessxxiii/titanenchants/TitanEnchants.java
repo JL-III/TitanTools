@@ -1,5 +1,6 @@
 package com.nessxxiii.titanenchants;
 
+import com.gmail.nossr50.mcMMO;
 import com.nessxxiii.titanenchants.commands.AdminCommands;
 import com.nessxxiii.titanenchants.commands.KitCommands;
 import com.nessxxiii.titanenchants.items.ItemCreator;
@@ -16,7 +17,6 @@ import com.nessxxiii.titanenchants.listeners.blockbreak.PowerCrystalDrop;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -41,6 +41,14 @@ public final class TitanEnchants extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
 //        Bukkit.getScheduler().runTaskTimer(this, this.checkPlayerLocation, 100, 100);
+        Plugin plugin = getServer().getPluginManager().getPlugin("mcMMO");
+
+        if (!(plugin instanceof mcMMO)) {
+            getLogger().severe("SomeDependencyPlugin not found, disabling TheatriaEnchants...");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        Bukkit.getLogger().warning("Found mcMMO plugin! Continuing...");
         this.saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(new TitanPicks(this),this);
         Bukkit.getPluginManager().registerEvents(new TitanShovel(this), this);

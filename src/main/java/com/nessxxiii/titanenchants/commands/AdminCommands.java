@@ -1,9 +1,10 @@
 package com.nessxxiii.titanenchants.commands;
 
 import com.nessxxiii.titanenchants.items.ItemCreator;
-import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
+import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
+import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -50,12 +51,12 @@ public class AdminCommands implements CommandExecutor {
         if ("imbue".equalsIgnoreCase(args[0])) {
             Material coolDown = Material.SQUID_SPAWN_EGG;
             ItemStack item = player.getInventory().getItemInMainHand();
-            if (!ItemInfo.isTitanTool(item)) return false;
+            if (!TitanItemInfo.isTitanTool(item)) return false;
             if (!player.hasPermission(permissionStringMaker("imbue"))) {
                 player.sendMessage(NO_PERMISSION);
                 return false;
             }
-            if (ItemInfo.isImbued(item)) {
+            if (TitanItemInfo.isImbued(item)) {
                 player.sendMessage(ChatColor.GREEN + "That item is already imbued!");
                 return false;
             }
@@ -65,9 +66,9 @@ public class AdminCommands implements CommandExecutor {
                 player.setCooldown(coolDown, 200);
                 return false;
             }
-            List<String> loreList = ItemInfo.getLore(item);
+            List<String> loreList = TitanItemInfo.getLore(item);
             for (String lore : loreList) {
-                if (ItemInfo.UNIMBUED_LORE.contains(lore)) {
+                if (TitanItemInfo.UNIMBUED_LORE.contains(lore)) {
                     ToggleAncientPower.imbue(item);
                     TitanEnchantEffects.enableEffect(player);
                     plugin.getLogger().info(player.getName() + " has imbued a titan tool...");
@@ -129,7 +130,7 @@ public class AdminCommands implements CommandExecutor {
                 player.sendMessage(NO_PERMISSION);
                 return false;
             }
-            player.sendMessage("TitanPick isChargedOrImbued: " + ItemInfo.isChargedOrImbuedTitanPick(player.getInventory().getItemInMainHand()));
+            player.sendMessage("TitanPick isChargedOrImbued: " + TitanItemInfo.isChargedOrImbuedTitanPick(player.getInventory().getItemInMainHand()));
             player.sendMessage("Current Custom model data: " + player.getInventory().getItemInMainHand().getItemMeta().getCustomModelData());
 
         }
@@ -186,8 +187,8 @@ public class AdminCommands implements CommandExecutor {
 
         if ("crystalcheck".equalsIgnoreCase(args[0]) && player.hasPermission(permissionStringMaker("crystalcheck"))) {
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-            player.sendMessage("Item is powercrystal: " + ItemInfo.isPowerCrystal(itemInMainHand));
-            player.sendMessage("PowerCrystal type: " + ItemInfo.getPowerCrystalType(itemInMainHand));
+            player.sendMessage("Item is powercrystal: " + PowerCrystalInfo.isPowerCrystal(itemInMainHand));
+            player.sendMessage("PowerCrystal type: " + PowerCrystalInfo.getPowerCrystalType(itemInMainHand));
             return true;
         }
 
@@ -218,7 +219,7 @@ public class AdminCommands implements CommandExecutor {
             if (!player.hasPermission(permissionStringMaker("isTitanTool"))) {
                 player.sendMessage(NO_PERMISSION);
             }
-            player.sendMessage("isTitanTool: " + ItemInfo.isTitanTool(player.getInventory().getItemInMainHand()));
+            player.sendMessage("isTitanTool: " + TitanItemInfo.isTitanTool(player.getInventory().getItemInMainHand()));
         }
         return false;
     }

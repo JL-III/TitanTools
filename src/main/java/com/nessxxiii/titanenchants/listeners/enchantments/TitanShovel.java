@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantments;
 
-import com.nessxxiii.titanenchants.items.ItemInfo;
+import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -36,7 +36,7 @@ public class TitanShovel implements Listener {
     public void titanShovelBreakBlock(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null) return;
         if (!event.getAction().isLeftClick()) return;
-        if (!ItemInfo.isChargedOrImbuedTitanShovel(event.getPlayer().getInventory().getItemInMainHand())) return;
+        if (!TitanItemInfo.isChargedOrImbuedTitanShovel(event.getPlayer().getInventory().getItemInMainHand())) return;
         IGNORE_LOCATIONS.clear(); //Strange bug would occur with sand and gravel if IGNORE_LOCATIONS wasn't cleared
         Player player = event.getPlayer();
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
@@ -46,7 +46,7 @@ public class TitanShovel implements Listener {
         }
         Block clickedBlock = event.getClickedBlock();
 
-        if (ItemInfo.isLevelOne(itemInMainHand)) {
+        if (TitanItemInfo.isLevelOne(itemInMainHand)) {
             if (clickedBlock.getType() == Material.BEDROCK
                     && ((clickedBlock.getLocation().getY() < -63) && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
                     || ((clickedBlock.getLocation().getY() < 1 || clickedBlock.getLocation().getY() > 126) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) return;
@@ -55,7 +55,7 @@ public class TitanShovel implements Listener {
             if (e.isCancelled()) return;
             if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
                 clickedBlock.breakNaturally(itemInMainHand);
-                if (ItemInfo.isCharged(itemInMainHand)) {
+                if (TitanItemInfo.isCharged(itemInMainHand)) {
                     decreaseChargeLore(itemInMainHand, player, 1);
                 }
                 return;
@@ -63,13 +63,13 @@ public class TitanShovel implements Listener {
                 if (DISALLOWED_ITEMS.contains(clickedBlock.getType())) return;
                 clickedBlock.setType(Material.AIR);
             }
-            if (ItemInfo.isCharged(itemInMainHand)) {
+            if (TitanItemInfo.isCharged(itemInMainHand)) {
                 decreaseChargeLore(itemInMainHand, player, 1);
             }
 
 
 
-        } else if (ItemInfo.isLevelTwo(itemInMainHand)){
+        } else if (TitanItemInfo.isLevelTwo(itemInMainHand)){
             BlockFace blockFace = event.getBlockFace();
             if (clickedBlock.getType() == Material.BEDROCK
                     && ((clickedBlock.getLocation().getY() < -63) && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
@@ -83,7 +83,7 @@ public class TitanShovel implements Listener {
                 if (DISALLOWED_ITEMS.contains(clickedBlock.getType())) return;
                 clickedBlock.setType(Material.AIR);
             }
-            if (ItemInfo.isCharged(itemInMainHand)) {
+            if (TitanItemInfo.isCharged(itemInMainHand)) {
                 decreaseChargeLore(itemInMainHand, player, 2);
             }
             for (Block blockLoop : getNearbyBlocks2(clickedBlock.getLocation(), blockFace)) {
@@ -104,7 +104,7 @@ public class TitanShovel implements Listener {
                 }
             }
 
-        } else if (ItemInfo.isLevelThree(itemInMainHand)){
+        } else if (TitanItemInfo.isLevelThree(itemInMainHand)){
             Material clickedBlockType = clickedBlock.getType();
             Location clickedBlockLocation = clickedBlock.getLocation();
             if (clickedBlockType == Material.BEDROCK
@@ -119,7 +119,7 @@ public class TitanShovel implements Listener {
                 if (DISALLOWED_ITEMS.contains(clickedBlockType)) return;
                 clickedBlock.setType(Material.AIR);
             }
-            if (ItemInfo.isCharged(itemInMainHand)) {
+            if (TitanItemInfo.isCharged(itemInMainHand)) {
                 decreaseChargeLore(itemInMainHand, player,3 );
             }
             for (Block blockLoop : getNearbyBlocks3(clickedBlockLocation, event.getBlockFace())) {
