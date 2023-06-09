@@ -2,8 +2,6 @@ package com.nessxxiii.titanenchants;
 
 import com.gmail.nossr50.mcMMO;
 import com.nessxxiii.titanenchants.commands.AdminCommands;
-import com.nessxxiii.titanenchants.commands.KitCommands;
-import com.nessxxiii.titanenchants.items.ItemCreator;
 import com.nessxxiii.titanenchants.commands.PlayerCommands;
 import com.nessxxiii.titanenchants.commands.PlayerCommandsTabComplete;
 import com.nessxxiii.titanenchants.listeners.ItemDamageEvent;
@@ -14,25 +12,25 @@ import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanShovel;
 import com.nessxxiii.titanenchants.listeners.mcMMO.McMMOManager;
 import com.nessxxiii.titanenchants.listeners.blockbreak.PowerCrystalDrop;
-
+import com.playtheatria.jliii.generalutils.utils.CustomLogger;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
-import java.util.logging.Logger;
 
 public final class TitanEnchants extends JavaPlugin {
 
-    private final Logger LOGGER;
+    private final CustomLogger LOGGER;
     private final Plugin PLUGIN;
     private PlayerCommands playerCommands;
 
 
     public TitanEnchants() {
         PLUGIN = this;
-        LOGGER = getLogger();
+        LOGGER = new CustomLogger(getName(), NamedTextColor.DARK_PURPLE, NamedTextColor.LIGHT_PURPLE);
         playerCommands = new PlayerCommands(this);
 
     }
@@ -58,7 +56,6 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
         Bukkit.getPluginManager().registerEvents(new JoinListener(this), this);
-        Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(LOGGER));
         Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, playerCommands));
 
         Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
@@ -70,7 +67,6 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage("");
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "               NessXXIII");
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");
-        new ItemCreator(this);
 //        ItemCreator.Init();
     }
 
