@@ -93,7 +93,7 @@
         <dependency>
             <groupId>com.github.JL-III</groupId>
             <artifactId>GeneralUtils</artifactId>
-            <version>v1.0.2-alpha-2</version>
+            <version>1.0.2-alpha-5</version>
         </dependency>
     </dependencies>
 </project>
