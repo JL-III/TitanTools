@@ -1,5 +1,6 @@
 package com.nessxxiii.titanenchants;
 
+
 import com.gmail.nossr50.mcMMO;
 import com.nessxxiii.titanenchants.commands.AdminCommands;
 import com.nessxxiii.titanenchants.commands.PlayerCommands;
@@ -68,12 +69,6 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "               NessXXIII");
         Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");
 //        ItemCreator.Init();
-    }
-
-
-    @Override
-    public void onDisable() {
-        // Plugin shutdown logic
     }
 
     public PlayerCommands getPlayerCommands() { return this.playerCommands; }
