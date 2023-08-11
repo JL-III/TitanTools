@@ -1,5 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantments;
 
+import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
@@ -8,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
@@ -23,16 +23,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public class TitanPicks implements Listener {
+    private final ConfigManager configManager;
 
-    private final Plugin PLUGIN;
-
-    public TitanPicks(Plugin plugin) {
-        this.PLUGIN = plugin;
-        loadConfig();
+    public TitanPicks(ConfigManager configManager) {
+        this.configManager = configManager;
+        configManager.loadConfig();
     }
-
-    public static final Set<Material> ALLOWED_ITEMS = new HashSet<>();
-    public static final Set<Material> ENCHANTABLE_ITEMS = new HashSet<>();
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
     private static final HashMap<Material, Integer> blockConversionQuantity = new HashMap<>(){{
         put(Material.EMERALD_ORE, 6);
@@ -110,7 +106,7 @@ public class TitanPicks implements Listener {
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
                     int aggregateAmount = 0;
                     for (Block currentBlock : getNearbyBlocks(blockBroken.getLocation())) {
-                        if (ALLOWED_ITEMS.contains(currentBlock.getType())) {
+                        if (configManager.getAllowedItems().contains(currentBlock.getType())) {
                             IGNORE_LOCATIONS.add(currentBlock.getLocation());
                             BlockBreakEvent e = new BlockBreakEvent(currentBlock, player);
                             Bukkit.getPluginManager().callEvent(e);
@@ -138,7 +134,7 @@ public class TitanPicks implements Listener {
                         if (block.getLocation().equals(blockBroken.getLocation())) {
                             continue;
                         }
-                        if (ALLOWED_ITEMS.contains(block.getType())) {
+                        if (configManager.getAllowedItems().contains(block.getType())) {
                             IGNORE_LOCATIONS.add(block.getLocation());
                             BlockBreakEvent e = new BlockBreakEvent(block, player);
                             Bukkit.getPluginManager().callEvent(e);
@@ -163,13 +159,13 @@ public class TitanPicks implements Listener {
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
                     int aggregateAmount = 0;
                     for (Block currentBlock : getNearbyBlocks(blockBroken.getLocation())) {
-                        if (ALLOWED_ITEMS.contains(currentBlock.getType())) {
+                        if (configManager.getAllowedItems().contains(currentBlock.getType())) {
                             IGNORE_LOCATIONS.add(currentBlock.getLocation());
                             BlockBreakEvent e = new BlockBreakEvent(currentBlock, player);
                             Bukkit.getPluginManager().callEvent(e);
                             blockBrokenMaterial = currentBlock.getType();
                             if (!e.isCancelled()) {
-                                if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
+                                if (blockConversionTypes.containsKey(blockBrokenMaterial)) {
                                     getNewBlocksFromSmeltAndUpdateInventory(player, blockBrokenMaterial);
                                     TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
                                     aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
@@ -187,7 +183,7 @@ public class TitanPicks implements Listener {
                     }
                 } else {
                     for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
-                        if (ALLOWED_ITEMS.contains(block.getType())) {
+                        if (configManager.getAllowedItems().contains(block.getType())) {
                             IGNORE_LOCATIONS.add(block.getLocation());
                             BlockBreakEvent e = new BlockBreakEvent(block, player);
                             Bukkit.getPluginManager().callEvent(e);
@@ -224,43 +220,6 @@ public class TitanPicks implements Listener {
     private void updatePlayerInventory(Player player, ItemStack drops) {
         player.getInventory().addItem(drops);
         player.updateInventory();
-    }
-
-    public void loadConfig() {
-        ENCHANTABLE_ITEMS.clear();
-        ConfigurationSection trench = PLUGIN.getConfig().getConfigurationSection("trench");
-        if (trench == null) {
-            PLUGIN.getLogger().warning("Trench configuration not found!");
-            return;
-        }
-
-        List<String> items = trench.getStringList("destroyable-items");
-
-        if (items.size() == 0) {
-            PLUGIN.getLogger().warning("No destroyable-items found in trench section of config.");
-        }
-
-        for (String item : items) {
-            try {
-                ALLOWED_ITEMS.add(Material.valueOf(item));
-            } catch (Exception e) {
-                PLUGIN.getLogger().warning("'" + item + "' is not a valid material name! Skipping this item.");
-            }
-        }
-
-        List<String> enchantableItems = trench.getStringList("enchantable-items");
-
-        if (items.size() == 0) {
-            PLUGIN.getLogger().warning("No enchantable-items found in trench section of config.");
-        }
-
-        for (String item : enchantableItems) {
-            try {
-                ENCHANTABLE_ITEMS.add(Material.valueOf(item));
-            } catch (Exception e) {
-                PLUGIN.getLogger().warning("'" + item + "' is not a valid material name! Skipping this item.");
-            }
-        }
     }
 
     private int calculateExperienceAmount(Material material) {
