@@ -13,10 +13,10 @@ import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanShovel;
 import com.nessxxiii.titanenchants.listeners.mcMMO.McMMOManager;
 import com.nessxxiii.titanenchants.listeners.blockbreak.PowerCrystalDrop;
+import com.nessxxiii.titanenchants.util.Utils;
 import com.playtheatria.jliii.generalutils.utils.CustomLogger;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,31 +24,27 @@ import java.util.Objects;
 
 public final class TitanEnchants extends JavaPlugin {
 
-    private final CustomLogger LOGGER;
-    private final Plugin PLUGIN;
-    private PlayerCommands playerCommands;
-
-
-    public TitanEnchants() {
-        PLUGIN = this;
-        LOGGER = new CustomLogger(getName(), NamedTextColor.DARK_PURPLE, NamedTextColor.LIGHT_PURPLE);
-        playerCommands = new PlayerCommands(this);
-
-    }
-
     @Override
     public void onEnable() {
-        // Plugin startup logic
-//        Bukkit.getScheduler().runTaskTimer(this, this.checkPlayerLocation, 100, 100);
-        Plugin plugin = getServer().getPluginManager().getPlugin("mcMMO");
+        checkMcMMODependency();
 
-        if (!(plugin instanceof mcMMO)) {
-            getLogger().severe("SomeDependencyPlugin not found, disabling TheatriaEnchants...");
-            getServer().getPluginManager().disablePlugin(this);
-            return;
-        }
-        Bukkit.getLogger().warning("Found mcMMO plugin! Continuing...");
         this.saveDefaultConfig();
+
+        registerEvents();
+        registerCommands();
+
+        Utils.printBanner();
+    }
+
+    private void registerCommands() {
+        PlayerCommands playerCommands = new PlayerCommands(this);
+        Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, playerCommands));
+        Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
+        Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
+    }
+
+
+    private void registerEvents() {
         Bukkit.getPluginManager().registerEvents(new TitanPicks(this),this);
         Bukkit.getPluginManager().registerEvents(new TitanShovel(this), this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(this),this);
@@ -57,20 +53,17 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new McMMOManager(),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
         Bukkit.getPluginManager().registerEvents(new JoinListener(this), this);
-        Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, playerCommands));
-
-        Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
-        Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
-        Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "   _____   _____   _        ");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "     |   |   |    /_\\  |\\ |");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "     |   |   |   /   \\ | \\| enchants");
-        Bukkit.getConsoleSender().sendMessage("");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "               NessXXIII");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");
-//        ItemCreator.Init();
     }
 
-    public PlayerCommands getPlayerCommands() { return this.playerCommands; }
+    private void checkMcMMODependency() {
+        Plugin plugin = getServer().getPluginManager().getPlugin("mcMMO");
+
+        if (!(plugin instanceof mcMMO)) {
+            getLogger().severe("mcMMO not found, disabling TheatriaEnchants...");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+        Bukkit.getLogger().warning("Found mcMMO plugin! Continuing...");
+    }
 
 }
