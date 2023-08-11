@@ -19,7 +19,7 @@ public class McMMOManager implements Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent event){
         //TODO is this doing anything???
-        if(!event.getAction().isRightClick())return;
+        if(!event.getAction().isRightClick()) return;
         player = event.getPlayer();
     }
 

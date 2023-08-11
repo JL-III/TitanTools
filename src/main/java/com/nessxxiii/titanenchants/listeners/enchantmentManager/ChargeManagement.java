@@ -51,14 +51,12 @@ public class ChargeManagement implements Listener {
         //item on cursor must be powercrystal
         if (itemOnCursor.getItemMeta() == null) return false;
         if (!PowerCrystalInfo.isPowerCrystal(itemOnCursor)) return false;
-//        Bukkit.getConsoleSender().sendMessage("Checking is validated");
         //item clicked is the titan tool
         if (itemClicked.getType() == Material.AIR || itemClicked.getType() == null) return false;
         if (PowerCrystalInfo.isPowerCrystal(itemClicked)) return false;
         if (!TitanItemInfo.isTitanTool(itemClicked)) return false;
         if (!TitanItemInfo.isAllowedTitanType(itemClicked)) return false;
         if (TitanItemInfo.isImbued(itemClicked)) return false;
-//        Bukkit.getConsoleSender().sendMessage("Returned true");
         return true;
     }
 

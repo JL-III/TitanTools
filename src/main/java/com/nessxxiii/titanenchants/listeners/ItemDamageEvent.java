@@ -12,7 +12,7 @@ public class ItemDamageEvent implements Listener{
     public void onPlayerItemDamageEvent(PlayerItemDamageEvent event) {
         ItemStack itemBeingDamaged = event.getItem();
 
-        if (TitanItemInfo.isTitanTool(itemBeingDamaged) && (TitanItemInfo.isActiveCharged(itemBeingDamaged) || TitanItemInfo.isActiveImbued(itemBeingDamaged))) {
+        if (TitanItemInfo.isTitanTool(itemBeingDamaged)) {
             event.setCancelled(true);
         }
     }

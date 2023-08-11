@@ -20,12 +20,7 @@ import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.enableEffect;
 
 public class ToggleAncientPower implements Listener {
 
-    private Plugin plugin;
     private static Player player;
-
-    public ToggleAncientPower(Plugin plugin) {
-        this.plugin = plugin;
-    };
 
     @EventHandler
     public static void activateClick(PlayerInteractEvent event) {

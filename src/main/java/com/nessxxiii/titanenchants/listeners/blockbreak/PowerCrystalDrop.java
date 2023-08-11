@@ -36,11 +36,6 @@ public class PowerCrystalDrop implements Listener {
     private static void handleDropPowerCrystal(Location playerLocation, Location blockLocation) {
         int randomNumber = getRandomNumber(1,100);
         if (randomNumber > 95) {
-//            if (randomNumber > 99) {
-//                playerLocation.getWorld().dropItemNaturally(blockLocation, ItemCreator.powerCrystalSuper);
-//                Bukkit.getConsoleSender().sendMessage("Random number: " + randomNumber);
-//                return;
-//            }
             playerLocation.getWorld().dropItemNaturally(blockLocation, ItemCreator.powerCrystalUncommon);
             return;
         }

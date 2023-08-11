@@ -25,8 +25,8 @@ import java.util.List;
 
 public class AdminCommands implements CommandExecutor {
 
-    private Plugin plugin;
-    private PlayerCommands playerCommands;
+    private final Plugin plugin;
+    private final PlayerCommands playerCommands;
     private FileConfiguration fileConfig;
     private final String permissionPrefix = "titan.enchants.admincommands";
     private final String NO_PERMISSION = ChatColor.RED + "No Permission.";
@@ -190,15 +190,6 @@ public class AdminCommands implements CommandExecutor {
             player.sendMessage("Item is powercrystal: " + PowerCrystalInfo.isPowerCrystal(itemInMainHand));
             player.sendMessage("PowerCrystal type: " + PowerCrystalInfo.getPowerCrystalType(itemInMainHand));
             return true;
-        }
-
-        if ("spawn".equalsIgnoreCase(args[0]) && player.hasPermission(permissionStringMaker("spawn"))) {
-            Cat entity = (Cat) player.getWorld().spawnEntity(player.getLocation(), EntityType.CAT);
-            entity.setOwner(player);
-            entity.setAge(-2);
-            entity.setAgeLock(true);
-            entity.setInvulnerable(true);
-            entity.setMetadata("customModelData", new FixedMetadataValue(plugin, 1234567));
         }
 
         if ("compare".equalsIgnoreCase(args[0])) {
