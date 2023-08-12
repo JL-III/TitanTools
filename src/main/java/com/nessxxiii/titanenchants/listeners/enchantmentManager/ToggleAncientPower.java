@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManager;
 
-import com.nessxxiii.titanenchants.TitanEnchants;
+import com.nessxxiii.titanenchants.util.Utils;
 import com.playtheatria.jliii.generalutils.items.CustomModelData;
 import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
 import org.bukkit.Bukkit;
@@ -20,15 +20,6 @@ import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.enableEffect;
 
 public class ToggleAncientPower implements Listener {
 
-    private record ItemCheck(
-            boolean hasItemMeta,
-            boolean isTitanTool,
-            boolean isAllowedTitanType,
-            boolean isCharged,
-            boolean isImbued,
-            boolean isActive
-    ) {};
-
     @EventHandler
     public void activateClick(PlayerInteractEvent event) {
         if (!event.getAction().isRightClick()) return;
@@ -37,18 +28,18 @@ public class ToggleAncientPower implements Listener {
             Player player = event.getPlayer();
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
             Material coolDown = Material.JIGSAW;
-            ItemCheck itemCheck = retrieveItemRecord(itemInMainHand);
-            if (processItemValidation(itemCheck)) {
+            Utils.ItemRecord itemRecord = Utils.retrieveItemRecord(itemInMainHand);
+            if (processItemValidation(itemRecord)) {
                 player.setCooldown(coolDown,25);
                 event.setCancelled(true);
-                toggleEnchant(itemInMainHand, player,itemCheck);
+                toggleEnchant(itemInMainHand, player, itemRecord);
             }
         }
     }
     //Item has already been checked if it is charged or imbued when it is called here
-    private void toggleEnchant(ItemStack item, Player player, ItemCheck itemCheck) {
+    private void toggleEnchant(ItemStack item, Player player, Utils.ItemRecord itemRecord) {
         String color = TitanItemInfo.getColorStringLiteral(item);
-        player.sendActionBar(powerLevelConversion(item, itemCheck.isActive, color, itemCheck.isCharged));
+        player.sendActionBar(powerLevelConversion(item, itemRecord.isActive(), color, itemRecord.isCharged()));
         enableEffect(player);
     }
 
@@ -68,7 +59,7 @@ public class ToggleAncientPower implements Listener {
     }
 
     public static void handleFullInventory(ItemStack item, Player player) {
-        ItemCheck itemCheck = new ItemCheck(
+        Utils.ItemRecord itemRecord = new Utils.ItemRecord(
                 item.hasItemMeta(),
                 TitanItemInfo.isTitanTool(item),
                 TitanItemInfo.isAllowedTitanType(item),
@@ -77,7 +68,7 @@ public class ToggleAncientPower implements Listener {
                 (TitanItemInfo.isActiveCharged(item) || TitanItemInfo.isActiveImbued(item))
         );
         String color = TitanItemInfo.getColorStringLiteral(item);
-        powerLevelConversion(item, itemCheck.isActive, color, itemCheck.isCharged);
+        powerLevelConversion(item, itemRecord.isActive(), color, itemRecord.isCharged());
         player.sendMessage("§CInventory is full - Ancient Power deactivated");
         disableEffect(player);
     }
@@ -118,32 +109,21 @@ public class ToggleAncientPower implements Listener {
         return player.hasPermission("titan.enchants.toggle");
     }
 
-    private static boolean processItemValidation(ItemCheck itemCheck){
-        if (!itemCheck.hasItemMeta) {
+    private static boolean processItemValidation(Utils.ItemRecord itemRecord){
+        if (!itemRecord.hasItemMeta()) {
             return false;
         }
-        if (!itemCheck.isCharged && !itemCheck.isImbued) {
+        if (!itemRecord.isCharged() && !itemRecord.isImbued()) {
             return false;
         }
-        if (!itemCheck.isAllowedTitanType) {
+        if (!itemRecord.isAllowedTitanType()) {
             return false;
         }
-        if (!itemCheck.isTitanTool) {
+        if (!itemRecord.isTitanTool()) {
             return false;
         }
 
         return true;
-    }
-
-    private ItemCheck retrieveItemRecord(ItemStack itemStack) {
-        return new ItemCheck(
-                itemStack.hasItemMeta(),
-                TitanItemInfo.isTitanTool(itemStack),
-                TitanItemInfo.isAllowedTitanType(itemStack),
-                TitanItemInfo.isCharged(itemStack),
-                TitanItemInfo.isImbued(itemStack),
-                (TitanItemInfo.isActiveCharged(itemStack) || TitanItemInfo.isActiveImbued(itemStack))
-        );
     }
 
     public static void printLog(boolean isImbued, int itemLevel, int itemLevelToGet, String color) {

@@ -4,6 +4,7 @@ import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
 import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
+import com.nessxxiii.titanenchants.util.Utils;
 import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -63,10 +64,13 @@ public class TitanPicks implements Listener {
         Material blockBrokenMaterial = blockBroken.getType();
         Inventory inventory = player.getInventory();
 
+        Utils.ItemRecord itemRecord = Utils.retrieveItemRecord(itemInMainHand);
+
         if (IGNORE_LOCATIONS.contains(blockBroken.getLocation())) {
             IGNORE_LOCATIONS.remove(blockBroken.getLocation());
             return;
         }
+
         int itemLevel = TitanItemInfo.getItemLevel(itemInMainHand);
 
         switch (itemLevel) {
