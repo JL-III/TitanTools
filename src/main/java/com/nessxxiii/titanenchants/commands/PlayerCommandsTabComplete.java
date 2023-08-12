@@ -14,16 +14,20 @@ public class PlayerCommandsTabComplete implements TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        List<String> commands = new ArrayList<>();
-        commands.add("reload");
-        commands.add("crystal");
-        commands.add("check");
-        commands.add("imbue");
-        commands.add("excavator");
-        if (sender instanceof Player player && player.hasPermission("titan.enchants.tabcomplete")) {
-            return commands;
+        if (sender instanceof Player player && player.hasPermission("titan.enchants.admin.tabcomplete")) {
+            return new ArrayList<>() {{
+                add("check");
+                add("crystal");
+                add("debug");
+                add("excavator");
+                add("imbue");
+                add("pack");
+                add("reload");
+            }};
         } else {
-            return  new ArrayList<>();
+            return new ArrayList<>() {{
+                add("pack");
+            }};
         }
     }
 }

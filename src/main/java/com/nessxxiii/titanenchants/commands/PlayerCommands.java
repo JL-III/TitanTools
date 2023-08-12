@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.commands;
 
-import org.bukkit.*;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -8,9 +8,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 
 public class PlayerCommands implements CommandExecutor{
