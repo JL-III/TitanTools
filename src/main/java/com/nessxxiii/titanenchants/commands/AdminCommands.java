@@ -23,6 +23,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import static com.playtheatria.jliii.generalutils.items.TitanItemInfo.CHARGE_STRING;
+
 public class AdminCommands implements CommandExecutor {
 
     private final Plugin plugin;
@@ -77,18 +79,25 @@ public class AdminCommands implements CommandExecutor {
             }
             return false;
         }
+
         if ("debug".equalsIgnoreCase(args[0])) {
             if (!player.hasPermission(permissionStringMaker("debug"))) {
                 player.sendMessage(NO_PERMISSION);
                 return false;
             }
+            player.sendMessage(ChatColor.LIGHT_PURPLE + "--------------------Debug--------------------");
             player.sendMessage("Current RP link: " + fileConfig.getString("resource-pack") );
             if (player.getInventory().getItemInMainHand().getType() == Material.AIR) return true;
-            if (player.getInventory().getItemInMainHand().hasItemMeta() && player.getInventory().getItemInMainHand().getItemMeta().hasCustomModelData()) {
-                player.sendMessage("Current custom model data: " + player.getInventory().getItemInMainHand().getItemMeta().getCustomModelData());
-            } else {
-                player.sendMessage("This item does not have custom model data.");
+            if (player.getInventory().getItemInMainHand().hasItemMeta()) {
+                player.sendMessage("Contains charge lore: " + TitanItemInfo.hasCharge(player.getInventory().getItemInMainHand()));
+
+                if (player.getInventory().getItemInMainHand().getItemMeta().hasCustomModelData()) {
+                    player.sendMessage("Current custom model data: " + player.getInventory().getItemInMainHand().getItemMeta().getCustomModelData());
+                } else {
+                    player.sendMessage("This item does not have custom model data.");
+                }
             }
+
         }
 
         if ("save".equalsIgnoreCase(args[0]) && args.length == 2) {

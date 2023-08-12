@@ -36,7 +36,7 @@ public class McMMOManager implements Listener {
         if (!notificationEvent.getEventNotificationType().toString().equals("ToolReady")) return;
         ItemStack item = player.getInventory().getItemInMainHand();
         if (!item.hasItemMeta()) return;
-        if(TitanItemInfo.isActiveCharged(item) || TitanItemInfo.isActiveImbued(item)) {
+        if (TitanItemInfo.isTitanTool(item)) {
             notificationEvent.setCancelled(true);
             if (!player.hasCooldown(coolDown) && !player.isSneaking()) {
                 player.sendActionBar(Component.text(""));

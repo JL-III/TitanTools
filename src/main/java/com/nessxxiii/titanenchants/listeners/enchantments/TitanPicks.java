@@ -74,7 +74,7 @@ public class TitanPicks implements Listener {
                 //TODO could possibly handle full inventories differently, especially when a player spreads out specific items to allow for a
                 //TODO sort of "auto sorting" situation.
                 if (inventory.firstEmpty() == -1) {
-                    ToggleAncientPower.handleFullInventory(itemInMainHand, player, TitanItemInfo.isImbued(itemInMainHand), itemLevel);
+                    ToggleAncientPower.handleFullInventory(itemInMainHand, player);
                     return;
                 }
                 if (TitanItemInfo.isCharged(itemInMainHand)) {
@@ -149,7 +149,7 @@ public class TitanPicks implements Listener {
             case 3 -> {
                 //TODO check when a partial stack is picked up or when nothing is picked up at all and change behavior
                 if (player.getInventory().firstEmpty() == -1) {
-                    ToggleAncientPower.handleFullInventory(itemInMainHand, player, TitanItemInfo.isImbued(itemInMainHand), itemLevel);
+                    ToggleAncientPower.handleFullInventory(itemInMainHand, player);
                     return;
                 }
                 if (TitanItemInfo.isCharged(itemInMainHand)) {
