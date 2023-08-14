@@ -1,4 +1,4 @@
-package com.nessxxiii.titanenchants.listeners.enchantmentManager;
+package com.nessxxiii.titanenchants.listeners.enchantmentManagement;
 
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import com.playtheatria.jliii.generalutils.items.CustomModelData;

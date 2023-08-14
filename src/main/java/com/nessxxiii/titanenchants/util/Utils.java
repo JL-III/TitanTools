@@ -31,7 +31,7 @@ public class Utils {
                 itemStack.hasItemMeta(),
                 TitanItemInfo.isTitanTool(itemStack),
                 TitanItemInfo.isAllowedTitanType(itemStack),
-                TitanItemInfo.isCharged(itemStack),
+                TitanItemInfo.hasCharge(itemStack),
                 TitanItemInfo.isImbued(itemStack),
                 (TitanItemInfo.isActiveCharged(itemStack) || TitanItemInfo.isActiveImbued(itemStack))
         );

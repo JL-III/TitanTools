@@ -1,5 +1,6 @@
 package com.nessxxiii.titanenchants.config;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
@@ -11,18 +12,22 @@ import java.util.Set;
 public class ConfigManager {
 
     private final Plugin plugin;
-    public final Set<Material> allowedItems = new HashSet<>();
-    public static final Set<Material> ENCHANTABLE_ITEMS = new HashSet<>();
-
+    private final Set<Material> allowedPickBlocks = new HashSet<>();
+    private final Set<Material> allowedAxeBlocks = new HashSet<>();
     public ConfigManager(Plugin plugin) {
         this.plugin = plugin;
+        loadConfig();
     }
 
     public void loadConfig() {
-        ENCHANTABLE_ITEMS.clear();
-        ConfigurationSection trench = plugin.getConfig().getConfigurationSection("trench");
+        setAllowedBlocks("titanPick", allowedPickBlocks);
+        setAllowedBlocks("titanAxe", allowedAxeBlocks);
+    }
+
+    public void setAllowedBlocks(String targetSection, Set<Material> targetList) {
+        ConfigurationSection trench = plugin.getConfig().getConfigurationSection(targetSection);
         if (trench == null) {
-            plugin.getLogger().warning("Trench configuration not found!");
+            plugin.getLogger().warning(targetSection + " configuration section not found!");
             return;
         }
 
@@ -34,29 +39,17 @@ public class ConfigManager {
 
         for (String item : items) {
             try {
-                allowedItems.add(Material.valueOf(item));
+                targetList.add(Material.valueOf(item));
             } catch (Exception e) {
                 plugin.getLogger().warning("'" + item + "' is not a valid material name! Skipping this item.");
             }
         }
-
-        List<String> enchantableItems = trench.getStringList("enchantable-items");
-
-        if (items.size() == 0) {
-            plugin.getLogger().warning("No enchantable-items found in trench section of config.");
-        }
-
-        for (String item : enchantableItems) {
-            try {
-                ENCHANTABLE_ITEMS.add(Material.valueOf(item));
-            } catch (Exception e) {
-                plugin.getLogger().warning("'" + item + "' is not a valid material name! Skipping this item.");
-            }
-        }
+        Bukkit.getConsoleSender().sendMessage("Loaded " + targetList.size() + " items for " + targetSection);
     }
 
-    public Set<Material> getAllowedItems() {
-        return allowedItems;
+    public Set<Material> getAllowedPickBlocks() {
+        return allowedPickBlocks;
     }
 
+    public Set<Material> getAllowedAxeBlocks() { return allowedAxeBlocks; }
 }

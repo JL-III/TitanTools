@@ -1,4 +1,4 @@
-package com.nessxxiii.titanenchants.listeners.mcMMO;
+package com.nessxxiii.titanenchants.listeners.mcMMOManagement;
 
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
@@ -11,7 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class McMMOManager implements Listener {
+public class McMMO implements Listener {
 
     Player player;
     Material coolDown = Material.COD_SPAWN_EGG;

@@ -1,8 +1,8 @@
 package com.nessxxiii.titanenchants.listeners.enchantments;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
-import com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement;
-import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
+import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ChargeManagement;
+import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import com.nessxxiii.titanenchants.util.Utils;
 import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
@@ -54,7 +54,6 @@ public class TitanPicks implements Listener {
     }};
 
     @EventHandler
-    @SuppressWarnings("unused")
     public void onBlockBreakEvent(BlockBreakEvent event) {
         if (!TitanItemInfo.isChargedOrImbuedTitanPick(event.getPlayer().getInventory().getItemInMainHand())) return;
         if (event.isCancelled()) return;
@@ -81,7 +80,7 @@ public class TitanPicks implements Listener {
                     ToggleAncientPower.handleFullInventory(itemInMainHand, player);
                     return;
                 }
-                if (TitanItemInfo.isCharged(itemInMainHand)) {
+                if (itemRecord.isCharged()) {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
                 }
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
@@ -103,13 +102,13 @@ public class TitanPicks implements Listener {
                 }
             }
             case 2 -> {
-                if (TitanItemInfo.isCharged(itemInMainHand)) {
+                if (itemRecord.isCharged()) {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
                 }
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
                     int aggregateAmount = 0;
                     for (Block currentBlock : getNearbyBlocks(blockBroken.getLocation())) {
-                        if (configManager.getAllowedItems().contains(currentBlock.getType())) {
+                        if (configManager.getAllowedPickBlocks().contains(currentBlock.getType())) {
                             IGNORE_LOCATIONS.add(currentBlock.getLocation());
                             BlockBreakEvent e = new BlockBreakEvent(currentBlock, player);
                             Bukkit.getPluginManager().callEvent(e);
@@ -137,7 +136,7 @@ public class TitanPicks implements Listener {
                         if (block.getLocation().equals(blockBroken.getLocation())) {
                             continue;
                         }
-                        if (configManager.getAllowedItems().contains(block.getType())) {
+                        if (configManager.getAllowedPickBlocks().contains(block.getType())) {
                             IGNORE_LOCATIONS.add(block.getLocation());
                             BlockBreakEvent e = new BlockBreakEvent(block, player);
                             Bukkit.getPluginManager().callEvent(e);
@@ -156,13 +155,13 @@ public class TitanPicks implements Listener {
                     ToggleAncientPower.handleFullInventory(itemInMainHand, player);
                     return;
                 }
-                if (TitanItemInfo.isCharged(itemInMainHand)) {
+                if (itemRecord.isCharged()) {
                     ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
                 }
                 if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
                     int aggregateAmount = 0;
                     for (Block currentBlock : getNearbyBlocks(blockBroken.getLocation())) {
-                        if (configManager.getAllowedItems().contains(currentBlock.getType())) {
+                        if (configManager.getAllowedPickBlocks().contains(currentBlock.getType())) {
                             IGNORE_LOCATIONS.add(currentBlock.getLocation());
                             BlockBreakEvent e = new BlockBreakEvent(currentBlock, player);
                             Bukkit.getPluginManager().callEvent(e);
@@ -186,7 +185,7 @@ public class TitanPicks implements Listener {
                     }
                 } else {
                     for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
-                        if (configManager.getAllowedItems().contains(block.getType())) {
+                        if (configManager.getAllowedPickBlocks().contains(block.getType())) {
                             IGNORE_LOCATIONS.add(block.getLocation());
                             BlockBreakEvent e = new BlockBreakEvent(block, player);
                             Bukkit.getPluginManager().callEvent(e);

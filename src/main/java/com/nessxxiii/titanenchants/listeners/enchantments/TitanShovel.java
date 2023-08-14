@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.nessxxiii.titanenchants.listeners.enchantmentManager.ChargeManagement.decreaseChargeLore;
+import static com.nessxxiii.titanenchants.listeners.enchantmentManagement.ChargeManagement.decreaseChargeLore;
 
 public class TitanShovel implements Listener {
 

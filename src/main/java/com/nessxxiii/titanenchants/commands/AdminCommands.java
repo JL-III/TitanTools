@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.commands;
 
-import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
+import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import com.playtheatria.jliii.generalutils.items.ItemCreator;
 import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
