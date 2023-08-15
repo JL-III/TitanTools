@@ -23,7 +23,7 @@ public class ChargeManagement implements Listener {
 
 
     @EventHandler
-    public static void applyCharge(InventoryClickEvent event){
+    public void applyCharge(InventoryClickEvent event){
         if (event.getCurrentItem() == null) return;
         Player player = (Player) event.getWhoClicked();
         if (isValidated(player.getItemOnCursor(), event.getCurrentItem())) {
@@ -35,7 +35,7 @@ public class ChargeManagement implements Listener {
         }
     }
 
-    private static int getChargeAmount(ItemStack itemOnCursor, int amount) {
+    private int getChargeAmount(ItemStack itemOnCursor, int amount) {
 
         return switch (PowerCrystalInfo.getPowerCrystalType(itemOnCursor)) {
             case COMMON -> 5 * amount;
@@ -47,13 +47,14 @@ public class ChargeManagement implements Listener {
         };
     }
 
-    private static boolean isValidated(ItemStack itemOnCursor, ItemStack itemClicked) {
+    private boolean isValidated(ItemStack itemOnCursor, ItemStack itemClicked) {
         //item on cursor must be powercrystal
         if (itemOnCursor.getItemMeta() == null) return false;
         if (!PowerCrystalInfo.isPowerCrystal(itemOnCursor)) return false;
         //item clicked is the titan tool
-        if (itemClicked.getType() == Material.AIR || itemClicked.getType() == null) return false;
+        if (itemClicked == null || itemClicked.getType() == Material.AIR) return false;
         if (PowerCrystalInfo.isPowerCrystal(itemClicked)) return false;
+        //Check if item is a titan tool, an allowed type and is not imbued.
         if (!TitanItemInfo.isTitanTool(itemClicked)) return false;
         if (!TitanItemInfo.isAllowedTitanType(itemClicked)) return false;
         if (TitanItemInfo.isImbued(itemClicked)) return false;
