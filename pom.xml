@@ -93,7 +93,7 @@
         <dependency>
             <groupId>com.github.JL-III</groupId>
             <artifactId>GeneralUtils</artifactId>
-            <version>1.0.3-alpha-4</version>
+            <version>1.0.3-alpha-8</version>
         </dependency>
 <!--        Create this dir and place the mcMMO jar into it. System scope required since author refuses to publish -->
         <dependency>
