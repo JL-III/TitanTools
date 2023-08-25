@@ -1,8 +1,10 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManagement;
 
 import com.nessxxiii.titanenchants.util.Utils;
-import com.playtheatria.jliii.generalutils.items.CustomModelData;
-import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
+import com.playtheatria.jliii.generalutils.enums.ToolColor;
+import com.playtheatria.jliii.generalutils.enums.ToolStatus;
+import com.playtheatria.jliii.generalutils.items.TitanItem;
+import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -11,7 +13,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
@@ -28,79 +29,103 @@ public class ToggleAncientPower implements Listener {
             Player player = event.getPlayer();
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
             Material coolDown = Material.JIGSAW;
-            Utils.ItemRecord itemRecord = Utils.retrieveItemRecord(itemInMainHand);
-            if (processItemValidation(itemRecord)) {
-                player.setCooldown(coolDown,25);
-                event.setCancelled(true);
-                toggleEnchant(itemInMainHand, player, itemRecord);
+
+            Response<List<String>> getLoreResponse = TitanItem.getLore(itemInMainHand);
+            if (getLoreResponse.error() != null) {
+                Bukkit.getConsoleSender().sendMessage(getLoreResponse.error());
+                return;
             }
+            List<String> loreList = getLoreResponse.value();
+
+            Response<Boolean> isTitanToolResponse = TitanItem.isTitanTool(loreList);
+            if (isTitanToolResponse.error() != null) {
+                Bukkit.getConsoleSender().sendMessage(isTitanToolResponse.error());
+                return;
+            }
+
+            Response<ToolStatus> toolStatusResponse = TitanItem.getStatus(loreList, isTitanToolResponse);
+            if (toolStatusResponse.error() != null) {
+                Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
+                return;
+            }
+
+            Response<Boolean> hasChargeResponse = TitanItem.hasCharge(loreList, isTitanToolResponse);
+            if (hasChargeResponse.error() != null) {
+                Bukkit.getConsoleSender().sendMessage(hasChargeResponse.error());
+                return;
+            }
+
+            player.setCooldown(coolDown,25);
+            event.setCancelled(true);
+            toggleEnchant(itemInMainHand, player, loreList, isTitanToolResponse, toolStatusResponse, hasChargeResponse);
         }
     }
     //Item has already been checked if it is charged or imbued when it is called here
-    private void toggleEnchant(ItemStack item, Player player, Utils.ItemRecord itemRecord) {
-        String color = TitanItemInfo.getColorStringLiteral(item);
-        player.sendActionBar(powerLevelConversion(item, itemRecord.isActive(), color, itemRecord.isCharged()));
+    private void toggleEnchant(ItemStack item, Player player, List<String> loreList, Response<Boolean> isTitanToolResponse, Response<ToolStatus> toolStatusResponse, Response<Boolean> hasChargeResponse) {
+        Response<ToolColor> toolColorResponse = TitanItem.getColor(loreList);
+        if (toolColorResponse.error() != null) {
+            Bukkit.getConsoleSender().sendMessage(toolColorResponse.error());
+            return;
+        }
+        player.sendActionBar(powerLevelConversion(item, loreList, isTitanToolResponse, toolColorResponse.value(), toolStatusResponse.value(), hasChargeResponse));
         enableEffect(player);
     }
 
-    public static String powerLevelConversion(ItemStack item, boolean isActive, String color, boolean isCharged) {
-        int itemLevelToGet = (isActive ? 0 : 1);
-        String loreToAdd;
-        if (isCharged) {
-            loreToAdd = TitanItemInfo.CHARGED_LORE_MATRIX.get(color)[itemLevelToGet];
-        } else {
-            loreToAdd = TitanItemInfo.IMBUED_LORE_MATRIX.get(color)[itemLevelToGet];
+    public static String powerLevelConversion(ItemStack item, List<String> loreList, Response<Boolean> isTitanToolResponse, ToolColor color, ToolStatus status, Response<Boolean> hasChargeResponse) {
+        String statusLore = TitanItem.getStatusLore(color, status);
+        Response<Integer> statusLoreIndexResponse = TitanItem.getTitanLoreIndex(loreList, TitanItem.STATUS_PREFIX, isTitanToolResponse);
+        if (statusLoreIndexResponse.error() != null) {
+            Bukkit.getConsoleSender().sendMessage(statusLoreIndexResponse.error());
+            return statusLoreIndexResponse.error();
         }
-        List<String> loreList = TitanItemInfo.getLore(item);
-        int index = TitanItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index, loreToAdd);
-        TitanItemInfo.setLore(item, loreList);
-        return ChatColor.YELLOW + (isActive ? "Ancient Power deactivated!" : "Ancient Power Activated!");
+
+        if (hasChargeResponse.value()) {
+            Response<Integer> getChargeResponse = TitanItem.getCharge(loreList, isTitanToolResponse, hasChargeResponse, 14);
+            if (getChargeResponse.error() != null) {
+                Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
+                return getChargeResponse.error();
+            }
+            String chargeLore = TitanItem.getChargeLore(color, getChargeResponse.value());
+
+            Response<Integer> chargeLoreIndexResponse = TitanItem.getTitanLoreIndex(loreList, TitanItem.CHARGE_PREFIX, isTitanToolResponse);
+            if (chargeLoreIndexResponse.error() != null) {
+                Bukkit.getConsoleSender().sendMessage(chargeLoreIndexResponse.error());
+                return chargeLoreIndexResponse.error();
+            }
+            loreList.set(chargeLoreIndexResponse.value(), chargeLore);
+            loreList.set(statusLoreIndexResponse.value(), statusLore);
+        } else {
+            loreList.set(statusLoreIndexResponse.value(), statusLore);
+        }
+        TitanItem.setLore(item, loreList);
+        return ChatColor.YELLOW + (status == ToolStatus.ON ? "Ancient Power deactivated!" : "Ancient Power activated!");
     }
 
     public static void handleFullInventory(ItemStack item, Player player) {
-        Utils.ItemRecord itemRecord = new Utils.ItemRecord(
-                item.hasItemMeta(),
-                TitanItemInfo.isTitanTool(item),
-                TitanItemInfo.isAllowedTitanType(item),
-                TitanItemInfo.isCharged(item),
-                TitanItemInfo.isImbued(item),
-                (TitanItemInfo.isActiveCharged(item) || TitanItemInfo.isActiveImbued(item))
-        );
-        String color = TitanItemInfo.getColorStringLiteral(item);
-        powerLevelConversion(item, itemRecord.isActive(), color, itemRecord.isCharged());
-        player.sendMessage("§CInventory is full - Ancient Power deactivated");
-        disableEffect(player);
+//        Utils.ItemRecord itemRecord = new Utils.ItemRecord(
+//                item.hasItemMeta(),
+//                TitanItem.isTitanTool(item),
+//                TitanItem.isAllowedTitanType(item),
+//                TitanItem.isChargedTitanTool(item),
+//                TitanItem.isImbuedTitanTool(item),
+//                (TitanItem.getStatus(item) == ToolStatus.ON)
+//        );
+//        ToolColor color = TitanItem.getColor(item);
+//        // TODO seems really weird to be passing in the entire item and then properties about it here.
+//        powerLevelConversion(item, itemRecord.isActive(), color, TitanItem.getStatus(item), itemRecord.isCharged());
+//        player.sendMessage("§CInventory is full - Ancient Power deactivated");
+//        disableEffect(player);
     }
-
-    public static void disableEnchant(ItemStack item) {
-        List<String> loreList = item.getItemMeta().getLore();
-        int index = TitanItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,TitanItemInfo.CHARGED_INACTIVE);
-        ItemMeta meta = item.getItemMeta();
-        meta.setLore(loreList);
-        item.setItemMeta(meta);
-    }
-
-    public static void imbue(ItemStack item){
-        List<String> loreList = TitanItemInfo.getLore(item);
-        int index = TitanItemInfo.getAncientPowerLoreIndex(loreList);
-        String color = TitanItemInfo.getColorStringLiteral(item);
-        ItemMeta meta = item.getItemMeta();
-        meta.setCustomModelData(CustomModelData.IMBUED_TITAN_TOOL);
-        item.setItemMeta(meta);
-        loreList.set(index, TitanItemInfo.IMBUED_LORE_MATRIX.get(color)[1]);
-        TitanItemInfo.setLore(item, loreList);
-    }
-
-    public static void disableImbuedEnchant(ItemStack item) {
-        List<String> loreList = item.getItemMeta().getLore();
-        int index = TitanItemInfo.getAncientPowerLoreIndex(loreList);
-        loreList.set(index,TitanItemInfo.IMBUED_INACTIVE);
-        ItemMeta meta = item.getItemMeta();
-        meta.setLore(loreList);
-        item.setItemMeta(meta);
-    }
+//    public static void imbue(ItemStack item){
+//        List<String> loreList = TitanItemInfo.getLore(item);
+//        int index = TitanItemInfo.getAncientPowerLoreIndex(loreList);
+//        String color = TitanItemInfo.getColorStringLiteral(item);
+//        ItemMeta meta = item.getItemMeta();
+//        meta.setCustomModelData(CustomModelData.IMBUED_TITAN_TOOL);
+//        item.setItemMeta(meta);
+//        loreList.set(index, TitanItemInfo.IMBUED_LORE_MATRIX.get(color)[1]);
+//        TitanItemInfo.setLore(item, loreList);
+//    }
 
     private static boolean processPlayerStateValidation(Player player) {
         if (!player.isSneaking()) return false;

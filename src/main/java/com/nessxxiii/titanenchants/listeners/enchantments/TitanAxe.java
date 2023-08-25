@@ -44,67 +44,67 @@ public class TitanAxe implements Listener {
             return;
         }
 
-        int itemLevel = TitanItemInfo.getItemLevel(itemInMainHand);
-
-
-        switch (itemLevel) {
-            case 1 -> {
-                if (inventory.firstEmpty() == -1) {
-                    ToggleAncientPower.handleFullInventory(itemInMainHand, player);
-                    return;
-                }
-                if (itemRecord.isCharged()) {
-                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
-                }
-                blockBroken.setType(Material.AIR);
-                updatePlayerInventory(player, new ItemStack(blockBrokenMaterial));
-            }
-            case 2 -> {
-                if (itemRecord.isCharged()) {
-                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
-                }
-
-                for (Block block : getNearbyBlocks(blockBroken.getLocation(), 5, false)) {
-                    if (block.getLocation().equals(blockBroken.getLocation())) {
-                        continue;
-                    }
-                    if (configManager.getAllowedAxeBlocks().contains(block.getType())) {
-                        IGNORE_LOCATIONS.add(block.getLocation());
-                        BlockBreakEvent e = new BlockBreakEvent(block, player);
-                        Bukkit.getPluginManager().callEvent(e);
-                        if (!e.isCancelled()) {
-                            block.breakNaturally(itemInMainHand);
-                        }
-                    }
-                }
-
-            }
-            //TODO when inventory is full tool is turned off completely but player is told it is set to power level 2
-            case 3 -> {
-                //TODO check when a partial stack is picked up or when nothing is picked up at all and change behavior
-                if (player.getInventory().firstEmpty() == -1) {
-                    ToggleAncientPower.handleFullInventory(itemInMainHand, player);
-                    return;
-                }
-                if (itemRecord.isCharged()) {
-                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
-                }
-
-                for (Block block : getNearbyBlocks(blockBroken.getLocation(), 5, false)) {
-                    if (configManager.getAllowedAxeBlocks().contains(block.getType())) {
-                        IGNORE_LOCATIONS.add(block.getLocation());
-                        BlockBreakEvent e = new BlockBreakEvent(block, player);
-                        Bukkit.getPluginManager().callEvent(e);
-                        if (!e.isCancelled()) {
-                            updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, block);
-                        }
-                        block.setType(Material.AIR);
-                    }
-                }
-            }
-            default -> {
-            }
-        }
+//        int itemLevel = TitanItemInfo.getItemLevel(itemInMainHand);
+//
+//
+//        switch (itemLevel) {
+//            case 1 -> {
+//                if (inventory.firstEmpty() == -1) {
+//                    ToggleAncientPower.handleFullInventory(itemInMainHand, player);
+//                    return;
+//                }
+//                if (itemRecord.isCharged()) {
+//                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
+//                }
+//                blockBroken.setType(Material.AIR);
+//                updatePlayerInventory(player, new ItemStack(blockBrokenMaterial));
+//            }
+//            case 2 -> {
+//                if (itemRecord.isCharged()) {
+//                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
+//                }
+//
+//                for (Block block : getNearbyBlocks(blockBroken.getLocation(), 5, false)) {
+//                    if (block.getLocation().equals(blockBroken.getLocation())) {
+//                        continue;
+//                    }
+//                    if (configManager.getAllowedAxeBlocks().contains(block.getType())) {
+//                        IGNORE_LOCATIONS.add(block.getLocation());
+//                        BlockBreakEvent e = new BlockBreakEvent(block, player);
+//                        Bukkit.getPluginManager().callEvent(e);
+//                        if (!e.isCancelled()) {
+//                            block.breakNaturally(itemInMainHand);
+//                        }
+//                    }
+//                }
+//
+//            }
+//            //TODO when inventory is full tool is turned off completely but player is told it is set to power level 2
+//            case 3 -> {
+//                //TODO check when a partial stack is picked up or when nothing is picked up at all and change behavior
+//                if (player.getInventory().firstEmpty() == -1) {
+//                    ToggleAncientPower.handleFullInventory(itemInMainHand, player);
+//                    return;
+//                }
+//                if (itemRecord.isCharged()) {
+//                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
+//                }
+//
+//                for (Block block : getNearbyBlocks(blockBroken.getLocation(), 5, false)) {
+//                    if (configManager.getAllowedAxeBlocks().contains(block.getType())) {
+//                        IGNORE_LOCATIONS.add(block.getLocation());
+//                        BlockBreakEvent e = new BlockBreakEvent(block, player);
+//                        Bukkit.getPluginManager().callEvent(e);
+//                        if (!e.isCancelled()) {
+//                            updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, block);
+//                        }
+//                        block.setType(Material.AIR);
+//                    }
+//                }
+//            }
+//            default -> {
+//            }
+//        }
     }
 
     private void updateInventoryWithAllDropsFromBlockbreak(Player player, ItemStack itemInMainHand, Block block) {

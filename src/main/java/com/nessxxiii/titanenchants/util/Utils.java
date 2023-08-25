@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.util;
 
-import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
+import com.playtheatria.jliii.generalutils.enums.ToolStatus;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
@@ -25,16 +25,5 @@ public class Utils {
             boolean isImbued,
             boolean isActive
     ) {};
-
-    public static ItemRecord retrieveItemRecord(ItemStack itemStack) {
-        return new ItemRecord(
-                itemStack.hasItemMeta(),
-                TitanItemInfo.isTitanTool(itemStack),
-                TitanItemInfo.isAllowedTitanType(itemStack),
-                TitanItemInfo.hasCharge(itemStack),
-                TitanItemInfo.isImbued(itemStack),
-                (TitanItemInfo.isActiveCharged(itemStack) || TitanItemInfo.isActiveImbued(itemStack))
-        );
-    }
 
 }

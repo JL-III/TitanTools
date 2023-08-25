@@ -70,136 +70,136 @@ public class TitanPicks implements Listener {
             return;
         }
 
-        int itemLevel = TitanItemInfo.getItemLevel(itemInMainHand);
-
-        switch (itemLevel) {
-            case 1 -> {
-                //TODO could possibly handle full inventories differently, especially when a player spreads out specific items to allow for a
-                //TODO sort of "auto sorting" situation.
-                if (inventory.firstEmpty() == -1) {
-                    ToggleAncientPower.handleFullInventory(itemInMainHand, player);
-                    return;
-                }
-                if (itemRecord.isCharged()) {
-                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
-                }
-                if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
-                    if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
-                        blockBrokenMaterial = blockBroken.getType();
-                        blockBroken.setType(Material.AIR);
-                        getNewBlocksFromSmeltAndUpdateInventory(player, blockBrokenMaterial);
-                        TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, blockBroken.getLocation());
-                    } else {
-                        updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, blockBroken);
-                        blockBroken.setType(Material.AIR);
-                    }
-                    if (calculateExperienceAmount(blockBrokenMaterial) > 0) {
-                        blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(calculateExperienceAmount(blockBrokenMaterial));
-                    }
-                } else {
-                    blockBroken.setType(Material.AIR);
-                    updatePlayerInventory(player, new ItemStack(blockBrokenMaterial));
-                }
-            }
-            case 2 -> {
-                if (itemRecord.isCharged()) {
-                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
-                }
-                if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
-                    int aggregateAmount = 0;
-                    for (Block currentBlock : getNearbyBlocks(blockBroken.getLocation())) {
-                        if (configManager.getAllowedPickBlocks().contains(currentBlock.getType())) {
-                            IGNORE_LOCATIONS.add(currentBlock.getLocation());
-                            BlockBreakEvent e = new BlockBreakEvent(currentBlock, player);
-                            Bukkit.getPluginManager().callEvent(e);
-                            blockBrokenMaterial = currentBlock.getType();
-                            if (!e.isCancelled()) {
-                                if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
-                                    TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
-                                    currentBlock.setType(Material.AIR);
-                                    player.getLocation().getWorld().dropItemNaturally(currentBlock.getLocation(), getDropsFromConversionTable(blockBrokenMaterial));
-                                    aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
-                                } else {
-                                    currentBlock.breakNaturally(itemInMainHand);
-                                }
-                                aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
-                            }
-                        }
-                    }
-                    //TODO new exp merging with old orb before setting the amount of exp?
-                    if (aggregateAmount > 0) {
-//                        player.sendMessage("Aggregate amount of exp: " + aggregateAmount);
-                        blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(aggregateAmount);
-                    }
-                } else {
-                    for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
-                        if (block.getLocation().equals(blockBroken.getLocation())) {
-                            continue;
-                        }
-                        if (configManager.getAllowedPickBlocks().contains(block.getType())) {
-                            IGNORE_LOCATIONS.add(block.getLocation());
-                            BlockBreakEvent e = new BlockBreakEvent(block, player);
-                            Bukkit.getPluginManager().callEvent(e);
-                            if (!e.isCancelled()) {
-                                block.breakNaturally(itemInMainHand);
-                            }
-                        }
-                    }
-                }
-
-            }
-            //TODO when inventory is full tool is turned off completely but player is told it is set to power level 2
-            case 3 -> {
-                //TODO check when a partial stack is picked up or when nothing is picked up at all and change behavior
-                if (player.getInventory().firstEmpty() == -1) {
-                    ToggleAncientPower.handleFullInventory(itemInMainHand, player);
-                    return;
-                }
-                if (itemRecord.isCharged()) {
-                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
-                }
-                if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
-                    int aggregateAmount = 0;
-                    for (Block currentBlock : getNearbyBlocks(blockBroken.getLocation())) {
-                        if (configManager.getAllowedPickBlocks().contains(currentBlock.getType())) {
-                            IGNORE_LOCATIONS.add(currentBlock.getLocation());
-                            BlockBreakEvent e = new BlockBreakEvent(currentBlock, player);
-                            Bukkit.getPluginManager().callEvent(e);
-                            blockBrokenMaterial = currentBlock.getType();
-                            if (!e.isCancelled()) {
-                                if (blockConversionTypes.containsKey(blockBrokenMaterial)) {
-                                    getNewBlocksFromSmeltAndUpdateInventory(player, blockBrokenMaterial);
-                                    TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
-                                    aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
-                                } else {
-                                    updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, currentBlock);
-                                    aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
-                                }
-                                currentBlock.setType(Material.AIR);
-                            }
-                        }
-                    }
-                    if (aggregateAmount > 0) {
-//                        player.sendMessage("Aggregate amount of exp: " + aggregateAmount);
-                        blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(aggregateAmount);
-                    }
-                } else {
-                    for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
-                        if (configManager.getAllowedPickBlocks().contains(block.getType())) {
-                            IGNORE_LOCATIONS.add(block.getLocation());
-                            BlockBreakEvent e = new BlockBreakEvent(block, player);
-                            Bukkit.getPluginManager().callEvent(e);
-                            if (!e.isCancelled()) {
-                                updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, block);
-                            }
-                            block.setType(Material.AIR);
-                        }
-                    }
-                }
-            }
-            default -> {
-            }
-        }
+//        int itemLevel = TitanItemInfo.getItemLevel(itemInMainHand);
+//
+//        switch (itemLevel) {
+//            case 1 -> {
+//                //TODO could possibly handle full inventories differently, especially when a player spreads out specific items to allow for a
+//                //TODO sort of "auto sorting" situation.
+//                if (inventory.firstEmpty() == -1) {
+//                    ToggleAncientPower.handleFullInventory(itemInMainHand, player);
+//                    return;
+//                }
+//                if (itemRecord.isCharged()) {
+//                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
+//                }
+//                if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+//                    if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
+//                        blockBrokenMaterial = blockBroken.getType();
+//                        blockBroken.setType(Material.AIR);
+//                        getNewBlocksFromSmeltAndUpdateInventory(player, blockBrokenMaterial);
+//                        TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, blockBroken.getLocation());
+//                    } else {
+//                        updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, blockBroken);
+//                        blockBroken.setType(Material.AIR);
+//                    }
+//                    if (calculateExperienceAmount(blockBrokenMaterial) > 0) {
+//                        blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(calculateExperienceAmount(blockBrokenMaterial));
+//                    }
+//                } else {
+//                    blockBroken.setType(Material.AIR);
+//                    updatePlayerInventory(player, new ItemStack(blockBrokenMaterial));
+//                }
+//            }
+//            case 2 -> {
+//                if (itemRecord.isCharged()) {
+//                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
+//                }
+//                if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+//                    int aggregateAmount = 0;
+//                    for (Block currentBlock : getNearbyBlocks(blockBroken.getLocation())) {
+//                        if (configManager.getAllowedPickBlocks().contains(currentBlock.getType())) {
+//                            IGNORE_LOCATIONS.add(currentBlock.getLocation());
+//                            BlockBreakEvent e = new BlockBreakEvent(currentBlock, player);
+//                            Bukkit.getPluginManager().callEvent(e);
+//                            blockBrokenMaterial = currentBlock.getType();
+//                            if (!e.isCancelled()) {
+//                                if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
+//                                    TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
+//                                    currentBlock.setType(Material.AIR);
+//                                    player.getLocation().getWorld().dropItemNaturally(currentBlock.getLocation(), getDropsFromConversionTable(blockBrokenMaterial));
+//                                    aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
+//                                } else {
+//                                    currentBlock.breakNaturally(itemInMainHand);
+//                                }
+//                                aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
+//                            }
+//                        }
+//                    }
+//                    //TODO new exp merging with old orb before setting the amount of exp?
+//                    if (aggregateAmount > 0) {
+////                        player.sendMessage("Aggregate amount of exp: " + aggregateAmount);
+//                        blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(aggregateAmount);
+//                    }
+//                } else {
+//                    for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
+//                        if (block.getLocation().equals(blockBroken.getLocation())) {
+//                            continue;
+//                        }
+//                        if (configManager.getAllowedPickBlocks().contains(block.getType())) {
+//                            IGNORE_LOCATIONS.add(block.getLocation());
+//                            BlockBreakEvent e = new BlockBreakEvent(block, player);
+//                            Bukkit.getPluginManager().callEvent(e);
+//                            if (!e.isCancelled()) {
+//                                block.breakNaturally(itemInMainHand);
+//                            }
+//                        }
+//                    }
+//                }
+//
+//            }
+//            //TODO when inventory is full tool is turned off completely but player is told it is set to power level 2
+//            case 3 -> {
+//                //TODO check when a partial stack is picked up or when nothing is picked up at all and change behavior
+//                if (player.getInventory().firstEmpty() == -1) {
+//                    ToggleAncientPower.handleFullInventory(itemInMainHand, player);
+//                    return;
+//                }
+//                if (itemRecord.isCharged()) {
+//                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
+//                }
+//                if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+//                    int aggregateAmount = 0;
+//                    for (Block currentBlock : getNearbyBlocks(blockBroken.getLocation())) {
+//                        if (configManager.getAllowedPickBlocks().contains(currentBlock.getType())) {
+//                            IGNORE_LOCATIONS.add(currentBlock.getLocation());
+//                            BlockBreakEvent e = new BlockBreakEvent(currentBlock, player);
+//                            Bukkit.getPluginManager().callEvent(e);
+//                            blockBrokenMaterial = currentBlock.getType();
+//                            if (!e.isCancelled()) {
+//                                if (blockConversionTypes.containsKey(blockBrokenMaterial)) {
+//                                    getNewBlocksFromSmeltAndUpdateInventory(player, blockBrokenMaterial);
+//                                    TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
+//                                    aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
+//                                } else {
+//                                    updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, currentBlock);
+//                                    aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
+//                                }
+//                                currentBlock.setType(Material.AIR);
+//                            }
+//                        }
+//                    }
+//                    if (aggregateAmount > 0) {
+////                        player.sendMessage("Aggregate amount of exp: " + aggregateAmount);
+//                        blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(aggregateAmount);
+//                    }
+//                } else {
+//                    for (Block block : getNearbyBlocks(blockBroken.getLocation())) {
+//                        if (configManager.getAllowedPickBlocks().contains(block.getType())) {
+//                            IGNORE_LOCATIONS.add(block.getLocation());
+//                            BlockBreakEvent e = new BlockBreakEvent(block, player);
+//                            Bukkit.getPluginManager().callEvent(e);
+//                            if (!e.isCancelled()) {
+//                                updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, block);
+//                            }
+//                            block.setType(Material.AIR);
+//                        }
+//                    }
+//                }
+//            }
+//            default -> {
+//            }
+//        }
     }
 
     private void getNewBlocksFromSmeltAndUpdateInventory(Player player, Material material) {
