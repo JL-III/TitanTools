@@ -58,15 +58,26 @@ public class ChargeManagement implements Listener {
         //Check if item is a titan tool, an allowed type and is not imbued.
 
         Response<List<String>> loreListResponse = TitanItem.getLore(itemClicked);
-        if (!loreListResponse.isSuccess()) return false;
-        List<String> loreList = loreListResponse.value();
-        Response<Boolean> isTitanToolResponse = TitanItem.isTitanTool(loreList);
-        Response<Boolean> isChargedTitanToolResponse = TitanItem.isChargedTitanTool(loreList, isTitanToolResponse);
+        if (loreListResponse.error() != null) {
+            Bukkit.getConsoleSender().sendMessage(loreListResponse.error());
+            return false;
+        }
 
-        if (!isTitanToolResponse.isSuccess()) return false;
+        Response<Boolean> isTitanToolResponse = TitanItem.isTitanTool(loreListResponse.value());
+        if (isTitanToolResponse.error() != null) {
+            Bukkit.getConsoleSender().sendMessage(isTitanToolResponse.error());
+            return false;
+        }
+
+        Response<Boolean> isChargedTitanToolResponse = TitanItem.isChargedTitanTool(loreListResponse.value(), isTitanToolResponse);
+        if (isChargedTitanToolResponse.error() != null) {
+            Bukkit.getConsoleSender().sendMessage(isChargedTitanToolResponse.error());
+            return false;
+        }
+
         if (!isTitanToolResponse.value()) return false;
         if (!TitanItem.isAllowedType(itemClicked, TitanItem.ALLOWED_TITAN_TYPES)) return false;
-        if (!isChargedTitanToolResponse.isSuccess()) return false;
+
         return isChargedTitanToolResponse.value();
     }
 
