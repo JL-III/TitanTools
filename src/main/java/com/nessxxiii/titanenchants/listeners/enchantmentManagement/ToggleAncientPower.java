@@ -30,26 +30,22 @@ public class ToggleAncientPower implements Listener {
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
             Material coolDown = Material.JIGSAW;
 
-            Response<List<String>> getLoreResponse = TitanItem.getLore(itemInMainHand);
-            if (getLoreResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(getLoreResponse.error());
-                return;
-            }
-            List<String> loreList = getLoreResponse.value();
-
-            Response<Boolean> isTitanToolResponse = TitanItem.isTitanTool(loreList);
-            if (isTitanToolResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(isTitanToolResponse.error());
+            Response<List<String>> loreListResponse = TitanItem.getLore(itemInMainHand);
+            if (loreListResponse.error() != null) {
+                Bukkit.getConsoleSender().sendMessage(loreListResponse.error());
                 return;
             }
 
-            Response<ToolStatus> toolStatusResponse = TitanItem.getStatus(loreList, isTitanToolResponse);
+            boolean isTitanTool = TitanItem.isTitanTool(loreListResponse.value());
+            if (!isTitanTool) return;
+
+            Response<ToolStatus> toolStatusResponse = TitanItem.getStatus(loreListResponse.value(), isTitanTool);
             if (toolStatusResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
                 return;
             }
 
-            Response<Boolean> hasChargeResponse = TitanItem.hasCharge(loreList, isTitanToolResponse);
+            Response<Boolean> hasChargeResponse = TitanItem.hasCharge(loreListResponse.value(), isTitanTool);
             if (hasChargeResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(hasChargeResponse.error());
                 return;
@@ -57,37 +53,37 @@ public class ToggleAncientPower implements Listener {
 
             player.setCooldown(coolDown,25);
             event.setCancelled(true);
-            toggleEnchant(itemInMainHand, player, loreList, isTitanToolResponse, toolStatusResponse, hasChargeResponse);
+            toggleEnchant(itemInMainHand, player, loreListResponse.value(), isTitanTool, toolStatusResponse, hasChargeResponse);
         }
     }
     //Item has already been checked if it is charged or imbued when it is called here
-    private void toggleEnchant(ItemStack item, Player player, List<String> loreList, Response<Boolean> isTitanToolResponse, Response<ToolStatus> toolStatusResponse, Response<Boolean> hasChargeResponse) {
+    private void toggleEnchant(ItemStack item, Player player, List<String> loreList, boolean isTitanTool, Response<ToolStatus> toolStatusResponse, Response<Boolean> hasChargeResponse) {
         Response<ToolColor> toolColorResponse = TitanItem.getColor(loreList);
         if (toolColorResponse.error() != null) {
             Bukkit.getConsoleSender().sendMessage(toolColorResponse.error());
             return;
         }
-        player.sendActionBar(powerLevelConversion(item, loreList, isTitanToolResponse, toolColorResponse.value(), toolStatusResponse.value(), hasChargeResponse));
+        player.sendActionBar(powerLevelConversion(item, loreList, isTitanTool, toolColorResponse.value(), toolStatusResponse.value(), hasChargeResponse));
         enableEffect(player);
     }
 
-    public static String powerLevelConversion(ItemStack item, List<String> loreList, Response<Boolean> isTitanToolResponse, ToolColor color, ToolStatus status, Response<Boolean> hasChargeResponse) {
-        String statusLore = TitanItem.getStatusLore(color, status);
-        Response<Integer> statusLoreIndexResponse = TitanItem.getTitanLoreIndex(loreList, TitanItem.STATUS_PREFIX, isTitanToolResponse);
+    public static String powerLevelConversion(ItemStack item, List<String> loreList, boolean isTitanTool, ToolColor color, ToolStatus status, Response<Boolean> hasChargeResponse) {
+        String statusLore = TitanItem.generateStatusLore(color, status);
+        Response<Integer> statusLoreIndexResponse = TitanItem.getTitanLoreIndex(loreList, TitanItem.STATUS_PREFIX, isTitanTool);
         if (statusLoreIndexResponse.error() != null) {
             Bukkit.getConsoleSender().sendMessage(statusLoreIndexResponse.error());
             return statusLoreIndexResponse.error();
         }
 
         if (hasChargeResponse.value()) {
-            Response<Integer> getChargeResponse = TitanItem.getCharge(loreList, isTitanToolResponse, hasChargeResponse, 14);
+            Response<Integer> getChargeResponse = TitanItem.getCharge(loreList, isTitanTool, hasChargeResponse, 14);
             if (getChargeResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
                 return getChargeResponse.error();
             }
-            String chargeLore = TitanItem.getChargeLore(color, getChargeResponse.value());
+            String chargeLore = TitanItem.generateChargeLore(color, getChargeResponse.value());
 
-            Response<Integer> chargeLoreIndexResponse = TitanItem.getTitanLoreIndex(loreList, TitanItem.CHARGE_PREFIX, isTitanToolResponse);
+            Response<Integer> chargeLoreIndexResponse = TitanItem.getTitanLoreIndex(loreList, TitanItem.CHARGE_PREFIX, isTitanTool);
             if (chargeLoreIndexResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(chargeLoreIndexResponse.error());
                 return chargeLoreIndexResponse.error();

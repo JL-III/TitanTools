@@ -4,7 +4,8 @@ import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.Utils;
-import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
+import com.playtheatria.jliii.generalutils.items.TitanItem;
+import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,81 +31,57 @@ public class TitanAxe implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         if (event.isCancelled()) return;
-        if (!TitanItemInfo.isChargedOrImbuedTitanAxe(event.getPlayer().getInventory().getItemInMainHand())) return;
-        Player player = event.getPlayer();
-        ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+        if (!TitanItem.isAllowedType(event.getPlayer().getInventory().getItemInMainHand(), TitanItem.ALLOWED_AXE_TYPES)) return;
+        Response<List<String>> loreListResponse = TitanItem.getLore(event.getPlayer().getInventory().getItemInMainHand());
+        if (loreListResponse.error() != null) {
+            return;
+        }
+        boolean isTitanTool = TitanItem.isTitanTool(loreListResponse.value());
+        if (!isTitanTool) return;
+
         Block blockBroken = event.getBlock();
-        Material blockBrokenMaterial = blockBroken.getType();
-        Inventory inventory = player.getInventory();
-
-        Utils.ItemRecord itemRecord = Utils.retrieveItemRecord(itemInMainHand);
-
         if (IGNORE_LOCATIONS.contains(blockBroken.getLocation())) {
             IGNORE_LOCATIONS.remove(blockBroken.getLocation());
             return;
         }
+        Player player = event.getPlayer();
+        ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
 
-//        int itemLevel = TitanItemInfo.getItemLevel(itemInMainHand);
-//
-//
-//        switch (itemLevel) {
-//            case 1 -> {
-//                if (inventory.firstEmpty() == -1) {
-//                    ToggleAncientPower.handleFullInventory(itemInMainHand, player);
-//                    return;
-//                }
-//                if (itemRecord.isCharged()) {
-//                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 1);
-//                }
-//                blockBroken.setType(Material.AIR);
-//                updatePlayerInventory(player, new ItemStack(blockBrokenMaterial));
-//            }
-//            case 2 -> {
-//                if (itemRecord.isCharged()) {
-//                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
-//                }
-//
-//                for (Block block : getNearbyBlocks(blockBroken.getLocation(), 5, false)) {
-//                    if (block.getLocation().equals(blockBroken.getLocation())) {
-//                        continue;
-//                    }
-//                    if (configManager.getAllowedAxeBlocks().contains(block.getType())) {
-//                        IGNORE_LOCATIONS.add(block.getLocation());
-//                        BlockBreakEvent e = new BlockBreakEvent(block, player);
-//                        Bukkit.getPluginManager().callEvent(e);
-//                        if (!e.isCancelled()) {
-//                            block.breakNaturally(itemInMainHand);
-//                        }
-//                    }
-//                }
-//
-//            }
-//            //TODO when inventory is full tool is turned off completely but player is told it is set to power level 2
-//            case 3 -> {
-//                //TODO check when a partial stack is picked up or when nothing is picked up at all and change behavior
-//                if (player.getInventory().firstEmpty() == -1) {
-//                    ToggleAncientPower.handleFullInventory(itemInMainHand, player);
-//                    return;
-//                }
-//                if (itemRecord.isCharged()) {
-//                    ChargeManagement.decreaseChargeLore(itemInMainHand, player, 3);
-//                }
-//
-//                for (Block block : getNearbyBlocks(blockBroken.getLocation(), 5, false)) {
-//                    if (configManager.getAllowedAxeBlocks().contains(block.getType())) {
-//                        IGNORE_LOCATIONS.add(block.getLocation());
-//                        BlockBreakEvent e = new BlockBreakEvent(block, player);
-//                        Bukkit.getPluginManager().callEvent(e);
-//                        if (!e.isCancelled()) {
-//                            updateInventoryWithAllDropsFromBlockbreak(player, itemInMainHand, block);
-//                        }
-//                        block.setType(Material.AIR);
-//                    }
-//                }
-//            }
-//            default -> {
-//            }
-//        }
+        Response<Boolean> hasChargeResponse = TitanItem.hasCharge(loreListResponse.value(), isTitanTool);
+        if (hasChargeResponse.error() != null) {
+            Bukkit.getConsoleSender().sendMessage(hasChargeResponse.error());
+            return;
+        }
+
+        Response<Boolean> isImbuedTitanToolResponse = TitanItem.isImbuedTitanTool(loreListResponse.value(), isTitanTool);
+        if (isImbuedTitanToolResponse.error() != null) {
+            Bukkit.getConsoleSender().sendMessage(isImbuedTitanToolResponse.error());
+            return;
+        }
+
+        if (hasChargeResponse.value()) {
+            Response<Integer> getChargeResponse = TitanItem.getCharge(loreListResponse.value(), isTitanTool, hasChargeResponse, 0);
+            if (getChargeResponse.error() != null) {
+                Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
+                return;
+            }
+
+            ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
+        }
+
+        for (Block block : getNearbyBlocks(blockBroken.getLocation(), 5, false)) {
+            if (block.getLocation().equals(blockBroken.getLocation())) {
+                continue;
+            }
+            if (configManager.getAllowedAxeBlocks().contains(block.getType())) {
+                IGNORE_LOCATIONS.add(block.getLocation());
+                BlockBreakEvent e = new BlockBreakEvent(block, player);
+                Bukkit.getPluginManager().callEvent(e);
+                if (!e.isCancelled()) {
+                    block.breakNaturally(itemInMainHand);
+                }
+            }
+        }
     }
 
     private void updateInventoryWithAllDropsFromBlockbreak(Player player, ItemStack itemInMainHand, Block block) {
