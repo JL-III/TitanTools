@@ -68,7 +68,7 @@ public class ToggleAncientPower implements Listener {
     }
 
     public static String powerLevelConversion(ItemStack item, List<String> loreList, boolean isTitanTool, ToolColor color, ToolStatus status, Response<Boolean> hasChargeResponse) {
-        String statusLore = TitanItem.generateStatusLore(color, status);
+        String statusLore = TitanItem.generateStatusLore(color, status == ToolStatus.ON ? ToolStatus.OFF : ToolStatus.ON);
         Response<Integer> statusLoreIndexResponse = TitanItem.getTitanLoreIndex(loreList, TitanItem.STATUS_PREFIX, isTitanTool);
         if (statusLoreIndexResponse.error() != null) {
             Bukkit.getConsoleSender().sendMessage(statusLoreIndexResponse.error());
@@ -76,7 +76,7 @@ public class ToggleAncientPower implements Listener {
         }
 
         if (hasChargeResponse.value()) {
-            Response<Integer> getChargeResponse = TitanItem.getCharge(loreList, isTitanTool, hasChargeResponse, 14);
+            Response<Integer> getChargeResponse = TitanItem.getCharge(loreList, isTitanTool, hasChargeResponse, 39);
             if (getChargeResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
                 return getChargeResponse.error();

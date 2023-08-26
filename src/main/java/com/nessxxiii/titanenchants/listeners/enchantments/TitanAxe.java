@@ -4,6 +4,7 @@ import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.Utils;
+import com.playtheatria.jliii.generalutils.enums.ToolStatus;
 import com.playtheatria.jliii.generalutils.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Bukkit;
@@ -38,7 +39,12 @@ public class TitanAxe implements Listener {
         }
         boolean isTitanTool = TitanItem.isTitanTool(loreListResponse.value());
         if (!isTitanTool) return;
-
+        Response<ToolStatus> toolStatusResponse = TitanItem.getStatus(loreListResponse.value(), isTitanTool);
+        if (toolStatusResponse.error() != null) {
+            Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
+            return;
+        }
+        if (toolStatusResponse.value() == ToolStatus.OFF) return;
         Block blockBroken = event.getBlock();
         if (IGNORE_LOCATIONS.contains(blockBroken.getLocation())) {
             IGNORE_LOCATIONS.remove(blockBroken.getLocation());
@@ -60,7 +66,7 @@ public class TitanAxe implements Listener {
         }
 
         if (hasChargeResponse.value()) {
-            Response<Integer> getChargeResponse = TitanItem.getCharge(loreListResponse.value(), isTitanTool, hasChargeResponse, 0);
+            Response<Integer> getChargeResponse = TitanItem.getCharge(loreListResponse.value(), isTitanTool, hasChargeResponse, 39);
             if (getChargeResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
                 return;

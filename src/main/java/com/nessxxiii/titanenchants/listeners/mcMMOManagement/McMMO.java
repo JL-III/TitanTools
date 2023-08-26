@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -32,17 +33,13 @@ public class McMMO implements Listener {
         player = event.getPlayer();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void cancelMcMMO(McMMOPlayerAbilityActivateEvent event){
         Response<List<String>> loreListResponse = TitanItem.getLore(event.getPlayer().getInventory().getItemInMainHand());
         if (loreListResponse.error() != null) return;
         boolean isTitanTool = TitanItem.isTitanTool(loreListResponse.value());
-        Response<ToolStatus> toolStatusResponse = TitanItem.getStatus(loreListResponse.value(), isTitanTool);
-        if (toolStatusResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
-            return;
-        }
-        if (isTitanTool && toolStatusResponse.value() == ToolStatus.ON) {
+        Bukkit.getConsoleSender().sendMessage("isTitanTool: " + isTitanTool);
+        if (isTitanTool) {
             event.setCancelled(true);
         }
     }
