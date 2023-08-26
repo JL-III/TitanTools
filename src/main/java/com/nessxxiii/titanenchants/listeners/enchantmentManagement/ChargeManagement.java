@@ -69,14 +69,10 @@ public class ChargeManagement implements Listener {
         boolean isTitanTool = TitanItem.isTitanTool(loreListResponse.value());
         if (!isTitanTool) return false;
 
-        Response<Boolean> isChargedTitanToolResponse = TitanItem.isChargedTitanTool(loreListResponse.value(), isTitanTool);
-        if (isChargedTitanToolResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(isChargedTitanToolResponse.error());
-            return false;
-        }
+        boolean isChargedTitanTool = TitanItem.isChargedTitanTool(loreListResponse.value(), isTitanTool);
 
         if (!TitanItem.isAllowedType(itemClicked, TitanItem.ALLOWED_TITAN_TYPES)) return false;
-        return isChargedTitanToolResponse.value();
+        return isChargedTitanTool;
     }
 
     public static void addChargeLore(Player player, ItemStack item, Integer amount){
@@ -91,11 +87,7 @@ public class ChargeManagement implements Listener {
             return;
         }
 
-        Response<Boolean> hasChargeResponse = TitanItem.hasCharge(loreListResponse.value(), isTitanTool);
-        if (hasChargeResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(hasChargeResponse.error());
-            return;
-        }
+        boolean hasChargeLore = TitanItem.hasChargeLore(loreListResponse.value(), isTitanTool);
 
         Response<Integer> indexResponse = TitanItem.getTitanLoreIndex(loreListResponse.value(), TitanItem.CHARGE_PREFIX, isTitanTool);
         if (indexResponse.error() != null) {
@@ -104,8 +96,8 @@ public class ChargeManagement implements Listener {
         }
 
         int finalCharge;
-        if (hasChargeResponse.value()) {
-            Response<Integer> previousChargeResponse = TitanItem.getCharge(loreListResponse.value(), isTitanTool, hasChargeResponse, 0);
+        if (hasChargeLore) {
+            Response<Integer> previousChargeResponse = TitanItem.getCharge(loreListResponse.value(), isTitanTool, hasChargeLore, 39);
             if (previousChargeResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(previousChargeResponse.error());
                 return;

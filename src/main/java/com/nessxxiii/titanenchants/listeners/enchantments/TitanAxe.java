@@ -53,25 +53,14 @@ public class TitanAxe implements Listener {
         Player player = event.getPlayer();
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
 
-        Response<Boolean> hasChargeResponse = TitanItem.hasCharge(loreListResponse.value(), isTitanTool);
-        if (hasChargeResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(hasChargeResponse.error());
-            return;
-        }
+        boolean hasChargeLore = TitanItem.hasChargeLore(loreListResponse.value(), isTitanTool);
 
-        Response<Boolean> isImbuedTitanToolResponse = TitanItem.isImbuedTitanTool(loreListResponse.value(), isTitanTool);
-        if (isImbuedTitanToolResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(isImbuedTitanToolResponse.error());
-            return;
-        }
-
-        if (hasChargeResponse.value()) {
-            Response<Integer> getChargeResponse = TitanItem.getCharge(loreListResponse.value(), isTitanTool, hasChargeResponse, 39);
+        if (hasChargeLore) {
+            Response<Integer> getChargeResponse = TitanItem.getCharge(loreListResponse.value(), isTitanTool, hasChargeLore, 39);
             if (getChargeResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
                 return;
             }
-
             ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
         }
 
@@ -103,20 +92,6 @@ public class TitanAxe implements Listener {
         player.updateInventory();
     }
 
-    private int calculateExperienceAmount(Material material) {
-
-        int experience = switch (material) {
-            case COAL_ORE, DEEPSLATE_COAL_ORE -> getRandomNumber(0, 2);
-            case DIAMOND_ORE, DEEPSLATE_DIAMOND_ORE, EMERALD_ORE, DEEPSLATE_EMERALD_ORE -> getRandomNumber(3, 7);
-            case LAPIS_ORE, DEEPSLATE_LAPIS_ORE, NETHER_QUARTZ_ORE -> getRandomNumber(2, 5);
-            case REDSTONE_ORE, DEEPSLATE_REDSTONE_ORE -> getRandomNumber(1, 5);
-            case IRON_ORE, DEEPSLATE_IRON_ORE, GOLD_ORE, DEEPSLATE_GOLD_ORE, NETHER_GOLD_ORE, COPPER_ORE, DEEPSLATE_COPPER_ORE -> 6;
-            default -> 0;
-        };
-
-        return experience;
-    }
-
     public static List<Block> getNearbyBlocks(Location location, int radius, boolean hollow) {
         List<Block> circleBlocks = new ArrayList<>();
         int bx = location.getBlockX();
@@ -133,10 +108,6 @@ public class TitanAxe implements Listener {
             }
         }
         return circleBlocks;
-    }
-
-    private int getRandomNumber(int min, int max) {
-        return (int) ((Math.random() * (max - min)) + min);
     }
 
 }

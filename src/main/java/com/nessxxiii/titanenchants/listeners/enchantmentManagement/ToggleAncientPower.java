@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.disableEffect;
 import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.enableEffect;
 
 public class ToggleAncientPower implements Listener {
@@ -45,56 +44,86 @@ public class ToggleAncientPower implements Listener {
                 return;
             }
 
-            Response<Boolean> hasChargeResponse = TitanItem.hasCharge(loreListResponse.value(), isTitanTool);
-            if (hasChargeResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(hasChargeResponse.error());
+            boolean hasChargeLore = TitanItem.hasChargeLore(loreListResponse.value(), isTitanTool);
+            boolean isImbuedTitanTool = TitanItem.isImbuedTitanTool(loreListResponse.value(), isTitanTool);
+
+            Response<Integer> getChargeResponse = TitanItem.getCharge(loreListResponse.value(), isTitanTool, hasChargeLore, 39);
+
+            if (getChargeResponse.error() != null) {
+                Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
                 return;
             }
 
+
+            if (getChargeResponse.value() <= 0 && !isImbuedTitanTool) return;
+
             player.setCooldown(coolDown,25);
             event.setCancelled(true);
-            toggleEnchant(itemInMainHand, player, loreListResponse.value(), isTitanTool, toolStatusResponse, hasChargeResponse);
+
+            Response<ToolColor> toolColorResponse = TitanItem.getColor(loreListResponse.value());
+            if (toolColorResponse.error() != null) {
+                Bukkit.getConsoleSender().sendMessage(toolColorResponse.error());
+                return;
+            }
+            if (hasChargeLore) {
+                Response<String> toggleChargedTitanTool = toggleChargedTitanTool(itemInMainHand, loreListResponse.value(), isTitanTool, toolColorResponse.value(), toolStatusResponse.value(), getChargeResponse.value());
+                if (toggleChargedTitanTool.error() != null) {
+                    Bukkit.getConsoleSender().sendMessage(toggleChargedTitanTool.error());
+                    return;
+                }
+
+                player.sendActionBar(toggleChargedTitanTool.value());
+                enableEffect(player);
+                return;
+            }
+            if (isImbuedTitanTool) {
+                Response<String> toggleImbuedTitanTool = toggleImbuedTitanTool(itemInMainHand, loreListResponse.value(), isTitanTool, toolColorResponse.value(), toolStatusResponse.value());
+                if (toggleImbuedTitanTool.error() != null) {
+                    Bukkit.getConsoleSender().sendMessage(toggleImbuedTitanTool.error());
+                    return;
+                }
+
+                player.sendActionBar(toggleImbuedTitanTool.value());
+                enableEffect(player);
+                return;
+            }
+            Bukkit.getConsoleSender().sendMessage("An error has occurred, this block should not be reachable.");
         }
-    }
-    //Item has already been checked if it is charged or imbued when it is called here
-    private void toggleEnchant(ItemStack item, Player player, List<String> loreList, boolean isTitanTool, Response<ToolStatus> toolStatusResponse, Response<Boolean> hasChargeResponse) {
-        Response<ToolColor> toolColorResponse = TitanItem.getColor(loreList);
-        if (toolColorResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(toolColorResponse.error());
-            return;
-        }
-        player.sendActionBar(powerLevelConversion(item, loreList, isTitanTool, toolColorResponse.value(), toolStatusResponse.value(), hasChargeResponse));
-        enableEffect(player);
     }
 
-    public static String powerLevelConversion(ItemStack item, List<String> loreList, boolean isTitanTool, ToolColor color, ToolStatus status, Response<Boolean> hasChargeResponse) {
+    public static Response<String> toggleImbuedTitanTool(ItemStack item, List<String> loreList, boolean isTitanTool, ToolColor color, ToolStatus status) {
         String statusLore = TitanItem.generateStatusLore(color, status == ToolStatus.ON ? ToolStatus.OFF : ToolStatus.ON);
         Response<Integer> statusLoreIndexResponse = TitanItem.getTitanLoreIndex(loreList, TitanItem.STATUS_PREFIX, isTitanTool);
         if (statusLoreIndexResponse.error() != null) {
             Bukkit.getConsoleSender().sendMessage(statusLoreIndexResponse.error());
-            return statusLoreIndexResponse.error();
+            return Response.failure(statusLoreIndexResponse.error());
         }
 
-        if (hasChargeResponse.value()) {
-            Response<Integer> getChargeResponse = TitanItem.getCharge(loreList, isTitanTool, hasChargeResponse, 39);
-            if (getChargeResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
-                return getChargeResponse.error();
-            }
-            String chargeLore = TitanItem.generateChargeLore(color, getChargeResponse.value());
-
-            Response<Integer> chargeLoreIndexResponse = TitanItem.getTitanLoreIndex(loreList, TitanItem.CHARGE_PREFIX, isTitanTool);
-            if (chargeLoreIndexResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(chargeLoreIndexResponse.error());
-                return chargeLoreIndexResponse.error();
-            }
-            loreList.set(chargeLoreIndexResponse.value(), chargeLore);
-            loreList.set(statusLoreIndexResponse.value(), statusLore);
-        } else {
-            loreList.set(statusLoreIndexResponse.value(), statusLore);
-        }
+        loreList.set(statusLoreIndexResponse.value(), statusLore);
         TitanItem.setLore(item, loreList);
-        return ChatColor.YELLOW + (status == ToolStatus.ON ? "Ancient Power deactivated!" : "Ancient Power activated!");
+        return Response.success(ChatColor.YELLOW + (status == ToolStatus.ON ? "Ancient Power deactivated!" : "Ancient Power activated!"));
+    }
+
+    public static Response<String> toggleChargedTitanTool(ItemStack item, List<String> loreList, boolean isTitanTool, ToolColor color, ToolStatus status, int charge) {
+        String statusLore = TitanItem.generateStatusLore(color, status == ToolStatus.ON ? ToolStatus.OFF : ToolStatus.ON);
+        Response<Integer> statusLoreIndexResponse = TitanItem.getTitanLoreIndex(loreList, TitanItem.STATUS_PREFIX, isTitanTool);
+        if (statusLoreIndexResponse.error() != null) {
+            Bukkit.getConsoleSender().sendMessage(statusLoreIndexResponse.error());
+            return Response.failure(statusLoreIndexResponse.error());
+        }
+        String chargeLore = TitanItem.generateChargeLore(color, charge);
+
+        Response<Integer> chargeLoreIndexResponse = TitanItem.getTitanLoreIndex(loreList, TitanItem.CHARGE_PREFIX, isTitanTool);
+        if (chargeLoreIndexResponse.error() != null) {
+            Bukkit.getConsoleSender().sendMessage(chargeLoreIndexResponse.error());
+            return Response.failure(chargeLoreIndexResponse.error());
+        }
+        loreList.set(chargeLoreIndexResponse.value(), chargeLore);
+        loreList.set(statusLoreIndexResponse.value(), statusLore);
+
+        TitanItem.setLore(item, loreList);
+        return Response.success(ChatColor.YELLOW + (status == ToolStatus.ON ? "Ancient Power deactivated!" : "Ancient Power activated!"));
+
     }
 
     public static void handleFullInventory(ItemStack item, Player player) {
@@ -145,13 +174,6 @@ public class ToggleAncientPower implements Listener {
         }
 
         return true;
-    }
-
-    public static void printLog(boolean isImbued, int itemLevel, int itemLevelToGet, String color) {
-        Bukkit.getConsoleSender().sendMessage("Item imbued status: " + isImbued);
-        Bukkit.getConsoleSender().sendMessage("Item powerLevel: " + itemLevel);
-        Bukkit.getConsoleSender().sendMessage("ItemLevel to get: " + itemLevelToGet);
-        Bukkit.getConsoleSender().sendMessage("Item Color: " + color);
     }
 
 }
