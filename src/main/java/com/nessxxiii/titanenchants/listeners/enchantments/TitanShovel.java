@@ -36,7 +36,7 @@ public class TitanShovel implements Listener {
     public void titanShovelBreakBlock(PlayerInteractEvent event) {
         if (event.getClickedBlock() == null) return;
         if (!event.getAction().isLeftClick()) return;
-        if (!TitanItem.isChargedOrImbuedTitanShovel(event.getPlayer().getInventory().getItemInMainHand())) return;
+//        if (!TitanItem.isChargedOrImbuedTitanShovel(event.getPlayer().getInventory().getItemInMainHand())) return;
         IGNORE_LOCATIONS.clear(); //Strange bug would occur with sand and gravel if IGNORE_LOCATIONS wasn't cleared
         Player player = event.getPlayer();
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();

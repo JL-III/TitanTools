@@ -5,8 +5,6 @@ import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ChargeManagem
 import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ToggleAncientPower;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import com.nessxxiii.titanenchants.util.Utils;
-import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -55,7 +53,7 @@ public class TitanPicks implements Listener {
 
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
-        if (!TitanItemInfo.isChargedOrImbuedTitanPick(event.getPlayer().getInventory().getItemInMainHand())) return;
+//        if (!TitanItemInfo.isChargedOrImbuedTitanPick(event.getPlayer().getInventory().getItemInMainHand())) return;
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
@@ -63,7 +61,7 @@ public class TitanPicks implements Listener {
         Material blockBrokenMaterial = blockBroken.getType();
         Inventory inventory = player.getInventory();
 
-        Utils.ItemRecord itemRecord = Utils.retrieveItemRecord(itemInMainHand);
+//        Utils.ItemRecord itemRecord = Utils.retrieveItemRecord(itemInMainHand);
 
         if (IGNORE_LOCATIONS.contains(blockBroken.getLocation())) {
             IGNORE_LOCATIONS.remove(blockBroken.getLocation());
