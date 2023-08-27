@@ -159,21 +159,4 @@ public class ToggleAncientPower implements Listener {
         return player.hasPermission("titan.enchants.toggle");
     }
 
-    private static boolean processItemValidation(Utils.ItemRecord itemRecord){
-        if (!itemRecord.hasItemMeta()) {
-            return false;
-        }
-        if (!itemRecord.isCharged() && !itemRecord.isImbued()) {
-            return false;
-        }
-        if (!itemRecord.isAllowedTitanType()) {
-            return false;
-        }
-        if (!itemRecord.isTitanTool()) {
-            return false;
-        }
-
-        return true;
-    }
-
 }

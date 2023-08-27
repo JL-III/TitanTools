@@ -21,7 +21,6 @@ import java.util.List;
 
 public class ChargeManagement implements Listener {
 
-
     @EventHandler
     public void applyCharge(InventoryClickEvent event){
         if (event.getCurrentItem() == null) return;
