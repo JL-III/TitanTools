@@ -17,7 +17,6 @@ import java.util.List;
 
 import static com.nessxxiii.titanenchants.config.ConfigManager.blockConversionQuantity;
 import static com.nessxxiii.titanenchants.config.ConfigManager.blockConversionTypes;
-import static com.nessxxiii.titanenchants.listeners.enchantments.TitanShovel.DISALLOWED_ITEMS;
 
 public class Utils {
 
@@ -53,21 +52,23 @@ public class Utils {
         if (event.getClickedBlock() == null) return Response.failure("The clicked block was null");
         if (!event.getAction().isLeftClick()) return Response.failure("Event was not a left click action.");
         if (!canBreakBedrock(clickedBlock, player)) return Response.failure("Failed can break bedrock check.");
+        if (!TitanItem.isAllowedType(itemInMainHand, TitanItem.ALLOWED_SHOVEL_TYPES)) return Response.failure("This is not an allowed Titan Shovel Type.");
         BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
         Bukkit.getPluginManager().callEvent(e);
         if (e.isCancelled()) return Response.failure("Called block break event was cancelled.");
-        if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
-            clickedBlock.breakNaturally(itemInMainHand);
-        } else {
-            if (DISALLOWED_ITEMS.contains(clickedBlock.getType())) return Response.failure("Titan Shovel Cannot break: " + clickedBlock.getType());
-            clickedBlock.setType(Material.AIR);
-        }
+        e.setCancelled(true);
+
         Response<List<String>> getLoreResponse = TitanItem.getLore(itemInMainHand);
         if (getLoreResponse.error() != null) {
             Bukkit.getConsoleSender().sendMessage(getLoreResponse.error());
             return Response.failure(getLoreResponse.error());
         }
-
+        Response<ToolStatus> toolStatusResponse = TitanItem.getStatus(getLoreResponse.value(), true);
+        if (toolStatusResponse.error() != null) {
+            Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
+            return Response.failure(toolStatusResponse.error());
+        }
+        if (toolStatusResponse.value() == ToolStatus.OFF) return Response.failure("Tool Status: " + toolStatusResponse.value());
         return Response.success(getLoreResponse.value());
     }
 

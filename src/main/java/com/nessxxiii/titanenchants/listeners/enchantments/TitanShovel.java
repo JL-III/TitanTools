@@ -36,20 +36,12 @@ public class TitanShovel implements Listener {
     }
 
     @EventHandler
-    @SuppressWarnings("unused")
     public void titanShovelBreakBlock(PlayerInteractEvent event) {
         Response<List<String>> titanShovelValidationResponse = titanShovelValidation(event, event.getPlayer(), event.getPlayer().getInventory().getItemInMainHand(), event.getClickedBlock());
-        if (!TitanItem.isAllowedType(event.getPlayer().getInventory().getItemInMainHand(), TitanItem.ALLOWED_SHOVEL_TYPES)) return;
         if (titanShovelValidationResponse.error() != null) {
             Bukkit.getConsoleSender().sendMessage(titanShovelValidationResponse.error());
             return;
         }
-        Response<ToolStatus> toolStatusResponse = TitanItem.getStatus(titanShovelValidationResponse.value(), true);
-        if (toolStatusResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
-            return;
-        }
-        if (toolStatusResponse.value() == ToolStatus.OFF) return;
 
         IGNORE_LOCATIONS.clear();
         if (IGNORE_LOCATIONS.contains(event.getClickedBlock().getLocation())) {
@@ -70,18 +62,26 @@ public class TitanShovel implements Listener {
             decreaseChargeLore(itemInMainHand, player, 2);
         }
 
+        if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
+            clickedBlock.breakNaturally(itemInMainHand);
+        } else {
+            if (DISALLOWED_ITEMS.contains(clickedBlock.getType())) return;
+            clickedBlock.setType(Material.AIR);
+        }
+
         for (Block blockLoop : getNearbyBlocks2(clickedBlock.getLocation(), blockFace)) {
             if (blockLoop.getLocation().equals(clickedBlock.getLocation())) {
                 continue;
             }
             if (!DISALLOWED_ITEMS.contains(blockLoop.getType())) {
                 IGNORE_LOCATIONS.add(blockLoop.getLocation());
-                BlockDamageEvent ex = new BlockDamageEvent(event.getPlayer(), clickedBlock, itemInMainHand, true);
-                Bukkit.getPluginManager().callEvent(ex);
+                BlockBreakEvent e = new BlockBreakEvent( clickedBlock, event.getPlayer());
+                Bukkit.getPluginManager().callEvent(e);
 
-                if (!ex.isCancelled()) {
+                if (!e.isCancelled()) {
                     if ((blockLoop.getLocation().getY() > -64 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
                             || ((blockLoop.getLocation().getY() > 0 && blockLoop.getLocation().getY() < 127) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) {
+                        e.setDropItems(false);
                         blockLoop.breakNaturally(itemInMainHand);
                     }
                 }
