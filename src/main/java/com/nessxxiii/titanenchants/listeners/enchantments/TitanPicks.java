@@ -63,7 +63,7 @@ public class TitanPicks implements Listener {
                 Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
                 return;
             }
-            ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
+            ChargeManagement.decreaseChargeLore(itemInMainHand, loreListResponse.value(), true, hasChargeLore, player);
         }
 
         if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {

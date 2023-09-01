@@ -6,6 +6,7 @@ import com.playtheatria.jliii.generalutils.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,25 @@ import static com.nessxxiii.titanenchants.util.Utils.getSphereBlocks;
 import static com.nessxxiii.titanenchants.util.Utils.titanToolBlockBreakValidation;
 
 public class TitanAxe implements Listener {
+
+    private static final List<Material> REPLANT_MATERIAL_LIST = new ArrayList<>() {{
+        add(Material.DIRT);
+        add(Material.PODZOL);
+        add(Material.GRASS_BLOCK);
+    }};
+
+    private static final HashMap<Material, Material> REPLANT_MAP = new HashMap<>() {{
+        put(Material.OAK_LOG, Material.OAK_SAPLING);
+        put(Material.SPRUCE_LOG, Material.SPRUCE_SAPLING);
+        put(Material.BIRCH_LOG, Material.BIRCH_SAPLING);
+        put(Material.JUNGLE_LOG, Material.JUNGLE_SAPLING);
+        put(Material.ACACIA_LOG, Material.ACACIA_SAPLING);
+        put(Material.DARK_OAK_LOG, Material.DARK_OAK_SAPLING);
+        put(Material.CRIMSON_STEM, Material.CRIMSON_FUNGUS);
+        put(Material.WARPED_STEM, Material.WARPED_FUNGUS);
+        put(Material.CHERRY_LOG, Material.CHERRY_SAPLING);
+        put(Material.MANGROVE_LOG, Material.MANGROVE_PROPAGULE);
+    }};
 
     private final ConfigManager configManager;
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
@@ -49,7 +69,7 @@ public class TitanAxe implements Listener {
                 Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
                 return;
             }
-            ChargeManagement.decreaseChargeLore(itemInMainHand, player, 2);
+            ChargeManagement.decreaseChargeLore(itemInMainHand, titanToolValidationCheckResponse.value(), true, hasChargeLore, player);
         }
 
         for (Block block : getSphereBlocks(blockBroken.getLocation(), 5, false)) {
@@ -61,6 +81,13 @@ public class TitanAxe implements Listener {
                 BlockBreakEvent e = new BlockBreakEvent(block, player);
                 Bukkit.getPluginManager().callEvent(e);
                 if (!e.isCancelled()) {
+                    Block blockBelow = block.getLocation().subtract(0, 1, 0).getBlock();
+                    if (REPLANT_MATERIAL_LIST.contains(blockBelow.getType())) {
+                        if (REPLANT_MAP.containsKey(block.getType())) {
+                            block.setType(REPLANT_MAP.get(block.getType()));
+                        }
+                        continue;
+                    }
                     block.breakNaturally(itemInMainHand);
                 }
             }

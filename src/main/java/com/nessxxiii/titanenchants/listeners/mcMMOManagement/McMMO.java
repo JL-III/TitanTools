@@ -22,16 +22,7 @@ import java.util.List;
 
 public class McMMO implements Listener {
 
-    Player player;
     Material coolDown = Material.COD_SPAWN_EGG;
-
-    @EventHandler
-    public void onRightClick(PlayerInteractEvent event){
-        // TODO super hacky way to access a player to send and assign checks for mcmmo.
-          // this cant be the way we should do this.
-        if(!event.getAction().isRightClick()) return;
-        player = event.getPlayer();
-    }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void cancelMcMMO(McMMOPlayerAbilityActivateEvent event){
@@ -46,14 +37,15 @@ public class McMMO implements Listener {
 
     @EventHandler
     public void cancelMcMMOMessage(McMMOPlayerSkillEvent event) {
-        PrimarySkillType skillType = event.getSkill();
-        player.sendMessage("SkillType " + skillType.name());
+        event.getPlayer().sendMessage("SkillType " + event.getSkill().name());
     }
 
 
     @EventHandler
     public void cancelMcMMOMessage(McMMOPlayerNotificationEvent notificationEvent){
         if (notificationEvent.getEventNotificationType() != NotificationType.TOOL) return;
+        if (notificationEvent.getWho() == null) return;
+        Player player = notificationEvent.getWho();
         Response<List<String>> loreListResponse = TitanItem.getLore(player.getInventory().getItemInMainHand());
         if (loreListResponse.error() != null) return;
         if (TitanItem.isTitanTool(loreListResponse.value())) {

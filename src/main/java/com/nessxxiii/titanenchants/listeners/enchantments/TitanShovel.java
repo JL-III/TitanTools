@@ -52,14 +52,14 @@ public class TitanShovel implements Listener {
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         BlockFace blockFace = event.getBlockFace();
         Block clickedBlock = event.getClickedBlock();
-
-        if (TitanItem.hasChargeLore(titanShovelValidationResponse.value(), true)) {
+        boolean hasChargeLore = TitanItem.hasChargeLore(titanShovelValidationResponse.value(), true);
+        if (hasChargeLore) {
             Response<Integer> getChargeResponse = TitanItem.getCharge(titanShovelValidationResponse.value(), true, true, 39);
             if (getChargeResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
                 return;
             }
-            decreaseChargeLore(itemInMainHand, player, 2);
+            decreaseChargeLore(itemInMainHand, titanShovelValidationResponse.value(), true, hasChargeLore, player);
         }
 
         if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {

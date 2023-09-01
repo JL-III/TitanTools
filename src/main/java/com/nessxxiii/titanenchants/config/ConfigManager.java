@@ -10,8 +10,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.nessxxiii.titanenchants.util.Utils.getRandomNumber;
-
 public class ConfigManager {
 
     private final Plugin plugin;
