@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.commands;
 
-import org.bukkit.*;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,13 +9,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-
 
 public class PlayerCommands implements CommandExecutor{
 
-    private Plugin plugin;
+    private final Plugin plugin;
     private FileConfiguration fileConfig;
 
     public PlayerCommands(Plugin plugin) {
@@ -63,19 +60,6 @@ public class PlayerCommands implements CommandExecutor{
             return true;
         }
 
-        //TODO move this method to TheatriaUtils
-//        if ("lastseen".equalsIgnoreCase(args[0])) {
-//            OfflinePlayer[] allPlayers = Bukkit.getOfflinePlayers();
-//
-//            Arrays.sort(allPlayers, Comparator.comparing(OfflinePlayer::getLastLogin));
-//
-//            for (OfflinePlayer offlinePlayer : allPlayers) {
-//                Calendar calendar = Calendar.getInstance();
-//                calendar.setTimeInMillis(offlinePlayer.getLastLogin());
-//                Bukkit.getConsoleSender().sendMessage(calendar.get(Calendar.MONTH) + "/" +
-//                        calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.YEAR) + "  " + offlinePlayer.getName());
-//            }
-//        }
     return true;
     }
 }

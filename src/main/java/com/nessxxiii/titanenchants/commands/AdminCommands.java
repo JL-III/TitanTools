@@ -1,38 +1,33 @@
 package com.nessxxiii.titanenchants.commands;
 
-import com.nessxxiii.titanenchants.listeners.enchantmentManager.ToggleAncientPower;
-import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import com.playtheatria.jliii.generalutils.items.ItemCreator;
 import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
-import com.playtheatria.jliii.generalutils.items.TitanItemInfo;
+import com.playtheatria.jliii.generalutils.managers.ConfigManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Cat;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-
 public class AdminCommands implements CommandExecutor {
 
-    private Plugin plugin;
-    private PlayerCommands playerCommands;
+    private final Plugin plugin;
+    private final PlayerCommands playerCommands;
+    private final ConfigManager configManager;
     private FileConfiguration fileConfig;
     private final String permissionPrefix = "titan.enchants.admincommands";
     private final String NO_PERMISSION = ChatColor.RED + "No Permission.";
 
-    public AdminCommands(Plugin plugin, PlayerCommands playerCommands) {
+    public AdminCommands(Plugin plugin, ConfigManager configManager, PlayerCommands playerCommands) {
         this.plugin = plugin;
+        this.configManager = configManager;
         this.fileConfig = plugin.getConfig();
         this.playerCommands = playerCommands;
     };
@@ -48,48 +43,37 @@ public class AdminCommands implements CommandExecutor {
             player.sendMessage(ChatColor.RED + "No permission.");
             return true;
         }
-        if ("imbue".equalsIgnoreCase(args[0])) {
-            Material coolDown = Material.SQUID_SPAWN_EGG;
-            ItemStack item = player.getInventory().getItemInMainHand();
-            if (!TitanItemInfo.isTitanTool(item)) return false;
-            if (!player.hasPermission(permissionStringMaker("imbue"))) {
-                player.sendMessage(NO_PERMISSION);
-                return false;
-            }
-            if (TitanItemInfo.isImbued(item)) {
-                player.sendMessage(ChatColor.GREEN + "That item is already imbued!");
-                return false;
-            }
-            if (!player.hasCooldown(coolDown)) {
-                player.sendMessage(ChatColor.GREEN + "Are you sure you want to imbue this tool?");
-                player.sendMessage(ChatColor.GREEN + "Retype the command to confirm");
-                player.setCooldown(coolDown, 200);
-                return false;
-            }
-            List<String> loreList = TitanItemInfo.getLore(item);
-            for (String lore : loreList) {
-                if (TitanItemInfo.UNIMBUED_LORE.contains(lore)) {
-                    ToggleAncientPower.imbue(item);
-                    TitanEnchantEffects.enableEffect(player);
-                    plugin.getLogger().info(player.getName() + " has imbued a titan tool...");
-                    return true;
-                }
-            }
-            return false;
-        }
-        if ("debug".equalsIgnoreCase(args[0])) {
-            if (!player.hasPermission(permissionStringMaker("debug"))) {
-                player.sendMessage(NO_PERMISSION);
-                return false;
-            }
-            player.sendMessage("Current RP link: " + fileConfig.getString("resource-pack") );
-            if (player.getInventory().getItemInMainHand().getType() == Material.AIR) return true;
-            if (player.getInventory().getItemInMainHand().hasItemMeta() && player.getInventory().getItemInMainHand().getItemMeta().hasCustomModelData()) {
-                player.sendMessage("Current custom model data: " + player.getInventory().getItemInMainHand().getItemMeta().getCustomModelData());
-            } else {
-                player.sendMessage("This item does not have custom model data.");
-            }
-        }
+        //TODO imbuing has been removed for now.
+
+//        if ("imbue".equalsIgnoreCase(args[0])) {
+//            Material coolDown = Material.SQUID_SPAWN_EGG;
+//            ItemStack item = player.getInventory().getItemInMainHand();
+//            if (!TitanItem.isTitanTool(item)) return false;
+//            if (!player.hasPermission(permissionStringMaker("imbue"))) {
+//                player.sendMessage(NO_PERMISSION);
+//                return false;
+//            }
+//            if (TitanItem.isImbuedTitanTool(item)) {
+//                player.sendMessage(ChatColor.GREEN + "That item is already imbued!");
+//                return false;
+//            }
+//            if (!player.hasCooldown(coolDown)) {
+//                player.sendMessage(ChatColor.GREEN + "Are you sure you want to imbue this tool?");
+//                player.sendMessage(ChatColor.GREEN + "Retype the command to confirm");
+//                player.setCooldown(coolDown, 200);
+//                return false;
+//            }
+//            List<String> loreList = TitanItemInfo.getLore(item);
+//            for (String lore : loreList) {
+//                if (TitanItemInfo.UNIMBUED_LORE.contains(lore)) {
+//                    ToggleAncientPower.imbue(item);
+//                    TitanEnchantEffects.enableEffect(player);
+//                    plugin.getLogger().info(player.getName() + " has imbued a titan tool...");
+//                    return true;
+//                }
+//            }
+//            return false;
+//        }
 
         if ("save".equalsIgnoreCase(args[0]) && args.length == 2) {
             if (!player.hasPermission(permissionStringMaker("save"))) {
@@ -125,15 +109,6 @@ public class AdminCommands implements CommandExecutor {
             }
         }
 
-        if ("check".equalsIgnoreCase(args[0])) {
-            if (!player.hasPermission(permissionStringMaker("check)"))) {
-                player.sendMessage(NO_PERMISSION);
-                return false;
-            }
-            player.sendMessage("TitanPick isChargedOrImbued: " + TitanItemInfo.isChargedOrImbuedTitanPick(player.getInventory().getItemInMainHand()));
-            player.sendMessage("Current Custom model data: " + player.getInventory().getItemInMainHand().getItemMeta().getCustomModelData());
-
-        }
         if ("reload".equalsIgnoreCase(args[0])) {
             if (!player.hasPermission(permissionStringMaker("reload"))) {
                 player.sendMessage(NO_PERMISSION);
@@ -158,7 +133,6 @@ public class AdminCommands implements CommandExecutor {
                 inv.addItem(ItemCreator.powerCrystalSuper);
                 inv.addItem(ItemCreator.powerCrystalEpic);
                 inv.addItem(ItemCreator.powerCrystalUltra);
-//                inv.addItem(ItemCreator.powerCrystalTEST);
                 player.updateInventory();
             } else if (args.length == 2) {
                 try {
@@ -192,15 +166,6 @@ public class AdminCommands implements CommandExecutor {
             return true;
         }
 
-        if ("spawn".equalsIgnoreCase(args[0]) && player.hasPermission(permissionStringMaker("spawn"))) {
-            Cat entity = (Cat) player.getWorld().spawnEntity(player.getLocation(), EntityType.CAT);
-            entity.setOwner(player);
-            entity.setAge(-2);
-            entity.setAgeLock(true);
-            entity.setInvulnerable(true);
-            entity.setMetadata("customModelData", new FixedMetadataValue(plugin, 1234567));
-        }
-
         if ("compare".equalsIgnoreCase(args[0])) {
             if (!player.hasPermission(permissionStringMaker("compare"))){
                 player.sendMessage(NO_PERMISSION);
@@ -215,12 +180,6 @@ public class AdminCommands implements CommandExecutor {
 
         }
 
-        if ("isTitanTool".equalsIgnoreCase(args[0])) {
-            if (!player.hasPermission(permissionStringMaker("isTitanTool"))) {
-                player.sendMessage(NO_PERMISSION);
-            }
-            player.sendMessage("isTitanTool: " + TitanItemInfo.isTitanTool(player.getInventory().getItemInMainHand()));
-        }
         return false;
     }
 
