@@ -2,7 +2,6 @@ package com.nessxxiii.titanenchants.listeners.enchantments;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ChargeManagement;
-import com.playtheatria.jliii.generalutils.enums.Debug;
 import com.playtheatria.jliii.generalutils.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Bukkit;

@@ -50,7 +50,7 @@ public final class TitanEnchants extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new TitanAxe(configManager), this);
         Bukkit.getPluginManager().registerEvents(new TitanShovel(this, configManager), this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(),this);
-        Bukkit.getPluginManager().registerEvents(new ChargeManagement(),this);
+        Bukkit.getPluginManager().registerEvents(new ChargeManagement(configManager),this);
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new McMMO(configManager),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);

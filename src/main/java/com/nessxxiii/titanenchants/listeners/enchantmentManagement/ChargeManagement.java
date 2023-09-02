@@ -1,5 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManagement;
 
+import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import com.playtheatria.jliii.generalutils.enums.ToolColor;
 import com.playtheatria.jliii.generalutils.enums.ToolStatus;
@@ -8,7 +9,6 @@ import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
 import com.playtheatria.jliii.generalutils.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,6 +23,12 @@ import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.depletedCharg
 
 
 public class ChargeManagement implements Listener {
+
+    private final ConfigManager configManager;
+
+    public ChargeManagement(ConfigManager configManager) {
+        this.configManager = configManager;
+    }
 
     @EventHandler
     public void applyCharge(InventoryClickEvent event){
@@ -69,7 +75,12 @@ public class ChargeManagement implements Listener {
         }
 
         boolean isTitanTool = TitanItem.isTitanTool(loreListResponse.value());
-        if (!isTitanTool) return false;
+        if (!isTitanTool) {
+            if (configManager.getDebug()) {
+                Bukkit.getConsoleSender().sendMessage("Failed to add charge to a non Titan Tool.");
+            }
+            return false;
+        }
 
         boolean isChargedTitanTool = TitanItem.isChargedTitanTool(loreListResponse.value(), isTitanTool);
 
@@ -150,8 +161,7 @@ public class ChargeManagement implements Listener {
             loreList.set(statusLoreIndexResponse.value(), TitanItem.generateStatusLore(toolColorResponse.value(), ToolStatus.OFF));
             meta.setCustomModelData(CustomModelData.UNCHARGED_TITAN_TOOL);
             depletedChargeEffect(player);
-            player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CAncient Power" + " "
-                    + ChatColor.ITALIC + "§x§F§F§0§0§4§CCharge: " + ChatColor.YELLOW + "Depleted"));
+            player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CAncient Power:" + " " + ChatColor.YELLOW + "Depleted"));
         } else {
             loreList.set(chargeLoreIndexResponse.value(), TitanItem.generateChargeLore(toolColorResponse.value(), remainingCharge));
             player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CAncient Power" + " "

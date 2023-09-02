@@ -1,5 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManagement;
 
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.nessxxiii.titanenchants.util.Utils;
 import com.playtheatria.jliii.generalutils.enums.ToolColor;
 import com.playtheatria.jliii.generalutils.enums.ToolStatus;
@@ -101,7 +102,7 @@ public class ToggleAncientPower implements Listener {
 
         loreList.set(statusLoreIndexResponse.value(), statusLore);
         TitanItem.setLore(item, loreList);
-        return Response.success(ChatColor.YELLOW + (status == ToolStatus.ON ? "Ancient Power deactivated!" : "Ancient Power activated!"));
+        return Response.success(ChatColor.YELLOW + (status == ToolStatus.ON ? "Ancient Power:" + ChatColor.RED + " OFF" : "Ancient Power: " + ChatColor.GREEN + "ON"));
     }
 
     public static Response<String> toggleChargedTitanTool(ItemStack item, List<String> loreList, boolean isTitanTool, ToolColor color, ToolStatus status, int charge) {
@@ -122,7 +123,7 @@ public class ToggleAncientPower implements Listener {
         loreList.set(statusLoreIndexResponse.value(), statusLore);
 
         TitanItem.setLore(item, loreList);
-        return Response.success(ChatColor.YELLOW + (status == ToolStatus.ON ? "Ancient Power deactivated!" : "Ancient Power activated!"));
+        return Response.success(ChatColor.YELLOW + (status == ToolStatus.ON ? "Ancient Power:" + ChatColor.RED + " OFF" : "Ancient Power: " + ChatColor.GREEN + "ON"));
 
     }
 
