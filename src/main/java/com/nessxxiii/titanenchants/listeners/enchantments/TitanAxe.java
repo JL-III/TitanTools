@@ -2,6 +2,7 @@ package com.nessxxiii.titanenchants.listeners.enchantments;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ChargeManagement;
+import com.playtheatria.jliii.generalutils.enums.Debug;
 import com.playtheatria.jliii.generalutils.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Bukkit;
@@ -51,7 +52,12 @@ public class TitanAxe implements Listener {
     public void onBlockBreak(BlockBreakEvent event) {
         Response<List<String>> titanToolValidationCheckResponse = titanToolBlockBreakValidation(event, TitanItem.ALLOWED_AXE_TYPES);
         //Intentionally swallowing the error here since this is trigger on a block break validation, would result in tons of logging noise.
-        if (titanToolValidationCheckResponse.error() != null) return;
+        if (titanToolValidationCheckResponse.error() != null) {
+            if (configManager.getDebug()) {
+                Bukkit.getConsoleSender().sendMessage(titanToolValidationCheckResponse.error());
+            }
+            return;
+        }
 
         Block blockBroken = event.getBlock();
         if (IGNORE_LOCATIONS.contains(blockBroken.getLocation())) {

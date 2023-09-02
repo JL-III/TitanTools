@@ -14,7 +14,7 @@ import com.nessxxiii.titanenchants.listeners.enchantments.TitanPicks;
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanShovel;
 import com.nessxxiii.titanenchants.listeners.mcMMOManagement.McMMO;
 import com.nessxxiii.titanenchants.util.Utils;
-import com.playtheatria.jliii.generalutils.GeneralUtils;
+
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,15 +33,11 @@ public final class TitanEnchants extends JavaPlugin {
         checkMcMMODependency();
 
         registerEvents();
-        generalUtilsConfigManager = GeneralUtils.getConfigManager();
-        if (generalUtilsConfigManager != null) {
-            registerCommands(generalUtilsConfigManager);
-            Bukkit.getConsoleSender().sendMessage("Registering commands.");
-        }
+        registerCommands(configManager);
         Utils.printBanner();
     }
 
-    private void registerCommands(com.playtheatria.jliii.generalutils.managers.ConfigManager configManager) {
+    private void registerCommands(ConfigManager configManager) {
         PlayerCommands playerCommands = new PlayerCommands(this);
         Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, configManager, playerCommands));
         Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
@@ -52,11 +48,11 @@ public final class TitanEnchants extends JavaPlugin {
     private void registerEvents() {
         Bukkit.getPluginManager().registerEvents(new TitanPicks(configManager),this);
         Bukkit.getPluginManager().registerEvents(new TitanAxe(configManager), this);
-        Bukkit.getPluginManager().registerEvents(new TitanShovel(this), this);
+        Bukkit.getPluginManager().registerEvents(new TitanShovel(this, configManager), this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(),this);
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(),this);
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
-        Bukkit.getPluginManager().registerEvents(new McMMO(),this);
+        Bukkit.getPluginManager().registerEvents(new McMMO(configManager),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
     }
 

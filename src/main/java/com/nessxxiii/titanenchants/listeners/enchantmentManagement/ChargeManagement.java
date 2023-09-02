@@ -145,11 +145,13 @@ public class ChargeManagement implements Listener {
         }
         int remainingCharge = previousChargeResponse.value() - 1;
         ItemMeta meta = item.getItemMeta();
-        if (remainingCharge <= 1) {
+        if (remainingCharge <= 0) {
             loreList.set(chargeLoreIndexResponse.value(), TitanItem.generateChargeLore(toolColorResponse.value(), 0));
             loreList.set(statusLoreIndexResponse.value(), TitanItem.generateStatusLore(toolColorResponse.value(), ToolStatus.OFF));
             meta.setCustomModelData(CustomModelData.UNCHARGED_TITAN_TOOL);
             depletedChargeEffect(player);
+            player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CAncient Power" + " "
+                    + ChatColor.ITALIC + "§x§F§F§0§0§4§CCharge: " + ChatColor.YELLOW + "Depleted"));
         } else {
             loreList.set(chargeLoreIndexResponse.value(), TitanItem.generateChargeLore(toolColorResponse.value(), remainingCharge));
             player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CAncient Power" + " "

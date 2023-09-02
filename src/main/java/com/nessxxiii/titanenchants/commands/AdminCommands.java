@@ -1,14 +1,13 @@
 package com.nessxxiii.titanenchants.commands;
 
+import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.playtheatria.jliii.generalutils.items.ItemCreator;
 import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
-import com.playtheatria.jliii.generalutils.managers.ConfigManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -21,14 +20,12 @@ public class AdminCommands implements CommandExecutor {
     private final Plugin plugin;
     private final PlayerCommands playerCommands;
     private final ConfigManager configManager;
-    private FileConfiguration fileConfig;
     private final String permissionPrefix = "titan.enchants.admincommands";
     private final String NO_PERMISSION = ChatColor.RED + "No Permission.";
 
     public AdminCommands(Plugin plugin, ConfigManager configManager, PlayerCommands playerCommands) {
         this.plugin = plugin;
         this.configManager = configManager;
-        this.fileConfig = plugin.getConfig();
         this.playerCommands = playerCommands;
     };
 
@@ -108,7 +105,6 @@ public class AdminCommands implements CommandExecutor {
                 player.getInventory().getItemInMainHand().setItemMeta(meta);
             }
         }
-
         if ("reload".equalsIgnoreCase(args[0])) {
             if (!player.hasPermission(permissionStringMaker("reload"))) {
                 player.sendMessage(NO_PERMISSION);
@@ -116,8 +112,8 @@ public class AdminCommands implements CommandExecutor {
             }
             plugin.getLogger().info("Reloading config...");
             plugin.reloadConfig();
-            fileConfig = plugin.getConfig();
             playerCommands.reload();
+            configManager.loadConfig();
             player.sendMessage(ChatColor.GREEN + "Successfully reloaded config.");
             return true;
         }

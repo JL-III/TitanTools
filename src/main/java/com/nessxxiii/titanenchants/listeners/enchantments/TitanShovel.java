@@ -1,5 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantments;
 
+import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.playtheatria.jliii.generalutils.enums.ToolStatus;
 import com.playtheatria.jliii.generalutils.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
@@ -29,9 +30,11 @@ public class TitanShovel implements Listener {
     public static final Set<Material> DISALLOWED_ITEMS = new HashSet<>();
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
     private final Plugin PLUGIN;
+    private final ConfigManager configManager;
 
-    public TitanShovel(Plugin plugin) {
+    public TitanShovel(Plugin plugin, ConfigManager configManager) {
         this.PLUGIN = plugin;
+        this.configManager = configManager;
         loadConfig();
     }
 
@@ -39,7 +42,9 @@ public class TitanShovel implements Listener {
     public void titanShovelBreakBlock(PlayerInteractEvent event) {
         Response<List<String>> titanShovelValidationResponse = titanShovelValidation(event, event.getPlayer(), event.getPlayer().getInventory().getItemInMainHand(), event.getClickedBlock());
         if (titanShovelValidationResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(titanShovelValidationResponse.error());
+            if (configManager.getDebug()) {
+                Bukkit.getConsoleSender().sendMessage(titanShovelValidationResponse.error());
+            }
             return;
         }
 

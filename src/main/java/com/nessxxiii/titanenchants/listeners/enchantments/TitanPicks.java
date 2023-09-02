@@ -35,16 +35,26 @@ public class TitanPicks implements Listener {
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
         if (event.isCancelled()) return;
-        if (!TitanItem.isAllowedType(event.getPlayer().getInventory().getItemInMainHand(), TitanItem.ALLOWED_PICK_TYPES)) return;
+        if (!TitanItem.isAllowedType(event.getPlayer().getInventory().getItemInMainHand(), TitanItem.ALLOWED_PICK_TYPES)) {
+            if (configManager.getDebug()) {
+                Bukkit.getConsoleSender().sendMessage("Not a Titan Pick");
+            }
+            return;
+        }
         Response<List<String>> loreListResponse = TitanItem.getLore(event.getPlayer().getInventory().getItemInMainHand());
         if (loreListResponse.error() != null) {
+            if (configManager.getDebug()) {
+                Bukkit.getConsoleSender().sendMessage(loreListResponse.error());
+            }
             return;
         }
         boolean isTitanTool = TitanItem.isTitanTool(loreListResponse.value());
         if (!isTitanTool) return;
         Response<ToolStatus> toolStatusResponse = TitanItem.getStatus(loreListResponse.value(), isTitanTool);
         if (toolStatusResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
+            if (configManager.getDebug()) {
+                Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
+            }
             return;
         }
         if (toolStatusResponse.value() == ToolStatus.OFF) return;

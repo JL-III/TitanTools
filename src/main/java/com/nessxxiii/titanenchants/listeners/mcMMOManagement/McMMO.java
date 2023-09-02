@@ -1,11 +1,10 @@
 package com.nessxxiii.titanenchants.listeners.mcMMOManagement;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
-import com.playtheatria.jliii.generalutils.enums.ToolStatus;
+import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.playtheatria.jliii.generalutils.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import net.kyori.adventure.text.Component;
@@ -15,12 +14,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
 public class McMMO implements Listener {
+
+    private final ConfigManager configManager;
+
+    public McMMO(ConfigManager configManager) {
+        this.configManager = configManager;
+    }
 
     Material coolDown = Material.COD_SPAWN_EGG;
 
@@ -29,7 +32,9 @@ public class McMMO implements Listener {
         Response<List<String>> loreListResponse = TitanItem.getLore(event.getPlayer().getInventory().getItemInMainHand());
         if (loreListResponse.error() != null) return;
         boolean isTitanTool = TitanItem.isTitanTool(loreListResponse.value());
-        Bukkit.getConsoleSender().sendMessage("isTitanTool: " + isTitanTool);
+        if (configManager.getDebug()) {
+            Bukkit.getConsoleSender().sendMessage("isTitanTool: " + isTitanTool);
+        }
         if (isTitanTool) {
             event.setCancelled(true);
         }
