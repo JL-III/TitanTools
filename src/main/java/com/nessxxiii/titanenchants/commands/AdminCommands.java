@@ -1,8 +1,16 @@
 package com.nessxxiii.titanenchants.commands;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
+import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
+import com.playtheatria.jliii.generalutils.enums.ToolColor;
+import com.playtheatria.jliii.generalutils.enums.ToolStatus;
+import com.playtheatria.jliii.generalutils.items.CustomModelData;
 import com.playtheatria.jliii.generalutils.items.ItemCreator;
 import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
+import com.playtheatria.jliii.generalutils.items.TitanItem;
+import com.playtheatria.jliii.generalutils.utils.Response;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -14,6 +22,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.depletedChargeEffect;
 
 public class AdminCommands implements CommandExecutor {
 
@@ -40,37 +53,77 @@ public class AdminCommands implements CommandExecutor {
             player.sendMessage(ChatColor.RED + "No permission.");
             return true;
         }
-        //TODO imbuing has been removed for now.
 
-//        if ("imbue".equalsIgnoreCase(args[0])) {
-//            Material coolDown = Material.SQUID_SPAWN_EGG;
-//            ItemStack item = player.getInventory().getItemInMainHand();
-//            if (!TitanItem.isTitanTool(item)) return false;
-//            if (!player.hasPermission(permissionStringMaker("imbue"))) {
-//                player.sendMessage(NO_PERMISSION);
-//                return false;
-//            }
-//            if (TitanItem.isImbuedTitanTool(item)) {
-//                player.sendMessage(ChatColor.GREEN + "That item is already imbued!");
-//                return false;
-//            }
-//            if (!player.hasCooldown(coolDown)) {
-//                player.sendMessage(ChatColor.GREEN + "Are you sure you want to imbue this tool?");
-//                player.sendMessage(ChatColor.GREEN + "Retype the command to confirm");
-//                player.setCooldown(coolDown, 200);
-//                return false;
-//            }
-//            List<String> loreList = TitanItemInfo.getLore(item);
-//            for (String lore : loreList) {
-//                if (TitanItemInfo.UNIMBUED_LORE.contains(lore)) {
-//                    ToggleAncientPower.imbue(item);
-//                    TitanEnchantEffects.enableEffect(player);
-//                    plugin.getLogger().info(player.getName() + " has imbued a titan tool...");
-//                    return true;
-//                }
-//            }
-//            return false;
-//        }
+        if ("imbue".equalsIgnoreCase(args[0])) {
+            Material coolDown = Material.SQUID_SPAWN_EGG;
+            Response<List<String>> loreListResponse = TitanItem.getLore(player.getInventory().getItemInMainHand());
+            if (loreListResponse.error() != null) {
+                Bukkit.getConsoleSender().sendMessage(loreListResponse.error());
+                return true;
+            }
+            ItemStack item = player.getInventory().getItemInMainHand();
+            boolean isTitanTool = TitanItem.isTitanTool(loreListResponse.value());
+            if (!isTitanTool) return false;
+            if (!player.hasPermission(permissionStringMaker("imbue"))) {
+                player.sendMessage(NO_PERMISSION);
+                return false;
+            }
+            if (TitanItem.isImbuedTitanTool(loreListResponse.value(), isTitanTool)) {
+                player.sendMessage(ChatColor.GREEN + "That item is already imbued!");
+                return false;
+            }
+            if (!player.hasCooldown(coolDown)) {
+                player.sendMessage(ChatColor.GREEN + "Are you sure you want to imbue this tool?");
+                player.sendMessage(ChatColor.GREEN + "Retype the command to confirm");
+                player.setCooldown(coolDown, 200);
+                return false;
+            }
+
+            boolean isAllowedType = TitanItem.isAllowedType(item, TitanItem.ALLOWED_TITAN_TYPES);
+            if (!isAllowedType) {
+                player.sendMessage("This is not an allowed type");
+                return true;
+            }
+            boolean hasChargeLore = TitanItem.hasChargeLore(loreListResponse.value(), isTitanTool);
+            if (!hasChargeLore) {
+                player.sendMessage("Cannot imbue an item that doesn't have charge lore.");
+                return true;
+            }
+            Response<Integer> chargeAmountResponse = TitanItem.getCharge(loreListResponse.value(), isTitanTool, hasChargeLore, 39);
+            if (chargeAmountResponse.error() != null) {
+                player.sendMessage(chargeAmountResponse.error());
+                return true;
+            }
+            if (chargeAmountResponse.value() != 0) {
+                player.sendMessage("You cannot imbue a tool with a charge!");
+            }
+            Response<Integer> chargeLoreIndexResponse = TitanItem.getTitanLoreIndex(loreListResponse.value(), TitanItem.CHARGE_PREFIX, isTitanTool);
+            if (chargeLoreIndexResponse.error() != null) {
+                player.sendMessage(chargeLoreIndexResponse.error());
+                return true;
+            }
+            Response<Integer> statusLoreIndexResponse = TitanItem.getTitanLoreIndex(loreListResponse.value(), TitanItem.STATUS_PREFIX, isTitanTool);
+            if (statusLoreIndexResponse.error() != null) {
+                player.sendMessage(statusLoreIndexResponse.error());
+                return true;
+            }
+            Response<ToolColor> toolColorResponse = TitanItem.getColor(loreListResponse.value());
+            if (toolColorResponse.error() != null) {
+                player.sendMessage(toolColorResponse.error());
+                return true;
+            }
+            ItemMeta meta = item.getItemMeta();
+            List<String> loreListNoCharge = new ArrayList<>();
+            for (int i = 0; i < loreListResponse.value().size(); i++) {
+                if (i == chargeLoreIndexResponse.value()) continue;
+                loreListNoCharge.add(loreListResponse.value().get(i));
+            }
+
+            meta.setCustomModelData(CustomModelData.CHARGED_TITAN_TOOL);
+            meta.setLore(loreListNoCharge);
+            item.setItemMeta(meta);
+            return false;
+        }
 
         if ("save".equalsIgnoreCase(args[0]) && args.length == 2) {
             if (!player.hasPermission(permissionStringMaker("save"))) {
