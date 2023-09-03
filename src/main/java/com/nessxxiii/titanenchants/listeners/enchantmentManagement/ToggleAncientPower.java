@@ -1,7 +1,5 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManagement;
 
-import com.gmail.nossr50.datatypes.chat.ChatChannel;
-import com.nessxxiii.titanenchants.util.Utils;
 import com.playtheatria.jliii.generalutils.enums.ToolColor;
 import com.playtheatria.jliii.generalutils.enums.ToolStatus;
 import com.playtheatria.jliii.generalutils.items.TitanItem;
@@ -44,9 +42,25 @@ public class ToggleAncientPower implements Listener {
                 Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
                 return;
             }
+            Response<ToolColor> toolColorResponse = TitanItem.getColor(loreListResponse.value());
+            if (toolColorResponse.error() != null) {
+                Bukkit.getConsoleSender().sendMessage(toolColorResponse.error());
+                return;
+            }
 
             boolean hasChargeLore = TitanItem.hasChargeLore(loreListResponse.value(), isTitanTool);
             boolean isImbuedTitanTool = TitanItem.isImbuedTitanTool(loreListResponse.value(), isTitanTool);
+            if (isImbuedTitanTool) {
+                Response<String> toggleImbuedTitanTool = toggleImbuedTitanTool(itemInMainHand, loreListResponse.value(), isTitanTool, toolColorResponse.value(), toolStatusResponse.value());
+                if (toggleImbuedTitanTool.error() != null) {
+                    Bukkit.getConsoleSender().sendMessage(toggleImbuedTitanTool.error());
+                    return;
+                }
+
+                player.sendActionBar(toggleImbuedTitanTool.value());
+                enableEffect(player);
+                return;
+            }
 
             Response<Integer> getChargeResponse = TitanItem.getCharge(loreListResponse.value(), isTitanTool, hasChargeLore, 39);
 
@@ -61,11 +75,6 @@ public class ToggleAncientPower implements Listener {
             player.setCooldown(coolDown,25);
             event.setCancelled(true);
 
-            Response<ToolColor> toolColorResponse = TitanItem.getColor(loreListResponse.value());
-            if (toolColorResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(toolColorResponse.error());
-                return;
-            }
             if (hasChargeLore) {
                 Response<String> toggleChargedTitanTool = toggleChargedTitanTool(itemInMainHand, loreListResponse.value(), isTitanTool, toolColorResponse.value(), toolStatusResponse.value(), getChargeResponse.value());
                 if (toggleChargedTitanTool.error() != null) {
@@ -74,17 +83,6 @@ public class ToggleAncientPower implements Listener {
                 }
 
                 player.sendActionBar(toggleChargedTitanTool.value());
-                enableEffect(player);
-                return;
-            }
-            if (isImbuedTitanTool) {
-                Response<String> toggleImbuedTitanTool = toggleImbuedTitanTool(itemInMainHand, loreListResponse.value(), isTitanTool, toolColorResponse.value(), toolStatusResponse.value());
-                if (toggleImbuedTitanTool.error() != null) {
-                    Bukkit.getConsoleSender().sendMessage(toggleImbuedTitanTool.error());
-                    return;
-                }
-
-                player.sendActionBar(toggleImbuedTitanTool.value());
                 enableEffect(player);
                 return;
             }
