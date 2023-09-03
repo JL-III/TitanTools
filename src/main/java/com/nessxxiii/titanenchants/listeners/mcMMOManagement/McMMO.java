@@ -41,12 +41,6 @@ public class McMMO implements Listener {
     }
 
     @EventHandler
-    public void cancelMcMMOMessage(McMMOPlayerSkillEvent event) {
-        event.getPlayer().sendMessage("SkillType " + event.getSkill().name());
-    }
-
-
-    @EventHandler
     public void cancelMcMMOMessage(McMMOPlayerNotificationEvent notificationEvent){
         if (notificationEvent.getEventNotificationType() != NotificationType.TOOL) return;
         if (notificationEvent.getWho() == null) return;
