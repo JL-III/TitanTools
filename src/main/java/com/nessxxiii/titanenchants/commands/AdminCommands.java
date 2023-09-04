@@ -96,6 +96,7 @@ public class AdminCommands implements CommandExecutor {
             }
             if (chargeAmountResponse.value() != 0) {
                 player.sendMessage("You cannot imbue a tool with a charge!");
+                return true;
             }
             Response<Integer> chargeLoreIndexResponse = TitanItem.getTitanLoreIndex(loreListResponse.value(), TitanItem.CHARGE_PREFIX, isTitanTool);
             if (chargeLoreIndexResponse.error() != null) {
