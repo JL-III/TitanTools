@@ -50,6 +50,10 @@ public class ToggleAncientPower implements Listener {
 
             boolean hasChargeLore = TitanItem.hasChargeLore(loreListResponse.value(), isTitanTool);
             boolean isImbuedTitanTool = TitanItem.isImbuedTitanTool(loreListResponse.value(), isTitanTool);
+
+            player.setCooldown(coolDown,25);
+            event.setCancelled(true);
+
             if (isImbuedTitanTool) {
                 Response<String> toggleImbuedTitanTool = toggleImbuedTitanTool(itemInMainHand, loreListResponse.value(), isTitanTool, toolColorResponse.value(), toolStatusResponse.value());
                 if (toggleImbuedTitanTool.error() != null) {
@@ -71,9 +75,6 @@ public class ToggleAncientPower implements Listener {
 
 
             if (getChargeResponse.value() <= 0 && !isImbuedTitanTool) return;
-
-            player.setCooldown(coolDown,25);
-            event.setCancelled(true);
 
             if (hasChargeLore) {
                 Response<String> toggleChargedTitanTool = toggleChargedTitanTool(itemInMainHand, loreListResponse.value(), isTitanTool, toolColorResponse.value(), toolStatusResponse.value(), getChargeResponse.value());

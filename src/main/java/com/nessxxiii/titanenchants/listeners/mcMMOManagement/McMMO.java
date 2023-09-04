@@ -2,7 +2,6 @@ package com.nessxxiii.titanenchants.listeners.mcMMOManagement;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
-import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.playtheatria.jliii.generalutils.items.TitanItem;
