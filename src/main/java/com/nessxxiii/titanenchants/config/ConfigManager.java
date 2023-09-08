@@ -1,6 +1,5 @@
 package com.nessxxiii.titanenchants.config;
 
-import com.playtheatria.jliii.generalutils.enums.Debug;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;

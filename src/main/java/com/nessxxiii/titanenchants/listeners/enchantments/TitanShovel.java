@@ -1,7 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.enchantments;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
-import com.playtheatria.jliii.generalutils.enums.ToolStatus;
 import com.playtheatria.jliii.generalutils.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.*;
@@ -12,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -74,7 +72,7 @@ public class TitanShovel implements Listener {
             clickedBlock.setType(Material.AIR);
         }
 
-        for (Block blockLoop : getNearbyBlocks2(clickedBlock.getLocation(), blockFace)) {
+        for (Block blockLoop : getNearbyBlocks(clickedBlock.getLocation(), blockFace)) {
             if (blockLoop.getLocation().equals(clickedBlock.getLocation())) {
                 continue;
             }
@@ -113,7 +111,7 @@ public class TitanShovel implements Listener {
         }
     }
 
-    private static List<Block> getNearbyBlocks2(Location location,BlockFace blockFace) {
+    private static List<Block> getNearbyBlocks(Location location, BlockFace blockFace) {
         List<Block> blocks = new ArrayList<>();
 
         if (blockFace.getModY() != 0){
@@ -141,30 +139,4 @@ public class TitanShovel implements Listener {
         return blocks;
     }
 
-    private static List<Block> getNearbyBlocks3(Location location,BlockFace blockFace) {
-        List<Block> blocks = new ArrayList<>();
-        if (blockFace.getModY() != 0){
-            int y = location.getBlockY();
-            for (int x = location.getBlockX() - 2; x <= location.getBlockX() + 2; x++) {
-                for (int z = location.getBlockZ() - 2; z <= location.getBlockZ() + 2; z++) {
-                    blocks.add(location.getWorld().getBlockAt(x, y, z));
-                }
-            }
-        } else if (blockFace.getModX() !=0){
-            int x = location.getBlockX();
-            for (int y = location.getBlockY() - 2; y <= location.getBlockY() + 2; y++) {
-                for (int z = location.getBlockZ() - 2; z <= location.getBlockZ() + 2; z++) {
-                    blocks.add(location.getWorld().getBlockAt(x, y, z));
-                }
-            }
-        } else if (blockFace.getModZ() !=0){
-            int z = location.getBlockZ();
-            for (int x = location.getBlockX() - 2; x <= location.getBlockX() + 2; x++) {
-                for (int y = location.getBlockY() - 2; y <= location.getBlockY() + 2; y++) {
-                    blocks.add(location.getWorld().getBlockAt(x, y, z));
-                }
-            }
-        }
-        return blocks;
-    }
 }

@@ -126,32 +126,6 @@ public class ToggleAncientPower implements Listener {
 
     }
 
-    public static void handleFullInventory(ItemStack item, Player player) {
-//        Utils.ItemRecord itemRecord = new Utils.ItemRecord(
-//                item.hasItemMeta(),
-//                TitanItem.isTitanTool(item),
-//                TitanItem.isAllowedTitanType(item),
-//                TitanItem.isChargedTitanTool(item),
-//                TitanItem.isImbuedTitanTool(item),
-//                (TitanItem.getStatus(item) == ToolStatus.ON)
-//        );
-//        ToolColor color = TitanItem.getColor(item);
-//        // TODO seems really weird to be passing in the entire item and then properties about it here.
-//        powerLevelConversion(item, itemRecord.isActive(), color, TitanItem.getStatus(item), itemRecord.isCharged());
-//        player.sendMessage("§CInventory is full - Ancient Power deactivated");
-//        disableEffect(player);
-    }
-//    public static void imbue(ItemStack item){
-//        List<String> loreList = TitanItemInfo.getLore(item);
-//        int index = TitanItemInfo.getAncientPowerLoreIndex(loreList);
-//        String color = TitanItemInfo.getColorStringLiteral(item);
-//        ItemMeta meta = item.getItemMeta();
-//        meta.setCustomModelData(CustomModelData.IMBUED_TITAN_TOOL);
-//        item.setItemMeta(meta);
-//        loreList.set(index, TitanItemInfo.IMBUED_LORE_MATRIX.get(color)[1]);
-//        TitanItemInfo.setLore(item, loreList);
-//    }
-
     private static boolean processPlayerStateValidation(Player player) {
         if (!player.isSneaking()) return false;
         Material coolDown = Material.JIGSAW;

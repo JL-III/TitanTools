@@ -24,7 +24,6 @@ import java.util.Objects;
 public final class TitanEnchants extends JavaPlugin {
 
     private ConfigManager configManager;
-    private com.playtheatria.jliii.generalutils.managers.ConfigManager generalUtilsConfigManager;
 
     @Override
     public void onEnable() {

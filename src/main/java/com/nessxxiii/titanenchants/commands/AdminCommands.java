@@ -1,15 +1,12 @@
 package com.nessxxiii.titanenchants.commands;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
-import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
 import com.playtheatria.jliii.generalutils.enums.ToolColor;
-import com.playtheatria.jliii.generalutils.enums.ToolStatus;
 import com.playtheatria.jliii.generalutils.items.CustomModelData;
 import com.playtheatria.jliii.generalutils.items.ItemCreator;
 import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
 import com.playtheatria.jliii.generalutils.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,8 +22,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.nessxxiii.titanenchants.util.TitanEnchantEffects.depletedChargeEffect;
 
 public class AdminCommands implements CommandExecutor {
 
