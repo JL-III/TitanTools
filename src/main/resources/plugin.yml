@@ -11,3 +11,4 @@ commands:
     usage: |
       /<command> reload
   atitan:
+  tkit:
