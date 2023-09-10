@@ -1,8 +1,5 @@
 package com.nessxxiii.titanenchants.items;
 
-import com.playtheatria.jliii.generalutils.items.CustomModelData;
-import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
-import com.playtheatria.jliii.generalutils.items.TitanItem;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -47,13 +44,13 @@ public class ItemCreator {
     public static void createPowerCrystalCommon() {
         ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         List<String> lore = new ArrayList<>();
-        lore.add(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_COMMON_CHARGE);
-        lore.add(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_TYPE_COMMON);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_COMMON_CHARGE);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_COMMON);
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
+        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setCustomModelData(com.playtheatria.jliii.generalutils.items.CustomModelData.POWER_CRYSTAL_COMMON);
+        meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_COMMON);
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.CHANNELING,5);
         powerCrystalCommon = item;
@@ -62,13 +59,13 @@ public class ItemCreator {
     private static void createPowerCrystalUncommon() {
         ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         List<String> lore = new ArrayList<>();
-        lore.add(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_UNCOMMON_CHARGE);
-        lore.add(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_TYPE_UNCOMMON);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_UNCOMMON_CHARGE);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_UNCOMMON);
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
+        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setCustomModelData(com.playtheatria.jliii.generalutils.items.CustomModelData.POWER_CRYSTAL_UNCOMMON);
+        meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_UNCOMMON);
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.CHANNELING,4);
         powerCrystalUncommon = item;
@@ -77,13 +74,13 @@ public class ItemCreator {
     private static void createPowerCrystalSuper() {
         ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         List<String> lore = new ArrayList<>();
-        lore.add(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_SUPER_CHARGE);
-        lore.add(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_TYPE_SUPER);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_SUPER_CHARGE);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_SUPER);
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
+        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setCustomModelData(com.playtheatria.jliii.generalutils.items.CustomModelData.POWER_CRYSTAL_SUPER);
+        meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_SUPER);
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.CHANNELING,3);
         powerCrystalSuper = item;
@@ -92,13 +89,13 @@ public class ItemCreator {
     private static void createPowerCrystalEpic() {
         ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         List<String> lore = new ArrayList<>();
-        lore.add(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_EPIC_CHARGE);
-        lore.add(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_TYPE_EPIC);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_EPIC_CHARGE);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_EPIC);
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
+        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setCustomModelData(com.playtheatria.jliii.generalutils.items.CustomModelData.POWER_CRYSTAL_EPIC);
+        meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_EPIC);
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.CHANNELING,2);
         powerCrystalEpic = item;
@@ -107,13 +104,13 @@ public class ItemCreator {
     private static void createPowerCrystalUltra() {
         ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
         List<String> lore = new ArrayList<>();
-        lore.add(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_ULTRA_CHARGE);
-        lore.add(com.playtheatria.jliii.generalutils.items.PowerCrystalInfo.POWER_CRYSTAL_TYPE_ULTRA);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_ULTRA_CHARGE);
+        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_ULTRA);
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setCustomModelData(com.playtheatria.jliii.generalutils.items.CustomModelData.POWER_CRYSTAL_ULTRA);
+        meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_ULTRA);
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.CHANNELING,1);
         powerCrystalUltra = item;
@@ -129,7 +126,7 @@ public class ItemCreator {
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(TitanItem.EXCAVATION_TOOL_DISPLAY_NAME);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setCustomModelData(com.playtheatria.jliii.generalutils.items.CustomModelData.EXCAVATOR);
+        meta.setCustomModelData(CustomModelData.EXCAVATOR);
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.DURABILITY, 5);
         item.addUnsafeEnchantment(Enchantment.MULTISHOT, 3);
@@ -145,7 +142,7 @@ public class ItemCreator {
         lore.add("and left click!");
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setLore(lore);
-        meta.setCustomModelData(com.playtheatria.jliii.generalutils.items.CustomModelData.SUN_FISH);
+        meta.setCustomModelData(CustomModelData.SUN_FISH);
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
         sunFish = item;
@@ -160,7 +157,7 @@ public class ItemCreator {
         lore.add("and left click!");
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setLore(lore);
-        meta.setCustomModelData(com.playtheatria.jliii.generalutils.items.CustomModelData.NIGHT_FISH);
+        meta.setCustomModelData(CustomModelData.NIGHT_FISH);
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
         nightFish = item;
@@ -177,7 +174,7 @@ public class ItemCreator {
         lore.add("it in for a special tool");
 //        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setLore(lore);
-        meta.setCustomModelData(com.playtheatria.jliii.generalutils.items.CustomModelData.ETHEREAL_FRAGMENT);
+        meta.setCustomModelData(CustomModelData.ETHEREAL_FRAGMENT);
         item.setItemMeta(meta);
 //        item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
         etherealFragment = item;
@@ -200,7 +197,7 @@ public class ItemCreator {
         lore.add("§x§f§f§0§0§0§0H§x§f§f§1§e§1§eo §x§f§e§3§c§3§cH§x§f§e§5§b§5§bo §x§f§e§7§9§7§9H§x§f§d§9§7§9§7o§x§f§d§b§5§b§5!");
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setLore(lore);
-        meta.setCustomModelData(com.playtheatria.jliii.generalutils.items.CustomModelData.CHRISTMAS_PICK);
+        meta.setCustomModelData(CustomModelData.CHRISTMAS_PICK);
         item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.DIG_SPEED, 6);
         item.addUnsafeEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);

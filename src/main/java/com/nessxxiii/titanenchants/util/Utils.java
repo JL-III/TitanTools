@@ -1,7 +1,7 @@
 package com.nessxxiii.titanenchants.util;
 
-import com.playtheatria.jliii.generalutils.enums.ToolStatus;
-import com.playtheatria.jliii.generalutils.items.TitanItem;
+import com.nessxxiii.titanenchants.enums.ToolStatus;
+import com.nessxxiii.titanenchants.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.*;
 import org.bukkit.block.Block;

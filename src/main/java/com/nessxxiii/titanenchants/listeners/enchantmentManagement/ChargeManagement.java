@@ -1,12 +1,12 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManagement;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
+import com.nessxxiii.titanenchants.enums.ToolColor;
+import com.nessxxiii.titanenchants.enums.ToolStatus;
+import com.nessxxiii.titanenchants.items.CustomModelData;
+import com.nessxxiii.titanenchants.items.PowerCrystalInfo;
+import com.nessxxiii.titanenchants.items.TitanItem;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
-import com.playtheatria.jliii.generalutils.enums.ToolColor;
-import com.playtheatria.jliii.generalutils.enums.ToolStatus;
-import com.playtheatria.jliii.generalutils.items.CustomModelData;
-import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
-import com.playtheatria.jliii.generalutils.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;

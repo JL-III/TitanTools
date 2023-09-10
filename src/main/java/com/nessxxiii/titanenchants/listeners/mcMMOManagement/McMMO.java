@@ -4,7 +4,7 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.nessxxiii.titanenchants.config.ConfigManager;
-import com.playtheatria.jliii.generalutils.items.TitanItem;
+import com.nessxxiii.titanenchants.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;

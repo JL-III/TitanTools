@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.listeners.blockbreak;
 
-import com.playtheatria.jliii.generalutils.items.ItemCreator;
+import com.nessxxiii.titanenchants.items.ItemCreator;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

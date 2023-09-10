@@ -1,8 +1,8 @@
 package com.nessxxiii.titanenchants.listeners.enchantmentManagement;
 
-import com.playtheatria.jliii.generalutils.enums.ToolColor;
-import com.playtheatria.jliii.generalutils.enums.ToolStatus;
-import com.playtheatria.jliii.generalutils.items.TitanItem;
+import com.nessxxiii.titanenchants.enums.ToolColor;
+import com.nessxxiii.titanenchants.enums.ToolStatus;
+import com.nessxxiii.titanenchants.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

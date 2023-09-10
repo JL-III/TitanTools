@@ -1,11 +1,11 @@
 package com.nessxxiii.titanenchants.commands;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
-import com.playtheatria.jliii.generalutils.enums.ToolColor;
-import com.playtheatria.jliii.generalutils.items.CustomModelData;
-import com.playtheatria.jliii.generalutils.items.ItemCreator;
-import com.playtheatria.jliii.generalutils.items.PowerCrystalInfo;
-import com.playtheatria.jliii.generalutils.items.TitanItem;
+import com.nessxxiii.titanenchants.enums.ToolColor;
+import com.nessxxiii.titanenchants.items.CustomModelData;
+import com.nessxxiii.titanenchants.items.ItemCreator;
+import com.nessxxiii.titanenchants.items.PowerCrystalInfo;
+import com.nessxxiii.titanenchants.items.TitanItem;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
