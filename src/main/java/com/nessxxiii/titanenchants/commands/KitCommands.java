@@ -2,7 +2,7 @@ package com.nessxxiii.titanenchants.commands;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.nessxxiii.titanenchants.items.ItemCreator;
-import com.playtheatria.jliii.generalutils.utils.CustomLogger;
+import com.nessxxiii.titanenchants.util.CustomLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

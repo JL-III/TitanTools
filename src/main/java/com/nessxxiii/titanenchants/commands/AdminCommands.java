@@ -6,7 +6,7 @@ import com.nessxxiii.titanenchants.items.CustomModelData;
 import com.nessxxiii.titanenchants.items.ItemCreator;
 import com.nessxxiii.titanenchants.items.PowerCrystalInfo;
 import com.nessxxiii.titanenchants.items.TitanItem;
-import com.playtheatria.jliii.generalutils.utils.Response;
+import com.nessxxiii.titanenchants.util.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

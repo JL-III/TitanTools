@@ -12,9 +12,9 @@ import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ToggleAncient
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanAxe;
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanPicks;
 import com.nessxxiii.titanenchants.listeners.enchantments.TitanShovel;
+import com.nessxxiii.titanenchants.util.CustomLogger;
 import com.nessxxiii.titanenchants.util.Utils;
 
-import com.playtheatria.jliii.generalutils.utils.CustomLogger;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

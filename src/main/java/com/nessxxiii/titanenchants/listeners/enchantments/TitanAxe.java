@@ -3,7 +3,7 @@ package com.nessxxiii.titanenchants.listeners.enchantments;
 import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.nessxxiii.titanenchants.items.TitanItem;
 import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ChargeManagement;
-import com.playtheatria.jliii.generalutils.utils.Response;
+import com.nessxxiii.titanenchants.util.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;

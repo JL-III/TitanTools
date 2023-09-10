@@ -3,7 +3,7 @@ package com.nessxxiii.titanenchants.listeners.enchantmentManagement;
 import com.nessxxiii.titanenchants.enums.ToolColor;
 import com.nessxxiii.titanenchants.enums.ToolStatus;
 import com.nessxxiii.titanenchants.items.TitanItem;
-import com.playtheatria.jliii.generalutils.utils.Response;
+import com.nessxxiii.titanenchants.util.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

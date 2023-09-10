@@ -1,7 +1,7 @@
 package com.nessxxiii.titanenchants.listeners;
 
 import com.nessxxiii.titanenchants.items.TitanItem;
-import com.playtheatria.jliii.generalutils.utils.Response;
+import com.nessxxiii.titanenchants.util.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

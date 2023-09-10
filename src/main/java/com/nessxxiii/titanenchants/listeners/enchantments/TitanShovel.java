@@ -2,7 +2,7 @@ package com.nessxxiii.titanenchants.listeners.enchantments;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.nessxxiii.titanenchants.items.TitanItem;
-import com.playtheatria.jliii.generalutils.utils.Response;
+import com.nessxxiii.titanenchants.util.Response;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
