@@ -39,11 +39,34 @@ public class AdminCommands implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (args.length == 0) return false;
+
+        if (args[0].equalsIgnoreCase("debug")) {
+            ItemStack itemStack = !(sender instanceof Player player) ? configManager.getTestTool() : player.getInventory().getItemInMainHand();
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "--------------------Debug--------------------");
+            Response<List<String>> loreResponse = TitanItem.getLore(itemStack);
+            if (!loreResponse.isSuccess()) return false;
+            List<String> lore = loreResponse.value();
+            boolean isTitanTool = TitanItem.isTitanTool(lore);
+            sender.sendMessage("isTitanTool: " + isTitanTool);
+            sender.sendMessage("Contains charge lore: " + TitanItem.hasChargeLore(lore, isTitanTool));
+            sender.sendMessage("ToolColor: " + TitanItem.getColor(lore));
+            sender.sendMessage("ToolStatus: " + TitanItem.getStatus(lore, isTitanTool));
+            sender.sendMessage("isChargedTitanTool: " + TitanItem.isChargedTitanTool(lore, isTitanTool));
+            sender.sendMessage("chargeLoreIndex: " + TitanItem.getTitanLoreIndex(lore, TitanItem.CHARGE_PREFIX, isTitanTool));
+            sender.sendMessage("statusLoreIndex: " + TitanItem.getTitanLoreIndex(lore, TitanItem.STATUS_PREFIX, isTitanTool));
+            sender.sendMessage("Get charge amount: " + TitanItem.getCharge(lore, isTitanTool, TitanItem.hasChargeLore(lore, isTitanTool), 39));
+            if (itemStack.getItemMeta().hasCustomModelData()) {
+                sender.sendMessage("Current custom model data: " + itemStack.getItemMeta().getCustomModelData());
+            } else {
+                sender.sendMessage("This item does not have custom model data.");
+            }
+            return true;
+        }
 
         if (!(sender instanceof Player player)) {
             return false;
         }
-        if (args.length == 0) return false;
         if (!player.hasPermission(permissionPrefix)) {
             player.sendMessage(ChatColor.RED + "No permission.");
             return true;

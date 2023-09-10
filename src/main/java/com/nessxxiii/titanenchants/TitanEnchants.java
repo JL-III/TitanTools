@@ -2,6 +2,7 @@ package com.nessxxiii.titanenchants;
 
 import com.gmail.nossr50.mcMMO;
 import com.nessxxiii.titanenchants.commands.AdminCommands;
+import com.nessxxiii.titanenchants.commands.KitCommands;
 import com.nessxxiii.titanenchants.commands.PlayerCommands;
 import com.nessxxiii.titanenchants.commands.PlayerCommandsTabComplete;
 import com.nessxxiii.titanenchants.config.ConfigManager;
@@ -15,6 +16,8 @@ import com.nessxxiii.titanenchants.listeners.enchantments.TitanShovel;
 import com.nessxxiii.titanenchants.listeners.mcMMOManagement.McMMO;
 import com.nessxxiii.titanenchants.util.Utils;
 
+import com.playtheatria.jliii.generalutils.utils.CustomLogger;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,17 +33,18 @@ public final class TitanEnchants extends JavaPlugin {
         this.saveDefaultConfig();
         this.configManager = new ConfigManager(this);
         checkMcMMODependency();
-
+        CustomLogger customLogger = new CustomLogger(getName(), NamedTextColor.DARK_RED, NamedTextColor.WHITE);
         registerEvents();
-        registerCommands(configManager);
+        registerCommands(configManager, customLogger);
         Utils.printBanner();
     }
 
-    private void registerCommands(ConfigManager configManager) {
+    private void registerCommands(ConfigManager configManager, CustomLogger customLogger) {
         PlayerCommands playerCommands = new PlayerCommands(this);
         Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, configManager, playerCommands));
         Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
         Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
+        Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(configManager,  customLogger));
     }
 
 

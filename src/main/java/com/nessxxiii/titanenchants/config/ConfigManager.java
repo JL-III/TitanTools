@@ -1,8 +1,11 @@
 package com.nessxxiii.titanenchants.config;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
@@ -13,6 +16,22 @@ import java.util.Set;
 public class ConfigManager {
 
     private final Plugin plugin;
+    private FileConfiguration fileConfiguration;
+    private ItemStack titanPickRedFortune;
+    private ItemStack titanPickRedSilk;
+    private ItemStack titanPickYellowFortune;
+    private ItemStack titanPickYellowSilk;
+    private ItemStack titanPickBlueFortune;
+    private ItemStack titanPickBlueSilk;
+    private ItemStack titanShovelRed;
+    private ItemStack titanAxeRed;
+    private ItemStack titanAxeYellow;
+    private ItemStack titanAxeBlue;
+    private ItemStack titanSwordRed;
+    private ItemStack titanSwordYellow;
+    private ItemStack titanSwordBlue;
+    private ItemStack titanRodRed;
+    private ItemStack testTool;
     private final Set<Material> allowedPickBlocks = new HashSet<>();
     private final Set<Material> allowedAxeBlocks = new HashSet<>();
     private boolean debug;
@@ -46,7 +65,28 @@ public class ConfigManager {
         loadConfig();
     }
 
+    public void reload() {
+        plugin.reloadConfig();
+        loadConfig();
+    }
+
     public void loadConfig() {
+        fileConfiguration = plugin.getConfig();
+        titanPickRedFortune = loadItemStack("titanpickredfortune");
+        titanPickRedSilk = loadItemStack("titanpickredsilk");
+        titanPickYellowFortune = loadItemStack("titanpickyellowfortune");
+        titanPickYellowSilk = loadItemStack("titanpickyellowsilk");
+        titanPickBlueFortune = loadItemStack("titanpickbluefortune");
+        titanPickBlueSilk = loadItemStack("titanpickbluesilk");
+        titanShovelRed = loadItemStack("titanshovelred");
+        titanAxeRed = loadItemStack("titanaxered");
+        titanAxeYellow = loadItemStack("titanaxeyellow");
+        titanAxeBlue = loadItemStack("titanaxeblue");
+        titanSwordRed = loadItemStack("titanswordred");
+        titanSwordYellow = loadItemStack("titanswordyellow");
+        titanSwordBlue = loadItemStack("titanswordblue");
+        titanRodRed = loadItemStack("titanrodred");
+        testTool = loadItemStack("testTool");
         setAllowedBlocks("titanPick", allowedPickBlocks);
         setAllowedBlocks("titanAxe", allowedAxeBlocks);
         setDebugValue();
@@ -93,4 +133,72 @@ public class ConfigManager {
     public void setDebug(boolean debug) {
         this.debug = debug;
     }
+
+    private ItemStack loadItemStack(String target) {
+        ItemStack targetItemstack = (ItemStack) fileConfiguration.get(target);
+        if (targetItemstack != null) {
+            Bukkit.getConsoleSender().sendMessage("Loaded " + target + " from the config.");
+        } else {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "Error loading " + target + " from the config. Check to ensure an entry exists!");
+        }
+        return targetItemstack;
+    }
+
+    public ItemStack getTitanPickRedFortune() {
+        return titanPickRedFortune;
+    }
+
+    public ItemStack getTitanPickRedSilk() {
+        return titanPickRedSilk;
+    }
+
+    public ItemStack getTitanPickYellowFortune() {
+        return titanPickYellowFortune;
+    }
+
+    public ItemStack getTitanPickYellowSilk() {
+        return titanPickYellowSilk;
+    }
+
+    public ItemStack getTitanPickBlueFortune() {
+        return titanPickBlueFortune;
+    }
+
+    public ItemStack getTitanPickBlueSilk() {
+        return titanPickBlueSilk;
+    }
+
+    public ItemStack getTitanShovelRed() {
+        return titanShovelRed;
+    }
+
+    public ItemStack getTitanAxeRed() {
+        return titanAxeRed;
+    }
+
+    public ItemStack getTitanAxeYellow() {
+        return titanAxeYellow;
+    }
+
+    public ItemStack getTitanAxeBlue() {
+        return titanAxeBlue;
+    }
+
+    public ItemStack getTitanSwordRed() {
+        return titanSwordRed;
+    }
+
+    public ItemStack getTitanSwordYellow() {
+        return titanSwordYellow;
+    }
+
+    public ItemStack getTitanSwordBlue() {
+        return titanSwordBlue;
+    }
+
+    public ItemStack getTitanRodRed() {
+        return titanRodRed;
+    }
+
+    public ItemStack getTestTool() { return testTool; }
 }
