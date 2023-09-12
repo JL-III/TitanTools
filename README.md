@@ -47,7 +47,7 @@ Imbued dormant Ω
 Charged dormant ♆
 Inactive ♆
 
-this is 9 different states
+~~this is 9 different states~~ a lot of states, but more than 9
 
 The goal is to limit this to a binary set ON/OFF states - leveraging the inactive state
 
