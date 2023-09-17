@@ -5,7 +5,7 @@ import com.nessxxiii.titanenchants.enums.ToolColor;
 import com.nessxxiii.titanenchants.items.CustomModelData;
 import com.nessxxiii.titanenchants.items.ItemCreator;
 import com.nessxxiii.titanenchants.items.PowerCrystalInfo;
-import com.nessxxiii.titanenchants.items.TitanItem;
+import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -44,18 +44,18 @@ public class AdminCommands implements CommandExecutor {
         if (args[0].equalsIgnoreCase("debug")) {
             ItemStack itemStack = !(sender instanceof Player player) ? configManager.getTestTool() : player.getInventory().getItemInMainHand();
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "--------------------Debug--------------------");
-            Response<List<String>> loreResponse = TitanItem.getLore(itemStack);
+            Response<List<String>> loreResponse = ItemInfo.getLore(itemStack);
             if (!loreResponse.isSuccess()) return false;
             List<String> lore = loreResponse.value();
-            boolean isTitanTool = TitanItem.isTitanTool(lore);
+            boolean isTitanTool = ItemInfo.isTitanTool(lore);
             sender.sendMessage("isTitanTool: " + isTitanTool);
-            sender.sendMessage("Contains charge lore: " + TitanItem.hasChargeLore(lore, isTitanTool));
-            sender.sendMessage("ToolColor: " + TitanItem.getColor(lore));
-            sender.sendMessage("ToolStatus: " + TitanItem.getStatus(lore, isTitanTool));
-            sender.sendMessage("isChargedTitanTool: " + TitanItem.isChargedTitanTool(lore, isTitanTool));
-            sender.sendMessage("chargeLoreIndex: " + TitanItem.getTitanLoreIndex(lore, TitanItem.CHARGE_PREFIX, isTitanTool));
-            sender.sendMessage("statusLoreIndex: " + TitanItem.getTitanLoreIndex(lore, TitanItem.STATUS_PREFIX, isTitanTool));
-            sender.sendMessage("Get charge amount: " + TitanItem.getCharge(lore, isTitanTool, TitanItem.hasChargeLore(lore, isTitanTool), 39));
+            sender.sendMessage("Contains charge lore: " + ItemInfo.hasChargeLore(lore, isTitanTool));
+            sender.sendMessage("ToolColor: " + ItemInfo.getColor(lore));
+            sender.sendMessage("ToolStatus: " + ItemInfo.getStatus(lore, isTitanTool));
+            sender.sendMessage("isChargedTitanTool: " + ItemInfo.isChargedTitanTool(lore, isTitanTool));
+            sender.sendMessage("chargeLoreIndex: " + ItemInfo.getTitanLoreIndex(lore, ItemInfo.CHARGE_PREFIX, isTitanTool));
+            sender.sendMessage("statusLoreIndex: " + ItemInfo.getTitanLoreIndex(lore, ItemInfo.STATUS_PREFIX, isTitanTool));
+            sender.sendMessage("Get charge amount: " + ItemInfo.getCharge(lore, isTitanTool, ItemInfo.hasChargeLore(lore, isTitanTool), 39));
             if (itemStack.getItemMeta().hasCustomModelData()) {
                 sender.sendMessage("Current custom model data: " + itemStack.getItemMeta().getCustomModelData());
             } else {
@@ -74,19 +74,19 @@ public class AdminCommands implements CommandExecutor {
 
         if ("imbue".equalsIgnoreCase(args[0])) {
             Material coolDown = Material.SQUID_SPAWN_EGG;
-            Response<List<String>> loreListResponse = TitanItem.getLore(player.getInventory().getItemInMainHand());
+            Response<List<String>> loreListResponse = ItemInfo.getLore(player.getInventory().getItemInMainHand());
             if (loreListResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(loreListResponse.error());
                 return true;
             }
             ItemStack item = player.getInventory().getItemInMainHand();
-            boolean isTitanTool = TitanItem.isTitanTool(loreListResponse.value());
+            boolean isTitanTool = ItemInfo.isTitanTool(loreListResponse.value());
             if (!isTitanTool) return false;
             if (!player.hasPermission(permissionStringMaker("imbue"))) {
                 player.sendMessage(NO_PERMISSION);
                 return false;
             }
-            if (TitanItem.isImbuedTitanTool(loreListResponse.value(), isTitanTool)) {
+            if (ItemInfo.isImbuedTitanTool(loreListResponse.value(), isTitanTool)) {
                 player.sendMessage(ChatColor.GREEN + "That item is already imbued!");
                 return false;
             }
@@ -97,17 +97,17 @@ public class AdminCommands implements CommandExecutor {
                 return false;
             }
 
-            boolean isAllowedType = TitanItem.isAllowedType(item, TitanItem.ALLOWED_TITAN_TYPES);
+            boolean isAllowedType = ItemInfo.isAllowedType(item, ItemInfo.ALLOWED_TITAN_TYPES);
             if (!isAllowedType) {
                 player.sendMessage("This is not an allowed type");
                 return true;
             }
-            boolean hasChargeLore = TitanItem.hasChargeLore(loreListResponse.value(), isTitanTool);
+            boolean hasChargeLore = ItemInfo.hasChargeLore(loreListResponse.value(), isTitanTool);
             if (!hasChargeLore) {
                 player.sendMessage("Cannot imbue an item that doesn't have charge lore.");
                 return true;
             }
-            Response<Integer> chargeAmountResponse = TitanItem.getCharge(loreListResponse.value(), isTitanTool, hasChargeLore, 39);
+            Response<Integer> chargeAmountResponse = ItemInfo.getCharge(loreListResponse.value(), isTitanTool, hasChargeLore, 39);
             if (chargeAmountResponse.error() != null) {
                 player.sendMessage(chargeAmountResponse.error());
                 return true;
@@ -116,17 +116,17 @@ public class AdminCommands implements CommandExecutor {
                 player.sendMessage("You cannot imbue a tool with a charge!");
                 return true;
             }
-            Response<Integer> chargeLoreIndexResponse = TitanItem.getTitanLoreIndex(loreListResponse.value(), TitanItem.CHARGE_PREFIX, isTitanTool);
+            Response<Integer> chargeLoreIndexResponse = ItemInfo.getTitanLoreIndex(loreListResponse.value(), ItemInfo.CHARGE_PREFIX, isTitanTool);
             if (chargeLoreIndexResponse.error() != null) {
                 player.sendMessage(chargeLoreIndexResponse.error());
                 return true;
             }
-            Response<Integer> statusLoreIndexResponse = TitanItem.getTitanLoreIndex(loreListResponse.value(), TitanItem.STATUS_PREFIX, isTitanTool);
+            Response<Integer> statusLoreIndexResponse = ItemInfo.getTitanLoreIndex(loreListResponse.value(), ItemInfo.STATUS_PREFIX, isTitanTool);
             if (statusLoreIndexResponse.error() != null) {
                 player.sendMessage(statusLoreIndexResponse.error());
                 return true;
             }
-            Response<ToolColor> toolColorResponse = TitanItem.getColor(loreListResponse.value());
+            Response<ToolColor> toolColorResponse = ItemInfo.getColor(loreListResponse.value());
             if (toolColorResponse.error() != null) {
                 player.sendMessage(toolColorResponse.error());
                 return true;

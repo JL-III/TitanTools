@@ -1,7 +1,7 @@
-package com.nessxxiii.titanenchants.listeners.enchantments;
+package com.nessxxiii.titanenchants.listeners.tools;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
-import com.nessxxiii.titanenchants.items.TitanItem;
+import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titanenchants.util.Response;
 import org.bukkit.Bukkit;
@@ -49,7 +49,7 @@ public class TitanAxe implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        Response<List<String>> titanToolValidationCheckResponse = titanToolBlockBreakValidation(event, TitanItem.ALLOWED_AXE_TYPES);
+        Response<List<String>> titanToolValidationCheckResponse = titanToolBlockBreakValidation(event, ItemInfo.ALLOWED_AXE_TYPES);
         //Intentionally swallowing the error here since this is trigger on a block break validation, would result in tons of logging noise.
         if (titanToolValidationCheckResponse.error() != null) {
             if (configManager.getDebug()) {
@@ -66,10 +66,10 @@ public class TitanAxe implements Listener {
         Player player = event.getPlayer();
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
 
-        boolean hasChargeLore = TitanItem.hasChargeLore(titanToolValidationCheckResponse.value(), true);
+        boolean hasChargeLore = ItemInfo.hasChargeLore(titanToolValidationCheckResponse.value(), true);
 
         if (hasChargeLore) {
-            Response<Integer> getChargeResponse = TitanItem.getCharge(titanToolValidationCheckResponse.value(), true, hasChargeLore, 39);
+            Response<Integer> getChargeResponse = ItemInfo.getCharge(titanToolValidationCheckResponse.value(), true, hasChargeLore, 39);
             if (getChargeResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
                 return;

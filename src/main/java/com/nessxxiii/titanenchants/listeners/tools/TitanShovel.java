@@ -1,7 +1,7 @@
-package com.nessxxiii.titanenchants.listeners.enchantments;
+package com.nessxxiii.titanenchants.listeners.tools;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
-import com.nessxxiii.titanenchants.items.TitanItem;
+import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.Response;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -55,9 +55,9 @@ public class TitanShovel implements Listener {
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         BlockFace blockFace = event.getBlockFace();
         Block clickedBlock = event.getClickedBlock();
-        boolean hasChargeLore = TitanItem.hasChargeLore(titanShovelValidationResponse.value(), true);
+        boolean hasChargeLore = ItemInfo.hasChargeLore(titanShovelValidationResponse.value(), true);
         if (hasChargeLore) {
-            Response<Integer> getChargeResponse = TitanItem.getCharge(titanShovelValidationResponse.value(), true, true, 39);
+            Response<Integer> getChargeResponse = ItemInfo.getCharge(titanShovelValidationResponse.value(), true, true, 39);
             if (getChargeResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
                 return;

@@ -124,7 +124,7 @@ public class ItemCreator {
         lore.add("§x§f§b§b§5§0§0amethyst blocks");
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(TitanItem.EXCAVATION_TOOL_DISPLAY_NAME);
+        meta.setDisplayName(ItemInfo.EXCAVATION_TOOL_DISPLAY_NAME);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setCustomModelData(CustomModelData.EXCAVATOR);
         item.setItemMeta(meta);

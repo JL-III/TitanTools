@@ -1,7 +1,7 @@
 package com.nessxxiii.titanenchants.util;
 
 import com.nessxxiii.titanenchants.enums.ToolStatus;
-import com.nessxxiii.titanenchants.items.TitanItem;
+import com.nessxxiii.titanenchants.items.ItemInfo;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -31,14 +31,14 @@ public class Utils {
 
     public static Response<List<String>> titanToolBlockBreakValidation(BlockBreakEvent event, List<Material> ALLOWED_TYPES) {
         if (event.isCancelled()) return Response.failure("Event was cancelled.");
-        if (!TitanItem.isAllowedType(event.getPlayer().getInventory().getItemInMainHand(), ALLOWED_TYPES)) return Response.failure("This item is not in the allowed types.");
-        Response<List<String>> loreListResponse = TitanItem.getLore(event.getPlayer().getInventory().getItemInMainHand());
+        if (!ItemInfo.isAllowedType(event.getPlayer().getInventory().getItemInMainHand(), ALLOWED_TYPES)) return Response.failure("This item is not in the allowed types.");
+        Response<List<String>> loreListResponse = ItemInfo.getLore(event.getPlayer().getInventory().getItemInMainHand());
         if (loreListResponse.error() != null) {
             return Response.failure(loreListResponse.error());
         }
-        boolean isTitanTool = TitanItem.isTitanTool(loreListResponse.value());
+        boolean isTitanTool = ItemInfo.isTitanTool(loreListResponse.value());
         if (!isTitanTool) return Response.failure("This is not a Titan Tool.");
-        Response<ToolStatus> toolStatusResponse = TitanItem.getStatus(loreListResponse.value(), isTitanTool);
+        Response<ToolStatus> toolStatusResponse = ItemInfo.getStatus(loreListResponse.value(), isTitanTool);
         if (toolStatusResponse.error() != null) {
             Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
             return Response.failure(toolStatusResponse.error());
@@ -51,18 +51,18 @@ public class Utils {
         if (event.getClickedBlock() == null) return Response.failure("The clicked block was null");
         if (!event.getAction().isLeftClick()) return Response.failure("Event was not a left click action.");
         if (!canBreakBedrock(clickedBlock, player)) return Response.failure("Failed can break bedrock check.");
-        if (!TitanItem.isAllowedType(itemInMainHand, TitanItem.ALLOWED_SHOVEL_TYPES)) return Response.failure("This is not an allowed Titan Shovel Type.");
+        if (!ItemInfo.isAllowedType(itemInMainHand, ItemInfo.ALLOWED_SHOVEL_TYPES)) return Response.failure("This is not an allowed Titan Shovel Type.");
         BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
         Bukkit.getPluginManager().callEvent(e);
         if (e.isCancelled()) return Response.failure("Called block break event was cancelled.");
         e.setCancelled(true);
 
-        Response<List<String>> getLoreResponse = TitanItem.getLore(itemInMainHand);
+        Response<List<String>> getLoreResponse = ItemInfo.getLore(itemInMainHand);
         if (getLoreResponse.error() != null) {
             Bukkit.getConsoleSender().sendMessage(getLoreResponse.error());
             return Response.failure(getLoreResponse.error());
         }
-        Response<ToolStatus> toolStatusResponse = TitanItem.getStatus(getLoreResponse.value(), true);
+        Response<ToolStatus> toolStatusResponse = ItemInfo.getStatus(getLoreResponse.value(), true);
         if (toolStatusResponse.error() != null) {
             Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
             return Response.failure(toolStatusResponse.error());

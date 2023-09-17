@@ -9,9 +9,9 @@ import com.nessxxiii.titanenchants.listeners.ItemDamageEvent;
 import com.nessxxiii.titanenchants.listeners.blockbreak.PowerCrystalDrop;
 import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ToggleAncientPower;
-import com.nessxxiii.titanenchants.listeners.enchantments.TitanAxe;
-import com.nessxxiii.titanenchants.listeners.enchantments.TitanPicks;
-import com.nessxxiii.titanenchants.listeners.enchantments.TitanShovel;
+import com.nessxxiii.titanenchants.listeners.tools.TitanAxe;
+import com.nessxxiii.titanenchants.listeners.tools.TitanPicks;
+import com.nessxxiii.titanenchants.listeners.tools.TitanShovel;
 import com.nessxxiii.titanenchants.util.CustomLogger;
 import com.nessxxiii.titanenchants.util.Utils;
 

@@ -1,8 +1,8 @@
-package com.nessxxiii.titanenchants.listeners.enchantments;
+package com.nessxxiii.titanenchants.listeners.tools;
 
 import com.nessxxiii.titanenchants.config.ConfigManager;
 import com.nessxxiii.titanenchants.enums.ToolStatus;
-import com.nessxxiii.titanenchants.items.TitanItem;
+import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titanenchants.util.Response;
 import com.nessxxiii.titanenchants.util.TitanEnchantEffects;
@@ -35,22 +35,23 @@ public class TitanPicks implements Listener {
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
         if (event.isCancelled()) return;
-        if (!TitanItem.isAllowedType(event.getPlayer().getInventory().getItemInMainHand(), TitanItem.ALLOWED_PICK_TYPES)) {
+        if (!ItemInfo.isAllowedType(event.getPlayer().getInventory().getItemInMainHand(), ItemInfo.ALLOWED_PICK_TYPES)) {
             if (configManager.getDebug()) {
                 Bukkit.getConsoleSender().sendMessage("Not a Titan Pick");
             }
             return;
         }
-        Response<List<String>> loreListResponse = TitanItem.getLore(event.getPlayer().getInventory().getItemInMainHand());
+        Response<List<String>> loreListResponse = ItemInfo.getLore(event.getPlayer().getInventory().getItemInMainHand());
         if (loreListResponse.error() != null) {
             if (configManager.getDebug()) {
                 Bukkit.getConsoleSender().sendMessage(loreListResponse.error());
             }
             return;
         }
-        boolean isTitanTool = TitanItem.isTitanTool(loreListResponse.value());
+        boolean isTitanTool = ItemInfo.isTitanTool(loreListResponse.value());
+        // Return an optional snapshot of the itemstack- if not a titan tool return.
         if (!isTitanTool) return;
-        Response<ToolStatus> toolStatusResponse = TitanItem.getStatus(loreListResponse.value(), isTitanTool);
+        Response<ToolStatus> toolStatusResponse = ItemInfo.getStatus(loreListResponse.value(), isTitanTool);
         if (toolStatusResponse.error() != null) {
             if (configManager.getDebug()) {
                 Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
@@ -65,15 +66,15 @@ public class TitanPicks implements Listener {
         }
         Player player = event.getPlayer();
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-        boolean hasChargeLore = TitanItem.hasChargeLore(loreListResponse.value(), isTitanTool);
+        boolean hasChargeLore = ItemInfo.hasChargeLore(loreListResponse.value(), isTitanTool);
 
         if (hasChargeLore) {
-            Response<Integer> getChargeResponse = TitanItem.getCharge(loreListResponse.value(), isTitanTool, hasChargeLore, 39);
+            Response<Integer> getChargeResponse = ItemInfo.getCharge(loreListResponse.value(), isTitanTool, hasChargeLore, 39);
             if (getChargeResponse.error() != null) {
                 Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
                 return;
             }
-            ChargeManagement.decreaseChargeLore(itemInMainHand, loreListResponse.value(), true, hasChargeLore, player);
+            ChargeManagement.decreaseChargeLore(itemInMainHand, loreListResponse.value(), isTitanTool, hasChargeLore, player);
         }
 
         if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {

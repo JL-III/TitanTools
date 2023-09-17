@@ -1,6 +1,6 @@
 package com.nessxxiii.titanenchants.listeners;
 
-import com.nessxxiii.titanenchants.items.TitanItem;
+import com.nessxxiii.titanenchants.items.ItemInfo;
 import com.nessxxiii.titanenchants.util.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -15,13 +15,13 @@ public class ItemDamageEvent implements Listener{
     @EventHandler
     public void onPlayerItemDamageEvent(PlayerItemDamageEvent event) {
         ItemStack itemBeingDamaged = event.getItem();
-        Response<List<String>> loreListResponse = TitanItem.getLore(itemBeingDamaged);
+        Response<List<String>> loreListResponse = ItemInfo.getLore(itemBeingDamaged);
         if (loreListResponse.error() != null) {
             Bukkit.getConsoleSender().sendMessage(loreListResponse.error());
             return;
         }
 
-        if (TitanItem.isTitanTool(loreListResponse.value())) {
+        if (ItemInfo.isTitanTool(loreListResponse.value())) {
             event.setCancelled(true);
         }
     }
