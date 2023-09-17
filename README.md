@@ -36,6 +36,7 @@ Players can charge their tools with power crystals by taking a PowerCrystal and 
  
 ### Updates to main server
 - update to TheatriaMMO - depends on TitanTools
+- update debug mode in TheatriaMMO currently spams console
 - disable `/warp titan`
 - update crates
 - update kits from essentials
