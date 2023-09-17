@@ -35,7 +35,9 @@ Players can charge their tools with power crystals by taking a PowerCrystal and 
  Shovel can delete bedrock above Y -63
  
 ### Updates to main server
+- disable `/warp titan`
 - update crates
 - update kits from essentials
+- redo warp titan signs
 - explain differences with titan tools
 - explain how to open tickets to replace titan tools
