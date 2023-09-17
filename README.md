@@ -38,6 +38,7 @@ Players can charge their tools with power crystals by taking a PowerCrystal and 
 - disable `/warp titan`
 - update crates
 - update kits from essentials
-- redo warp titan signs
+- redo `/warp titan` signs
+- enable `/warp titan`
 - explain differences with titan tools
 - explain how to open tickets to replace titan tools
