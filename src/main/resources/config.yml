@@ -39,7 +39,7 @@ titanShovel:
       "CHEST", "SHULKER_BOX", "BARREL"
     ]
 
-titanpickredfortune:
+titan_pick_red_fortune:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_PICKAXE
@@ -64,7 +64,7 @@ titanpickredfortune:
     ],"text":""}'
     lore:
       - '{"extra":[{"color":"dark_gray","text":"Efficiency"},{"color":"#FF0000","text":" IX"}],"text":""}'
-      - '{"extra":[{"color":"dark_gray","text":"Fortune"},{"color":"#FF0000","text":" III"}],"text":""}'
+      - '{"extra":[{"color":"dark_gray","text":"Fortune"},{"color":"#FF0000","text":" IV"}],"text":""}'
       - '{"extra":[{"color":"dark_gray","text":"Unbreakable"}],"text":""}'
       - '{"extra":[{"color":"gray","text":""}],"text":""}'
       - '{"extra":[{"color":"#7F0000","text":"Ancient Power"},{"color":"#FF0000","text":" Ω"}],"text":""}'
@@ -104,11 +104,11 @@ titanpickredfortune:
     custom-model-data: 1000006
     enchants:
       DIG_SPEED: 9
-      LOOT_BONUS_BLOCKS: 3
+      LOOT_BONUS_BLOCKS: 4
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-titanpickredsilk:
+titan_pick_red_silk:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_PICKAXE
@@ -177,7 +177,7 @@ titanpickredsilk:
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-titanpickyellowfortune:
+titan_pick_yellow_fortune:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_PICKAXE
@@ -246,7 +246,7 @@ titanpickyellowfortune:
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-titanpickyellowsilk:
+titan_pick_yellow_silk:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_PICKAXE
@@ -315,7 +315,7 @@ titanpickyellowsilk:
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-titanpickbluefortune:
+titan_pick_blue_fortune:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_PICKAXE
@@ -384,7 +384,7 @@ titanpickbluefortune:
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-titanpickbluesilk:
+titan_pick_blue_silk:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_PICKAXE
@@ -453,7 +453,7 @@ titanpickbluesilk:
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-titanshovelred:
+titan_shovel_red:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_SHOVEL
@@ -524,7 +524,7 @@ titanshovelred:
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-titanaxered:
+titan_axe_red:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_AXE
@@ -592,7 +592,7 @@ titanaxered:
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-titanaxeyellow:
+titan_axe_yellow:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_AXE
@@ -667,7 +667,7 @@ titanaxeyellow:
       DAMAGE_UNDEAD: 5
     ItemFlags:
       - HIDE_ENCHANTS
-titanaxeblue:
+titan_axe_blue:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_AXE
@@ -743,7 +743,7 @@ titanaxeblue:
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-titanswordred:
+titan_sword_red:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_SWORD
@@ -823,7 +823,7 @@ titanswordred:
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-titanswordyellow:
+titan_sword_yellow:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_SWORD
@@ -903,7 +903,7 @@ titanswordyellow:
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-titanswordblue:
+titan_sword_blue:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_SWORD
@@ -981,7 +981,7 @@ titanswordblue:
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-titanrodred:
+titan_rod_red:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: FISHING_ROD
@@ -1048,7 +1048,7 @@ titanrodred:
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-testTool:
+test_tool:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
   type: DIAMOND_PICKAXE

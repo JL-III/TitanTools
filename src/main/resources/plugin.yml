@@ -1,6 +1,6 @@
-name: TitanEnchants
+name: TitanTools
 version: '${project.version}'
-main: com.nessxxiii.titanenchants.TitanEnchants
+main: com.nessxxiii.titantools.TitanTools
 api-version: 1.19
 authors: [ bfrisco, NessXXIII ]
 description: Custom enchantments for Theatria

@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.nessxxiii</groupId>
-    <artifactId>TitanEnchants</artifactId>
-    <version>v2.0.0-alpha-11</version>
+    <artifactId>TitanTools</artifactId>
+    <version>v2.0.0-alpha-12</version>
     <packaging>jar</packaging>
 
-    <name>TitanEnchants</name>
+    <name>TitanTools</name>
 
     <description>Custom enchantments for Theatria</description>
     <properties>
