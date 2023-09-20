@@ -63,7 +63,7 @@ titan_pick_red_fortune:
     {"obfuscated":true,"color":"#FF0000","text":" %"}
     ],"text":""}'
     lore:
-      - '{"extra":[{"color":"dark_gray","text":"Efficiency"},{"color":"#FF0000","text":" IX"}],"text":""}'
+      - '{"extra":[{"color":"dark_gray","text":"Efficiency"},{"color":"#FF0000","text":" VII"}],"text":""}'
       - '{"extra":[{"color":"dark_gray","text":"Fortune"},{"color":"#FF0000","text":" IV"}],"text":""}'
       - '{"extra":[{"color":"dark_gray","text":"Unbreakable"}],"text":""}'
       - '{"extra":[{"color":"gray","text":""}],"text":""}'
@@ -103,7 +103,7 @@ titan_pick_red_fortune:
     ],"text":""}'
     custom-model-data: 1000006
     enchants:
-      DIG_SPEED: 9
+      DIG_SPEED: 7
       LOOT_BONUS_BLOCKS: 4
     ItemFlags:
       - HIDE_ENCHANTS
