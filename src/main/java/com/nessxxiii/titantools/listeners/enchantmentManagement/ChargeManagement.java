@@ -1,6 +1,7 @@
 package com.nessxxiii.titantools.listeners.enchantmentManagement;
 
 import com.nessxxiii.titantools.config.ConfigManager;
+import com.nessxxiii.titantools.enums.PowerCrystalType;
 import com.nessxxiii.titantools.enums.ToolColor;
 import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.items.CustomModelData;
@@ -8,6 +9,7 @@ import com.nessxxiii.titantools.items.PowerCrystalInfo;
 import com.nessxxiii.titantools.items.ItemInfo;
 import com.nessxxiii.titantools.util.Response;
 import com.nessxxiii.titantools.util.TitanEnchantEffects;
+
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;

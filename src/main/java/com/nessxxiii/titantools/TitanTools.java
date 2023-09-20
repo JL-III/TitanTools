@@ -3,7 +3,6 @@ package com.nessxxiii.titantools;
 import com.nessxxiii.titantools.commands.AdminCommands;
 import com.nessxxiii.titantools.commands.KitCommands;
 import com.nessxxiii.titantools.commands.PlayerCommands;
-import com.nessxxiii.titantools.commands.PlayerCommandsTabComplete;
 import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.listeners.ItemDamageEvent;
 import com.nessxxiii.titantools.listeners.blockbreak.PowerCrystalDrop;
@@ -39,7 +38,6 @@ public final class TitanTools extends JavaPlugin {
         PlayerCommands playerCommands = new PlayerCommands(this);
         Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, configManager, playerCommands));
         Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
-        Objects.requireNonNull(getCommand("titan")).setTabCompleter(new PlayerCommandsTabComplete());
         Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(configManager,  customLogger));
     }
 

@@ -8,14 +8,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class KitCommands implements CommandExecutor {
+public class KitCommands implements CommandExecutor, TabCompleter {
 
     private final CustomLogger logger;
     private final ConfigManager configManager;
@@ -39,6 +43,44 @@ public class KitCommands implements CommandExecutor {
     public KitCommands(ConfigManager configManager, CustomLogger logger) {
         this.configManager = configManager;
         this.logger = logger;
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (sender instanceof Player player && player.hasPermission("titan.kit.admin.tabcomplete")) {
+            if (args.length == 1) {
+                return new ArrayList<>() {{
+                    add("kit");
+                }};
+            }
+            if (args.length == 2) {
+                return new ArrayList<>() {{
+                    add("titan_pick_red_fortune");
+                    add("titan_pick_red_silk");
+                    add("titan_pick_yellow_fortune");
+
+                    add("titan_pick_yellow_silk");
+                    add("titan_pick_blue_fortune");
+                    add("titan_pick_blue_silk");
+
+                    add("titan_shovel_red");
+
+                    add("titan_axe_red");
+                    add("titan_axe_yellow");
+                    add("titan_axe_blue");
+
+                    add("titan_sword_red");
+                    add("titan_sword_yellow");
+                    add("titan_sword_blue");
+
+                    add("titan_rod_red");
+                }};
+            }
+            if (args.length == 3) {
+                return Bukkit.getOnlinePlayers().stream().collect(ArrayList::new, (list, p) -> list.add(p.getName()), ArrayList::addAll);
+            }
+        }
+        return new ArrayList<>();
     }
 
     @Override
