@@ -35,7 +35,7 @@ Players can charge their tools with power crystals by taking a PowerCrystal and 
  Shovel can delete bedrock above Y -63
  
 ### Updates to main server
-- update to TheatriaMMO - depends on TitanTools
+- ~~update to TheatriaMMO - depends on TitanTools~~
 - ~~update debug mode in TheatriaMMO currently spams console~~
 - disable `/warp titan`
 - update crates
