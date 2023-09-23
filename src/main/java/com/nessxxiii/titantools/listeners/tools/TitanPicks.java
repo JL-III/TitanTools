@@ -102,7 +102,7 @@ public class TitanPicks implements Listener {
                 if (player.getInventory().firstEmpty() == -1) {
                     if (!player.hasCooldown(cooldownMaterial)) {
                         player.sendMessage(ChatColor.RED + "Your inventory is full, items are not getting placed into inventory!");
-                        player.setCooldown(cooldownMaterial, 100);
+                        player.setCooldown(cooldownMaterial, 500);
                     }
                     continue;
                 };
@@ -117,8 +117,7 @@ public class TitanPicks implements Listener {
         }
 
     }
-    // We want to return a list of items here based on either the block conversion maps
-    // or
+
     private List<ItemStack> getDropsProcessed(Block currentBlock, Player player) {
         if (blockConversionTypes.containsKey(currentBlock.getType()) && !player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
             TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
