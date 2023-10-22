@@ -47,27 +47,28 @@ public class Utils {
         return loreListResponse;
     }
 
-    public static Response<List<String>> titanShovelValidation(PlayerInteractEvent event, Player player, ItemStack itemInMainHand, Block clickedBlock) {
+    public static Response<List<String>> titanShovelValidation(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        Block clickedBlock = event.getClickedBlock();
+        ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         if (event.getClickedBlock() == null) return Response.failure("The clicked block was null");
         if (!event.getAction().isLeftClick()) return Response.failure("Event was not a left click action.");
         if (!canBreakBedrock(clickedBlock, player)) return Response.failure("Failed can break bedrock check.");
         if (!ItemInfo.isAllowedType(itemInMainHand, ItemInfo.ALLOWED_SHOVEL_TYPES)) return Response.failure("This is not an allowed Titan Shovel Type.");
-        BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
-        Bukkit.getPluginManager().callEvent(e);
-        if (e.isCancelled()) return Response.failure("Called block break event was cancelled.");
-        e.setCancelled(true);
 
         Response<List<String>> getLoreResponse = ItemInfo.getLore(itemInMainHand);
         if (getLoreResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(getLoreResponse.error());
             return Response.failure(getLoreResponse.error());
         }
         Response<ToolStatus> toolStatusResponse = ItemInfo.getStatus(getLoreResponse.value(), true);
         if (toolStatusResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
             return Response.failure(toolStatusResponse.error());
         }
         if (toolStatusResponse.value() == ToolStatus.OFF) return Response.failure("Tool Status: " + toolStatusResponse.value());
+        BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
+        Bukkit.getPluginManager().callEvent(e);
+        if (e.isCancelled()) return Response.failure("Called block break event was cancelled.");
+        e.setCancelled(true);
         return Response.success(getLoreResponse.value());
     }
 
