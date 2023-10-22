@@ -51,9 +51,8 @@ public class ChargeManagement implements Listener {
     }
 
     private int getChargeAmount(ItemStack itemOnCursor, int amount) {
-
         return switch (PowerCrystalInfo.getPowerCrystalType(itemOnCursor)) {
-            case COMMON -> 5 * amount;
+            case COMMON -> 25 * amount;
             case UNCOMMON -> 50 * amount;
             case SUPER -> 100 * amount;
             case EPIC -> 250 * amount;
