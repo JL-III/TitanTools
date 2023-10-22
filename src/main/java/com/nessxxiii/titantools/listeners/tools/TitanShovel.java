@@ -38,7 +38,7 @@ public class TitanShovel implements Listener {
 
     @EventHandler
     public void titanShovelBreakBlock(PlayerInteractEvent event) {
-        Response<List<String>> titanShovelValidationResponse = titanShovelValidation(event, event.getPlayer(), event.getPlayer().getInventory().getItemInMainHand(), event.getClickedBlock());
+        Response<List<String>> titanShovelValidationResponse = titanShovelValidation(event);
         if (titanShovelValidationResponse.error() != null) {
             if (configManager.getDebug()) {
                 Bukkit.getConsoleSender().sendMessage(titanShovelValidationResponse.error());
@@ -78,7 +78,7 @@ public class TitanShovel implements Listener {
             }
             if (!DISALLOWED_ITEMS.contains(blockLoop.getType())) {
                 IGNORE_LOCATIONS.add(blockLoop.getLocation());
-                BlockBreakEvent e = new BlockBreakEvent( clickedBlock, event.getPlayer());
+                BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
                 Bukkit.getPluginManager().callEvent(e);
 
                 if (!e.isCancelled()) {
@@ -88,6 +88,7 @@ public class TitanShovel implements Listener {
                         blockLoop.breakNaturally(itemInMainHand);
                     }
                 }
+                e.setCancelled(true);
             }
         }
     }
