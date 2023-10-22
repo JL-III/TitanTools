@@ -3,6 +3,7 @@ package com.nessxxiii.titantools.listeners.tools;
 import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.items.ItemInfo;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
+import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,6 +21,12 @@ import static com.nessxxiii.titantools.util.Utils.getSphereBlocks;
 import static com.nessxxiii.titantools.util.Utils.titanToolBlockBreakValidation;
 
 public class TitanAxe implements Listener {
+    private final ConfigManager configManager;
+    private final Debugger debugger;
+    public TitanAxe(ConfigManager configManager, Debugger debugger) {
+        this.configManager = configManager;
+        this.debugger = debugger;
+    }
 
     private static final List<Material> REPLANT_MATERIAL_LIST = new ArrayList<>() {{
         add(Material.DIRT);
@@ -39,22 +46,14 @@ public class TitanAxe implements Listener {
         put(Material.CHERRY_LOG, Material.CHERRY_SAPLING);
         put(Material.MANGROVE_LOG, Material.MANGROVE_PROPAGULE);
     }};
-
-    private final ConfigManager configManager;
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
-
-    public TitanAxe(ConfigManager configManager) {
-        this.configManager = configManager;
-    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Response<List<String>> titanToolValidationCheckResponse = titanToolBlockBreakValidation(event, ItemInfo.ALLOWED_AXE_TYPES);
         //Intentionally swallowing the error here since this is trigger on a block break validation, would result in tons of logging noise.
         if (titanToolValidationCheckResponse.error() != null) {
-            if (configManager.getDebug()) {
-                Bukkit.getConsoleSender().sendMessage(titanToolValidationCheckResponse.error());
-            }
+            debugger.sendDebugIfEnabled("TitanAxe - onBlockBreak: " + titanToolValidationCheckResponse.error());
             return;
         }
 
@@ -71,10 +70,10 @@ public class TitanAxe implements Listener {
         if (hasChargeLore) {
             Response<Integer> getChargeResponse = ItemInfo.getCharge(titanToolValidationCheckResponse.value(), true, hasChargeLore, 39);
             if (getChargeResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
+                debugger.sendDebugIfEnabled("TitanAxe - getChargeResponse: " + getChargeResponse.error());
                 return;
             }
-            ChargeManagement.decreaseChargeLore(itemInMainHand, titanToolValidationCheckResponse.value(), true, hasChargeLore, player);
+            ChargeManagement.decreaseChargeLore(debugger, itemInMainHand, titanToolValidationCheckResponse.value(), true, hasChargeLore, player);
         }
 
         for (Block block : getSphereBlocks(blockBroken.getLocation(), 5, false)) {

@@ -3,6 +3,7 @@ package com.nessxxiii.titantools.listeners.enchantmentManagement;
 import com.nessxxiii.titantools.enums.ToolColor;
 import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.items.ItemInfo;
+import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,6 +19,10 @@ import java.util.List;
 import static com.nessxxiii.titantools.util.TitanEnchantEffects.enableEffect;
 
 public class ToggleAncientPower implements Listener {
+    private final Debugger debugger;
+    public ToggleAncientPower(Debugger debugger) {
+        this.debugger = debugger;
+    }
 
     @EventHandler
     public void activateClick(PlayerInteractEvent event) {
@@ -30,7 +35,7 @@ public class ToggleAncientPower implements Listener {
 
             Response<List<String>> loreListResponse = ItemInfo.getLore(itemInMainHand);
             if (loreListResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(loreListResponse.error());
+                debugger.sendDebugIfEnabled(loreListResponse.error());
                 return;
             }
 
@@ -39,12 +44,12 @@ public class ToggleAncientPower implements Listener {
 
             Response<ToolStatus> toolStatusResponse = ItemInfo.getStatus(loreListResponse.value(), isTitanTool);
             if (toolStatusResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
+                debugger.sendDebugIfEnabled(toolStatusResponse.error());
                 return;
             }
             Response<ToolColor> toolColorResponse = ItemInfo.getColor(loreListResponse.value());
             if (toolColorResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(toolColorResponse.error());
+                debugger.sendDebugIfEnabled(toolColorResponse.error());
                 return;
             }
 
@@ -55,9 +60,9 @@ public class ToggleAncientPower implements Listener {
             event.setCancelled(true);
 
             if (isImbuedTitanTool) {
-                Response<String> toggleImbuedTitanTool = toggleImbuedTitanTool(itemInMainHand, loreListResponse.value(), isTitanTool, toolColorResponse.value(), toolStatusResponse.value());
+                Response<String> toggleImbuedTitanTool = toggleImbuedTitanTool(debugger, itemInMainHand, loreListResponse.value(), isTitanTool, toolColorResponse.value(), toolStatusResponse.value());
                 if (toggleImbuedTitanTool.error() != null) {
-                    Bukkit.getConsoleSender().sendMessage(toggleImbuedTitanTool.error());
+                    debugger.sendDebugIfEnabled(toggleImbuedTitanTool.error());
                     return;
                 }
 
@@ -69,7 +74,7 @@ public class ToggleAncientPower implements Listener {
             Response<Integer> getChargeResponse = ItemInfo.getCharge(loreListResponse.value(), isTitanTool, hasChargeLore, 39);
 
             if (getChargeResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
+                debugger.sendDebugIfEnabled(getChargeResponse.error());
                 return;
             }
 
@@ -77,9 +82,9 @@ public class ToggleAncientPower implements Listener {
             if (getChargeResponse.value() <= 0 && !isImbuedTitanTool) return;
 
             if (hasChargeLore) {
-                Response<String> toggleChargedTitanTool = toggleChargedTitanTool(itemInMainHand, loreListResponse.value(), isTitanTool, toolColorResponse.value(), toolStatusResponse.value(), getChargeResponse.value());
+                Response<String> toggleChargedTitanTool = toggleChargedTitanTool(debugger, itemInMainHand, loreListResponse.value(), isTitanTool, toolColorResponse.value(), toolStatusResponse.value(), getChargeResponse.value());
                 if (toggleChargedTitanTool.error() != null) {
-                    Bukkit.getConsoleSender().sendMessage(toggleChargedTitanTool.error());
+                    debugger.sendDebugIfEnabled(toggleChargedTitanTool.error());
                     return;
                 }
 
@@ -91,11 +96,11 @@ public class ToggleAncientPower implements Listener {
         }
     }
 
-    public static Response<String> toggleImbuedTitanTool(ItemStack item, List<String> loreList, boolean isTitanTool, ToolColor color, ToolStatus status) {
+    public static Response<String> toggleImbuedTitanTool(Debugger debugger, ItemStack item, List<String> loreList, boolean isTitanTool, ToolColor color, ToolStatus status) {
         String statusLore = ItemInfo.generateStatusLore(color, status == ToolStatus.ON ? ToolStatus.OFF : ToolStatus.ON);
         Response<Integer> statusLoreIndexResponse = ItemInfo.getTitanLoreIndex(loreList, ItemInfo.STATUS_PREFIX, isTitanTool);
         if (statusLoreIndexResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(statusLoreIndexResponse.error());
+            debugger.sendDebugIfEnabled(statusLoreIndexResponse.error());
             return Response.failure(statusLoreIndexResponse.error());
         }
 
@@ -104,18 +109,18 @@ public class ToggleAncientPower implements Listener {
         return Response.success(ChatColor.YELLOW + (status == ToolStatus.ON ? "Ancient Power:" + ChatColor.RED + " OFF" : "Ancient Power: " + ChatColor.GREEN + "ON"));
     }
 
-    public static Response<String> toggleChargedTitanTool(ItemStack item, List<String> loreList, boolean isTitanTool, ToolColor color, ToolStatus status, int charge) {
+    public static Response<String> toggleChargedTitanTool(Debugger debugger, ItemStack item, List<String> loreList, boolean isTitanTool, ToolColor color, ToolStatus status, int charge) {
         String statusLore = ItemInfo.generateStatusLore(color, status == ToolStatus.ON ? ToolStatus.OFF : ToolStatus.ON);
         Response<Integer> statusLoreIndexResponse = ItemInfo.getTitanLoreIndex(loreList, ItemInfo.STATUS_PREFIX, isTitanTool);
         if (statusLoreIndexResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(statusLoreIndexResponse.error());
+            debugger.sendDebugIfEnabled(statusLoreIndexResponse.error());
             return Response.failure(statusLoreIndexResponse.error());
         }
         String chargeLore = ItemInfo.generateChargeLore(color, charge);
 
         Response<Integer> chargeLoreIndexResponse = ItemInfo.getTitanLoreIndex(loreList, ItemInfo.CHARGE_PREFIX, isTitanTool);
         if (chargeLoreIndexResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(chargeLoreIndexResponse.error());
+            debugger.sendDebugIfEnabled(chargeLoreIndexResponse.error());
             return Response.failure(chargeLoreIndexResponse.error());
         }
         loreList.set(chargeLoreIndexResponse.value(), chargeLore);

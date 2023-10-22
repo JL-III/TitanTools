@@ -7,6 +7,7 @@ import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.items.CustomModelData;
 import com.nessxxiii.titantools.items.PowerCrystalInfo;
 import com.nessxxiii.titantools.items.ItemInfo;
+import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.Response;
 import com.nessxxiii.titantools.util.TitanEnchantEffects;
 
@@ -25,11 +26,10 @@ import static com.nessxxiii.titantools.util.TitanEnchantEffects.depletedChargeEf
 
 
 public class ChargeManagement implements Listener {
+    private final Debugger debugger;
 
-    private final ConfigManager configManager;
-
-    public ChargeManagement(ConfigManager configManager) {
-        this.configManager = configManager;
+    public ChargeManagement(Debugger debugger) {
+        this.debugger = debugger;
     }
 
     @EventHandler
@@ -41,7 +41,7 @@ public class ChargeManagement implements Listener {
             try {
                 int chargeAmount = getChargeAmount(itemOnCursor, itemOnCursor.getAmount());
                 player.getItemOnCursor().setAmount(0);
-                addChargeLore(player, event.getCurrentItem(), chargeAmount);
+                addChargeLore(debugger, player, event.getCurrentItem(), chargeAmount);
                 event.setCancelled(true);
             } catch (NumberFormatException exception) {
                 player.sendMessage("There was an issue finding the charge amount.");
@@ -72,15 +72,13 @@ public class ChargeManagement implements Listener {
 
         Response<List<String>> loreListResponse = ItemInfo.getLore(itemClicked);
         if (loreListResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(loreListResponse.error());
+            debugger.sendDebugIfEnabled(loreListResponse.error());
             return false;
         }
 
         boolean isTitanTool = ItemInfo.isTitanTool(loreListResponse.value());
         if (!isTitanTool) {
-            if (configManager.getDebug()) {
-                Bukkit.getConsoleSender().sendMessage("Failed to add charge to a non Titan Tool.");
-            }
+            debugger.sendDebugIfEnabled("Failed to add charge to a non Titan Tool.");
             return false;
         }
 
@@ -90,15 +88,15 @@ public class ChargeManagement implements Listener {
         return isChargedTitanTool;
     }
 
-    public static void addChargeLore(Player player, ItemStack item, Integer amount){
+    public static void addChargeLore(Debugger debugger, Player player, ItemStack item, Integer amount){
         Response<List<String>> loreListResponse = ItemInfo.getLore(item);
         if (loreListResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(loreListResponse.error());
+            debugger.sendDebugIfEnabled(loreListResponse.error());
             return;
         }
         boolean isTitanTool = ItemInfo.isTitanTool(loreListResponse.value());
         if (!isTitanTool) {
-            Bukkit.getConsoleSender().sendMessage("Failed to add charge to a non Titan Tool.");
+            debugger.sendDebugIfEnabled("Failed to add charge to a non Titan Tool.");
             return;
         }
 
@@ -106,7 +104,7 @@ public class ChargeManagement implements Listener {
 
         Response<Integer> indexResponse = ItemInfo.getTitanLoreIndex(loreListResponse.value(), ItemInfo.CHARGE_PREFIX, isTitanTool);
         if (indexResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(indexResponse.error());
+            debugger.sendDebugIfEnabled(indexResponse.error());
             return;
         }
 
@@ -114,7 +112,7 @@ public class ChargeManagement implements Listener {
         if (hasChargeLore) {
             Response<Integer> previousChargeResponse = ItemInfo.getCharge(loreListResponse.value(), isTitanTool, hasChargeLore, 39);
             if (previousChargeResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(previousChargeResponse.error());
+                debugger.sendDebugIfEnabled(previousChargeResponse.error());
                 return;
             }
             finalCharge = previousChargeResponse.value() + (amount);
@@ -123,7 +121,7 @@ public class ChargeManagement implements Listener {
         }
         Response<ToolColor> colorResponse = ItemInfo.getColor(loreListResponse.value());
         if (colorResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(colorResponse.error());
+            debugger.sendDebugIfEnabled(colorResponse.error());
             return;
         }
         List<String> updatedLoreList = loreListResponse.value();
@@ -135,25 +133,25 @@ public class ChargeManagement implements Listener {
         TitanEnchantEffects.addChargeEffect(player);
     }
 
-    public static void decreaseChargeLore(ItemStack item, List<String> loreList, boolean isTitanTool, boolean hasChargeLore, Player player){
+    public static void decreaseChargeLore(Debugger debugger, ItemStack item, List<String> loreList, boolean isTitanTool, boolean hasChargeLore, Player player){
         Response<Integer> previousChargeResponse = ItemInfo.getCharge(loreList, isTitanTool, hasChargeLore, 39);
         if (previousChargeResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(previousChargeResponse.error());
+            debugger.sendDebugIfEnabled(previousChargeResponse.error());
             return;
         }
         Response<Integer> chargeLoreIndexResponse = ItemInfo.getTitanLoreIndex(loreList, ItemInfo.CHARGE_PREFIX, isTitanTool);
         if (chargeLoreIndexResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(chargeLoreIndexResponse.error());
+            debugger.sendDebugIfEnabled(chargeLoreIndexResponse.error());
             return;
         }
         Response<Integer> statusLoreIndexResponse = ItemInfo.getTitanLoreIndex(loreList, ItemInfo.STATUS_PREFIX, isTitanTool);
         if (statusLoreIndexResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(statusLoreIndexResponse.error());
+            debugger.sendDebugIfEnabled(statusLoreIndexResponse.error());
             return;
         }
         Response<ToolColor> toolColorResponse = ItemInfo.getColor(loreList);
         if (toolColorResponse.error() != null) {
-            Bukkit.getConsoleSender().sendMessage(toolColorResponse.error());
+            debugger.sendDebugIfEnabled(toolColorResponse.error());
             return;
         }
         int remainingCharge = previousChargeResponse.value() - 1;
