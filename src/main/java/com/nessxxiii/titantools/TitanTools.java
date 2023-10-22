@@ -12,6 +12,7 @@ import com.nessxxiii.titantools.listeners.tools.TitanAxe;
 import com.nessxxiii.titantools.listeners.tools.TitanPicks;
 import com.nessxxiii.titantools.listeners.tools.TitanShovel;
 import com.nessxxiii.titantools.util.CustomLogger;
+import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.Utils;
 
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -29,7 +30,8 @@ public final class TitanTools extends JavaPlugin {
         this.saveDefaultConfig();
         this.configManager = new ConfigManager(this);
         CustomLogger customLogger = new CustomLogger(getName(), NamedTextColor.DARK_RED, NamedTextColor.WHITE);
-        registerEvents();
+        Debugger debugger = new Debugger(configManager);
+        registerEvents(debugger);
         registerCommands(configManager, customLogger);
         Utils.printBanner();
     }
@@ -42,14 +44,14 @@ public final class TitanTools extends JavaPlugin {
     }
 
 
-    private void registerEvents() {
-        Bukkit.getPluginManager().registerEvents(new TitanPicks(configManager),this);
-        Bukkit.getPluginManager().registerEvents(new TitanAxe(configManager), this);
-        Bukkit.getPluginManager().registerEvents(new TitanShovel(this, configManager), this);
-        Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(),this);
-        Bukkit.getPluginManager().registerEvents(new ChargeManagement(configManager),this);
+    private void registerEvents(Debugger debugger) {
+        Bukkit.getPluginManager().registerEvents(new TitanPicks(configManager, debugger),this);
+        Bukkit.getPluginManager().registerEvents(new TitanAxe(configManager, debugger), this);
+        Bukkit.getPluginManager().registerEvents(new TitanShovel(this, debugger), this);
+        Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(debugger),this);
+        Bukkit.getPluginManager().registerEvents(new ChargeManagement(debugger),this);
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
-        Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(debugger), this);
     }
 
 }

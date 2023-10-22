@@ -4,9 +4,9 @@ import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.items.ItemInfo;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
+import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.Response;
 import com.nessxxiii.titantools.util.TitanEnchantEffects;
-import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,15 +17,12 @@ import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.nessxxiii.titantools.config.ConfigManager.blockConversionQuantity;
 import static com.nessxxiii.titantools.config.ConfigManager.blockConversionTypes;
@@ -33,11 +30,13 @@ import static com.nessxxiii.titantools.util.Utils.*;
 
 public class TitanPicks implements Listener {
     private final ConfigManager configManager;
+    private final Debugger debugger;
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
     private final Material cooldownMaterial = Material.BARRIER;
 
-    public TitanPicks(ConfigManager configManager) {
+    public TitanPicks(ConfigManager configManager, Debugger debugger) {
         this.configManager = configManager;
+        this.debugger = debugger;
         configManager.loadConfig();
     }
 
@@ -49,16 +48,12 @@ public class TitanPicks implements Listener {
     public void onBlockBreakEvent(BlockBreakEvent event) {
         if (event.isCancelled()) return;
         if (!ItemInfo.isAllowedType(event.getPlayer().getInventory().getItemInMainHand(), ItemInfo.ALLOWED_PICK_TYPES)) {
-            if (configManager.getDebug()) {
-                Bukkit.getConsoleSender().sendMessage("Not a Titan Pick");
-            }
+            debugger.sendDebugIfEnabled("Not a Titan Pick");
             return;
         }
         Response<List<String>> loreListResponse = ItemInfo.getLore(event.getPlayer().getInventory().getItemInMainHand());
         if (loreListResponse.error() != null) {
-            if (configManager.getDebug()) {
-                Bukkit.getConsoleSender().sendMessage(loreListResponse.error());
-            }
+            debugger.sendDebugIfEnabled(loreListResponse.error());
             return;
         }
         boolean isTitanTool = ItemInfo.isTitanTool(loreListResponse.value());
@@ -66,9 +61,7 @@ public class TitanPicks implements Listener {
         if (!isTitanTool) return;
         Response<ToolStatus> toolStatusResponse = ItemInfo.getStatus(loreListResponse.value(), isTitanTool);
         if (toolStatusResponse.error() != null) {
-            if (configManager.getDebug()) {
-                Bukkit.getConsoleSender().sendMessage(toolStatusResponse.error());
-            }
+            debugger.sendDebugIfEnabled(toolStatusResponse.error());
             return;
         }
         if (toolStatusResponse.value() == ToolStatus.OFF) return;
@@ -84,10 +77,10 @@ public class TitanPicks implements Listener {
         if (hasChargeLore) {
             Response<Integer> getChargeResponse = ItemInfo.getCharge(loreListResponse.value(), isTitanTool, hasChargeLore, 39);
             if (getChargeResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
+                debugger.sendDebugIfEnabled(getChargeResponse.error());
                 return;
             }
-            ChargeManagement.decreaseChargeLore(itemInMainHand, loreListResponse.value(), isTitanTool, hasChargeLore, player);
+            ChargeManagement.decreaseChargeLore(debugger, itemInMainHand, loreListResponse.value(), isTitanTool, hasChargeLore, player);
         }
 
         int aggregateAmount = 0;
