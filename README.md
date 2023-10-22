@@ -31,5 +31,5 @@ Players can charge their tools with power crystals by taking a PowerCrystal and 
  - Titan Hoe:
    - Auto-replant
 
- ### Special Notes:  
+ ### Special Notes:
  Shovel can delete bedrock above Y -63
