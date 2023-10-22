@@ -6,31 +6,44 @@ import com.nessxxiii.titantools.items.ItemInfo;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titantools.util.Response;
 import com.nessxxiii.titantools.util.TitanEnchantEffects;
+import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+import static com.nessxxiii.titantools.config.ConfigManager.blockConversionQuantity;
 import static com.nessxxiii.titantools.config.ConfigManager.blockConversionTypes;
 import static com.nessxxiii.titantools.util.Utils.*;
 
 public class TitanPicks implements Listener {
     private final ConfigManager configManager;
+    private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
+    private final Material cooldownMaterial = Material.BARRIER;
 
     public TitanPicks(ConfigManager configManager) {
         this.configManager = configManager;
         configManager.loadConfig();
     }
-    private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
+
+    // our main goals - remove blocks from the world and either drop them on the ground or add them to the players inventory
+    // we need to gather the drops from the block break event based on silk or not then
+    // check if the pickup is cancelled and if so, break the block naturally - otherwise add the item to the players inventory
 
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
@@ -77,44 +90,54 @@ public class TitanPicks implements Listener {
             ChargeManagement.decreaseChargeLore(itemInMainHand, loreListResponse.value(), isTitanTool, hasChargeLore, player);
         }
 
-        if (!itemInMainHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
-            int aggregateAmount = 0;
-            for (Block currentBlock : getCubeBlocks(blockBroken.getLocation())) {
-                if (configManager.getAllowedPickBlocks().contains(currentBlock.getType())) {
-                    IGNORE_LOCATIONS.add(currentBlock.getLocation());
-                    BlockBreakEvent e = new BlockBreakEvent(currentBlock, player);
-                    Bukkit.getPluginManager().callEvent(e);
-                    Material blockBrokenMaterial = currentBlock.getType();
-                    if (!e.isCancelled()) {
-                        if(blockConversionTypes.containsKey(blockBrokenMaterial)) {
-                            TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
-                            currentBlock.setType(Material.AIR);
-                            player.getLocation().getWorld().dropItemNaturally(currentBlock.getLocation(), getDropsFromConversionTable(blockBrokenMaterial));
-                            aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
-                        } else {
-                            currentBlock.breakNaturally(itemInMainHand);
-                        }
-                        aggregateAmount = aggregateAmount + calculateExperienceAmount(blockBrokenMaterial);
+        int aggregateAmount = 0;
+        for (Block currentBlock : getCubeBlocks(blockBroken.getLocation())) {
+            IGNORE_LOCATIONS.add(currentBlock.getLocation());
+            if (!configManager.getAllowedPickBlocks().contains(currentBlock.getType())) continue;
+            if (simulateBlockBreakEventIsCancelled(currentBlock, player)) continue;
+            //iterate through drops of current block
+            for (ItemStack drop : getDropsProcessed(currentBlock, player)) {
+                Item itemEntity = currentBlock.getWorld().dropItemNaturally(currentBlock.getLocation(), drop);
+                if (simulateItemPickupIsCancelled(itemEntity, player)) continue;
+                if (player.getInventory().firstEmpty() == -1) {
+                    if (!player.hasCooldown(cooldownMaterial)) {
+                        player.sendMessage(ChatColor.RED + "Your inventory is full, items are not getting placed into inventory!");
+                        player.setCooldown(cooldownMaterial, 500);
                     }
-                }
-            }
-            if (aggregateAmount > 0) {
-                blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(aggregateAmount);
-            }
-        } else {
-            for (Block block : getCubeBlocks(blockBroken.getLocation())) {
-                if (block.getLocation().equals(blockBroken.getLocation())) {
                     continue;
-                }
-                if (configManager.getAllowedPickBlocks().contains(block.getType())) {
-                    IGNORE_LOCATIONS.add(block.getLocation());
-                    BlockBreakEvent e = new BlockBreakEvent(block, player);
-                    Bukkit.getPluginManager().callEvent(e);
-                    if (!e.isCancelled()) {
-                        block.breakNaturally(itemInMainHand);
-                    }
-                }
+                };
+                itemEntity.remove();
+                player.getInventory().addItem(drop);
             }
+            currentBlock.setType(Material.AIR);
+            aggregateAmount = aggregateAmount + calculateExperienceAmount(currentBlock.getType());
         }
+        if (aggregateAmount > 0) {
+            blockBroken.getLocation().getWorld().spawn(blockBroken.getLocation(), ExperienceOrb.class).setExperience(aggregateAmount);
+        }
+
+    }
+
+    private List<ItemStack> getDropsProcessed(Block currentBlock, Player player) {
+        if (blockConversionTypes.containsKey(currentBlock.getType()) && !player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
+            TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
+            return new ArrayList<>(){{
+                add(new ItemStack(blockConversionTypes.get(currentBlock.getType()), blockConversionQuantity.get(currentBlock.getType())));
+            }};
+        } else {
+            return currentBlock.getDrops(player.getInventory().getItemInMainHand()).stream().toList();
+        }
+    }
+
+    private boolean simulateBlockBreakEventIsCancelled(Block block, Player player) {
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, player);
+        Bukkit.getPluginManager().callEvent(blockBreakEvent);
+        return blockBreakEvent.isCancelled();
+    }
+
+    private boolean simulateItemPickupIsCancelled(Item item, Player player) {
+        EntityPickupItemEvent playerPickupItemEvent = new EntityPickupItemEvent(player, item, (Math.max(item.getItemStack().getAmount() - 1, 0)));
+        Bukkit.getPluginManager().callEvent(playerPickupItemEvent);
+        return playerPickupItemEvent.isCancelled();
     }
 }

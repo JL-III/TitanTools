@@ -120,20 +120,11 @@ public class Utils {
         return experience;
     }
 
-    public void updateInventoryWithAllDropsFromBlockbreak(Player player, ItemStack itemInMainHand, Block block) {
-        Collection<ItemStack> dropsCollection = block.getDrops(itemInMainHand);
-        for (ItemStack itemStack : dropsCollection) {
-            updatePlayerInventory(player, itemStack);
+    public static void getNewBlocksFromSmeltAndUpdateInventory(Player player, Material material) {
+        player.sendMessage("Smelting " + material.toString());
+        if (blockConversionTypes.containsKey(material)) {
+            player.getInventory().addItem(getDropsFromConversionTable(material));
         }
-    }
-
-    public void updatePlayerInventory(Player player, ItemStack drops) {
-        player.getInventory().addItem(drops);
-        player.updateInventory();
-    }
-
-    public void getNewBlocksFromSmeltAndUpdateInventory(Player player, Material material) {
-        updatePlayerInventory(player, getDropsFromConversionTable(material));
     }
 
     @NotNull
