@@ -11,6 +11,7 @@ import com.nessxxiii.titantools.listeners.enchantmentManagement.ToggleAncientPow
 import com.nessxxiii.titantools.listeners.tools.TitanAxe;
 import com.nessxxiii.titantools.listeners.tools.TitanPicks;
 import com.nessxxiii.titantools.listeners.tools.TitanShovel;
+import com.nessxxiii.titantools.listeners.tools.TitanSword;
 import com.nessxxiii.titantools.util.CustomLogger;
 import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.Utils;
@@ -48,6 +49,7 @@ public final class TitanTools extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new TitanPicks(configManager, debugger),this);
         Bukkit.getPluginManager().registerEvents(new TitanAxe(configManager, debugger), this);
         Bukkit.getPluginManager().registerEvents(new TitanShovel(this, debugger), this);
+        Bukkit.getPluginManager().registerEvents(new TitanSword(debugger), this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(debugger),this);
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(debugger),this);
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);

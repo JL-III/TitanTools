@@ -47,6 +47,12 @@ public class ItemInfo {
             add(Material.NETHERITE_SHOVEL);
         }
     };
+    public static final List<Material> ALLOWED_SWORD_TYPES = new ArrayList<>(){
+        {
+            add(Material.DIAMOND_SWORD);
+            add(Material.NETHERITE_SWORD);
+        }
+    };
 
     /**
      * Get the titan lore index.

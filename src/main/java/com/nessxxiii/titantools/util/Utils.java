@@ -6,6 +6,9 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -68,6 +71,46 @@ public class Utils {
         Bukkit.getPluginManager().callEvent(e);
         if (e.isCancelled()) return Response.failure("Called block break event was cancelled.");
         e.setCancelled(true);
+        return Response.success(getLoreResponse.value());
+    }
+
+    public static Response<List<String>> titanSwordValidationDeathEvent(EntityDeathEvent event) {
+        if (event.isCancelled()) return Response.failure("event.isCancelled()");
+        if (event.getEntity().getLastDamageCause() == null) return Response.failure("event.getEntity().getLastDamageCause() == null");
+        if (event.getEntity().getKiller() == null) return Response.failure("event.getEntity().getKiller() == null");
+        Player player = event.getEntity().getKiller();
+        ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+        if (!ItemInfo.isAllowedType(itemInMainHand, ItemInfo.ALLOWED_SWORD_TYPES)) {
+            return Response.failure("!ItemInfo.isAllowedType(player.getInventory().getItemInMainHand(), ItemInfo.ALLOWED_SWORD_TYPES)");
+        }
+        Response<List<String>> getLoreResponse = ItemInfo.getLore(itemInMainHand);
+        if (getLoreResponse.error() != null) {
+            return Response.failure(getLoreResponse.error());
+        }
+        Response<ToolStatus> toolStatusResponse = ItemInfo.getStatus(getLoreResponse.value(), true);
+        if (toolStatusResponse.error() != null) {
+            return Response.failure(toolStatusResponse.error());
+        }
+        if (toolStatusResponse.value() == ToolStatus.OFF) return Response.failure("Tool Status: " + toolStatusResponse.value());
+        return Response.success(getLoreResponse.value());
+    }
+
+    public static Response<List<String>> titanSwordValidationDamageEvent(EntityDamageByEntityEvent event) {
+        if (event.isCancelled()) return Response.failure("event.isCancelled()");
+        if (!(event.getDamager() instanceof Player player)) return Response.failure("!(event.getDamager() instanceof Player player)");
+        ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
+        if (!ItemInfo.isAllowedType(itemInMainHand, ItemInfo.ALLOWED_SWORD_TYPES)) {
+            return Response.failure("!ItemInfo.isAllowedType(player.getInventory().getItemInMainHand(), ItemInfo.ALLOWED_SWORD_TYPES)");
+        }
+        Response<List<String>> getLoreResponse = ItemInfo.getLore(itemInMainHand);
+        if (getLoreResponse.error() != null) {
+            return Response.failure(getLoreResponse.error());
+        }
+        Response<ToolStatus> toolStatusResponse = ItemInfo.getStatus(getLoreResponse.value(), true);
+        if (toolStatusResponse.error() != null) {
+            return Response.failure(toolStatusResponse.error());
+        }
+        if (toolStatusResponse.value() == ToolStatus.OFF) return Response.failure("Tool Status: " + toolStatusResponse.value());
         return Response.success(getLoreResponse.value());
     }
 
