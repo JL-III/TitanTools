@@ -27,6 +27,8 @@ public class ItemInfo {
             add(Material.NETHERITE_SHOVEL);
             add(Material.DIAMOND_AXE);
             add(Material.NETHERITE_AXE);
+            add(Material.DIAMOND_SWORD);
+            add(Material.NETHERITE_SWORD);
         }
     };
     public static final List<Material> ALLOWED_PICK_TYPES = new ArrayList<>(){

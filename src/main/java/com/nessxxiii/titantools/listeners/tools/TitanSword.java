@@ -1,14 +1,18 @@
 package com.nessxxiii.titantools.listeners.tools;
 
+import com.nessxxiii.titantools.items.ItemInfo;
+import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.Response;
 import com.nessxxiii.titantools.util.Utils;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -30,18 +34,8 @@ public class TitanSword implements Listener {
         debugger.sendDebugIfEnabled("Exp before modifier: " + event.getDroppedExp());
         event.setDroppedExp(event.getDroppedExp() * 2);
         debugger.sendDebugIfEnabled("Exp after modifier: " + event.getDroppedExp());
+        Player player = event.getEntity().getKiller();
+        ChargeManagement.decreaseChargeLore(debugger, player.getInventory().getItemInMainHand(), listResponse.value(), true, true, player);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onMobDamage(EntityDamageByEntityEvent event) {
-        Response<List<String>> listResponse = Utils.titanSwordValidationDamageEvent(event);
-        if (listResponse.error() != null) {
-            debugger.sendDebugIfEnabled(listResponse.error());
-            return;
-        }
-        debugger.sendDebugIfEnabled("EntityDamageByEntityEvent: this item is a titan sword with the status of ON");
-        debugger.sendDebugIfEnabled("Damage before modifier: " + event.getDamage());
-        event.setDamage(event.getDamage() * 2);
-        debugger.sendDebugIfEnabled("Damage after modifier: " + event.getDamage());
-    }
 }

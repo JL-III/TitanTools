@@ -95,25 +95,6 @@ public class Utils {
         return Response.success(getLoreResponse.value());
     }
 
-    public static Response<List<String>> titanSwordValidationDamageEvent(EntityDamageByEntityEvent event) {
-        if (event.isCancelled()) return Response.failure("event.isCancelled()");
-        if (!(event.getDamager() instanceof Player player)) return Response.failure("!(event.getDamager() instanceof Player player)");
-        ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-        if (!ItemInfo.isAllowedType(itemInMainHand, ItemInfo.ALLOWED_SWORD_TYPES)) {
-            return Response.failure("!ItemInfo.isAllowedType(player.getInventory().getItemInMainHand(), ItemInfo.ALLOWED_SWORD_TYPES)");
-        }
-        Response<List<String>> getLoreResponse = ItemInfo.getLore(itemInMainHand);
-        if (getLoreResponse.error() != null) {
-            return Response.failure(getLoreResponse.error());
-        }
-        Response<ToolStatus> toolStatusResponse = ItemInfo.getStatus(getLoreResponse.value(), true);
-        if (toolStatusResponse.error() != null) {
-            return Response.failure(toolStatusResponse.error());
-        }
-        if (toolStatusResponse.value() == ToolStatus.OFF) return Response.failure("Tool Status: " + toolStatusResponse.value());
-        return Response.success(getLoreResponse.value());
-    }
-
     public static boolean canBreakBedrock(Block clickedBlock, Player player) {
         if (clickedBlock.getType() != Material.BEDROCK) return true;
         if (clickedBlock.getLocation().getY() >= -63 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER)) return true;
