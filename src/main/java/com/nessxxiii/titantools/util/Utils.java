@@ -147,6 +147,4 @@ public class Utils {
     private double getFortuneAmount(double fortuneLevel) {
         return 1/(fortuneLevel + 2) + (fortuneLevel + 1)/2;
     }
-
-
 }

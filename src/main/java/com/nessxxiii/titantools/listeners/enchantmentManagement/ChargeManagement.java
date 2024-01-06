@@ -1,7 +1,6 @@
 package com.nessxxiii.titantools.listeners.enchantmentManagement;
 
 import com.nessxxiii.titantools.config.ConfigManager;
-import com.nessxxiii.titantools.enums.PowerCrystalType;
 import com.nessxxiii.titantools.enums.ToolColor;
 import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.items.CustomModelData;

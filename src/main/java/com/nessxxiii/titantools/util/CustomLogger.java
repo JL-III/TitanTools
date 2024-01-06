@@ -22,5 +22,4 @@ public class CustomLogger {
         Audience console = Bukkit.getConsoleSender();
         console.sendMessage(loggerPrefix.append(Component.text(message, NamedTextColor.YELLOW)));
     }
-
 }

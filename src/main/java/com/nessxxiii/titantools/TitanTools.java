@@ -51,5 +51,4 @@ public final class TitanTools extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
     }
-
 }

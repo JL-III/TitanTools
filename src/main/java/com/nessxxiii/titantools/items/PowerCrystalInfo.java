@@ -124,5 +124,4 @@ public class PowerCrystalInfo {
         if (item.isSimilar(powerCrystalUltra())) return PowerCrystalType.ULTRA;
         return PowerCrystalType.NULL;
     }
-
 }

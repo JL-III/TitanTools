@@ -25,5 +25,4 @@ public class ItemDamageEvent implements Listener{
             event.setCancelled(true);
         }
     }
-
 }

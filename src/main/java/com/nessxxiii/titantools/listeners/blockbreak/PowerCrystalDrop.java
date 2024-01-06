@@ -1,38 +1,22 @@
 package com.nessxxiii.titantools.listeners.blockbreak;
 
+import com.nessxxiii.titantools.events.PowerCrystalDropEvent;
 import com.nessxxiii.titantools.items.ItemCreator;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.inventory.ItemStack;
 
 import static com.nessxxiii.titantools.util.Utils.getRandomNumber;
 
 public class PowerCrystalDrop implements Listener {
 
     @EventHandler
-    public static void diamondBreak(BlockBreakEvent event){
-        Block block = event.getBlock();
-        if (block.getType() != Material.AMETHYST_BLOCK) return;
-        Player player = event.getPlayer();
-        if (!validateIsExcavator(player.getInventory().getItemInMainHand())) return;
-        if (!player.hasPermission("titan.enchants.powercrystaldrop")) return;
-        event.setCancelled(true);
+    public void onPowerCrystalDrop(PowerCrystalDropEvent event) {
+        Block block = event.getDropLocation().getBlock();
         block.setType(Material.AIR);
-        handleDropPowerCrystal(player.getLocation(), block.getLocation());
-    }
-
-    private static boolean validateIsExcavator(ItemStack itemStack) {
-        if (itemStack == null || itemStack.equals(Material.AIR)) return false;
-        if(itemStack.getLore() == null || !itemStack.getItemMeta().getLore().equals(ItemCreator.excavator.getItemMeta().getLore())
-                || !itemStack.getEnchantments().equals(ItemCreator.excavator.getEnchantments())) {
-            return false;
-        }
-        return true;
+        handleDropPowerCrystal(event.getPlayerLocation(), event.getDropLocation());
     }
 
     private static void handleDropPowerCrystal(Location playerLocation, Location blockLocation) {
@@ -49,5 +33,4 @@ public class PowerCrystalDrop implements Listener {
             playerLocation.getWorld().dropItemNaturally(blockLocation, ItemCreator.powerCrystalCommon);
         }
     }
-
 }

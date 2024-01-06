@@ -19,6 +19,5 @@ public record Response<T>(T value, String error) {
     public boolean isSuccess() {
         return error == null;
     }
-
 }
 

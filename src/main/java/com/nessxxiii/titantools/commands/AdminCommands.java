@@ -265,16 +265,11 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
                 return true;
             } else {
                 player.sendMessage("isSimilar result: " + player.getInventory().getItemInMainHand().isSimilar(player.getInventory().getItemInOffHand()));             }
-
-
         }
-
         return false;
     }
 
     public String permissionStringMaker(String permission) {
         return permissionPrefix + "." + permission;
     }
-
-
 }

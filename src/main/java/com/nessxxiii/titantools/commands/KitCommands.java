@@ -133,5 +133,4 @@ public class KitCommands implements CommandExecutor, TabCompleter {
             logger.sendLog(PLAYER_NAME + " did not receive their " + item + " due to a full inventory.");
         }
     }
-
 }
