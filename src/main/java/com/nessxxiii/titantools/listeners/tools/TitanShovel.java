@@ -1,7 +1,7 @@
 package com.nessxxiii.titantools.listeners.tools;
 
-import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.items.ItemInfo;
+import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.Response;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -28,21 +28,19 @@ public class TitanShovel implements Listener {
     public static final Set<Material> DISALLOWED_ITEMS = new HashSet<>();
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
     private final Plugin PLUGIN;
-    private final ConfigManager configManager;
+    private final Debugger debugger;
 
-    public TitanShovel(Plugin plugin, ConfigManager configManager) {
+    public TitanShovel(Plugin plugin, Debugger debugger) {
         this.PLUGIN = plugin;
-        this.configManager = configManager;
+        this.debugger = debugger;
         loadConfig();
     }
 
     @EventHandler
     public void titanShovelBreakBlock(PlayerInteractEvent event) {
-        Response<List<String>> titanShovelValidationResponse = titanShovelValidation(event, event.getPlayer(), event.getPlayer().getInventory().getItemInMainHand(), event.getClickedBlock());
+        Response<List<String>> titanShovelValidationResponse = titanShovelValidation(event);
         if (titanShovelValidationResponse.error() != null) {
-            if (configManager.getDebug()) {
-                Bukkit.getConsoleSender().sendMessage(titanShovelValidationResponse.error());
-            }
+            debugger.sendDebugIfEnabled(titanShovelValidationResponse.error());
             return;
         }
 
@@ -59,10 +57,10 @@ public class TitanShovel implements Listener {
         if (hasChargeLore) {
             Response<Integer> getChargeResponse = ItemInfo.getCharge(titanShovelValidationResponse.value(), true, true, 39);
             if (getChargeResponse.error() != null) {
-                Bukkit.getConsoleSender().sendMessage(getChargeResponse.error());
+                debugger.sendDebugIfEnabled(getChargeResponse.error());
                 return;
             }
-            decreaseChargeLore(itemInMainHand, titanShovelValidationResponse.value(), true, hasChargeLore, player);
+            decreaseChargeLore(debugger, itemInMainHand, titanShovelValidationResponse.value(), true, hasChargeLore, player);
         }
 
         if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
@@ -78,7 +76,7 @@ public class TitanShovel implements Listener {
             }
             if (!DISALLOWED_ITEMS.contains(blockLoop.getType())) {
                 IGNORE_LOCATIONS.add(blockLoop.getLocation());
-                BlockBreakEvent e = new BlockBreakEvent( clickedBlock, event.getPlayer());
+                BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
                 Bukkit.getPluginManager().callEvent(e);
 
                 if (!e.isCancelled()) {
@@ -88,6 +86,7 @@ public class TitanShovel implements Listener {
                         blockLoop.breakNaturally(itemInMainHand);
                     }
                 }
+                e.setCancelled(true);
             }
         }
     }
