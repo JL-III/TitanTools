@@ -1,6 +1,7 @@
 package com.nessxxiii.titantools.events;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
@@ -20,15 +21,20 @@ public class PowerCrystalDropEvent extends Event {
 
     private boolean isCancelled;
 
+    private final Player player;
+
     private final Location playerLocation;
 
     private final Location dropLocation;
 
-    public PowerCrystalDropEvent(Location playerLocation, Location dropLocation) {
-        this.playerLocation = playerLocation;
+    public PowerCrystalDropEvent(Player player, Location dropLocation) {
+        this.player = player;
+        this.playerLocation = player.getLocation();
         this.dropLocation = dropLocation;
         this.isCancelled = false;
     }
+
+    public Player getPlayer() { return player; }
 
     public Location getPlayerLocation() {
         return playerLocation;

@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.listeners;
+package com.nessxxiii.titantools.listeners.blockbreak;
 
 import com.nessxxiii.titantools.events.PowerCrystalDropEvent;
 import com.nessxxiii.titantools.items.ItemCreator;
@@ -22,7 +22,7 @@ public class BlockBreak implements Listener {
         if (!event.getPlayer().hasPermission("titan.enchants.powercrystaldrop")) return;
         // event
         event.setCancelled(true);
-        Bukkit.getPluginManager().callEvent(new PowerCrystalDropEvent(event.getPlayer().getLocation(), event.getBlock().getLocation()));
+        Bukkit.getPluginManager().callEvent(new PowerCrystalDropEvent(event.getPlayer(), event.getBlock().getLocation()));
     }
 
     private static boolean validateIsExcavator(ItemStack itemStack) {

@@ -128,6 +128,7 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
             }
             Inventory inv = player.getInventory();
             inv.addItem(ItemCreator.excavator);
+            Utils.sendPluginMessage(player, "Excavator added to inventory");
             return true;
         }
 

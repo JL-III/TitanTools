@@ -4,6 +4,7 @@ import com.nessxxiii.titantools.commands.AdminCommands;
 import com.nessxxiii.titantools.commands.KitCommands;
 import com.nessxxiii.titantools.commands.PlayerCommands;
 import com.nessxxiii.titantools.config.ConfigManager;
+import com.nessxxiii.titantools.listeners.blockbreak.BlockBreak;
 import com.nessxxiii.titantools.listeners.ItemDamageEvent;
 import com.nessxxiii.titantools.listeners.blockbreak.PowerCrystalDrop;
 import com.nessxxiii.titantools.listeners.commands.admin.*;
@@ -53,6 +54,7 @@ public final class TitanTools extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(debugger),this);
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(debugger),this);
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
+        Bukkit.getPluginManager().registerEvents(new BlockBreak(), this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(debugger), this);
         Bukkit.getPluginManager().registerEvents(new Debug(), this);
         Bukkit.getPluginManager().registerEvents(new ImbueTitanTool(), this);

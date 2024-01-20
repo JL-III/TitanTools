@@ -2,7 +2,7 @@ package com.nessxxiii.titantools.listeners.blockbreak;
 
 import com.nessxxiii.titantools.events.PowerCrystalDropEvent;
 import com.nessxxiii.titantools.items.ItemCreator;
-import org.bukkit.Location;
+import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -16,21 +16,31 @@ public class PowerCrystalDrop implements Listener {
     public void onPowerCrystalDrop(PowerCrystalDropEvent event) {
         Block block = event.getDropLocation().getBlock();
         block.setType(Material.AIR);
-        handleDropPowerCrystal(event.getPlayerLocation(), event.getDropLocation());
-    }
+        int randomNumber = getRandomNumber(1,1000);
+        Utils.sendPluginMessage(event.getPlayer(), "RNG result: " + randomNumber);
 
-    private static void handleDropPowerCrystal(Location playerLocation, Location blockLocation) {
-        int randomNumber = getRandomNumber(1,100);
-        if (randomNumber > 95) {
-            playerLocation.getWorld().dropItemNaturally(blockLocation, ItemCreator.powerCrystalUncommon);
+        if (randomNumber > 995) {
+            event.getPlayerLocation().getWorld().dropItemNaturally(event.getDropLocation(), ItemCreator.powerCrystalUltra);
             return;
         }
-        if (randomNumber <= 3) {
+        if (randomNumber > 990) {
+            event.getPlayerLocation().getWorld().dropItemNaturally(event.getDropLocation(), ItemCreator.powerCrystalEpic);
+            return;
+        }
+        if (randomNumber > 985) {
+            event.getPlayerLocation().getWorld().dropItemNaturally(event.getDropLocation(), ItemCreator.powerCrystalSuper);
+            return;
+        }
+        if (randomNumber > 900) {
+            event.getPlayerLocation().getWorld().dropItemNaturally(event.getDropLocation(), ItemCreator.powerCrystalUncommon);
+            return;
+        }
+        if (randomNumber <= 10) {
             for (int i = 0; i < randomNumber; i++){
-                playerLocation.getWorld().dropItemNaturally(blockLocation, ItemCreator.powerCrystalCommon);
+                event.getPlayerLocation().getWorld().dropItemNaturally(event.getDropLocation(), ItemCreator.powerCrystalCommon);
             }
         } else {
-            playerLocation.getWorld().dropItemNaturally(blockLocation, ItemCreator.powerCrystalCommon);
+            event.getPlayerLocation().getWorld().dropItemNaturally(event.getDropLocation(), ItemCreator.powerCrystalCommon);
         }
     }
 }
