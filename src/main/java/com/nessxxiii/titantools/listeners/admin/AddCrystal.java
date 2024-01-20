@@ -1,6 +1,6 @@
-package com.nessxxiii.titantools.listeners.commands.admin;
+package com.nessxxiii.titantools.listeners.admin;
 
-import com.nessxxiii.titantools.events.commands.admin.AddCrystalEvent;
+import com.nessxxiii.titantools.events.admin.AddCrystalEvent;
 import com.nessxxiii.titantools.items.ItemCreator;
 import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.Bukkit;

@@ -14,5 +14,4 @@ public class Debugger {
             Bukkit.getConsoleSender().sendMessage(message);
         }
     }
-
 }

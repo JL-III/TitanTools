@@ -7,7 +7,7 @@ import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.listeners.blockbreak.BlockBreak;
 import com.nessxxiii.titantools.listeners.ItemDamageEvent;
 import com.nessxxiii.titantools.listeners.blockbreak.PowerCrystalDrop;
-import com.nessxxiii.titantools.listeners.commands.admin.*;
+import com.nessxxiii.titantools.listeners.admin.*;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ToggleAncientPower;
 import com.nessxxiii.titantools.listeners.tools.TitanAxe;

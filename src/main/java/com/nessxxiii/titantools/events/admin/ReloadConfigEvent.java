@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.events.commands.admin;
+package com.nessxxiii.titantools.events.admin;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
