@@ -6,7 +6,7 @@
 
     <groupId>com.nessxxiii</groupId>
     <artifactId>TitanTools</artifactId>
-    <version>v2.0.1-alpha-3</version>
+    <version>v2.0.1-alpha-4</version>
     <packaging>jar</packaging>
 
     <name>TitanTools</name>
@@ -83,12 +83,6 @@
             <artifactId>paper-api</artifactId>
             <version>1.20.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.22</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

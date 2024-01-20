@@ -9,6 +9,15 @@ public class PowerCrystalDropEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
+    @Override
+    public @NotNull HandlerList getHandlers() {
+        return HANDLERS;
+    }
+
     private boolean isCancelled;
 
     private final Location playerLocation;
@@ -19,15 +28,6 @@ public class PowerCrystalDropEvent extends Event {
         this.playerLocation = playerLocation;
         this.dropLocation = dropLocation;
         this.isCancelled = false;
-    }
-
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
-    }
-
-    @Override
-    public @NotNull HandlerList getHandlers() {
-        return HANDLERS;
     }
 
     public Location getPlayerLocation() {

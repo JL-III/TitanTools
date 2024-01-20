@@ -6,6 +6,7 @@ import com.nessxxiii.titantools.commands.PlayerCommands;
 import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.listeners.ItemDamageEvent;
 import com.nessxxiii.titantools.listeners.blockbreak.PowerCrystalDrop;
+import com.nessxxiii.titantools.listeners.commands.admin.*;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ToggleAncientPower;
 import com.nessxxiii.titantools.listeners.tools.TitanAxe;
@@ -24,27 +25,28 @@ import java.util.Objects;
 public final class TitanTools extends JavaPlugin {
 
     private ConfigManager configManager;
+    private PlayerCommands playerCommands;
 
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
         this.configManager = new ConfigManager(this);
+        this.playerCommands = new PlayerCommands(this);
         CustomLogger customLogger = new CustomLogger(getName(), NamedTextColor.DARK_RED, NamedTextColor.WHITE);
         Debugger debugger = new Debugger(configManager);
-        registerEvents(debugger);
+        registerListeners(debugger);
         registerCommands(configManager, customLogger);
-        Utils.printBanner();
+        Utils.printBanner(Bukkit.getConsoleSender());
     }
 
     private void registerCommands(ConfigManager configManager, CustomLogger customLogger) {
-        PlayerCommands playerCommands = new PlayerCommands(this);
-        Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, configManager, playerCommands));
+        Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, configManager));
         Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
         Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(configManager,  customLogger));
     }
 
 
-    private void registerEvents(Debugger debugger) {
+    private void registerListeners(Debugger debugger) {
         Bukkit.getPluginManager().registerEvents(new TitanPicks(configManager, debugger),this);
         Bukkit.getPluginManager().registerEvents(new TitanAxe(configManager, debugger), this);
         Bukkit.getPluginManager().registerEvents(new TitanShovel(this, debugger), this);
@@ -52,5 +54,10 @@ public final class TitanTools extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(debugger),this);
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(debugger), this);
+        Bukkit.getPluginManager().registerEvents(new Debug(), this);
+        Bukkit.getPluginManager().registerEvents(new ImbueTitanTool(), this);
+        Bukkit.getPluginManager().registerEvents(new AddCrystal(), this);
+        Bukkit.getPluginManager().registerEvents(new SetModelData(), this);
+        Bukkit.getPluginManager().registerEvents(new ReloadConfig(this, playerCommands, configManager), this);
     }
 }

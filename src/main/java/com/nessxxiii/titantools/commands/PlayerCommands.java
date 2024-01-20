@@ -1,5 +1,6 @@
 package com.nessxxiii.titantools.commands;
 
+import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -32,15 +33,16 @@ public class PlayerCommands implements CommandExecutor{
         }
         if (args.length == 0) return false;
         if (!player.hasPermission("titan.enchants.playercommands")) {
-            player.sendMessage(ChatColor.RED + "No permission.");
+            player.sendMessage(Utils.NO_PERMISSION);
             return true;
         }
         if ("pack".equalsIgnoreCase(args[0]) && player.hasPermission("titan.enchants.playercommands.pack")) {
             try {
-                if (fileConfig.getString("resource-pack") == null) {
+                if (fileConfig.getString("resource-pack") == null || fileConfig.getString("resource-pack").length() < 3) {
+                    Utils.sendPluginMessage(player, ChatColor.RED + "File does not exist, please contact an admin for this issue.");
                     throw new RuntimeException("File does not exist, please make sure the link is correct.");
                 }
-
+                Utils.sendPluginMessage(player, ChatColor.GREEN + "Downloading resource pack...");
                 player.setResourcePack(fileConfig.getString("resource-pack"));
             } catch (Exception ex) {
                 ex.printStackTrace();

@@ -4,6 +4,7 @@ import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.items.ItemInfo;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -18,14 +19,29 @@ import static com.nessxxiii.titantools.config.ConfigManager.blockConversionTypes
 
 public class Utils {
 
-    public static void printBanner() {
-        Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "   _____   _____   _        ");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "     |   |   |    /_\\  |\\ |");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.GOLD + "     |   |   |   /   \\ | \\| enchants");
-        Bukkit.getConsoleSender().sendMessage("");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "               NessXXIII");
-        Bukkit.getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "<>------------------------------------<>");
+    private static final ChatColor BRACKET_COLOR = ChatColor.DARK_PURPLE;
+
+    private static final ChatColor PLUGIN_COLOR = ChatColor.LIGHT_PURPLE;
+
+    private static final String PLUGIN_PREFIX = BRACKET_COLOR + "[" + PLUGIN_COLOR + "TitanTools" + BRACKET_COLOR + "] " + ChatColor.RESET;
+
+    public static final String PERMISSION_PREFIX_ADMIN = "titan.enchants.admincommands";
+
+    public static final String NO_PERMISSION = ChatColor.RED + "No Permission.";
+
+    public static void printBanner(CommandSender sender) {
+        sendPluginMessage(sender, ChatColor.LIGHT_PURPLE + "################################################################################");
+        sendPluginMessage(sender, ChatColor.LIGHT_PURPLE + "# " + ChatColor.GOLD + "#####   ###   #####    #    #   #        #####   ###    ###   #       ###   " + ChatColor.LIGHT_PURPLE + " #");
+        sendPluginMessage(sender, ChatColor.LIGHT_PURPLE + "# " + ChatColor.GOLD + "  #      #      #     # #   ##  #          #    #   #  #   #  #      #      " + ChatColor.LIGHT_PURPLE + " #");
+        sendPluginMessage(sender, ChatColor.LIGHT_PURPLE + "# " + ChatColor.GOLD + "  #      #      #    #####  # # #          #    #   #  #   #  #       ###   " + ChatColor.LIGHT_PURPLE + " #");
+        sendPluginMessage(sender, ChatColor.LIGHT_PURPLE + "# " + ChatColor.GOLD + "  #      #      #    #   #  #  ##          #    #   #  #   #  #          #  " + ChatColor.LIGHT_PURPLE + " #");
+        sendPluginMessage(sender, ChatColor.LIGHT_PURPLE + "# " + ChatColor.GOLD + "  #     ###     #    #   #  #   #          #     ###    ###   #####   ###   " + ChatColor.LIGHT_PURPLE + " #");
+        sendPluginMessage(sender, ChatColor.LIGHT_PURPLE + "# " + ChatColor.LIGHT_PURPLE + "##############################################################################");
+        sendPluginMessage(sender, ChatColor.GOLD + "By: NessXXIII");
+    }
+
+    public static void sendPluginMessage(CommandSender sender, String response) {
+        sender.sendMessage(PLUGIN_PREFIX + response);
     }
 
     public static Response<List<String>> titanToolBlockBreakValidation(BlockBreakEvent event, List<Material> ALLOWED_TYPES) {
