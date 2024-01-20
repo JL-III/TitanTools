@@ -5,13 +5,18 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class PlayerCommands implements CommandExecutor{
+public class PlayerCommands implements CommandExecutor, TabCompleter {
 
     private final Plugin plugin;
     private FileConfiguration fileConfig;
@@ -25,6 +30,12 @@ public class PlayerCommands implements CommandExecutor{
         this.fileConfig = plugin.getConfig();
     }
 
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        return new ArrayList<>() {{
+            add("pack");
+        }};
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
