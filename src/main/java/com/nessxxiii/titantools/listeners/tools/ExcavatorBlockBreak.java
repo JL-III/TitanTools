@@ -1,6 +1,6 @@
-package com.nessxxiii.titantools.listeners;
+package com.nessxxiii.titantools.listeners.tools;
 
-import com.nessxxiii.titantools.events.PowerCrystalDropEvent;
+import com.nessxxiii.titantools.events.tools.ExcavatorBlockBreakEvent;
 import com.nessxxiii.titantools.items.ItemCreator;
 import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.Material;
@@ -10,10 +10,10 @@ import org.bukkit.event.Listener;
 
 import static com.nessxxiii.titantools.util.Utils.getRandomNumber;
 
-public class PowerCrystalDrop implements Listener {
+public class ExcavatorBlockBreak implements Listener {
 
     @EventHandler
-    public void onPowerCrystalDrop(PowerCrystalDropEvent event) {
+    public void onExcavatorBlockBreak(ExcavatorBlockBreakEvent event) {
         Block block = event.getDropLocation().getBlock();
         block.setType(Material.AIR);
         int randomNumber = getRandomNumber(1,1000);

@@ -1,7 +1,7 @@
 package com.nessxxiii.titantools.listeners.tools;
 
 import com.nessxxiii.titantools.enums.ToolStatus;
-import com.nessxxiii.titantools.events.PowerCrystalDropEvent;
+import com.nessxxiii.titantools.events.tools.ExcavatorBlockBreakEvent;
 import com.nessxxiii.titantools.events.tools.AxeBlockBreakEvent;
 import com.nessxxiii.titantools.events.tools.PickBlockBreakEvent;
 import com.nessxxiii.titantools.events.tools.ShovelBlockBreakEvent;
@@ -30,7 +30,7 @@ public class ToolEventHandler implements Listener {
         if (!event.getPlayer().hasPermission("titan.enchants.powercrystaldrop")) return;
         // event
         event.setCancelled(true);
-        Bukkit.getPluginManager().callEvent(new PowerCrystalDropEvent(event.getPlayer(), event.getBlock().getLocation()));
+        Bukkit.getPluginManager().callEvent(new ExcavatorBlockBreakEvent(event.getPlayer(), event.getBlock().getLocation()));
     }
 
     @EventHandler

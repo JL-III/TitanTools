@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.events;
+package com.nessxxiii.titantools.events.tools;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -6,7 +6,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class PowerCrystalDropEvent extends Event {
+public class ExcavatorBlockBreakEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
@@ -27,7 +27,7 @@ public class PowerCrystalDropEvent extends Event {
 
     private final Location dropLocation;
 
-    public PowerCrystalDropEvent(Player player, Location dropLocation) {
+    public ExcavatorBlockBreakEvent(Player player, Location dropLocation) {
         this.player = player;
         this.playerLocation = player.getLocation();
         this.dropLocation = dropLocation;

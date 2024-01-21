@@ -6,7 +6,7 @@ import com.nessxxiii.titantools.commands.PlayerCommands;
 import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.listeners.*;
 import com.nessxxiii.titantools.listeners.tools.*;
-import com.nessxxiii.titantools.listeners.PowerCrystalDrop;
+import com.nessxxiii.titantools.listeners.tools.ExcavatorBlockBreak;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ToggleAncientPower;
 import com.nessxxiii.titantools.util.CustomLogger;
@@ -49,7 +49,7 @@ public final class TitanTools extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ShovelBlockBreak(configManager, debugger), this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(debugger),this);
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(debugger),this);
-        Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
+        Bukkit.getPluginManager().registerEvents(new ExcavatorBlockBreak(),this);
         Bukkit.getPluginManager().registerEvents(new ToolEventHandler(), this);
         Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(debugger), this);
         Bukkit.getPluginManager().registerEvents(new Debug(), this);
