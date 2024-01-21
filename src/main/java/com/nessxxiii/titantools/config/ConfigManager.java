@@ -34,6 +34,7 @@ public class ConfigManager {
     private ItemStack test_tool;
     private final Set<Material> allowedPickBlocks = new HashSet<>();
     private final Set<Material> allowedAxeBlocks = new HashSet<>();
+    private final Set<Material> disallowedShovelItems = new HashSet<>();
     private boolean debug;
 
     public static final HashMap<Material, Integer> blockConversionQuantity = new HashMap<>(){{
@@ -88,22 +89,22 @@ public class ConfigManager {
     public void loadConfig() {
         fileConfiguration = plugin.getConfig();
         test_tool = loadItemStack("test_tool");
-        setAllowedBlocks("titanPick", allowedPickBlocks);
-        setAllowedBlocks("titanAxe", allowedAxeBlocks);
+        setMaterialList("titanPick", allowedPickBlocks, "destroyable-items");
+        setMaterialList("titanAxe", allowedAxeBlocks, "destroyable-items");
+        setMaterialList("titanShovel", disallowedShovelItems, "non-destroyable-items");
         setDebugValue();
     }
 
-    public void setAllowedBlocks(String targetSection, Set<Material> targetList) {
-        ConfigurationSection trench = plugin.getConfig().getConfigurationSection(targetSection);
-        if (trench == null) {
+    public void setMaterialList(String targetSection, Set<Material> targetList, String path) {
+        ConfigurationSection tool = plugin.getConfig().getConfigurationSection(targetSection);
+        if (tool == null) {
             plugin.getLogger().warning(targetSection + " configuration section not found!");
             return;
         }
 
-        List<String> items = trench.getStringList("destroyable-items");
-
+        List<String> items = tool.getStringList(path);
         if (items.size() == 0) {
-            plugin.getLogger().warning("No destroyable-items found in trench section of config.");
+            plugin.getLogger().warning("No " + path + " found in " + targetSection + " section of config.");
         }
 
         for (String item : items) {
@@ -126,6 +127,8 @@ public class ConfigManager {
     }
 
     public Set<Material> getAllowedAxeBlocks() { return allowedAxeBlocks; }
+
+    public Set<Material> getDisallowedShovelItems() { return disallowedShovelItems; }
 
     public boolean getDebug() {
         return debug;

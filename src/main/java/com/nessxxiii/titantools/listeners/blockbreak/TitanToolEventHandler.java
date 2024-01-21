@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class BlockBreak implements Listener {
+public class TitanToolEventHandler implements Listener {
 
     @EventHandler
     public static void onBlockBreak(BlockBreakEvent event){
@@ -55,6 +55,7 @@ public class BlockBreak implements Listener {
     @EventHandler
     public static void onPlayerInteractEvent(PlayerInteractEvent event) {
         if (event.isCancelled()) return;
+        if (event.getAction().isRightClick()) return;
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         if (itemInMainHand.getType() != Material.DIAMOND_SHOVEL && itemInMainHand.getType() != Material.NETHERITE_SHOVEL) return;
         if (!isValidTitanTool(event.getPlayer())) return;

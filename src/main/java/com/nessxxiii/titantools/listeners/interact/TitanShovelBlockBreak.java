@@ -1,5 +1,6 @@
 package com.nessxxiii.titantools.listeners.interact;
 
+import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.events.TitanShovelBlockBreakEvent;
 import com.nessxxiii.titantools.items.ItemInfo;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
@@ -11,28 +12,22 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class TitanShovelBlockBreak implements Listener {
 
-    public static final Set<Material> DISALLOWED_ITEMS = new HashSet<>();
-    private final Plugin PLUGIN;
+    private final ConfigManager configManager;
     private final Debugger debugger;
 
-    public TitanShovelBlockBreak(Plugin plugin, Debugger debugger) {
-        this.PLUGIN = plugin;
+    public TitanShovelBlockBreak(ConfigManager configManager, Debugger debugger) {
+        this.configManager = configManager;
         this.debugger = debugger;
-        loadConfig();
     }
 
     @EventHandler
@@ -51,7 +46,7 @@ public class TitanShovelBlockBreak implements Listener {
         if (shouldBreakClickedBlockNaturally(clickedBlock)) {
             clickedBlock.breakNaturally(itemInMainHand);
         } else {
-            if (DISALLOWED_ITEMS.contains(clickedBlock.getType())) return;
+            if (configManager.getDisallowedShovelItems().contains(clickedBlock.getType())) return;
             if (canBreakBlock(clickedBlock.getLocation())) {
                 clickedBlock.setType(Material.AIR);
             }
@@ -60,7 +55,7 @@ public class TitanShovelBlockBreak implements Listener {
             if (blockLoop.getLocation().equals(clickedBlock.getLocation())) {
                 continue;
             }
-            if (!DISALLOWED_ITEMS.contains(blockLoop.getType())) {
+            if (!configManager.getDisallowedShovelItems().contains(blockLoop.getType())) {
                 BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
                 Bukkit.getPluginManager().callEvent(e);
 
@@ -82,25 +77,6 @@ public class TitanShovelBlockBreak implements Listener {
     private boolean canBreakBlock(Location blockLocation) {
         return ((blockLocation.getY() > -64 && !blockLocation.getWorld().getEnvironment().equals(World.Environment.NETHER))
                 || ((blockLocation.getY() > 0 && blockLocation.getY() < 127) && blockLocation.getWorld().getEnvironment().equals(World.Environment.NETHER)));
-    }
-
-    public void loadConfig() {
-        ConfigurationSection titanShovel = PLUGIN.getConfig().getConfigurationSection("titanShovel");
-        if (titanShovel == null) {
-            PLUGIN.getLogger().warning("TitanShovel configuration not found!");
-            return;
-        }
-        List<String> items = titanShovel.getStringList("non-destroyable-items");
-        if (items.size() == 0) {
-            PLUGIN.getLogger().warning("No destroyable-items found in titanShovel section of config.");
-        }
-        for (String item : items) {
-            try {
-                DISALLOWED_ITEMS.add(Material.valueOf(item));
-            } catch (Exception e) {
-                PLUGIN.getLogger().warning("'" + item + "' is not a valid material name! Skipping this item.");
-            }
-        }
     }
 
     private static List<Block> getNearbyBlocks(Location location, BlockFace blockFace) {
