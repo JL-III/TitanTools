@@ -132,7 +132,7 @@ public class ItemInfo {
      * </p>
      * @param loreList List of lore to iterate over.
      * @param isTitanTool boolean returned from an isTitanTool check.
-     * @return Response Boolean Object containing the true or false response or an error value.
+     * @return Boolean true or false value.
      * */
     public static boolean hasChargeLore(List<String> loreList, boolean isTitanTool) {
         if (!isTitanTool) return false;

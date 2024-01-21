@@ -40,7 +40,6 @@ public class BlockBreak implements Listener {
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         if (itemInMainHand.getType() == Material.DIAMOND_SHOVEL || itemInMainHand.getType() == Material.NETHERITE_SHOVEL) return;
         if (isValidTitanTool(event.getPlayer())) return;
-        Utils.sendPluginMessage(event.getPlayer(), "Titan tool used on BlockBreakEvent: " + itemInMainHand.getType());
         switch (itemInMainHand.getType()) {
             case DIAMOND_PICKAXE, NETHERITE_PICKAXE -> {
                 event.setCancelled(true);
@@ -59,7 +58,6 @@ public class BlockBreak implements Listener {
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         if (itemInMainHand.getType() != Material.DIAMOND_SHOVEL && itemInMainHand.getType() != Material.NETHERITE_SHOVEL) return;
         if (!isValidTitanTool(event.getPlayer())) return;
-        Utils.sendPluginMessage(event.getPlayer(), "Titan tool used on PlayerInteractEvent: " + itemInMainHand.getType());
         switch (itemInMainHand.getType()) {
             case DIAMOND_SHOVEL, NETHERITE_SHOVEL -> {
                 event.setCancelled(true);
