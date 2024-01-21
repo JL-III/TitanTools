@@ -5,8 +5,11 @@ import com.nessxxiii.titantools.items.ItemInfo;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -174,4 +177,29 @@ public class Utils {
         put(Material.CHERRY_LOG, Material.CHERRY_SAPLING);
         put(Material.MANGROVE_LOG, Material.MANGROVE_PROPAGULE);
     }};
+
+    public static List<ItemStack> getDropsProcessed(Block currentBlock, Player player) {
+        if (blockConversionTypes.containsKey(currentBlock.getType()) && !player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
+            TitanEnchantEffects.playSmeltVisualAndSoundEffect(player, currentBlock.getLocation());
+            return new ArrayList<>(){{
+                add(new ItemStack(blockConversionTypes.get(currentBlock.getType()), blockConversionQuantity.get(currentBlock.getType())));
+            }};
+        } else {
+            return currentBlock.getDrops(player.getInventory().getItemInMainHand()).stream().toList();
+        }
+    }
+
+    public static boolean simulateBlockBreakEventIsCancelled(Block block, Player player) {
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, player);
+        Bukkit.getPluginManager().callEvent(blockBreakEvent);
+        boolean isCancelled = blockBreakEvent.isCancelled();
+        blockBreakEvent.setCancelled(true);
+        return isCancelled;
+    }
+
+    public static boolean simulateItemPickupIsCancelled(Item item, Player player) {
+        EntityPickupItemEvent playerPickupItemEvent = new EntityPickupItemEvent(player, item, (Math.max(item.getItemStack().getAmount() - 1, 0)));
+        Bukkit.getPluginManager().callEvent(playerPickupItemEvent);
+        return playerPickupItemEvent.isCancelled();
+    }
 }

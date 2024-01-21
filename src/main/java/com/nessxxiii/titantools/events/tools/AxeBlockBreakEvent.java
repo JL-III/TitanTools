@@ -1,5 +1,6 @@
 package com.nessxxiii.titantools.events.tools;
 
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -19,11 +20,18 @@ public class AxeBlockBreakEvent extends Event {
 
     private final Player player;
 
-    public AxeBlockBreakEvent(Player player) {
+    private final Block block;
+
+    public AxeBlockBreakEvent(Player player, Block block) {
         this.player = player;
+        this.block = block;
     }
 
     public Player getPlayer() {
         return player;
+    }
+
+    public Block getBlock() {
+        return block;
     }
 }

@@ -81,11 +81,6 @@ public class ConfigManager {
         loadConfig();
     }
 
-    public void reload() {
-        plugin.reloadConfig();
-        loadConfig();
-    }
-
     public void loadConfig() {
         fileConfiguration = plugin.getConfig();
         test_tool = loadItemStack("test_tool");

@@ -39,15 +39,13 @@ public class ToolEventHandler implements Listener {
         if (event.isCancelled()) return;
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         if (itemInMainHand.getType() == Material.DIAMOND_SHOVEL || itemInMainHand.getType() == Material.NETHERITE_SHOVEL) return;
-        if (isValidTitanTool(event.getPlayer())) return;
+        if (!isValidTitanTool(event.getPlayer())) return;
         switch (itemInMainHand.getType()) {
             case DIAMOND_PICKAXE, NETHERITE_PICKAXE -> {
-                event.setCancelled(true);
-                Bukkit.getPluginManager().callEvent(new PickBlockBreakEvent(event.getPlayer()));
+                Bukkit.getPluginManager().callEvent(new PickBlockBreakEvent(event.getPlayer(), event.getBlock()));
             }
             case DIAMOND_AXE, NETHERITE_AXE -> {
-                event.setCancelled(true);
-                Bukkit.getPluginManager().callEvent(new AxeBlockBreakEvent(event.getPlayer()));
+                Bukkit.getPluginManager().callEvent(new AxeBlockBreakEvent(event.getPlayer(), event.getBlock()));
             }
         }
     }
@@ -78,7 +76,7 @@ public class ToolEventHandler implements Listener {
             Utils.sendPluginMessage(player, "This is not a titan tool.");
             return false;
         }
-        if (ItemInfo.getStatus(loreListResponse.value(), isTitanTool).value() == ToolStatus.OFF) {
+        if (ItemInfo.getStatus(loreListResponse.value(), true).value() == ToolStatus.OFF) {
             Utils.sendPluginMessage(player, "This item is not active!");
             return false;
         }
