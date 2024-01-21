@@ -1,5 +1,7 @@
 package com.nessxxiii.titantools.events;
 
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -19,11 +21,25 @@ public class TitanShovelBlockBreakEvent extends Event {
 
     private final Player player;
 
-    public TitanShovelBlockBreakEvent(Player player) {
+    private final Block clickedBlock;
+
+    private final BlockFace blockFace;
+
+    public TitanShovelBlockBreakEvent(Player player, Block clickedBlock, BlockFace blockFace) {
         this.player = player;
+        this.clickedBlock = clickedBlock;
+        this.blockFace = blockFace;
     }
 
     public Player getPlayer() {
         return player;
+    }
+
+    public Block getClickedBlock() {
+        return clickedBlock;
+    }
+
+    public BlockFace getBlockFace() {
+        return blockFace;
     }
 }

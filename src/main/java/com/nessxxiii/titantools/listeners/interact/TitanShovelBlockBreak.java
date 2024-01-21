@@ -1,15 +1,23 @@
 package com.nessxxiii.titantools.listeners.interact;
 
 import com.nessxxiii.titantools.events.TitanShovelBlockBreakEvent;
+import com.nessxxiii.titantools.items.ItemInfo;
+import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titantools.util.Debugger;
+import com.nessxxiii.titantools.util.Response;
 import com.nessxxiii.titantools.util.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -33,57 +41,57 @@ public class TitanShovelBlockBreak implements Listener {
     @EventHandler
     public void titanShovelBreakBlock(TitanShovelBlockBreakEvent event) {
         Utils.sendPluginMessage(event.getPlayer(), "Titan Shovel Break Event fired");
-//        Response<List<String>> titanShovelValidationResponse = titanShovelValidation(event);
-//        if (titanShovelValidationResponse.error() != null) {
-//            debugger.sendDebugIfEnabled(titanShovelValidationResponse.error());
-//            return;
-//        }
-//
-//        IGNORE_LOCATIONS.clear();
-//        if (IGNORE_LOCATIONS.contains(event.getClickedBlock().getLocation())) {
-//            IGNORE_LOCATIONS.remove(event.getClickedBlock().getLocation());
-//            return;
-//        }
-//        Player player = event.getPlayer();
-//        ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
-//        BlockFace blockFace = event.getBlockFace();
-//        Block clickedBlock = event.getClickedBlock();
-//        boolean hasChargeLore = ItemInfo.hasChargeLore(titanShovelValidationResponse.value(), true);
-//        if (hasChargeLore) {
-//            Response<Integer> getChargeResponse = ItemInfo.getCharge(titanShovelValidationResponse.value(), true, true, 39);
-//            if (getChargeResponse.error() != null) {
-//                debugger.sendDebugIfEnabled(getChargeResponse.error());
-//                return;
-//            }
-//            decreaseChargeLore(debugger, itemInMainHand, titanShovelValidationResponse.value(), true, hasChargeLore, player);
-//        }
-//
-//        if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
-//            clickedBlock.breakNaturally(itemInMainHand);
-//        } else {
-//            if (DISALLOWED_ITEMS.contains(clickedBlock.getType())) return;
-//            clickedBlock.setType(Material.AIR);
-//        }
-//
-//        for (Block blockLoop : getNearbyBlocks(clickedBlock.getLocation(), blockFace)) {
-//            if (blockLoop.getLocation().equals(clickedBlock.getLocation())) {
-//                continue;
-//            }
-//            if (!DISALLOWED_ITEMS.contains(blockLoop.getType())) {
-//                IGNORE_LOCATIONS.add(blockLoop.getLocation());
-//                BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
-//                Bukkit.getPluginManager().callEvent(e);
-//
-//                if (!e.isCancelled()) {
-//                    if ((blockLoop.getLocation().getY() > -64 && !player.getWorld().getEnvironment().equals(World.Environment.NETHER))
-//                            || ((blockLoop.getLocation().getY() > 0 && blockLoop.getLocation().getY() < 127) && player.getWorld().getEnvironment().equals(World.Environment.NETHER))) {
-//                        e.setDropItems(false);
-//                        blockLoop.breakNaturally(itemInMainHand);
-//                    }
-//                }
-//                e.setCancelled(true);
-//            }
-//        }
+        IGNORE_LOCATIONS.clear();
+        if (IGNORE_LOCATIONS.contains(event.getClickedBlock().getLocation())) {
+            IGNORE_LOCATIONS.remove(event.getClickedBlock().getLocation());
+            return;
+        }
+        ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
+        BlockFace blockFace = event.getBlockFace();
+        Block clickedBlock = event.getClickedBlock();
+        List<String> loreList = itemInMainHand.getLore();
+        boolean hasChargeLore = ItemInfo.hasChargeLore(loreList, true);
+        if (hasChargeLore) {
+            Response<Integer> getChargeResponse = ItemInfo.getCharge(loreList, true, true, 39);
+            if (getChargeResponse.error() != null) {
+                debugger.sendDebugIfEnabled(getChargeResponse.error());
+                return;
+            }
+            ChargeManagement.decreaseChargeLore(debugger, itemInMainHand, loreList, true, hasChargeLore, event.getPlayer());
+        }
+
+        if (clickedBlock.getType() == Material.CHEST || clickedBlock.getType() == Material.SHULKER_BOX || clickedBlock.getType() == Material.BARREL) {
+            clickedBlock.breakNaturally(itemInMainHand);
+        } else {
+            if (DISALLOWED_ITEMS.contains(clickedBlock.getType())) return;
+            if (canBreakBlock(clickedBlock.getLocation())) {
+                clickedBlock.setType(Material.AIR);
+            }
+        }
+
+        for (Block blockLoop : getNearbyBlocks(clickedBlock.getLocation(), blockFace)) {
+            if (blockLoop.getLocation().equals(clickedBlock.getLocation())) {
+                continue;
+            }
+            if (!DISALLOWED_ITEMS.contains(blockLoop.getType())) {
+                IGNORE_LOCATIONS.add(blockLoop.getLocation());
+                BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
+                Bukkit.getPluginManager().callEvent(e);
+
+                if (!e.isCancelled()) {
+                    if (canBreakBlock(blockLoop.getLocation())) {
+                        e.setDropItems(false);
+                        blockLoop.breakNaturally(itemInMainHand);
+                    }
+                }
+                e.setCancelled(true);
+            }
+        }
+    }
+
+    private boolean canBreakBlock(Location blockLocation) {
+        return ((blockLocation.getY() > -64 && !blockLocation.getWorld().getEnvironment().equals(World.Environment.NETHER))
+                || ((blockLocation.getY() > 0 && blockLocation.getY() < 127) && blockLocation.getWorld().getEnvironment().equals(World.Environment.NETHER)));
     }
 
     public void loadConfig() {

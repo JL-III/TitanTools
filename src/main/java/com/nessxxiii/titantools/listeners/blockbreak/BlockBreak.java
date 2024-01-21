@@ -1,5 +1,6 @@
 package com.nessxxiii.titantools.listeners.blockbreak;
 
+import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.events.PowerCrystalDropEvent;
 import com.nessxxiii.titantools.events.TitanAxeBlockBreakEvent;
 import com.nessxxiii.titantools.events.TitanPickBlockBreakEvent;
@@ -57,12 +58,12 @@ public class BlockBreak implements Listener {
         if (event.isCancelled()) return;
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         if (itemInMainHand.getType() != Material.DIAMOND_SHOVEL && itemInMainHand.getType() != Material.NETHERITE_SHOVEL) return;
-        if (isValidTitanTool(event.getPlayer())) return;
+        if (!isValidTitanTool(event.getPlayer())) return;
         Utils.sendPluginMessage(event.getPlayer(), "Titan tool used on PlayerInteractEvent: " + itemInMainHand.getType());
         switch (itemInMainHand.getType()) {
             case DIAMOND_SHOVEL, NETHERITE_SHOVEL -> {
                 event.setCancelled(true);
-                Bukkit.getPluginManager().callEvent(new TitanShovelBlockBreakEvent(event.getPlayer()));
+                Bukkit.getPluginManager().callEvent(new TitanShovelBlockBreakEvent(event.getPlayer(), event.getClickedBlock(), event.getBlockFace()));
             }
         }
     }
@@ -71,14 +72,18 @@ public class BlockBreak implements Listener {
         Response<List<String>> loreListResponse = ItemInfo.getLore(player.getInventory().getItemInMainHand());
         if (loreListResponse.error() != null) {
             Utils.sendPluginMessage(player, loreListResponse.error());
-            return true;
+            return false;
         }
         boolean isTitanTool = ItemInfo.isTitanTool(loreListResponse.value());
         if (!isTitanTool) {
             Utils.sendPluginMessage(player, "This is not a titan tool.");
-            return true;
+            return false;
         }
-        return false;
+        if (ItemInfo.getStatus(loreListResponse.value(), isTitanTool).value() == ToolStatus.OFF) {
+            Utils.sendPluginMessage(player, "This item is not active!");
+            return false;
+        }
+        return true;
     }
 
     private static boolean isValidExcavator(ItemStack itemStack) {
