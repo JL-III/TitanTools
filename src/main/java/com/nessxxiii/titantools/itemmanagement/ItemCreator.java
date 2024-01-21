@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.items;
+package com.nessxxiii.titantools.itemmanagement;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

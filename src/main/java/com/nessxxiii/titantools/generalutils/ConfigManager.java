@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.config;
+package com.nessxxiii.titantools.generalutils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.items;
+package com.nessxxiii.titantools.itemmanagement;
 
 import com.nessxxiii.titantools.enums.PowerCrystalType;
 import org.bukkit.Material;

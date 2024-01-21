@@ -1,10 +1,10 @@
-package com.nessxxiii.titantools.listeners.util;
+package com.nessxxiii.titantools.listeners.utils;
 
 import com.nessxxiii.titantools.enums.ToolColor;
 import com.nessxxiii.titantools.enums.ToolStatus;
-import com.nessxxiii.titantools.items.ItemInfo;
-import com.nessxxiii.titantools.util.Debugger;
-import com.nessxxiii.titantools.util.Response;
+import com.nessxxiii.titantools.itemmanagement.ItemInfo;
+import com.nessxxiii.titantools.generalutils.Debugger;
+import com.nessxxiii.titantools.generalutils.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-import static com.nessxxiii.titantools.util.TitanEnchantEffects.enableEffect;
+import static com.nessxxiii.titantools.generalutils.TitanEnchantEffects.enableEffect;
 
 public class ToggleAncientPower implements Listener {
     private final Debugger debugger;

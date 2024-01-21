@@ -1,8 +1,8 @@
 package com.nessxxiii.titantools.commands;
 
-import com.nessxxiii.titantools.config.ConfigManager;
-import com.nessxxiii.titantools.items.ItemCreator;
-import com.nessxxiii.titantools.util.CustomLogger;
+import com.nessxxiii.titantools.generalutils.ConfigManager;
+import com.nessxxiii.titantools.itemmanagement.ItemCreator;
+import com.nessxxiii.titantools.generalutils.CustomLogger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

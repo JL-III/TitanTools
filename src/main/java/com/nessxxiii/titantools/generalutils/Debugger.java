@@ -1,6 +1,5 @@
-package com.nessxxiii.titantools.util;
+package com.nessxxiii.titantools.generalutils;
 
-import com.nessxxiii.titantools.config.ConfigManager;
 import org.bukkit.Bukkit;
 
 public class Debugger {

@@ -1,9 +1,9 @@
-package com.nessxxiii.titantools.util;
+package com.nessxxiii.titantools.generalutils;
 
 import com.nessxxiii.titantools.enums.ToolStatus;
-import com.nessxxiii.titantools.items.ItemCreator;
-import com.nessxxiii.titantools.items.ItemInfo;
-import com.nessxxiii.titantools.listeners.util.ChargeManagement;
+import com.nessxxiii.titantools.itemmanagement.ItemCreator;
+import com.nessxxiii.titantools.itemmanagement.ItemInfo;
+import com.nessxxiii.titantools.listeners.utils.ChargeManagement;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.nessxxiii.titantools.config.ConfigManager.blockConversionQuantity;
-import static com.nessxxiii.titantools.config.ConfigManager.blockConversionTypes;
+import static com.nessxxiii.titantools.generalutils.ConfigManager.blockConversionQuantity;
+import static com.nessxxiii.titantools.generalutils.ConfigManager.blockConversionTypes;
 
 public class Utils {
 

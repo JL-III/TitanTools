@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.util;
+package com.nessxxiii.titantools.generalutils;
 
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.Component;

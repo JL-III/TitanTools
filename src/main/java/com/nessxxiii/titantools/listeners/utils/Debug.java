@@ -1,8 +1,8 @@
-package com.nessxxiii.titantools.listeners.util;
+package com.nessxxiii.titantools.listeners.utils;
 
-import com.nessxxiii.titantools.events.util.DebugEvent;
-import com.nessxxiii.titantools.items.ItemInfo;
-import com.nessxxiii.titantools.util.Utils;
+import com.nessxxiii.titantools.events.utils.DebugEvent;
+import com.nessxxiii.titantools.itemmanagement.ItemInfo;
+import com.nessxxiii.titantools.generalutils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

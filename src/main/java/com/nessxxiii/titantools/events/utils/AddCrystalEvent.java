@@ -1,11 +1,11 @@
-package com.nessxxiii.titantools.events.util;
+package com.nessxxiii.titantools.events.utils;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class ReloadConfigEvent extends Event {
+public class AddCrystalEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
@@ -20,11 +20,18 @@ public class ReloadConfigEvent extends Event {
 
     private final Player player;
 
-    public ReloadConfigEvent(Player player) {
+    private final String[] args;
+
+    public AddCrystalEvent(Player player, String[] args) {
         this.player = player;
+        this.args = args;
     }
 
     public Player getPlayer() {
         return player;
+    }
+
+    public String[] getArgs() {
+        return args;
     }
 }

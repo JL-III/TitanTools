@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.util;
+package com.nessxxiii.titantools.generalutils;
 
 public record Response<T>(T value, String error) {
 

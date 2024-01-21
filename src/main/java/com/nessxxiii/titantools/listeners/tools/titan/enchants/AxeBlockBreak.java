@@ -1,9 +1,9 @@
 package com.nessxxiii.titantools.listeners.tools.titan.enchants;
 
-import com.nessxxiii.titantools.config.ConfigManager;
+import com.nessxxiii.titantools.generalutils.ConfigManager;
 import com.nessxxiii.titantools.events.tools.titan.enchants.AxeBlockBreakEvent;
-import com.nessxxiii.titantools.util.Debugger;
-import com.nessxxiii.titantools.util.Utils;
+import com.nessxxiii.titantools.generalutils.Debugger;
+import com.nessxxiii.titantools.generalutils.Utils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

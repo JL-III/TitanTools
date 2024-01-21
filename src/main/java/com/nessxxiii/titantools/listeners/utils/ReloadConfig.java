@@ -1,10 +1,10 @@
-package com.nessxxiii.titantools.listeners.util;
+package com.nessxxiii.titantools.listeners.utils;
 
 import com.nessxxiii.titantools.TitanTools;
 import com.nessxxiii.titantools.commands.PlayerCommands;
-import com.nessxxiii.titantools.config.ConfigManager;
-import com.nessxxiii.titantools.events.util.ReloadConfigEvent;
-import com.nessxxiii.titantools.util.Utils;
+import com.nessxxiii.titantools.generalutils.ConfigManager;
+import com.nessxxiii.titantools.events.utils.ReloadConfigEvent;
+import com.nessxxiii.titantools.generalutils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

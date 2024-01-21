@@ -1,6 +1,6 @@
 package com.nessxxiii.titantools.commands;
 
-import com.nessxxiii.titantools.util.Utils;
+import com.nessxxiii.titantools.generalutils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

@@ -1,16 +1,16 @@
 package com.nessxxiii.titantools.commands;
 
-import com.nessxxiii.titantools.config.ConfigManager;
+import com.nessxxiii.titantools.generalutils.ConfigManager;
 import com.nessxxiii.titantools.events.tools.titan.imbue.ImbueToolAttemptEvent;
-import com.nessxxiii.titantools.events.util.AddCrystalEvent;
-import com.nessxxiii.titantools.events.util.DebugEvent;
-import com.nessxxiii.titantools.events.util.ReloadConfigEvent;
-import com.nessxxiii.titantools.events.util.SetModelDataEvent;
-import com.nessxxiii.titantools.items.ItemCreator;
-import com.nessxxiii.titantools.items.PowerCrystalInfo;
-import com.nessxxiii.titantools.items.ItemInfo;
-import com.nessxxiii.titantools.util.Response;
-import com.nessxxiii.titantools.util.Utils;
+import com.nessxxiii.titantools.events.utils.AddCrystalEvent;
+import com.nessxxiii.titantools.events.utils.DebugEvent;
+import com.nessxxiii.titantools.events.utils.ReloadConfigEvent;
+import com.nessxxiii.titantools.events.utils.SetModelDataEvent;
+import com.nessxxiii.titantools.itemmanagement.ItemCreator;
+import com.nessxxiii.titantools.itemmanagement.PowerCrystalInfo;
+import com.nessxxiii.titantools.itemmanagement.ItemInfo;
+import com.nessxxiii.titantools.generalutils.Response;
+import com.nessxxiii.titantools.generalutils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;

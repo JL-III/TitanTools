@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.util;
+package com.nessxxiii.titantools.generalutils;
 
 import com.google.common.collect.Lists;
 import org.bukkit.Location;
