@@ -2,10 +2,7 @@ package com.nessxxiii.titantools.listeners.tools;
 
 import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.events.tools.PickBlockBreakEvent;
-import com.nessxxiii.titantools.items.ItemInfo;
-import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titantools.util.Debugger;
-import com.nessxxiii.titantools.util.Response;
 import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -43,16 +40,8 @@ public class PickBlockBreak implements Listener {
         }
         Player player = event.getPlayer();
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-        boolean hasChargeLore = ItemInfo.hasChargeLore(lore, true);
 
-        if (hasChargeLore) {
-            Response<Integer> getChargeResponse = ItemInfo.getCharge(lore, true, true, 39);
-            if (getChargeResponse.error() != null) {
-                debugger.sendDebugIfEnabled(getChargeResponse.error());
-                return;
-            }
-            ChargeManagement.decreaseChargeLore(debugger, itemInMainHand, lore, true, true, player);
-        }
+        Utils.processChargeManagement(player, debugger, itemInMainHand, lore);
 
         int aggregateAmount = 0;
         for (Block currentBlock : Utils.getCubeBlocks(blockBroken.getLocation())) {

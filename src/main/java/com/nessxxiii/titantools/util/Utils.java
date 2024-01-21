@@ -2,6 +2,7 @@ package com.nessxxiii.titantools.util;
 
 import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.items.ItemInfo;
+import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
@@ -201,5 +202,17 @@ public class Utils {
         EntityPickupItemEvent playerPickupItemEvent = new EntityPickupItemEvent(player, item, (Math.max(item.getItemStack().getAmount() - 1, 0)));
         Bukkit.getPluginManager().callEvent(playerPickupItemEvent);
         return playerPickupItemEvent.isCancelled();
+    }
+
+    public static void processChargeManagement(Player player, Debugger debugger, ItemStack itemInMainHand, List<String> lore) {
+        boolean hasChargeLore = ItemInfo.hasChargeLore(lore, true);
+        if (hasChargeLore) {
+            Response<Integer> getChargeResponse = ItemInfo.getCharge(lore, true, true, 39);
+            if (getChargeResponse.error() != null) {
+                debugger.sendDebugIfEnabled(getChargeResponse.error());
+                return;
+            }
+            ChargeManagement.decreaseChargeLore(debugger, itemInMainHand, lore, true, true, player);
+        }
     }
 }

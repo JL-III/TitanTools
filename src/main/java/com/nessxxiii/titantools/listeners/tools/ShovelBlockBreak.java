@@ -2,10 +2,8 @@ package com.nessxxiii.titantools.listeners.tools;
 
 import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.events.tools.ShovelBlockBreakEvent;
-import com.nessxxiii.titantools.items.ItemInfo;
-import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titantools.util.Debugger;
-import com.nessxxiii.titantools.util.Response;
+import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,15 +32,10 @@ public class ShovelBlockBreak implements Listener {
     public void titanShovelBreakBlock(ShovelBlockBreakEvent event) {
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         Block clickedBlock = event.getClickedBlock();
-        List<String> loreList = itemInMainHand.getLore();
-        if (ItemInfo.hasChargeLore(loreList, true)) {
-            Response<Integer> getChargeResponse = ItemInfo.getCharge(loreList, true, true, 39);
-            if (getChargeResponse.error() != null) {
-                debugger.sendDebugIfEnabled(getChargeResponse.error());
-                return;
-            }
-            ChargeManagement.decreaseChargeLore(debugger, itemInMainHand, loreList, true, true, event.getPlayer());
-        }
+        List<String> lore = itemInMainHand.getLore();
+
+        Utils.processChargeManagement(event.getPlayer(), debugger, itemInMainHand, lore);
+
         if (shouldBreakClickedBlockNaturally(clickedBlock)) {
             clickedBlock.breakNaturally(itemInMainHand);
         } else {

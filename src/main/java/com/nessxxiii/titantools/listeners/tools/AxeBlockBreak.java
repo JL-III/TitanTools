@@ -2,10 +2,7 @@ package com.nessxxiii.titantools.listeners.tools;
 
 import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.events.tools.AxeBlockBreakEvent;
-import com.nessxxiii.titantools.items.ItemInfo;
-import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titantools.util.Debugger;
-import com.nessxxiii.titantools.util.Response;
 import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -41,15 +38,7 @@ public class AxeBlockBreak implements Listener {
         ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
         List<String> lore = itemInMainHand.getLore();
 
-        boolean hasChargeLore = ItemInfo.hasChargeLore(lore, true);
-        if (hasChargeLore) {
-            Response<Integer> getChargeResponse = ItemInfo.getCharge(lore, true, true, 39);
-            if (getChargeResponse.error() != null) {
-                debugger.sendDebugIfEnabled("TitanAxe - getChargeResponse: " + getChargeResponse.error());
-                return;
-            }
-            ChargeManagement.decreaseChargeLore(debugger, itemInMainHand, lore, true, true, player);
-        }
+        Utils.processChargeManagement(player, debugger, itemInMainHand, lore);
 
         for (Block block : Utils.getSphereBlocks(blockBroken.getLocation(), 5, false)) {
             if (block.getLocation().equals(blockBroken.getLocation())) {
