@@ -1,11 +1,11 @@
-package com.nessxxiii.titantools.events;
+package com.nessxxiii.titantools.events.titan;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class TitanPickBlockBreakEvent extends Event {
+public class AxeBlockBreakEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
 
     public static HandlerList getHandlerList() {
@@ -19,7 +19,7 @@ public class TitanPickBlockBreakEvent extends Event {
 
     private final Player player;
 
-    public TitanPickBlockBreakEvent(Player player) {
+    public AxeBlockBreakEvent(Player player) {
         this.player = player;
     }
 

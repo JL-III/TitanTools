@@ -1,7 +1,7 @@
-package com.nessxxiii.titantools.listeners.blockbreak;
+package com.nessxxiii.titantools.listeners.titan;
 
 import com.nessxxiii.titantools.config.ConfigManager;
-import com.nessxxiii.titantools.events.TitanPickBlockBreakEvent;
+import com.nessxxiii.titantools.events.titan.PickBlockBreakEvent;
 import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.TitanEnchantEffects;
 import com.nessxxiii.titantools.util.Utils;
@@ -23,13 +23,13 @@ import java.util.*;
 import static com.nessxxiii.titantools.config.ConfigManager.blockConversionQuantity;
 import static com.nessxxiii.titantools.config.ConfigManager.blockConversionTypes;
 
-public class TitanPickBlockBreak implements Listener {
+public class PickBlockBreak implements Listener {
     private final ConfigManager configManager;
     private final Debugger debugger;
     private static final Set<Location> IGNORE_LOCATIONS = new HashSet<>();
     private final Material cooldownMaterial = Material.BARRIER;
 
-    public TitanPickBlockBreak(ConfigManager configManager, Debugger debugger) {
+    public PickBlockBreak(ConfigManager configManager, Debugger debugger) {
         this.configManager = configManager;
         this.debugger = debugger;
         configManager.loadConfig();
@@ -40,7 +40,7 @@ public class TitanPickBlockBreak implements Listener {
     // check if the pickup is cancelled and if so, break the block naturally - otherwise add the item to the players inventory
 
     @EventHandler
-    public void onBlockBreakEvent(TitanPickBlockBreakEvent event) {
+    public void onBlockBreakEvent(PickBlockBreakEvent event) {
         Utils.sendPluginMessage(event.getPlayer(), "Titan Pick Break Event fired");
 //        if (event.isCancelled()) return;
 //        if (!ItemInfo.isAllowedType(event.getPlayer().getInventory().getItemInMainHand(), ItemInfo.ALLOWED_PICK_TYPES)) {

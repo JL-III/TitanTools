@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.events;
+package com.nessxxiii.titantools.events.titan;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -7,7 +7,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class TitanShovelBlockBreakEvent extends Event {
+public class ShovelBlockBreakEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
 
     public static HandlerList getHandlerList() {
@@ -25,7 +25,7 @@ public class TitanShovelBlockBreakEvent extends Event {
 
     private final BlockFace blockFace;
 
-    public TitanShovelBlockBreakEvent(Player player, Block clickedBlock, BlockFace blockFace) {
+    public ShovelBlockBreakEvent(Player player, Block clickedBlock, BlockFace blockFace) {
         this.player = player;
         this.clickedBlock = clickedBlock;
         this.blockFace = blockFace;

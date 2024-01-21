@@ -2,6 +2,7 @@ package com.nessxxiii.titantools.commands;
 
 import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.events.*;
+import com.nessxxiii.titantools.events.ImbueToolAttemptEvent;
 import com.nessxxiii.titantools.items.ItemCreator;
 import com.nessxxiii.titantools.items.PowerCrystalInfo;
 import com.nessxxiii.titantools.items.ItemInfo;

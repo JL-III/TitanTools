@@ -1,10 +1,10 @@
-package com.nessxxiii.titantools.listeners.blockbreak;
+package com.nessxxiii.titantools.listeners.titan;
 
 import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.events.PowerCrystalDropEvent;
-import com.nessxxiii.titantools.events.TitanAxeBlockBreakEvent;
-import com.nessxxiii.titantools.events.TitanPickBlockBreakEvent;
-import com.nessxxiii.titantools.events.TitanShovelBlockBreakEvent;
+import com.nessxxiii.titantools.events.titan.AxeBlockBreakEvent;
+import com.nessxxiii.titantools.events.titan.PickBlockBreakEvent;
+import com.nessxxiii.titantools.events.titan.ShovelBlockBreakEvent;
 import com.nessxxiii.titantools.items.ItemCreator;
 import com.nessxxiii.titantools.items.ItemInfo;
 import com.nessxxiii.titantools.util.Response;
@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class TitanToolEventHandler implements Listener {
+public class ToolEventHandler implements Listener {
 
     @EventHandler
     public static void onBlockBreak(BlockBreakEvent event){
@@ -43,11 +43,11 @@ public class TitanToolEventHandler implements Listener {
         switch (itemInMainHand.getType()) {
             case DIAMOND_PICKAXE, NETHERITE_PICKAXE -> {
                 event.setCancelled(true);
-                Bukkit.getPluginManager().callEvent(new TitanPickBlockBreakEvent(event.getPlayer()));
+                Bukkit.getPluginManager().callEvent(new PickBlockBreakEvent(event.getPlayer()));
             }
             case DIAMOND_AXE, NETHERITE_AXE -> {
                 event.setCancelled(true);
-                Bukkit.getPluginManager().callEvent(new TitanAxeBlockBreakEvent(event.getPlayer()));
+                Bukkit.getPluginManager().callEvent(new AxeBlockBreakEvent(event.getPlayer()));
             }
         }
     }
@@ -62,7 +62,7 @@ public class TitanToolEventHandler implements Listener {
         switch (itemInMainHand.getType()) {
             case DIAMOND_SHOVEL, NETHERITE_SHOVEL -> {
                 event.setCancelled(true);
-                Bukkit.getPluginManager().callEvent(new TitanShovelBlockBreakEvent(event.getPlayer(), event.getClickedBlock(), event.getBlockFace()));
+                Bukkit.getPluginManager().callEvent(new ShovelBlockBreakEvent(event.getPlayer(), event.getClickedBlock(), event.getBlockFace()));
             }
         }
     }

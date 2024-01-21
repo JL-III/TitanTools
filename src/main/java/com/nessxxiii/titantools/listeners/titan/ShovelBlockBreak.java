@@ -1,7 +1,7 @@
-package com.nessxxiii.titantools.listeners.interact;
+package com.nessxxiii.titantools.listeners.titan;
 
 import com.nessxxiii.titantools.config.ConfigManager;
-import com.nessxxiii.titantools.events.TitanShovelBlockBreakEvent;
+import com.nessxxiii.titantools.events.titan.ShovelBlockBreakEvent;
 import com.nessxxiii.titantools.items.ItemInfo;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titantools.util.Debugger;
@@ -20,18 +20,18 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TitanShovelBlockBreak implements Listener {
+public class ShovelBlockBreak implements Listener {
 
     private final ConfigManager configManager;
     private final Debugger debugger;
 
-    public TitanShovelBlockBreak(ConfigManager configManager, Debugger debugger) {
+    public ShovelBlockBreak(ConfigManager configManager, Debugger debugger) {
         this.configManager = configManager;
         this.debugger = debugger;
     }
 
     @EventHandler
-    public void titanShovelBreakBlock(TitanShovelBlockBreakEvent event) {
+    public void titanShovelBreakBlock(ShovelBlockBreakEvent event) {
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         Block clickedBlock = event.getClickedBlock();
         List<String> loreList = itemInMainHand.getLore();

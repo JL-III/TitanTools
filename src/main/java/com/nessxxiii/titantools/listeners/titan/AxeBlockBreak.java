@@ -1,7 +1,7 @@
-package com.nessxxiii.titantools.listeners.blockbreak;
+package com.nessxxiii.titantools.listeners.titan;
 
 import com.nessxxiii.titantools.config.ConfigManager;
-import com.nessxxiii.titantools.events.TitanAxeBlockBreakEvent;
+import com.nessxxiii.titantools.events.titan.AxeBlockBreakEvent;
 import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.Location;
@@ -10,13 +10,13 @@ import org.bukkit.event.Listener;
 
 import java.util.*;
 
-public class TitanAxeBlockBreak implements Listener {
+public class AxeBlockBreak implements Listener {
 
     private final ConfigManager configManager;
 
     private final Debugger debugger;
 
-    public TitanAxeBlockBreak(ConfigManager configManager, Debugger debugger) {
+    public AxeBlockBreak(ConfigManager configManager, Debugger debugger) {
         this.configManager = configManager;
         this.debugger = debugger;
     }
@@ -26,7 +26,7 @@ public class TitanAxeBlockBreak implements Listener {
     // so by the time we have gotten here, we have already checked if the item is a titan axe
 
     @EventHandler
-    public void onTitanAxeBreak(TitanAxeBlockBreakEvent event) {
+    public void onTitanAxeBreak(AxeBlockBreakEvent event) {
         Utils.sendPluginMessage(event.getPlayer(), "Titan Axe Break Event fired");
 //        Response<List<String>> titanToolValidationCheckResponse = titanToolBlockBreakValidation(event, ItemInfo.ALLOWED_AXE_TYPES);
 //        //Intentionally swallowing the error here since this is trigger on a block break validation, would result in tons of logging noise.

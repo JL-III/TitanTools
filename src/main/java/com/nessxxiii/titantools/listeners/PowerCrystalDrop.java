@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.listeners.blockbreak;
+package com.nessxxiii.titantools.listeners;
 
 import com.nessxxiii.titantools.events.PowerCrystalDropEvent;
 import com.nessxxiii.titantools.items.ItemCreator;
