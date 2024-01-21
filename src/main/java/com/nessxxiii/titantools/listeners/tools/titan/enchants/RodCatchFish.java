@@ -41,7 +41,6 @@ public class RodCatchFish implements Listener {
                     caughtItem.removeEnchantment(enchantment);
                 }
                 caughtItem.setType(Material.TROPICAL_FISH);
-                caughtItem.add(1);
                 break;
         }
 

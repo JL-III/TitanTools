@@ -27,8 +27,8 @@ public class ItemInfo {
             add(Material.NETHERITE_SHOVEL);
             add(Material.DIAMOND_AXE);
             add(Material.NETHERITE_AXE);
-            add(Material.DIAMOND_HOE);
-            add(Material.NETHERITE_HOE);
+//            add(Material.DIAMOND_HOE);
+//            add(Material.NETHERITE_HOE);
             add(Material.DIAMOND_SWORD);
             add(Material.NETHERITE_SWORD);
             add(Material.FISHING_ROD);
