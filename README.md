@@ -33,3 +33,9 @@ Players can charge their tools with power crystals by taking a PowerCrystal and 
 
  ### Special Notes:
  Shovel can delete bedrock above Y -63
+
+### Dependencies:
+- [TheatriaMMO]
+
+### Plugins depending on this plugin:
+- [TheatriaUtils]

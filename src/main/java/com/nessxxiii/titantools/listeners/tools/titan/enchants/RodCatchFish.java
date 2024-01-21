@@ -4,6 +4,7 @@ import com.nessxxiii.titantools.events.tools.titan.enchants.RodCatchFishEvent;
 import com.nessxxiii.titantools.generalutils.Debugger;
 import com.nessxxiii.titantools.generalutils.Utils;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
@@ -29,14 +30,20 @@ public class RodCatchFish implements Listener {
         ItemStack caughtItem = event.getCaughtItem().getItemStack();
 
         switch (caughtItem.getType()) {
-            case COD, SALMON, PUFFERFISH, TROPICAL_FISH:
+            case COD, SALMON, PUFFERFISH:
+                caughtItem.add(2);
+                break;
+            case TROPICAL_FISH:
+                caughtItem.add(1);
                 break;
             default:
+                for (Enchantment enchantment : caughtItem.getEnchantments().keySet()) {
+                    caughtItem.removeEnchantment(enchantment);
+                }
                 caughtItem.setType(Material.TROPICAL_FISH);
+                caughtItem.add(1);
                 break;
         }
-
-        caughtItem.add(2);
 
         event.getPlayer().getWorld().dropItem(event.getCaughtItem().getLocation(), caughtItem).setVelocity(event.getVelocity());
     }
