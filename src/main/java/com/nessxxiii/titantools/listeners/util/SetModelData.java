@@ -1,6 +1,6 @@
-package com.nessxxiii.titantools.listeners;
+package com.nessxxiii.titantools.listeners.util;
 
-import com.nessxxiii.titantools.events.SetModelDataEvent;
+import com.nessxxiii.titantools.events.util.SetModelDataEvent;
 import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

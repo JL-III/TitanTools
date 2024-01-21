@@ -1,7 +1,7 @@
-package com.nessxxiii.titantools.listeners.tools;
+package com.nessxxiii.titantools.listeners.tools.titan.enchants;
 
 import com.nessxxiii.titantools.config.ConfigManager;
-import com.nessxxiii.titantools.events.tools.ShovelBlockBreakEvent;
+import com.nessxxiii.titantools.events.tools.titan.enchants.ShovelBlockBreakEvent;
 import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.Bukkit;

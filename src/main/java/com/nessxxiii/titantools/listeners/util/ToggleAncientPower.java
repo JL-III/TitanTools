@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.listeners.enchantmentManagement;
+package com.nessxxiii.titantools.listeners.util;
 
 import com.nessxxiii.titantools.enums.ToolColor;
 import com.nessxxiii.titantools.enums.ToolStatus;

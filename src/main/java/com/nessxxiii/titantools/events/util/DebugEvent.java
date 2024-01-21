@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.events;
+package com.nessxxiii.titantools.events.util;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
@@ -21,11 +21,11 @@ public class DebugEvent extends Event {
         return HANDLERS;
     }
 
-    private List<String> lore;
+    private final List<String> lore;
 
-    private CommandSender sender;
+    private final CommandSender sender;
 
-    private ItemStack item;
+    private final ItemStack item;
 
     public DebugEvent(List<String> lore, CommandSender sender, ItemStack item) {
         this.lore = lore;

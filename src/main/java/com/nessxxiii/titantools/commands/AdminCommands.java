@@ -1,8 +1,11 @@
 package com.nessxxiii.titantools.commands;
 
 import com.nessxxiii.titantools.config.ConfigManager;
-import com.nessxxiii.titantools.events.*;
-import com.nessxxiii.titantools.events.tools.ImbueToolAttemptEvent;
+import com.nessxxiii.titantools.events.tools.titan.imbue.ImbueToolAttemptEvent;
+import com.nessxxiii.titantools.events.util.AddCrystalEvent;
+import com.nessxxiii.titantools.events.util.DebugEvent;
+import com.nessxxiii.titantools.events.util.ReloadConfigEvent;
+import com.nessxxiii.titantools.events.util.SetModelDataEvent;
 import com.nessxxiii.titantools.items.ItemCreator;
 import com.nessxxiii.titantools.items.PowerCrystalInfo;
 import com.nessxxiii.titantools.items.ItemInfo;

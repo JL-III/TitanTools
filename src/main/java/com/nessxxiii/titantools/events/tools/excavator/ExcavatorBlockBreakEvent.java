@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.events.tools;
+package com.nessxxiii.titantools.events.tools.excavator;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

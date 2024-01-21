@@ -1,12 +1,14 @@
-package com.nessxxiii.titantools.listeners.tools;
+package com.nessxxiii.titantools.listeners.util;
 
 import com.nessxxiii.titantools.items.ItemInfo;
 import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.Response;
+import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 
 import java.util.List;
 
@@ -18,6 +20,7 @@ public class ItemDamageEvent implements Listener {
 
     @EventHandler
     public void onPlayerItemDamageEvent(PlayerItemDamageEvent event) {
+        if (event.isCancelled()) return;
         ItemStack itemBeingDamaged = event.getItem();
         Response<List<String>> loreListResponse = ItemInfo.getLore(itemBeingDamaged);
         if (loreListResponse.error() != null) {
@@ -27,6 +30,17 @@ public class ItemDamageEvent implements Listener {
 
         if (ItemInfo.isTitanTool(loreListResponse.value())) {
             event.setCancelled(true);
+            return;
+        }
+
+        if (event.getPlayer().hasPermission("titan.enchants.autorepair")) {
+            Damageable damageable = (Damageable) event.getItem().getItemMeta();
+            if (itemBeingDamaged.getType().getMaxDurability() - damageable.getDamage() < itemBeingDamaged.getType().getMaxDurability() / 2) {
+                Utils.sendPluginMessage(event.getPlayer(), "Item is damaged, repairing...");
+                event.setCancelled(true);
+                damageable.setDamage(0);
+                itemBeingDamaged.setItemMeta(damageable);
+            }
         }
     }
 }

@@ -1,10 +1,12 @@
-package com.nessxxiii.titantools.events;
+package com.nessxxiii.titantools.events.tools.titan.imbue;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class PowerCrystalDropEvent extends Event {
+public class ImbueToolAttemptEvent extends Event {
+
     private static final HandlerList HANDLERS = new HandlerList();
 
     public static HandlerList getHandlerList() {
@@ -14,5 +16,15 @@ public class PowerCrystalDropEvent extends Event {
     @Override
     public @NotNull HandlerList getHandlers() {
         return HANDLERS;
+    }
+
+    private final Player player;
+
+    public ImbueToolAttemptEvent(Player player) {
+        this.player = player;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 }

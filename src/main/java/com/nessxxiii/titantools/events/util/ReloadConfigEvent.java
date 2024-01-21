@@ -1,12 +1,12 @@
-package com.nessxxiii.titantools.events.tools;
+package com.nessxxiii.titantools.events.util;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class ImbueToolSucceedEvent extends Event {
+public class ReloadConfigEvent extends Event {
+
     private static final HandlerList HANDLERS = new HandlerList();
 
     public static HandlerList getHandlerList() {
@@ -20,18 +20,11 @@ public class ImbueToolSucceedEvent extends Event {
 
     private final Player player;
 
-    private final ItemStack item;
-
-    public ImbueToolSucceedEvent(Player player, ItemStack item) {
+    public ReloadConfigEvent(Player player) {
         this.player = player;
-        this.item = item;
     }
 
     public Player getPlayer() {
         return player;
-    }
-
-    public ItemStack getItemStack() {
-        return item;
     }
 }

@@ -1,11 +1,11 @@
-package com.nessxxiii.titantools.events;
+package com.nessxxiii.titantools.events.util;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class AddCrystalEvent extends Event {
+public class SetModelDataEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
@@ -22,7 +22,7 @@ public class AddCrystalEvent extends Event {
 
     private final String[] args;
 
-    public AddCrystalEvent(Player player, String[] args) {
+    public SetModelDataEvent(Player player, String[] args) {
         this.player = player;
         this.args = args;
     }

@@ -1,6 +1,5 @@
-package com.nessxxiii.titantools.listeners.enchantmentManagement;
+package com.nessxxiii.titantools.listeners.util;
 
-import com.nessxxiii.titantools.config.ConfigManager;
 import com.nessxxiii.titantools.enums.ToolColor;
 import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.items.CustomModelData;
@@ -20,9 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
-
-import static com.nessxxiii.titantools.util.TitanEnchantEffects.depletedChargeEffect;
-
 
 public class ChargeManagement implements Listener {
     private final Debugger debugger;
@@ -158,7 +154,7 @@ public class ChargeManagement implements Listener {
             loreList.set(chargeLoreIndexResponse.value(), ItemInfo.generateChargeLore(toolColorResponse.value(), 0));
             loreList.set(statusLoreIndexResponse.value(), ItemInfo.generateStatusLore(toolColorResponse.value(), ToolStatus.OFF));
             meta.setCustomModelData(CustomModelData.UNCHARGED_TITAN_TOOL);
-            depletedChargeEffect(player);
+            TitanEnchantEffects.depletedChargeEffect(player);
             player.sendActionBar(Component.text(ChatColor.ITALIC + "§x§F§F§0§0§4§CAncient Power:" + " " + ChatColor.YELLOW + "Depleted"));
         } else {
             loreList.set(chargeLoreIndexResponse.value(), ItemInfo.generateChargeLore(toolColorResponse.value(), remainingCharge));
@@ -167,7 +163,5 @@ public class ChargeManagement implements Listener {
         }
         meta.setLore(loreList);
         item.setItemMeta(meta);
-
     }
-
 }

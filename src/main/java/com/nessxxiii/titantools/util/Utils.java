@@ -3,7 +3,7 @@ package com.nessxxiii.titantools.util;
 import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.items.ItemCreator;
 import com.nessxxiii.titantools.items.ItemInfo;
-import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
+import com.nessxxiii.titantools.listeners.util.ChargeManagement;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -209,11 +209,9 @@ public class Utils {
         }
         boolean isTitanTool = ItemInfo.isTitanTool(loreListResponse.value());
         if (!isTitanTool) {
-            Utils.sendPluginMessage(player, "This is not a titan tool.");
             return false;
         }
         if (ItemInfo.getStatus(loreListResponse.value(), true).value() == ToolStatus.OFF) {
-            Utils.sendPluginMessage(player, "This item is not active!");
             return false;
         }
         return true;

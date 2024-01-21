@@ -1,6 +1,6 @@
-package com.nessxxiii.titantools.listeners;
+package com.nessxxiii.titantools.listeners.util;
 
-import com.nessxxiii.titantools.events.AddCrystalEvent;
+import com.nessxxiii.titantools.events.util.AddCrystalEvent;
 import com.nessxxiii.titantools.items.ItemCreator;
 import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.Bukkit;

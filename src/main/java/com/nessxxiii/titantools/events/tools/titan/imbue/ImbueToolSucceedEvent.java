@@ -1,12 +1,12 @@
-package com.nessxxiii.titantools.events;
+package com.nessxxiii.titantools.events.tools.titan.imbue;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-public class SetModelDataEvent extends Event {
-
+public class ImbueToolSucceedEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
 
     public static HandlerList getHandlerList() {
@@ -20,18 +20,18 @@ public class SetModelDataEvent extends Event {
 
     private final Player player;
 
-    private final String[] args;
+    private final ItemStack item;
 
-    public SetModelDataEvent(Player player, String[] args) {
+    public ImbueToolSucceedEvent(Player player, ItemStack item) {
         this.player = player;
-        this.args = args;
+        this.item = item;
     }
 
     public Player getPlayer() {
         return player;
     }
 
-    public String[] getArgs() {
-        return args;
+    public ItemStack getItemStack() {
+        return item;
     }
 }

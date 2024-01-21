@@ -1,9 +1,9 @@
-package com.nessxxiii.titantools.listeners.tools;
+package com.nessxxiii.titantools.listeners.util;
 
-import com.nessxxiii.titantools.events.tools.ExcavatorBlockBreakEvent;
-import com.nessxxiii.titantools.events.tools.AxeBlockBreakEvent;
-import com.nessxxiii.titantools.events.tools.PickBlockBreakEvent;
-import com.nessxxiii.titantools.events.tools.ShovelBlockBreakEvent;
+import com.nessxxiii.titantools.events.tools.excavator.ExcavatorBlockBreakEvent;
+import com.nessxxiii.titantools.events.tools.titan.enchants.AxeBlockBreakEvent;
+import com.nessxxiii.titantools.events.tools.titan.enchants.PickBlockBreakEvent;
+import com.nessxxiii.titantools.events.tools.titan.enchants.ShovelBlockBreakEvent;
 import com.nessxxiii.titantools.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

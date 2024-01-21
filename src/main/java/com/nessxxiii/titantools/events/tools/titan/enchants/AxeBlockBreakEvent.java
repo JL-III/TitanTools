@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.events.tools;
+package com.nessxxiii.titantools.events.tools.titan.enchants;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -6,7 +6,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class PickBlockBreakEvent extends Event {
+public class AxeBlockBreakEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
 
     public static HandlerList getHandlerList() {
@@ -22,7 +22,7 @@ public class PickBlockBreakEvent extends Event {
 
     private final Block block;
 
-    public PickBlockBreakEvent(Player player, Block block) {
+    public AxeBlockBreakEvent(Player player, Block block) {
         this.player = player;
         this.block = block;
     }
