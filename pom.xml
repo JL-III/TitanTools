@@ -84,5 +84,11 @@
             <version>1.20.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.JL-III</groupId>
+            <artifactId>TheatriaMMO</artifactId>
+            <version>v2.1.222</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

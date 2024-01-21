@@ -3,7 +3,7 @@ package com.nessxxiii.titantools.generalutils;
 import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.itemmanagement.ItemCreator;
 import com.nessxxiii.titantools.itemmanagement.ItemInfo;
-import com.nessxxiii.titantools.listeners.utils.ChargeManagement;
+import com.nessxxiii.titantools.listeners.tools.titan.ChargeManagement;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -45,8 +45,8 @@ public class Utils {
         sendPluginMessage(sender, ChatColor.GOLD + "By: NessXXIII");
     }
 
-    public static void sendPluginMessage(CommandSender sender, String response) {
-        sender.sendMessage(PLUGIN_PREFIX + response);
+    public static void sendPluginMessage(CommandSender sender, String message) {
+        sender.sendMessage(PLUGIN_PREFIX + message);
     }
 
     public static List<Block> getSphereBlocks(Location location, int radius, boolean hollow) {
@@ -204,7 +204,6 @@ public class Utils {
     public static boolean isValidTitanTool(Player player) {
         Response<List<String>> loreListResponse = ItemInfo.getLore(player.getInventory().getItemInMainHand());
         if (loreListResponse.error() != null) {
-            Utils.sendPluginMessage(player, loreListResponse.error());
             return false;
         }
         boolean isTitanTool = ItemInfo.isTitanTool(loreListResponse.value());

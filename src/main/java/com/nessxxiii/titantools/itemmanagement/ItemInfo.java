@@ -27,24 +27,11 @@ public class ItemInfo {
             add(Material.NETHERITE_SHOVEL);
             add(Material.DIAMOND_AXE);
             add(Material.NETHERITE_AXE);
-        }
-    };
-    public static final List<Material> ALLOWED_PICK_TYPES = new ArrayList<>(){
-        {
-            add(Material.DIAMOND_PICKAXE);
-            add(Material.NETHERITE_PICKAXE);
-        }
-    };
-    public static final List<Material> ALLOWED_AXE_TYPES = new ArrayList<>(){
-        {
-            add(Material.DIAMOND_AXE);
-            add(Material.NETHERITE_AXE);
-        }
-    };
-    public static final List<Material> ALLOWED_SHOVEL_TYPES = new ArrayList<>(){
-        {
-            add(Material.DIAMOND_SHOVEL);
-            add(Material.NETHERITE_SHOVEL);
+            add(Material.DIAMOND_HOE);
+            add(Material.NETHERITE_HOE);
+            add(Material.DIAMOND_SWORD);
+            add(Material.NETHERITE_SWORD);
+            add(Material.FISHING_ROD);
         }
     };
 

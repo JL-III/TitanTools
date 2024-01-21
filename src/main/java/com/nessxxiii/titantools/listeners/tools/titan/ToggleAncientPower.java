@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.listeners.utils;
+package com.nessxxiii.titantools.listeners.tools.titan;
 
 import com.nessxxiii.titantools.enums.ToolColor;
 import com.nessxxiii.titantools.enums.ToolStatus;
