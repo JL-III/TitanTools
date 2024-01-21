@@ -1,7 +1,7 @@
-package com.nessxxiii.titantools.listeners.titan;
+package com.nessxxiii.titantools.listeners.tools;
 
 import com.nessxxiii.titantools.config.ConfigManager;
-import com.nessxxiii.titantools.events.titan.PickBlockBreakEvent;
+import com.nessxxiii.titantools.events.tools.PickBlockBreakEvent;
 import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.TitanEnchantEffects;
 import com.nessxxiii.titantools.util.Utils;

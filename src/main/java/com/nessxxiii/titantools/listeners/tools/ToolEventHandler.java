@@ -1,10 +1,10 @@
-package com.nessxxiii.titantools.listeners.titan;
+package com.nessxxiii.titantools.listeners.tools;
 
 import com.nessxxiii.titantools.enums.ToolStatus;
 import com.nessxxiii.titantools.events.PowerCrystalDropEvent;
-import com.nessxxiii.titantools.events.titan.AxeBlockBreakEvent;
-import com.nessxxiii.titantools.events.titan.PickBlockBreakEvent;
-import com.nessxxiii.titantools.events.titan.ShovelBlockBreakEvent;
+import com.nessxxiii.titantools.events.tools.AxeBlockBreakEvent;
+import com.nessxxiii.titantools.events.tools.PickBlockBreakEvent;
+import com.nessxxiii.titantools.events.tools.ShovelBlockBreakEvent;
 import com.nessxxiii.titantools.items.ItemCreator;
 import com.nessxxiii.titantools.items.ItemInfo;
 import com.nessxxiii.titantools.util.Response;

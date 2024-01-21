@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.events.titan;
+package com.nessxxiii.titantools.events.tools;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

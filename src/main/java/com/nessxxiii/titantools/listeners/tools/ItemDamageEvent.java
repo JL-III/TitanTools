@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.listeners;
+package com.nessxxiii.titantools.listeners.tools;
 
 import com.nessxxiii.titantools.items.ItemInfo;
 import com.nessxxiii.titantools.util.Debugger;
