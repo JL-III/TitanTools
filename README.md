@@ -1,5 +1,7 @@
 # **TitanTools**
 
+[![](https://jitpack.io/v/JL-III/TitanTools.svg)](https://jitpack.io/#JL-III/TitanTools)
+
 ## Titan Tools are a set of custom tools for Theatria.
 
 Players can toggle their enchantments on and off by holding shift and right-clicking while holding an imbued or charged titan tool.
