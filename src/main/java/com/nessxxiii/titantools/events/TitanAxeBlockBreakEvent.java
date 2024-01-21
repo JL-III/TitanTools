@@ -1,12 +1,11 @@
-package com.nessxxiii.titantools.events.admin;
+package com.nessxxiii.titantools.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class ImbueToolAttemptEvent extends Event {
-
+public class TitanAxeBlockBreakEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
 
     public static HandlerList getHandlerList() {
@@ -20,7 +19,7 @@ public class ImbueToolAttemptEvent extends Event {
 
     private final Player player;
 
-    public ImbueToolAttemptEvent(Player player) {
+    public TitanAxeBlockBreakEvent(Player player) {
         this.player = player;
     }
 

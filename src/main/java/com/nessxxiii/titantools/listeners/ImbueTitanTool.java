@@ -1,8 +1,8 @@
-package com.nessxxiii.titantools.listeners.admin;
+package com.nessxxiii.titantools.listeners;
 
 import com.nessxxiii.titantools.enums.ToolColor;
 import com.nessxxiii.titantools.events.ImbueToolSucceedEvent;
-import com.nessxxiii.titantools.events.admin.ImbueToolAttemptEvent;
+import com.nessxxiii.titantools.events.ImbueToolAttemptEvent;
 import com.nessxxiii.titantools.items.CustomModelData;
 import com.nessxxiii.titantools.items.ItemInfo;
 import com.nessxxiii.titantools.util.Response;

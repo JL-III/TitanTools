@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.nessxxiii.titantools.config.ConfigManager.blockConversionQuantity;
@@ -154,4 +155,23 @@ public class Utils {
     private double getFortuneAmount(double fortuneLevel) {
         return 1/(fortuneLevel + 2) + (fortuneLevel + 1)/2;
     }
+
+    public static final List<Material> REPLANT_MATERIAL_LIST = new ArrayList<>() {{
+        add(Material.DIRT);
+        add(Material.PODZOL);
+        add(Material.GRASS_BLOCK);
+    }};
+
+    public static final HashMap<Material, Material> REPLANT_MAP = new HashMap<>() {{
+        put(Material.OAK_LOG, Material.OAK_SAPLING);
+        put(Material.SPRUCE_LOG, Material.SPRUCE_SAPLING);
+        put(Material.BIRCH_LOG, Material.BIRCH_SAPLING);
+        put(Material.JUNGLE_LOG, Material.JUNGLE_SAPLING);
+        put(Material.ACACIA_LOG, Material.ACACIA_SAPLING);
+        put(Material.DARK_OAK_LOG, Material.DARK_OAK_SAPLING);
+        put(Material.CRIMSON_STEM, Material.CRIMSON_FUNGUS);
+        put(Material.WARPED_STEM, Material.WARPED_FUNGUS);
+        put(Material.CHERRY_LOG, Material.CHERRY_SAPLING);
+        put(Material.MANGROVE_LOG, Material.MANGROVE_PROPAGULE);
+    }};
 }

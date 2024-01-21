@@ -4,15 +4,14 @@ import com.nessxxiii.titantools.commands.AdminCommands;
 import com.nessxxiii.titantools.commands.KitCommands;
 import com.nessxxiii.titantools.commands.PlayerCommands;
 import com.nessxxiii.titantools.config.ConfigManager;
+import com.nessxxiii.titantools.listeners.*;
 import com.nessxxiii.titantools.listeners.blockbreak.BlockBreak;
-import com.nessxxiii.titantools.listeners.ItemDamageEvent;
 import com.nessxxiii.titantools.listeners.blockbreak.PowerCrystalDrop;
-import com.nessxxiii.titantools.listeners.admin.*;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ChargeManagement;
 import com.nessxxiii.titantools.listeners.enchantmentManagement.ToggleAncientPower;
-import com.nessxxiii.titantools.listeners.tools.TitanAxe;
-import com.nessxxiii.titantools.listeners.tools.TitanPicks;
-import com.nessxxiii.titantools.listeners.tools.TitanShovel;
+import com.nessxxiii.titantools.listeners.blockbreak.TitanAxeBlockBreak;
+import com.nessxxiii.titantools.listeners.blockbreak.TitanPickBlockBreak;
+import com.nessxxiii.titantools.listeners.interact.TitanShovelBlockBreak;
 import com.nessxxiii.titantools.util.CustomLogger;
 import com.nessxxiii.titantools.util.Debugger;
 import com.nessxxiii.titantools.util.Utils;
@@ -48,9 +47,9 @@ public final class TitanTools extends JavaPlugin {
 
 
     private void registerListeners(Debugger debugger) {
-        Bukkit.getPluginManager().registerEvents(new TitanPicks(configManager, debugger),this);
-        Bukkit.getPluginManager().registerEvents(new TitanAxe(configManager, debugger), this);
-        Bukkit.getPluginManager().registerEvents(new TitanShovel(this, debugger), this);
+        Bukkit.getPluginManager().registerEvents(new TitanPickBlockBreak(configManager, debugger),this);
+        Bukkit.getPluginManager().registerEvents(new TitanAxeBlockBreak(configManager, debugger), this);
+        Bukkit.getPluginManager().registerEvents(new TitanShovelBlockBreak(this, debugger), this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(debugger),this);
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(debugger),this);
         Bukkit.getPluginManager().registerEvents(new PowerCrystalDrop(),this);
