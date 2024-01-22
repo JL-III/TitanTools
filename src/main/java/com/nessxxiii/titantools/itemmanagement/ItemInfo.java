@@ -31,7 +31,7 @@ public class ItemInfo {
 //            add(Material.NETHERITE_HOE);
             add(Material.DIAMOND_SWORD);
             add(Material.NETHERITE_SWORD);
-            add(Material.FISHING_ROD);
+//            add(Material.FISHING_ROD);
         }
     };
 
