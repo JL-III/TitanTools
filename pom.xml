@@ -6,7 +6,7 @@
 
     <groupId>com.nessxxiii</groupId>
     <artifactId>TitanTools</artifactId>
-    <version>v2.0.1-alpha-7</version>
+    <version>v2.0.1-alpha-8</version>
     <packaging>jar</packaging>
 
     <name>TitanTools</name>
@@ -87,7 +87,7 @@
         <dependency>
             <groupId>com.github.JL-III</groupId>
             <artifactId>TheatriaMMO</artifactId>
-            <version>v2.1.222</version>
+            <version>v2.1.223</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
