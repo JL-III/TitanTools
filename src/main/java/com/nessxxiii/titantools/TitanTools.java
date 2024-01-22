@@ -52,7 +52,7 @@ public final class TitanTools extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ShovelBlockBreak(configManager, debugger), this);
         Bukkit.getPluginManager().registerEvents(new HoeBlockBreak(), this);
         Bukkit.getPluginManager().registerEvents(new RodCatchFish(debugger), this);
-        Bukkit.getPluginManager().registerEvents(new SwordEntityDeath(debugger), this);
+        Bukkit.getPluginManager().registerEvents(new TitanToolEntityDeath(debugger), this);
         Bukkit.getPluginManager().registerEvents(new ToggleAncientPower(debugger),this);
         Bukkit.getPluginManager().registerEvents(new ChargeManagement(debugger),this);
         Bukkit.getPluginManager().registerEvents(new ExcavatorBlockBreak(),this);

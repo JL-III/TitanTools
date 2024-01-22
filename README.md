@@ -12,26 +12,26 @@ Players can charge their tools with power crystals by taking a PowerCrystal and 
 
  - Titan Pick Fortune:
    - 3x3x3 block break
+   - Auto Collect
    - Auto Smelt
 
  - Titan Pick Silk:
    - 3x3x3 block break
+   - Auto Collect
 
  - Titan Shovel:
    - Delete 3x3x1 blocks
 
  - Titan Rod:
-   - No trash drops?
+   - No trash drops - Just pure fish (treasures are replaced with tropical fish)
  
  - Titan Sword:
-   - Exp boost?
+   - Triple Exp on Kills
  
  - Titan Axe:
    - Tree feller
    - Auto-Replant
-
- - Titan Hoe:
-   - Auto-replant
+   - Triple Exp on Kills
 
  ### Special Notes:
  Shovel can delete bedrock above Y -63

@@ -112,12 +112,14 @@ public class ToolEventHandler implements Listener {
         }
     }
 
-    // Used for the Titan Sword
+    // Used for the Titan Sword and Titan Axe
     @EventHandler
     public void onPlayerKillEntityEvent(EntityDeathEvent event) {
         if (event.isCancelled()) return;
         if (event.getEntity().getKiller() == null) return;
         if (!Utils.isValidTitanTool(event.getEntity().getKiller())) return;
-        Bukkit.getPluginManager().callEvent(new SwordEntityDeathEvent(event.getEntity().getKiller(), event.getDroppedExp()));
+        Material itemMaterial = event.getEntity().getKiller().getInventory().getItemInMainHand().getType();
+        if (itemMaterial != Material.DIAMOND_SWORD && itemMaterial != Material.NETHERITE_SWORD && itemMaterial != Material.DIAMOND_AXE && itemMaterial != Material.NETHERITE_AXE) return;
+        Bukkit.getPluginManager().callEvent(new TitanToolEntityDeathEvent(event.getEntity().getKiller(), event.getDroppedExp()));
     }
 }

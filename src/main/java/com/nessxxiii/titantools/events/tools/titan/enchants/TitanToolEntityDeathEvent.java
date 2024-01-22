@@ -5,7 +5,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
-public class SwordEntityDeathEvent extends Event {
+public class TitanToolEntityDeathEvent extends Event {
     private static final HandlerList HANDLERS = new HandlerList();
 
     public static HandlerList getHandlerList() {
@@ -21,7 +21,7 @@ public class SwordEntityDeathEvent extends Event {
 
     private final int droppedExp;
 
-    public SwordEntityDeathEvent(Player player, int droppedExp) {
+    public TitanToolEntityDeathEvent(Player player, int droppedExp) {
         this.player = player;
         this.droppedExp = droppedExp;
     }
