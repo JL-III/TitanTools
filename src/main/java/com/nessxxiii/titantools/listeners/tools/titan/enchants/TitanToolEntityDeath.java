@@ -20,6 +20,6 @@ public class TitanToolEntityDeath implements Listener {
     public void onTitanToolEntityDeath(TitanToolEntityDeathEvent event) {
         List<String> lore = event.getPlayer().getInventory().getItemInMainHand().getLore();
         Utils.processChargeManagement(event.getPlayer(), debugger, event.getPlayer().getInventory().getItemInMainHand(), lore);
-        event.getPlayer().giveExp(event.getDroppedExp() * 2);
+        event.getPlayer().giveExp(event.getDroppedExp());
     }
 }

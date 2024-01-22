@@ -30,11 +30,10 @@ public class RodCatchFish implements Listener {
         ItemStack caughtItem = event.getCaughtItem().getItemStack();
 
         switch (caughtItem.getType()) {
-            case COD, SALMON, PUFFERFISH:
-                caughtItem.add(2);
-                break;
-            case TROPICAL_FISH:
+            case COD, SALMON:
                 caughtItem.add(1);
+                break;
+            case PUFFERFISH, TROPICAL_FISH:
                 break;
             default:
                 for (Enchantment enchantment : caughtItem.getEnchantments().keySet()) {
@@ -42,7 +41,7 @@ public class RodCatchFish implements Listener {
                 }
                 caughtItem.getItemMeta().removeItemFlags();
                 caughtItem.setType(Material.TROPICAL_FISH);
-                event.getPlayer().sendActionBar(ChatColor.YELLOW +  "" + ChatColor.ITALIC + "The Oracle blesses you with a tropical fish!");
+                event.getPlayer().sendActionBar(ChatColor.YELLOW +  "" + ChatColor.ITALIC + "Ancient power !");
                 break;
         }
 

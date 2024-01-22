@@ -26,12 +26,12 @@ Players can charge their tools with power crystals by taking a PowerCrystal and 
    - No trash drops - Just pure fish (treasures are replaced with tropical fish)
  
  - Titan Sword:
-   - Triple Exp on Kills
+   - Double Exp on Kills
  
  - Titan Axe:
    - Tree feller
    - Auto-Replant
-   - Triple Exp on Kills
+   - Double Exp on Kills
 
  ### Special Notes:
  Shovel can delete bedrock above Y -63
