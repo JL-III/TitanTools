@@ -31,7 +31,6 @@ public class PickBlockBreak implements Listener {
 
     @EventHandler
     public void onBlockBreakEvent(PickBlockBreakEvent event) {
-        Utils.sendPluginMessage(event.getPlayer(), "IgnoreLocations size: " + IGNORE_LOCATIONS.size());
         List<String> lore = event.getPlayer().getInventory().getItemInMainHand().getLore();
         Block blockBroken = event.getBlock();
         if (IGNORE_LOCATIONS.contains(blockBroken.getLocation())) {
