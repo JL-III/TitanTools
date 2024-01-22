@@ -31,7 +31,7 @@ public class RodCatchFish implements Listener {
 
         switch (caughtItem.getType()) {
             case COD, SALMON:
-                caughtItem.add(2);
+                caughtItem.add(1);
                 break;
             case PUFFERFISH, TROPICAL_FISH:
                 break;
