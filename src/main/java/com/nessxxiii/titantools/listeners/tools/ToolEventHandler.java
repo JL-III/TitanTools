@@ -82,7 +82,6 @@ public class ToolEventHandler implements Listener {
     public void onPlayerFishEvent(PlayerFishEvent event) {
         if (event.isCancelled()) return;
         if (event.getCaught() == null) return;
-        if (!Utils.isValidTitanTool(event.getPlayer())) return;
         Player player = event.getPlayer();
         //Profile not loaded
         if(UserManager.getPlayer(player) == null) {
@@ -101,6 +100,7 @@ public class ToolEventHandler implements Listener {
             Bukkit.getPluginManager().callEvent(new ExploitFishingEvent(event.getPlayer(), event.getHook().getLocation()));
             return;
         }
+        if (!Utils.isValidTitanTool(event.getPlayer())) return;
         if (event.getState() == PlayerFishEvent.State.CAUGHT_FISH) {
             new BukkitRunnable() {
                 @Override
