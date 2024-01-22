@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -61,7 +62,9 @@ public class PickBlockBreak implements Listener {
                 itemEntity.remove();
                 player.getInventory().addItem(drop);
             }
-            aggregateAmount = aggregateAmount + Utils.calculateExperienceAmount(currentBlock.getType());
+            if (!itemInMainHand.getItemMeta().hasEnchant(Enchantment.SILK_TOUCH)) {
+                aggregateAmount = aggregateAmount + Utils.calculateExperienceAmount(currentBlock.getType());
+            }
             currentBlock.setType(Material.AIR);
         }
         if (aggregateAmount > 0) {
