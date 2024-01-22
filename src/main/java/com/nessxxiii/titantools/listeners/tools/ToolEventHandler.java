@@ -108,7 +108,7 @@ public class ToolEventHandler implements Listener {
                     Bukkit.getPluginManager().callEvent(new RodCatchFishEvent(event.getPlayer(), (Item) event.getCaught(), event.getCaught().getVelocity()));
                     event.getCaught().remove();
                 }
-            }.runTaskLater(plugin, 5);
+            }.runTaskLater(plugin, 1);
         }
     }
 

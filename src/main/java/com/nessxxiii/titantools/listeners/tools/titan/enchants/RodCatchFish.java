@@ -1,8 +1,10 @@
 package com.nessxxiii.titantools.listeners.tools.titan.enchants;
 
+import com.gmail.nossr50.datatypes.chat.ChatChannel;
 import com.nessxxiii.titantools.events.tools.titan.enchants.RodCatchFishEvent;
 import com.nessxxiii.titantools.generalutils.Debugger;
 import com.nessxxiii.titantools.generalutils.Utils;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.EventHandler;
@@ -21,8 +23,6 @@ public class RodCatchFish implements Listener {
 
     @EventHandler
     public void onRodCatchFish(RodCatchFishEvent event) {
-        Utils.sendPluginMessage(event.getPlayer(), "RodCatchFishEvent: " + event.getCaughtItem().getItemStack().getType().name());
-
         List<String> lore = event.getPlayer().getInventory().getItemInMainHand().getItemMeta().getLore();
 
         Utils.processChargeManagement(event.getPlayer(), debugger, event.getPlayer().getInventory().getItemInMainHand(), lore);
@@ -40,7 +40,9 @@ public class RodCatchFish implements Listener {
                 for (Enchantment enchantment : caughtItem.getEnchantments().keySet()) {
                     caughtItem.removeEnchantment(enchantment);
                 }
+                caughtItem.getItemMeta().removeItemFlags();
                 caughtItem.setType(Material.TROPICAL_FISH);
+                event.getPlayer().sendActionBar(ChatColor.YELLOW +  "" + ChatColor.ITALIC + "The Oracle blesses you with a tropical fish!");
                 break;
         }
 
