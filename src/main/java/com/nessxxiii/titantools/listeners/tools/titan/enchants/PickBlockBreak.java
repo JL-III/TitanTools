@@ -31,7 +31,7 @@ public class PickBlockBreak implements Listener {
     }
 
     @EventHandler
-    public void onBlockBreakEvent(PickBlockBreakEvent event) {
+    public void onPickBlockBreak(PickBlockBreakEvent event) {
         List<String> lore = event.getPlayer().getInventory().getItemInMainHand().getLore();
         Block blockBroken = event.getBlock();
         if (IGNORE_LOCATIONS.contains(blockBroken.getLocation())) {

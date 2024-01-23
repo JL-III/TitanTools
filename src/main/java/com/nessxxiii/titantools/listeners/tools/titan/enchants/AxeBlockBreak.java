@@ -9,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -28,7 +27,7 @@ public class AxeBlockBreak implements Listener {
     }
 
     @EventHandler
-    public void onTitanAxeBreak(AxeBlockBreakEvent event) {
+    public void onAxeBlockBreak(AxeBlockBreakEvent event) {
         Block blockBroken = event.getBlock();
         if (IGNORE_LOCATIONS.contains(blockBroken.getLocation())) {
             IGNORE_LOCATIONS.remove(blockBroken.getLocation());
@@ -46,17 +45,15 @@ public class AxeBlockBreak implements Listener {
             }
             if (configManager.getAllowedAxeBlocks().contains(block.getType())) {
                 IGNORE_LOCATIONS.add(block.getLocation());
-                BlockBreakEvent e = new BlockBreakEvent(block, player);
-                if (!e.isCancelled()) {
-                    Block blockBelow = block.getLocation().subtract(0, 1, 0).getBlock();
-                    if (Utils.REPLANT_MATERIAL_LIST.contains(blockBelow.getType())) {
-                        if (Utils.REPLANT_MAP.containsKey(block.getType())) {
-                            block.setType(Utils.REPLANT_MAP.get(block.getType()));
-                        }
-                        continue;
+                if (Utils.simulateBlockBreakEventIsCancelled(block, player)) continue;
+                Block blockBelow = block.getLocation().subtract(0, 1, 0).getBlock();
+                if (Utils.REPLANT_MATERIAL_LIST.contains(blockBelow.getType())) {
+                    if (Utils.REPLANT_MAP.containsKey(block.getType())) {
+                        block.setType(Utils.REPLANT_MAP.get(block.getType()));
                     }
-                    block.breakNaturally(itemInMainHand);
+                    continue;
                 }
+                block.breakNaturally(itemInMainHand);
             }
         }
     }
