@@ -30,6 +30,10 @@ public class ShovelBlockBreak implements Listener {
         Block clickedBlock = event.getClickedBlock();
         List<String> lore = itemInMainHand.getLore();
 
+        BlockBreakEvent blockBreakEvent = new BlockBreakEvent(clickedBlock, event.getPlayer());
+        Bukkit.getPluginManager().callEvent(blockBreakEvent);
+        if (blockBreakEvent.isCancelled()) return;
+
         Utils.processChargeManagement(event.getPlayer(), debugger, itemInMainHand, lore);
 
         if (Utils.shouldBreakClickedBlockNaturally(clickedBlock)) {

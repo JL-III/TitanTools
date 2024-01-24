@@ -66,6 +66,7 @@ public class ToolEventHandler implements Listener {
     public void onPlayerInteractEvent(PlayerInteractEvent event) {
         if (event.isCancelled()) return;
         if (event.getAction().isRightClick()) return;
+        if (event.getClickedBlock() == null) return;
         ItemStack itemInMainHand = event.getPlayer().getInventory().getItemInMainHand();
         if (itemInMainHand.getType() != Material.DIAMOND_SHOVEL && itemInMainHand.getType() != Material.NETHERITE_SHOVEL) return;
         if (!Utils.isValidTitanTool(event.getPlayer())) return;
