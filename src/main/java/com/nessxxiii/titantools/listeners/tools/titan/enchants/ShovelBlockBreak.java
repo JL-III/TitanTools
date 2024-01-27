@@ -49,7 +49,7 @@ public class ShovelBlockBreak implements Listener {
                 continue;
             }
             if (!configManager.getDisallowedShovelItems().contains(blockLoop.getType())) {
-                BlockBreakEvent e = new BlockBreakEvent(clickedBlock, event.getPlayer());
+                BlockBreakEvent e = new BlockBreakEvent(blockLoop, event.getPlayer());
                 Bukkit.getPluginManager().callEvent(e);
 
                 if (!e.isCancelled()) {
