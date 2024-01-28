@@ -2,7 +2,7 @@ package com.nessxxiii.titantools.itemmanagement;
 
 import com.nessxxiii.titantools.enums.ToolColor;
 import com.nessxxiii.titantools.enums.ToolStatus;
-import com.nessxxiii.titantools.generalutils.Response;
+import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

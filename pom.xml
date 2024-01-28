@@ -89,10 +89,5 @@
             <artifactId>GeneralUtils</artifactId>
             <version>v1.0.4-alpha.1</version>
         </dependency>
-        <dependency>
-            <groupId>com.github.JL-III</groupId>
-            <artifactId>TheatriaMMO</artifactId>
-            <version>v2.1.225</version>
-        </dependency>
     </dependencies>
 </project>

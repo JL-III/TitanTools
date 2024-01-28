@@ -2,16 +2,9 @@ package com.nessxxiii.titantools.generalutils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class ConfigManager {
 
@@ -32,34 +25,7 @@ public class ConfigManager {
     private final ItemStack titan_sword_blue;
     private final ItemStack titan_rod_red;
     private ItemStack test_tool;
-    private final Set<Material> allowedPickBlocks = new HashSet<>();
-    private final Set<Material> allowedAxeBlocks = new HashSet<>();
-    private final Set<Material> disallowedShovelItems = new HashSet<>();
     private boolean debug;
-
-    public static final HashMap<Material, Integer> blockConversionQuantity = new HashMap<>(){{
-        put(Material.EMERALD_ORE, 6);
-        put(Material.DEEPSLATE_EMERALD_ORE, 6);
-        put(Material.IRON_ORE, 6);
-        put(Material.DEEPSLATE_IRON_ORE, 6);
-        put(Material.COPPER_ORE, 20);
-        put(Material.DEEPSLATE_COPPER_ORE, 20);
-        put(Material.GOLD_ORE, 6);
-        put(Material.DEEPSLATE_GOLD_ORE, 6);
-        put(Material.NETHER_GOLD_ORE, 3);
-    }};
-
-    public static final HashMap<Material, Material> blockConversionTypes = new HashMap<>() {{
-        put(Material.EMERALD_ORE, Material.EMERALD);
-        put(Material.DEEPSLATE_EMERALD_ORE, Material.EMERALD);
-        put(Material.IRON_ORE, Material.IRON_INGOT);
-        put(Material.DEEPSLATE_IRON_ORE, Material.IRON_INGOT);
-        put(Material.COPPER_ORE, Material.COPPER_INGOT);
-        put(Material.DEEPSLATE_COPPER_ORE, Material.COPPER_INGOT);
-        put(Material.GOLD_ORE, Material.GOLD_INGOT);
-        put(Material.DEEPSLATE_GOLD_ORE, Material.GOLD_INGOT);
-        put(Material.NETHER_GOLD_ORE, Material.GOLD_INGOT);
-    }};
 
     public ConfigManager(Plugin plugin) {
         this.plugin = plugin;
@@ -84,46 +50,13 @@ public class ConfigManager {
     public void loadConfig() {
         fileConfiguration = plugin.getConfig();
         test_tool = loadItemStack("test_tool");
-        setMaterialList("titanPick", allowedPickBlocks, "destroyable-items");
-        setMaterialList("titanAxe", allowedAxeBlocks, "destroyable-items");
-        setMaterialList("titanShovel", disallowedShovelItems, "non-destroyable-items");
         setDebugValue();
-    }
-
-    public void setMaterialList(String targetSection, Set<Material> targetList, String path) {
-        ConfigurationSection tool = plugin.getConfig().getConfigurationSection(targetSection);
-        if (tool == null) {
-            plugin.getLogger().warning(targetSection + " configuration section not found!");
-            return;
-        }
-
-        List<String> items = tool.getStringList(path);
-        if (items.size() == 0) {
-            plugin.getLogger().warning("No " + path + " found in " + targetSection + " section of config.");
-        }
-
-        for (String item : items) {
-            try {
-                targetList.add(Material.valueOf(item));
-            } catch (Exception e) {
-                plugin.getLogger().warning("'" + item + "' is not a valid material name! Skipping this item.");
-            }
-        }
-        Bukkit.getConsoleSender().sendMessage("Loaded " + targetList.size() + " items for " + targetSection);
     }
 
     public void setDebugValue() {
         debug = plugin.getConfig().getBoolean("debug");
         Bukkit.getConsoleSender().sendMessage("Debug mode is set to " + debug);
     }
-
-    public Set<Material> getAllowedPickBlocks() {
-        return allowedPickBlocks;
-    }
-
-    public Set<Material> getAllowedAxeBlocks() { return allowedAxeBlocks; }
-
-    public Set<Material> getDisallowedShovelItems() { return disallowedShovelItems; }
 
     public boolean getDebug() {
         return debug;

@@ -1,17 +1,15 @@
 package com.nessxxiii.titantools.commands;
 
 import com.nessxxiii.titantools.generalutils.ConfigManager;
-import com.nessxxiii.titantools.events.tools.titan.imbue.ImbueToolAttemptEvent;
-import com.nessxxiii.titantools.events.utils.AddCrystalEvent;
-import com.nessxxiii.titantools.events.utils.DebugEvent;
-import com.nessxxiii.titantools.events.utils.ReloadConfigEvent;
-import com.nessxxiii.titantools.events.utils.SetModelDataEvent;
 import com.nessxxiii.titantools.itemmanagement.ItemCreator;
 import com.nessxxiii.titantools.itemmanagement.PowerCrystalInfo;
 import com.nessxxiii.titantools.itemmanagement.ItemInfo;
-import com.nessxxiii.titantools.generalutils.Response;
 import com.nessxxiii.titantools.generalutils.Utils;
+import com.playtheatria.jliii.generalutils.events.utils.AddCrystalEvent;
+import com.playtheatria.jliii.generalutils.events.utils.SetModelDataEvent;
+import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,10 +28,12 @@ import java.util.List;
 public class AdminCommands implements CommandExecutor, TabCompleter {
 
     private final Plugin plugin;
+    private final PlayerCommands playerCommands;
     private final ConfigManager configManager;
 
-    public AdminCommands(Plugin plugin, ConfigManager configManager) {
+    public AdminCommands(Plugin plugin, PlayerCommands playerCommands, ConfigManager configManager) {
         this.plugin = plugin;
+        this.playerCommands = playerCommands;
         this.configManager = configManager;
     };
 
@@ -68,26 +68,28 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
             ItemStack itemStack = !(sender instanceof Player player) ? configManager.getTestTool() : player.getInventory().getItemInMainHand();
             Response<List<String>> loreResponse = ItemInfo.getLore(itemStack);
             if (!loreResponse.isSuccess()) return false;
-            Bukkit.getPluginManager().callEvent(new DebugEvent(loreResponse.value(), sender, itemStack));
+            Utils.sendPluginMessage(sender, ChatColor.LIGHT_PURPLE + "Begin-Debug");
+            List<String> lore = loreResponse.value();
+            boolean isTitanTool = ItemInfo.isTitanTool(lore);
+            Utils.sendPluginMessage(sender, "isTitanTool: " + isTitanTool);
+            Utils.sendPluginMessage(sender, "Contains charge lore: " + ItemInfo.hasChargeLore(lore, isTitanTool));
+            Utils.sendPluginMessage(sender, "ToolColor: " + ItemInfo.getColor(lore));
+            Utils.sendPluginMessage(sender, "ToolStatus: " + ItemInfo.getStatus(lore, isTitanTool));
+            Utils.sendPluginMessage(sender, "isChargedTitanTool: " + ItemInfo.isChargedTitanTool(lore, isTitanTool));
+            Utils.sendPluginMessage(sender, "chargeLoreIndex: " + ItemInfo.getTitanLoreIndex(lore, ItemInfo.CHARGE_PREFIX, isTitanTool));
+            Utils.sendPluginMessage(sender, "statusLoreIndex: " + ItemInfo.getTitanLoreIndex(lore, ItemInfo.STATUS_PREFIX, isTitanTool));
+            Utils.sendPluginMessage(sender, "Get charge amount: " + ItemInfo.getCharge(lore, isTitanTool, ItemInfo.hasChargeLore(lore, isTitanTool), 39));
+            if (itemStack.getItemMeta().hasCustomModelData()) {
+                Utils.sendPluginMessage(sender, "Current custom model data: " + itemStack.getItemMeta().getCustomModelData());
+            } else {
+                Utils.sendPluginMessage(sender, "This item does not have custom model data.");
+            }
+            Utils.sendPluginMessage(sender, ChatColor.LIGHT_PURPLE + "End-Debug");
             return true;
         }
         // all other commands require a player
         if (!(sender instanceof Player player)) {
             return false;
-        }
-        if ("imbue".equalsIgnoreCase(args[0])) {
-            if (!permissionCheck(player, "imbue")) {
-                return true;
-            }
-            Material coolDown = Material.SQUID_SPAWN_EGG;
-            if (!player.hasCooldown(coolDown)) {
-                Utils.sendPluginMessage(player, "Are you sure you want to imbue this tool?");
-                Utils.sendPluginMessage(player, "Retype the command to confirm");
-                player.setCooldown(coolDown, 200);
-                return false;
-            }
-            Bukkit.getPluginManager().callEvent(new ImbueToolAttemptEvent(player));
-            return true;
         }
 
         if ("save".equalsIgnoreCase(args[0]) && args.length == 2) {
@@ -114,7 +116,11 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
             if (!permissionCheck(player, "reload")) {
                 return true;
             }
-            Bukkit.getPluginManager().callEvent(new ReloadConfigEvent(player));
+            Utils.sendPluginMessage(player, "Reloading config...");
+            plugin.reloadConfig();
+            playerCommands.reload();
+            configManager.loadConfig();
+            Utils.sendPluginMessage(player, ChatColor.GREEN + "Successfully reloaded config.");
             return true;
         }
 
