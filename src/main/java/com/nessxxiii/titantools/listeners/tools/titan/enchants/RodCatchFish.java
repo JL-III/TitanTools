@@ -1,9 +1,8 @@
 package com.nessxxiii.titantools.listeners.tools.titan.enchants;
 
-import com.gmail.nossr50.datatypes.chat.ChatChannel;
-import com.nessxxiii.titantools.events.tools.titan.enchants.RodCatchFishEvent;
 import com.nessxxiii.titantools.generalutils.Debugger;
 import com.nessxxiii.titantools.generalutils.Utils;
+import com.playtheatria.jliii.generalutils.events.tools.titan.enchants.RodCatchFishEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

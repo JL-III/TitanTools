@@ -1,8 +1,8 @@
 package com.nessxxiii.titantools.listeners.utils;
 
-import com.nessxxiii.titantools.events.utils.AddCrystalEvent;
 import com.nessxxiii.titantools.itemmanagement.ItemCreator;
 import com.nessxxiii.titantools.generalutils.Utils;
+import com.playtheatria.jliii.generalutils.events.utils.AddCrystalEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

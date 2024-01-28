@@ -1,9 +1,9 @@
 package com.nessxxiii.titantools.listeners.tools.titan.enchants;
 
 import com.nessxxiii.titantools.generalutils.ConfigManager;
-import com.nessxxiii.titantools.events.tools.titan.enchants.ShovelBlockBreakEvent;
 import com.nessxxiii.titantools.generalutils.Debugger;
 import com.nessxxiii.titantools.generalutils.Utils;
+import com.playtheatria.jliii.generalutils.events.tools.titan.enchants.ShovelBlockBreakEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

@@ -1,8 +1,8 @@
 package com.nessxxiii.titantools.listeners.tools.excavator;
 
-import com.nessxxiii.titantools.events.crystals.PowerCrystalDropEvent;
-import com.nessxxiii.titantools.events.tools.excavator.ExcavatorBlockBreakEvent;
 import com.nessxxiii.titantools.generalutils.Utils;
+import com.playtheatria.jliii.generalutils.events.crystals.PowerCrystalDropEvent;
+import com.playtheatria.jliii.generalutils.events.tools.excavator.ExcavatorBlockBreakEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

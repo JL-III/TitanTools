@@ -1,13 +1,13 @@
 package com.nessxxiii.titantools.listeners.tools.titan.imbue;
 
 import com.nessxxiii.titantools.enums.ToolColor;
-import com.nessxxiii.titantools.events.tools.titan.imbue.ImbueToolSucceedEvent;
-import com.nessxxiii.titantools.events.tools.titan.imbue.ImbueToolAttemptEvent;
 import com.nessxxiii.titantools.itemmanagement.CustomModelData;
 import com.nessxxiii.titantools.itemmanagement.ItemInfo;
 import com.nessxxiii.titantools.generalutils.Response;
 import com.nessxxiii.titantools.generalutils.TitanEnchantEffects;
 import com.nessxxiii.titantools.generalutils.Utils;
+import com.playtheatria.jliii.generalutils.events.tools.titan.imbue.ImbueToolAttemptEvent;
+import com.playtheatria.jliii.generalutils.events.tools.titan.imbue.ImbueToolSucceedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

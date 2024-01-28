@@ -1,7 +1,7 @@
 package com.nessxxiii.titantools.listeners.tools.titan.enchants;
 
-import com.nessxxiii.titantools.events.tools.titan.enchants.HoeBlockBreakEvent;
 import com.nessxxiii.titantools.generalutils.Utils;
+import com.playtheatria.jliii.generalutils.events.tools.titan.enchants.HoeBlockBreakEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 

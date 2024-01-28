@@ -1,7 +1,7 @@
 package com.nessxxiii.titantools.listeners.utils;
 
-import com.nessxxiii.titantools.events.utils.SetModelDataEvent;
 import com.nessxxiii.titantools.generalutils.Utils;
+import com.playtheatria.jliii.generalutils.events.utils.SetModelDataEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
