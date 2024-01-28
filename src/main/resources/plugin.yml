@@ -3,7 +3,6 @@ version: '${project.version}'
 main: com.nessxxiii.titantools.TitanTools
 api-version: 1.19
 authors: [ bfrisco, NessXXIII ]
-depend: [mcMMO]
 description: Custom enchantments for Theatria
 commands:
   titan:
