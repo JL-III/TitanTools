@@ -44,7 +44,6 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
                 add("crystal");
                 add("debug");
                 add("excavator");
-                add("pack");
                 add("reload");
             }};
         } else {

@@ -42,6 +42,18 @@ public class KitCommands implements CommandExecutor, TabCompleter {
             }
             if (args.length == 2) {
                 return new ArrayList<>() {{
+                    add("common");
+                    add("uncommon");
+                    add("super");
+                    add("epic");
+                    add("ultra");
+                    add("excavator");
+                    add("sunfish");
+                    add("nightfish");
+                    add("etherealfragment");
+                    add("christmaspick");
+                    add("gingerbreadman");
+
                     add("titan_pick_red_fortune");
                     add("titan_pick_red_silk");
                     add("titan_pick_yellow_fortune");
