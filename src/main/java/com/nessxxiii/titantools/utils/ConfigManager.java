@@ -1,4 +1,4 @@
-package com.nessxxiii.titantools.generalutils;
+package com.nessxxiii.titantools.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -50,20 +50,6 @@ public class ConfigManager {
     public void loadConfig() {
         fileConfiguration = plugin.getConfig();
         test_tool = loadItemStack("test_tool");
-        setDebugValue();
-    }
-
-    public void setDebugValue() {
-        debug = plugin.getConfig().getBoolean("debug");
-        Bukkit.getConsoleSender().sendMessage("Debug mode is set to " + debug);
-    }
-
-    public boolean getDebug() {
-        return debug;
-    }
-
-    public void setDebug(boolean debug) {
-        this.debug = debug;
     }
 
     private ItemStack loadItemStack(String target) {

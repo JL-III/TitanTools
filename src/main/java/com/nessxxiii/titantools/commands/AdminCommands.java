@@ -1,12 +1,10 @@
 package com.nessxxiii.titantools.commands;
 
-import com.nessxxiii.titantools.generalutils.ConfigManager;
+import com.nessxxiii.titantools.utils.ConfigManager;
 import com.nessxxiii.titantools.itemmanagement.ItemCreator;
 import com.nessxxiii.titantools.itemmanagement.PowerCrystalInfo;
 import com.nessxxiii.titantools.itemmanagement.ItemInfo;
-import com.nessxxiii.titantools.generalutils.Utils;
-import com.playtheatria.jliii.generalutils.events.utils.AddCrystalEvent;
-import com.playtheatria.jliii.generalutils.events.utils.SetModelDataEvent;
+import com.nessxxiii.titantools.utils.Utils;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -18,6 +16,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -45,7 +44,6 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
                 add("crystal");
                 add("debug");
                 add("excavator");
-                add("imbue");
                 add("pack");
                 add("reload");
             }};
@@ -108,7 +106,22 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
             if (!permissionCheck(player, "model")) {
                 return true;
             }
-            Bukkit.getPluginManager().callEvent(new SetModelDataEvent(player, args));
+            if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
+                Utils.sendPluginMessage(player, "You must be holding an item.");
+                return true;
+            }
+            try {
+                if (player.getInventory().getItemInMainHand().hasItemMeta() && player.getInventory().getItemInMainHand().getItemMeta().hasCustomModelData()) {
+                    Utils.sendPluginMessage(player, "Previous custom model data: " + ChatColor.YELLOW + player.getInventory().getItemInMainHand().getItemMeta().getCustomModelData());
+                }
+                Integer customModelData = Integer.parseInt(args[1]);
+                ItemMeta meta = player.getInventory().getItemInMainHand().getItemMeta();
+                meta.setCustomModelData(customModelData);
+                player.getInventory().getItemInMainHand().setItemMeta(meta);
+                Utils.sendPluginMessage(player, "Set custom model data to: " + ChatColor.GREEN + customModelData);
+            } catch (Exception ex) {
+                Utils.sendPluginMessage(player, "You must provide an integer value.");
+            }
             return true;
         }
 
@@ -128,7 +141,27 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
             if (!permissionCheck(player, "crystal")) {
                 return true;
             }
-            Bukkit.getPluginManager().callEvent(new AddCrystalEvent(player, args));
+            Inventory inv = player.getInventory();
+            if (args.length == 1) {
+                inv.addItem(ItemCreator.powerCrystalCommon);
+                inv.addItem(ItemCreator.powerCrystalUncommon);
+                inv.addItem(ItemCreator.powerCrystalSuper);
+                inv.addItem(ItemCreator.powerCrystalEpic);
+                inv.addItem(ItemCreator.powerCrystalUltra);
+                Utils.sendPluginMessage(player, "Added 1 of each crystal.");
+            } else if (args.length == 2) {
+                try {
+                    int amount = Integer.parseInt(args[1]);
+                    for (int i = 0; i < amount; i++) {
+                        inv.addItem(ItemCreator.powerCrystalCommon);
+                    }
+                } catch (Exception ex) {
+                    Utils.sendPluginMessage(player, "You must provide an integer amount.");
+                    Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide an integer amount for /atitan crystal <number>.");
+                    return true;
+                }
+                Utils.sendPluginMessage(player, "Added " + args.length + " common crystals.");
+            }
             return true;
         }
 

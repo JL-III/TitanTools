@@ -3,10 +3,9 @@ package com.nessxxiii.titantools;
 import com.nessxxiii.titantools.commands.AdminCommands;
 import com.nessxxiii.titantools.commands.KitCommands;
 import com.nessxxiii.titantools.commands.PlayerCommands;
-import com.nessxxiii.titantools.generalutils.ConfigManager;
-import com.nessxxiii.titantools.listeners.utils.*;
-import com.nessxxiii.titantools.generalutils.CustomLogger;
-import com.nessxxiii.titantools.generalutils.Utils;
+import com.nessxxiii.titantools.utils.ConfigManager;
+import com.nessxxiii.titantools.utils.CustomLogger;
+import com.nessxxiii.titantools.utils.Utils;
 
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -25,7 +24,6 @@ public final class TitanTools extends JavaPlugin {
         this.configManager = new ConfigManager(this);
         this.playerCommands = new PlayerCommands(this);
         CustomLogger customLogger = new CustomLogger(getName(), NamedTextColor.DARK_RED, NamedTextColor.WHITE);
-        registerListeners();
         registerCommands(configManager, customLogger);
         Utils.printBanner(Bukkit.getConsoleSender());
     }
@@ -34,11 +32,5 @@ public final class TitanTools extends JavaPlugin {
         Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, playerCommands, configManager));
         Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
         Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(configManager,  customLogger));
-    }
-
-
-    private void registerListeners() {
-        Bukkit.getPluginManager().registerEvents(new AddCrystal(), this);
-        Bukkit.getPluginManager().registerEvents(new SetModelData(), this);
     }
 }
