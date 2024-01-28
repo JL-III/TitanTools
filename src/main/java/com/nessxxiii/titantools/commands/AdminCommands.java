@@ -38,7 +38,7 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player player && player.hasPermission("titan.enchants.admin.tabcomplete")) {
+        if (sender instanceof Player player && player.hasPermission("titan.tools.admin.tabcomplete")) {
             return new ArrayList<>() {{
                 add("check");
                 add("crystal");
