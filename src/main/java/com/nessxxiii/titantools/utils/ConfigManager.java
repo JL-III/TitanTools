@@ -36,6 +36,9 @@ public class ConfigManager {
     private ItemStack titan_rod_red;
     private ItemStack test_tool;
     private ItemStack immortal_helm;
+    private ItemStack immortal_chestplate;
+    private ItemStack immortal_leggings;
+    private ItemStack immortal_boots;
     private boolean debug;
 
     public ConfigManager(Plugin plugin) {
@@ -69,6 +72,9 @@ public class ConfigManager {
         titan_rod_red = loadItemStack("titan_rod_red", rodsConfig);
         test_tool = loadItemStack("test_tool", testToolConfig);
         immortal_helm = loadItemStack("immortal_helm", immortalConfig);
+        immortal_chestplate = loadItemStack("immortal_chestplate", immortalConfig);
+        immortal_leggings = loadItemStack("immortal_leggings", immortalConfig);
+        immortal_boots = loadItemStack("immortal_boots", immortalConfig);
     }
 
     private ItemStack loadItemStack(String target, FileConfiguration fileConfiguration) {
@@ -155,4 +161,10 @@ public class ConfigManager {
     public ItemStack getTestTool() { return test_tool; }
 
     public ItemStack getImmortalHelm() { return immortal_helm; }
+
+    public ItemStack getImmortalChestplate() { return immortal_chestplate; }
+
+    public ItemStack getImmortalLeggings() { return immortal_leggings; }
+
+    public ItemStack getImmortalBoots() { return immortal_boots; }
 }

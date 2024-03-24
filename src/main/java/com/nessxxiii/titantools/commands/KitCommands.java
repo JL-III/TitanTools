@@ -73,6 +73,13 @@ public class KitCommands implements CommandExecutor, TabCompleter {
                     add("titan_sword_blue");
 
                     add("titan_rod_red");
+
+                    add("immortal_helm");
+                    add("immortal_chestplate");
+                    add("immortal_leggings");
+                    add("immortal_boots");
+
+                    add("immortal_pack");
                 }};
             }
             if (args.length == 3) {
@@ -97,27 +104,44 @@ public class KitCommands implements CommandExecutor, TabCompleter {
                         case "super" -> reportResult(args[1], inventory.addItem(ItemCreator.powerCrystalSuper), player_name);
                         case "epic" -> reportResult(args[1], inventory.addItem(ItemCreator.powerCrystalEpic), player_name);
                         case "ultra" -> reportResult(args[1], inventory.addItem(ItemCreator.powerCrystalUltra), player_name);
+
                         case "excavator" -> reportResult(args[1], inventory.addItem(ItemCreator.excavator), player_name);
                         case "sunfish" -> reportResult(args[1], inventory.addItem(ItemCreator.sunFish), player_name);
                         case "nightfish" -> reportResult(args[1], inventory.addItem(ItemCreator.nightFish), player_name);
                         case "etherealfragment" -> reportResult(args[1], inventory.addItem(ItemCreator.etherealFragment), player_name);
                         case "christmaspick" -> reportResult(args[1], inventory.addItem(ItemCreator.christmasPick), player_name);
                         case "gingerbreadman" -> reportResult(args[1], inventory.addItem(ItemCreator.gingerbreadMan), player_name);
+
                         case "titan_pick_red_fortune" -> reportResult(args[1], inventory.addItem(configManager.getTitanPickRedFortune()), player_name);
                         case "titan_pick_red_silk" -> reportResult(args[1], inventory.addItem(configManager.getTitanPickRedSilk()), player_name);
                         case "titan_pick_yellow_fortune" -> reportResult(args[1], inventory.addItem(configManager.getTitanPickYellowFortune()), player_name);
                         case "titan_pick_yellow_silk" -> reportResult(args[1], inventory.addItem(configManager.getTitanPickYellowSilk()), player_name);
                         case "titan_pick_blue_fortune" -> reportResult(args[1],  inventory.addItem(configManager.getTitanPickBlueFortune()), player_name);
                         case "titan_pick_blue_silk" -> reportResult(args[1],  inventory.addItem(configManager.getTitanPickBlueSilk()), player_name);
+
                         case "titan_shovel_red" -> reportResult(args[1], inventory.addItem(configManager.getTitanShovelRed()), player_name);
+
                         case "titan_axe_red" -> reportResult(args[1], inventory.addItem(configManager.getTitanAxeRed()), player_name);
                         case "titan_axe_yellow" -> reportResult(args[1], inventory.addItem(configManager.getTitanAxeYellow()), player_name);
                         case "titan_axe_blue" -> reportResult(args[1], inventory.addItem(configManager.getTitanAxeBlue()), player_name);
+
                         case "titan_sword_red" -> reportResult(args[1], inventory.addItem(configManager.getTitanSwordRed()), player_name);
                         case "titan_sword_yellow" -> reportResult(args[1], inventory.addItem(configManager.getTitanSwordYellow()), player_name);
                         case "titan_sword_blue" -> reportResult(args[1], inventory.addItem(configManager.getTitanSwordBlue()), player_name);
+
                         case "titan_rod_red" -> reportResult(args[1], inventory.addItem(configManager.getTitanRodRed()), player_name);
+
                         case "immortal_helm" -> reportResult(args[1], inventory.addItem(configManager.getImmortalHelm()), player_name);
+                        case "immortal_chestplate" -> reportResult(args[1], inventory.addItem(configManager.getImmortalChestplate()), player_name);
+                        case "immortal_leggings" -> reportResult(args[1], inventory.addItem(configManager.getImmortalLeggings()), player_name);
+                        case "immortal_boots" -> reportResult(args[1], inventory.addItem(configManager.getImmortalBoots()), player_name);
+
+                        case "immortal_pack" -> {
+                            reportResult("immortal_helm", inventory.addItem(configManager.getImmortalHelm()), player_name);
+                            reportResult("immortal_chestplate", inventory.addItem(configManager.getImmortalChestplate()), player_name);
+                            reportResult("immortal_leggings", inventory.addItem(configManager.getImmortalLeggings()), player_name);
+                            reportResult("immortal_boots", inventory.addItem(configManager.getImmortalBoots()), player_name);
+                        }
                         default -> sender.sendMessage(ChatColor.DARK_RED + "This kit does not exist");
                     }
                 }
