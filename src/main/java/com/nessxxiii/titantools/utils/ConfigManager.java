@@ -12,14 +12,6 @@ import java.io.File;
 public class ConfigManager {
 
     private final Plugin plugin;
-    private FileConfiguration fileConfiguration;
-    private FileConfiguration axesConfig;
-    private FileConfiguration swordsConfig;
-    private FileConfiguration pickaxesConfig;
-    private FileConfiguration shovelsConfig;
-    private FileConfiguration rodsConfig;
-    private FileConfiguration testToolConfig;
-    private FileConfiguration immortalConfig;
     private ItemStack titan_pick_red_fortune;
     private ItemStack titan_pick_red_silk;
     private ItemStack titan_pick_yellow_fortune;
@@ -39,23 +31,20 @@ public class ConfigManager {
     private ItemStack immortal_chestplate;
     private ItemStack immortal_leggings;
     private ItemStack immortal_boots;
-    private boolean debug;
 
     public ConfigManager(Plugin plugin) {
         this.plugin = plugin;
-        this.fileConfiguration = plugin.getConfig();
         loadConfig();
     }
 
     public void loadConfig() {
-        fileConfiguration = plugin.getConfig();
-        axesConfig = loadConfig("tools/axes.yml");
-        swordsConfig = loadConfig("tools/swords.yml");
-        pickaxesConfig = loadConfig("tools/pickaxes.yml");
-        shovelsConfig = loadConfig("tools/shovels.yml");
-        rodsConfig = loadConfig("tools/rods.yml");
-        testToolConfig = loadConfig("tools/test_tool.yml");
-        immortalConfig = loadConfig("tools/immortal.yml");
+        FileConfiguration axesConfig = loadConfig("tools/axes.yml");
+        FileConfiguration swordsConfig = loadConfig("tools/swords.yml");
+        FileConfiguration pickaxesConfig = loadConfig("tools/pickaxes.yml");
+        FileConfiguration shovelsConfig = loadConfig("tools/shovels.yml");
+        FileConfiguration rodsConfig = loadConfig("tools/rods.yml");
+        FileConfiguration testToolConfig = loadConfig("tools/test_tool.yml");
+        FileConfiguration immortalConfig = loadConfig("tools/immortal.yml");
         titan_pick_red_fortune = loadItemStack("titan_pick_red_fortune", pickaxesConfig);
         titan_pick_red_silk = loadItemStack("titan_pick_red_silk", pickaxesConfig);
         titan_pick_yellow_fortune = loadItemStack("titan_pick_yellow_fortune", pickaxesConfig);
