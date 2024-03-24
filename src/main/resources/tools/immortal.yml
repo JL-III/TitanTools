@@ -1,0 +1,72 @@
+immortal_helm:
+  ==: org.bukkit.inventory.ItemStack
+  v: 3465
+  type: DIAMOND_HELMET
+  meta:
+    ==: ItemMeta
+    meta-type: UNSPECIFIC
+    display-name: '{"extra":[
+    {"obfuscated":true,"color":"#060094","text":" %"},
+    {"bold":true,"color":"#15089C","text":" T"},
+    {"bold":true,"color":"#2012A4","text":"h"},
+    {"bold":true,"color":"#2919AC","text":"e"},
+    {"bold":true,"color":"#3121B4","text":" I"},
+    {"bold":true,"color":"#3828BC","text":"m"},
+    {"bold":true,"color":"#3F2FC4","text":"m"},
+    {"bold":true,"color":"#4635CC","text":"o"},
+    {"bold":true,"color":"#4D3CD5","text":"r"},
+    {"bold":true,"color":"#4D3CD5","text":"t"},
+    {"bold":true,"color":"#4D3CD5","text":"a"},
+    {"bold":true,"color":"#4D3CD5","text":"l"},
+    {"bold":true,"color":"#4D3CD5","text":" H"},
+    {"bold":true,"color":"#4D3CD5","text":"e"},
+    {"bold":true,"color":"#4D3CD5","text":"l"},
+    {"bold":true,"color":"#4D3CD5","text":"m"},
+    {"obfuscated":true,"color":"#4D3CD5","text":" %"}
+    ],"text":""}'
+    lore:
+      - '{"extra":[{"color":"dark_gray","text":"Efficiency"},{"color":"#6D5EFF","text":" XI"}],"text":""}'
+      - '{"extra":[{"color":"dark_gray","text":"Fortune"},{"color":"#6D5EFF","text":" V"}],"text":""}'
+      - '{"extra":[{"color":"dark_gray","text":"Unbreakable"}],"text":""}'
+      - '{"extra":[{"color":"gray","text":""}],"text":""}'
+      - '{"extra":[{"color":"#060094","text":"Ancient Power"},{"color":"#6D5EFF","text":" Ω"}],"text":""}'
+      - '{"extra":[{"color":"#060094","text":"  ● Charge"},{"color":"#6D5EFF","text":" 0"}],"text":""}'
+      - '{"extra":[{"color":"#060094","text":"  ● Status"},{"color":"#6D5EFF","text":" OFF"}],"text":""}'
+      - '{"extra":[{"color":"gray","text":""}],"text":""}'
+      - '{"extra":[
+    {"color":"#060094","text":"A"},
+    {"color":"#14089B","text":" r"},
+    {"color":"#1E10A3","text":"e"},
+    {"color":"#2718AA","text":"l"},
+    {"color":"#2E1FB2","text":"i"},
+    {"color":"#3525B9","text":"c"},
+    {"color":"#3C2CC1","text":" f"},
+    {"color":"#4332C8","text":"r"},
+    {"color":"#4938D0","text":"o"},
+    {"color":"#4F3ED8","text":"m"},
+    {"color":"#5545DF","text":" a"},
+    {"color":"#5B4BE7","text":" t"},
+    {"color":"#6151EF","text":"i"},
+    {"color":"#6758F7","text":"m"},
+    {"color":"#6D5EFF","text":"e"}
+    ],"text":""}'
+      - '{"extra":[
+    {"color":"#060094","text":"l"},
+    {"color":"#14089B","text":"o"},
+    {"color":"#1E10A3","text":"n"},
+    {"color":"#2718AA","text":"g"},
+    {"color":"#2E1FB2","text":" p"},
+    {"color":"#3525B9","text":"a"},
+    {"color":"#3C2CC1","text":"s"},
+    {"color":"#4332C8","text":"t"},
+    {"color":"#4938D0","text":"."},
+    {"color":"#4F3ED8","text":"."},
+    {"color":"#5545DF","text":"."}
+    ],"text":""}'
+    custom-model-data: 1000006
+    enchants:
+      DIG_SPEED: 11
+      LOOT_BONUS_BLOCKS: 5
+    ItemFlags:
+      - HIDE_ENCHANTS
+      - HIDE_ATTRIBUTES

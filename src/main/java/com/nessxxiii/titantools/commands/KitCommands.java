@@ -117,6 +117,7 @@ public class KitCommands implements CommandExecutor, TabCompleter {
                         case "titan_sword_yellow" -> reportResult(args[1], inventory.addItem(configManager.getTitanSwordYellow()), player_name);
                         case "titan_sword_blue" -> reportResult(args[1], inventory.addItem(configManager.getTitanSwordBlue()), player_name);
                         case "titan_rod_red" -> reportResult(args[1], inventory.addItem(configManager.getTitanRodRed()), player_name);
+                        case "immortal_helm" -> reportResult(args[1], inventory.addItem(configManager.getImmortalHelm()), player_name);
                         default -> sender.sendMessage(ChatColor.DARK_RED + "This kit does not exist");
                     }
                 }

@@ -15,13 +15,12 @@ import java.util.Objects;
 
 public final class TitanTools extends JavaPlugin {
 
-    private ConfigManager configManager;
     private PlayerCommands playerCommands;
 
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
-        this.configManager = new ConfigManager(this);
+        ConfigManager configManager = new ConfigManager(this);
         this.playerCommands = new PlayerCommands(this);
         CustomLogger customLogger = new CustomLogger(getName(), NamedTextColor.DARK_RED, NamedTextColor.WHITE);
         registerCommands(configManager, customLogger);
