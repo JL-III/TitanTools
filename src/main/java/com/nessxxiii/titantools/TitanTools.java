@@ -19,7 +19,6 @@ public final class TitanTools extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.saveDefaultConfig();
         ConfigManager configManager = new ConfigManager(this);
         this.playerCommands = new PlayerCommands(this);
         CustomLogger customLogger = new CustomLogger(getName(), NamedTextColor.DARK_RED, NamedTextColor.WHITE);
