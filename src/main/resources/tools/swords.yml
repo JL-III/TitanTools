@@ -75,6 +75,8 @@ titan_sword_red:
       DAMAGE_ALL: 5
       DAMAGE_UNDEAD: 5
       SWEEPING_EDGE: 3
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
@@ -155,6 +157,8 @@ titan_sword_yellow:
       DAMAGE_ALL: 7
       DAMAGE_UNDEAD: 5
       SWEEPING_EDGE: 3
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
@@ -233,6 +237,8 @@ titan_sword_blue:
       DAMAGE_ALL: 7
       DAMAGE_UNDEAD: 5
       SWEEPING_EDGE: 3
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES

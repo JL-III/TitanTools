@@ -63,6 +63,8 @@ titan_axe_red:
     enchants:
       DIG_SPEED: 10
       SILK_TOUCH: 1
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
@@ -139,6 +141,8 @@ titan_axe_yellow:
       LOOT_BONUS_MOBS: 4
       DAMAGE_ALL: 5
       DAMAGE_UNDEAD: 5
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
 titan_axe_blue:
@@ -214,6 +218,8 @@ titan_axe_blue:
       LOOT_BONUS_MOBS: 7
       DAMAGE_ALL: 7
       DAMAGE_UNDEAD: 5
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES

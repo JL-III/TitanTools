@@ -64,6 +64,8 @@ titan_pick_red_fortune:
     enchants:
       DIG_SPEED: 7
       LOOT_BONUS_BLOCKS: 4
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
@@ -133,6 +135,8 @@ titan_pick_red_silk:
     enchants:
       DIG_SPEED: 9
       SILK_TOUCH: 1
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
@@ -202,6 +206,8 @@ titan_pick_yellow_fortune:
     enchants:
       DIG_SPEED: 9
       LOOT_BONUS_BLOCKS: 4
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
@@ -271,6 +277,8 @@ titan_pick_yellow_silk:
     enchants:
       DIG_SPEED: 11
       SILK_TOUCH: 1
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
@@ -340,6 +348,8 @@ titan_pick_blue_fortune:
     enchants:
       DIG_SPEED: 11
       LOOT_BONUS_BLOCKS: 5
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
@@ -409,6 +419,8 @@ titan_pick_blue_silk:
     enchants:
       DIG_SPEED: 13
       SILK_TOUCH: 1
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES

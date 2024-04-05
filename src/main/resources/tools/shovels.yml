@@ -66,6 +66,8 @@ titan_shovel_red:
     enchants:
       DIG_SPEED: 10
       SILK_TOUCH: 1
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
