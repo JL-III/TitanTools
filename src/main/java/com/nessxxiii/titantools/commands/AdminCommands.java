@@ -9,6 +9,7 @@ import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -87,6 +89,22 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
         // all other commands require a player
         if (!(sender instanceof Player player)) {
             return false;
+        }
+
+        if ("check-pdc".equalsIgnoreCase(args[0]) && args.length == 2) {
+            if (!permissionCheck(player, "check-pdc")) {
+                return true;
+            }
+            if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
+                NamespacedKey key = new NamespacedKey("titan-tools", args[1]);
+                ItemStack item = player.getInventory().getItemInMainHand();
+                ItemMeta meta = item.getItemMeta();
+                if (meta.getPersistentDataContainer().has(key, PersistentDataType.BOOLEAN)) {
+                    Utils.sendPluginMessage(player, "This item has the " + args[1] + " key.");
+                } else {
+                    Utils.sendPluginMessage(player, "This item does not have the " + args[1] + " key.");
+                }
+            }
         }
 
         if ("save".equalsIgnoreCase(args[0]) && args.length == 2) {

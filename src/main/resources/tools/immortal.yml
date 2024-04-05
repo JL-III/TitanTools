@@ -1,287 +1,129 @@
-immortal_helm:
+immortal_diadem:
   ==: org.bukkit.inventory.ItemStack
   v: 3465
-  type: DIAMOND_HELMET
+  type: GOLDEN_HELMET
   meta:
     ==: ItemMeta
-    meta-type: UNSPECIFIC
+    meta-type: ARMOR
     display-name: '{"extra":[
-    {"obfuscated":true,"color":"#060094","text":" %"},
-    {"bold":true,"color":"#3121B4","text":" I"},
-    {"bold":true,"color":"#3828BC","text":"m"},
-    {"bold":true,"color":"#3F2FC4","text":"m"},
-    {"bold":true,"color":"#4635CC","text":"o"},
-    {"bold":true,"color":"#4D3CD5","text":"r"},
-    {"bold":true,"color":"#4D3CD5","text":"t"},
-    {"bold":true,"color":"#4D3CD5","text":"a"},
-    {"bold":true,"color":"#4D3CD5","text":"l"},
-    {"bold":true,"color":"#4D3CD5","text":" H"},
-    {"bold":true,"color":"#4D3CD5","text":"e"},
-    {"bold":true,"color":"#4D3CD5","text":"l"},
-    {"bold":true,"color":"#4D3CD5","text":"m"},
-    {"obfuscated":true,"color":"#4D3CD5","text":" %"}
+    {"obfuscated":true,"color":"#FB9208","text":" %"},
+    {"bold":true,"color":"#FB9208","text":" I"},
+    {"bold":true,"color":"#FCA007","text":"m"},
+    {"bold":true,"color":"#FCAE06","text":"m"},
+    {"bold":true,"color":"#FDBC04","text":"o"},
+    {"bold":true,"color":"#FDCB03","text":"r"},
+    {"bold":true,"color":"#FED902","text":"t"},
+    {"bold":true,"color":"#FFE701","text":"a"},
+    {"bold":true,"color":"#FFE701","text":"l"},
+    {"bold":true,"color":"#FED902","text":" D"},
+    {"bold":true,"color":"#FDCB03","text":"i"},
+    {"bold":true,"color":"#FDBC04","text":"a"},
+    {"bold":true,"color":"#FCAE06","text":"d"},
+    {"bold":true,"color":"#FCA007","text":"e"},
+    {"bold":true,"color":"#FB9208","text":"m"},
+    {"obfuscated":true,"color":"#FB9208","text":" %"}
     ],"text":""}'
     lore:
-      - '{"extra":[{"color":"dark_gray","text":"Efficiency"},{"color":"#6D5EFF","text":" XI"}],"text":""}'
-      - '{"extra":[{"color":"dark_gray","text":"Fortune"},{"color":"#6D5EFF","text":" V"}],"text":""}'
-      - '{"extra":[{"color":"dark_gray","text":"Unbreakable"}],"text":""}'
+      - '{"extra":[{"color":"#FB9208","text":"Aqua Affinity"},{"color":"#FFE701","text":" V"}],"text":""}'
+      - '{"extra":[{"color":"#FB9208","text":"Protection All"},{"color":"#FFE701","text":" V"}],"text":""}'
+      - '{"extra":[{"color":"#FB9208","text":"Unbreakable"},{"color":"#FFE701","text":""}],"text":""}'
       - '{"extra":[{"color":"gray","text":""}],"text":""}'
-      - '{"extra":[{"color":"#060094","text":"Ancient Power"},{"color":"#6D5EFF","text":" Ω"}],"text":""}'
-      - '{"extra":[{"color":"#060094","text":"  ● Charge"},{"color":"#6D5EFF","text":" 0"}],"text":""}'
-      - '{"extra":[{"color":"#060094","text":"  ● Status"},{"color":"#6D5EFF","text":" OFF"}],"text":""}'
+      - '{"extra":[{"color":"#FB9208","text":"Spartan Resolve"},{"color":"#FFE701","text":" Ω"}],"text":""}'
       - '{"extra":[{"color":"gray","text":""}],"text":""}'
       - '{"extra":[
-    {"color":"#060094","text":"A"},
-    {"color":"#14089B","text":" r"},
-    {"color":"#1E10A3","text":"e"},
-    {"color":"#2718AA","text":"l"},
-    {"color":"#2E1FB2","text":"i"},
-    {"color":"#3525B9","text":"c"},
-    {"color":"#3C2CC1","text":" f"},
-    {"color":"#4332C8","text":"r"},
-    {"color":"#4938D0","text":"o"},
-    {"color":"#4F3ED8","text":"m"},
-    {"color":"#5545DF","text":" a"},
-    {"color":"#5B4BE7","text":" t"},
-    {"color":"#6151EF","text":"i"},
-    {"color":"#6758F7","text":"m"},
-    {"color":"#6D5EFF","text":"e"}
-    ],"text":""}'
+      {"color":"#FB9208","text":"A"},
+      {"color":"#FC9F07","text":" g"},
+      {"color":"#FCAC06","text":"o"},
+      {"color":"#FDB905","text":"l"},
+      {"color":"#FDC703","text":"d"},
+      {"color":"#FED402","text":"e"},
+      {"color":"#FEE101","text":"n"},
+      {"color":"#FFEE00","text":" t"},
+      {"color":"#FEE101","text":"r"},
+      {"color":"#FED402","text":"e"},
+      {"color":"#FDC703","text":"a"},
+      {"color":"#FDB905","text":"s"},
+      {"color":"#FCAC06","text":"u"},
+      {"color":"#FC9F07","text":"r"},
+      {"color":"#FB9208","text":"e"}],"text":""}'
       - '{"extra":[
-    {"color":"#060094","text":"l"},
-    {"color":"#14089B","text":"o"},
-    {"color":"#1E10A3","text":"n"},
-    {"color":"#2718AA","text":"g"},
-    {"color":"#2E1FB2","text":" p"},
-    {"color":"#3525B9","text":"a"},
-    {"color":"#3C2CC1","text":"s"},
-    {"color":"#4332C8","text":"t"},
-    {"color":"#4938D0","text":"."},
-    {"color":"#4F3ED8","text":"."},
-    {"color":"#5545DF","text":"."}
-    ],"text":""}'
+      {"color":"#FB9208","text":"f"},
+      {"color":"#FC9E07","text":"o"},
+      {"color":"#FCA906","text":"r"},
+      {"color":"#FDB505","text":"g"},
+      {"color":"#FDC004","text":"e"},
+      {"color":"#FECC03","text":"d"},
+      {"color":"#FED702","text":" i"},
+      {"color":"#FFE301","text":"n"},
+      {"color":"#FFEE00","text":" t"},
+      {"color":"#FFE301","text":"h"},
+      {"color":"#FED702","text":"e"},
+      {"color":"#FECC03","text":" d"},
+      {"color":"#FDC004","text":"e"},
+      {"color":"#FDB505","text":"p"},
+      {"color":"#FCA906","text":"t"},
+      {"color":"#FC9E07","text":"h"},
+      {"color":"#FB9208","text":"s"}],"text":""}'
+      - '{"extra":[
+      {"color":"#FB9208","text":"o"},
+      {"color":"#FC9F07","text":"f"},
+      {"color":"#FCAC06","text":" s"},
+      {"color":"#FDB905","text":"p"},
+      {"color":"#FDC703","text":"a"},
+      {"color":"#FED402","text":"c"},
+      {"color":"#FEE101","text":"e"},
+      {"color":"#FFEE00","text":","},
+      {"color":"#FEE101","text":" o"},
+      {"color":"#FED402","text":"n"},
+      {"color":"#FDC703","text":"l"},
+      {"color":"#FDB905","text":"y"},
+      {"color":"#FCAC06","text":" t"},
+      {"color":"#FC9F07","text":"h"},
+      {"color":"#FB9208","text":"e"}],"text":""}'
+      - '{"extra":[
+      {"color":"#FB9208","text":"s"},
+      {"color":"#FC9E07","text":"t"},
+      {"color":"#FCA906","text":"r"},
+      {"color":"#FDB505","text":"o"},
+      {"color":"#FDC004","text":"n"},
+      {"color":"#FECC03","text":"g"},
+      {"color":"#FED702","text":"e"},
+      {"color":"#FFE301","text":"s"},
+      {"color":"#FFEE00","text":"t"},
+      {"color":"#FFE301","text":" c"},
+      {"color":"#FED702","text":"a"},
+      {"color":"#FECC03","text":"n"},
+      {"color":"#FDC004","text":" w"},
+      {"color":"#FDB505","text":"i"},
+      {"color":"#FCA906","text":"e"},
+      {"color":"#FC9E07","text":"l"},
+      {"color":"#FB9208","text":"d"}],"text":""}'
+      - '{"extra":[
+      {"color":"#FB9208","text":"t"},
+      {"color":"#FCA307","text":"h"},
+      {"color":"#FCB305","text":"i"},
+      {"color":"#FDC404","text":"s"},
+      {"color":"#FED502","text":" p"},
+      {"color":"#FFE601","text":"o"},
+      {"color":"#FFE601","text":"w"},
+      {"color":"#FED502","text":"e"},
+      {"color":"#FDC404","text":"r"},
+      {"color":"#FCB305","text":"."},
+      {"color":"#FCA307","text":"."},
+      {"color":"#FB9208","text":"."}],"text":""}'
     custom-model-data: 1000006
     enchants:
-      DIG_SPEED: 11
-      LOOT_BONUS_BLOCKS: 5
+      WATER_WORKER: 5
+      PROTECTION_ENVIRONMENTAL: 5
+      PROTECTION_FIRE: 5
+      PROTECTION_EXPLOSIONS: 5
+      PROTECTION_PROJECTILE: 5
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES
-immortal_chestplate:
-  ==: org.bukkit.inventory.ItemStack
-  v: 3465
-  type: DIAMOND_CHESTPLATE
-  meta:
-    ==: ItemMeta
-    meta-type: UNSPECIFIC
-    display-name: '{"extra":[
-    {"obfuscated":true,"color":"#060094","text":" %"},
-    {"bold":true,"color":"#3121B4","text":" I"},
-    {"bold":true,"color":"#3828BC","text":"m"},
-    {"bold":true,"color":"#3F2FC4","text":"m"},
-    {"bold":true,"color":"#4635CC","text":"o"},
-    {"bold":true,"color":"#4D3CD5","text":"r"},
-    {"bold":true,"color":"#4D3CD5","text":"t"},
-    {"bold":true,"color":"#4D3CD5","text":"a"},
-    {"bold":true,"color":"#4D3CD5","text":"l"},
-    {"bold":true,"color":"#4D3CD5","text":" C"},
-    {"bold":true,"color":"#4D3CD5","text":"h"},
-    {"bold":true,"color":"#4D3CD5","text":"e"},
-    {"bold":true,"color":"#4D3CD5","text":"s"},
-    {"bold":true,"color":"#4D3CD5","text":"t"},
-    {"bold":true,"color":"#4D3CD5","text":"p"},
-    {"bold":true,"color":"#4D3CD5","text":"l"},
-    {"bold":true,"color":"#4D3CD5","text":"a"},
-    {"bold":true,"color":"#4D3CD5","text":"t"},
-    {"bold":true,"color":"#4D3CD5","text":"e"},
-    {"obfuscated":true,"color":"#4D3CD5","text":" %"}
-    ],"text":""}'
-    lore:
-      - '{"extra":[{"color":"dark_gray","text":"Efficiency"},{"color":"#6D5EFF","text":" XI"}],"text":""}'
-      - '{"extra":[{"color":"dark_gray","text":"Fortune"},{"color":"#6D5EFF","text":" V"}],"text":""}'
-      - '{"extra":[{"color":"dark_gray","text":"Unbreakable"}],"text":""}'
-      - '{"extra":[{"color":"gray","text":""}],"text":""}'
-      - '{"extra":[{"color":"#060094","text":"Ancient Power"},{"color":"#6D5EFF","text":" Ω"}],"text":""}'
-      - '{"extra":[{"color":"#060094","text":"  ● Charge"},{"color":"#6D5EFF","text":" 0"}],"text":""}'
-      - '{"extra":[{"color":"#060094","text":"  ● Status"},{"color":"#6D5EFF","text":" OFF"}],"text":""}'
-      - '{"extra":[{"color":"gray","text":""}],"text":""}'
-      - '{"extra":[
-    {"color":"#060094","text":"A"},
-    {"color":"#14089B","text":" r"},
-    {"color":"#1E10A3","text":"e"},
-    {"color":"#2718AA","text":"l"},
-    {"color":"#2E1FB2","text":"i"},
-    {"color":"#3525B9","text":"c"},
-    {"color":"#3C2CC1","text":" f"},
-    {"color":"#4332C8","text":"r"},
-    {"color":"#4938D0","text":"o"},
-    {"color":"#4F3ED8","text":"m"},
-    {"color":"#5545DF","text":" a"},
-    {"color":"#5B4BE7","text":" t"},
-    {"color":"#6151EF","text":"i"},
-    {"color":"#6758F7","text":"m"},
-    {"color":"#6D5EFF","text":"e"}
-    ],"text":""}'
-      - '{"extra":[
-    {"color":"#060094","text":"l"},
-    {"color":"#14089B","text":"o"},
-    {"color":"#1E10A3","text":"n"},
-    {"color":"#2718AA","text":"g"},
-    {"color":"#2E1FB2","text":" p"},
-    {"color":"#3525B9","text":"a"},
-    {"color":"#3C2CC1","text":"s"},
-    {"color":"#4332C8","text":"t"},
-    {"color":"#4938D0","text":"."},
-    {"color":"#4F3ED8","text":"."},
-    {"color":"#5545DF","text":"."}
-    ],"text":""}'
-    custom-model-data: 1000006
-    enchants:
-      DIG_SPEED: 11
-      LOOT_BONUS_BLOCKS: 5
-    ItemFlags:
-      - HIDE_ENCHANTS
-      - HIDE_ATTRIBUTES
-immortal_leggings:
-  ==: org.bukkit.inventory.ItemStack
-  v: 3465
-  type: DIAMOND_LEGGINGS
-  meta:
-    ==: ItemMeta
-    meta-type: UNSPECIFIC
-    display-name: '{"extra":[
-    {"obfuscated":true,"color":"#060094","text":" %"},
-    {"bold":true,"color":"#3121B4","text":" I"},
-    {"bold":true,"color":"#3828BC","text":"m"},
-    {"bold":true,"color":"#3F2FC4","text":"m"},
-    {"bold":true,"color":"#4635CC","text":"o"},
-    {"bold":true,"color":"#4D3CD5","text":"r"},
-    {"bold":true,"color":"#4D3CD5","text":"t"},
-    {"bold":true,"color":"#4D3CD5","text":"a"},
-    {"bold":true,"color":"#4D3CD5","text":"l"},
-    {"bold":true,"color":"#4D3CD5","text":" L"},
-    {"bold":true,"color":"#4D3CD5","text":"e"},
-    {"bold":true,"color":"#4D3CD5","text":"g"},
-    {"bold":true,"color":"#4D3CD5","text":"g"},
-    {"bold":true,"color":"#4D3CD5","text":"i"},
-    {"bold":true,"color":"#4D3CD5","text":"n"},
-    {"bold":true,"color":"#4D3CD5","text":"g"},
-    {"bold":true,"color":"#4D3CD5","text":"s"},
-    {"obfuscated":true,"color":"#4D3CD5","text":" %"}
-    ],"text":""}'
-    lore:
-      - '{"extra":[{"color":"dark_gray","text":"Efficiency"},{"color":"#6D5EFF","text":" XI"}],"text":""}'
-      - '{"extra":[{"color":"dark_gray","text":"Fortune"},{"color":"#6D5EFF","text":" V"}],"text":""}'
-      - '{"extra":[{"color":"dark_gray","text":"Unbreakable"}],"text":""}'
-      - '{"extra":[{"color":"gray","text":""}],"text":""}'
-      - '{"extra":[{"color":"#060094","text":"Ancient Power"},{"color":"#6D5EFF","text":" Ω"}],"text":""}'
-      - '{"extra":[{"color":"#060094","text":"  ● Charge"},{"color":"#6D5EFF","text":" 0"}],"text":""}'
-      - '{"extra":[{"color":"#060094","text":"  ● Status"},{"color":"#6D5EFF","text":" OFF"}],"text":""}'
-      - '{"extra":[{"color":"gray","text":""}],"text":""}'
-      - '{"extra":[
-    {"color":"#060094","text":"A"},
-    {"color":"#14089B","text":" r"},
-    {"color":"#1E10A3","text":"e"},
-    {"color":"#2718AA","text":"l"},
-    {"color":"#2E1FB2","text":"i"},
-    {"color":"#3525B9","text":"c"},
-    {"color":"#3C2CC1","text":" f"},
-    {"color":"#4332C8","text":"r"},
-    {"color":"#4938D0","text":"o"},
-    {"color":"#4F3ED8","text":"m"},
-    {"color":"#5545DF","text":" a"},
-    {"color":"#5B4BE7","text":" t"},
-    {"color":"#6151EF","text":"i"},
-    {"color":"#6758F7","text":"m"},
-    {"color":"#6D5EFF","text":"e"}
-    ],"text":""}'
-      - '{"extra":[
-    {"color":"#060094","text":"l"},
-    {"color":"#14089B","text":"o"},
-    {"color":"#1E10A3","text":"n"},
-    {"color":"#2718AA","text":"g"},
-    {"color":"#2E1FB2","text":" p"},
-    {"color":"#3525B9","text":"a"},
-    {"color":"#3C2CC1","text":"s"},
-    {"color":"#4332C8","text":"t"},
-    {"color":"#4938D0","text":"."},
-    {"color":"#4F3ED8","text":"."},
-    {"color":"#5545DF","text":"."}
-    ],"text":""}'
-    custom-model-data: 1000006
-    enchants:
-      DIG_SPEED: 11
-      LOOT_BONUS_BLOCKS: 5
-    ItemFlags:
-      - HIDE_ENCHANTS
-      - HIDE_ATTRIBUTES
-immortal_boots:
-  ==: org.bukkit.inventory.ItemStack
-  v: 3465
-  type: DIAMOND_BOOTS
-  meta:
-    ==: ItemMeta
-    meta-type: UNSPECIFIC
-    display-name: '{"extra":[
-    {"obfuscated":true,"color":"#060094","text":" %"},
-    {"bold":true,"color":"#3121B4","text":" I"},
-    {"bold":true,"color":"#3828BC","text":"m"},
-    {"bold":true,"color":"#3F2FC4","text":"m"},
-    {"bold":true,"color":"#4635CC","text":"o"},
-    {"bold":true,"color":"#4D3CD5","text":"r"},
-    {"bold":true,"color":"#4D3CD5","text":"t"},
-    {"bold":true,"color":"#4D3CD5","text":"a"},
-    {"bold":true,"color":"#4D3CD5","text":"l"},
-    {"bold":true,"color":"#4D3CD5","text":" B"},
-    {"bold":true,"color":"#4D3CD5","text":"o"},
-    {"bold":true,"color":"#4D3CD5","text":"o"},
-    {"bold":true,"color":"#4D3CD5","text":"t"},
-    {"bold":true,"color":"#4D3CD5","text":"s"},
-    {"obfuscated":true,"color":"#4D3CD5","text":" %"}
-    ],"text":""}'
-    lore:
-      - '{"extra":[{"color":"dark_gray","text":"Efficiency"},{"color":"#6D5EFF","text":" XI"}],"text":""}'
-      - '{"extra":[{"color":"dark_gray","text":"Fortune"},{"color":"#6D5EFF","text":" V"}],"text":""}'
-      - '{"extra":[{"color":"dark_gray","text":"Unbreakable"}],"text":""}'
-      - '{"extra":[{"color":"gray","text":""}],"text":""}'
-      - '{"extra":[{"color":"#060094","text":"Ancient Power"},{"color":"#6D5EFF","text":" Ω"}],"text":""}'
-      - '{"extra":[{"color":"#060094","text":"  ● Charge"},{"color":"#6D5EFF","text":" 0"}],"text":""}'
-      - '{"extra":[{"color":"#060094","text":"  ● Status"},{"color":"#6D5EFF","text":" OFF"}],"text":""}'
-      - '{"extra":[{"color":"gray","text":""}],"text":""}'
-      - '{"extra":[
-    {"color":"#060094","text":"A"},
-    {"color":"#14089B","text":" r"},
-    {"color":"#1E10A3","text":"e"},
-    {"color":"#2718AA","text":"l"},
-    {"color":"#2E1FB2","text":"i"},
-    {"color":"#3525B9","text":"c"},
-    {"color":"#3C2CC1","text":" f"},
-    {"color":"#4332C8","text":"r"},
-    {"color":"#4938D0","text":"o"},
-    {"color":"#4F3ED8","text":"m"},
-    {"color":"#5545DF","text":" a"},
-    {"color":"#5B4BE7","text":" t"},
-    {"color":"#6151EF","text":"i"},
-    {"color":"#6758F7","text":"m"},
-    {"color":"#6D5EFF","text":"e"}
-    ],"text":""}'
-      - '{"extra":[
-    {"color":"#060094","text":"l"},
-    {"color":"#14089B","text":"o"},
-    {"color":"#1E10A3","text":"n"},
-    {"color":"#2718AA","text":"g"},
-    {"color":"#2E1FB2","text":" p"},
-    {"color":"#3525B9","text":"a"},
-    {"color":"#3C2CC1","text":"s"},
-    {"color":"#4332C8","text":"t"},
-    {"color":"#4938D0","text":"."},
-    {"color":"#4F3ED8","text":"."},
-    {"color":"#5545DF","text":"."}
-    ],"text":""}'
-    custom-model-data: 1000006
-    enchants:
-      DIG_SPEED: 11
-      LOOT_BONUS_BLOCKS: 5
-    ItemFlags:
-      - HIDE_ENCHANTS
-      - HIDE_ATTRIBUTES
+      - HIDE_ARMOR_TRIM
+    PublicBukkitValues:
+      titan-tools:is-immortal-diadem: 1b
+    trim:
+      material: minecraft:gold
+      pattern: minecraft:wayfinder
