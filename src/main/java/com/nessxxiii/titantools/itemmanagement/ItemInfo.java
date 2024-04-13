@@ -2,10 +2,13 @@ package com.nessxxiii.titantools.itemmanagement;
 
 import com.nessxxiii.titantools.enums.ToolColor;
 import com.nessxxiii.titantools.enums.ToolStatus;
+import com.nessxxiii.titantools.utils.Utils;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -259,4 +262,12 @@ public class ItemInfo {
         return isTitanTool && isAllowedType(item, ALLOWED_TYPES);
     }
 
+    public static boolean isImmortalDiadem(@NotNull ItemStack item) {
+        NamespacedKey key = new NamespacedKey("titan-tools", "is-immortal-diadem");
+        ItemMeta meta = item.getItemMeta();
+        if (meta.getPersistentDataContainer().has(key, PersistentDataType.BOOLEAN)) {
+            return Boolean.TRUE.equals(meta.getPersistentDataContainer().get(key, PersistentDataType.BOOLEAN));
+        }
+        return false;
+    }
 }

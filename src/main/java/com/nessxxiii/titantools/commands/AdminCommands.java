@@ -71,6 +71,7 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
             List<String> lore = loreResponse.value();
             boolean isTitanTool = ItemInfo.isTitanTool(lore);
             Utils.sendPluginMessage(sender, "isTitanTool: " + isTitanTool);
+            Utils.sendPluginMessage(sender, "isImmortalDiadem: " + ItemInfo.isImmortalDiadem(itemStack));
             Utils.sendPluginMessage(sender, "Contains charge lore: " + ItemInfo.hasChargeLore(lore, isTitanTool));
             Utils.sendPluginMessage(sender, "ToolColor: " + ItemInfo.getColor(lore));
             Utils.sendPluginMessage(sender, "ToolStatus: " + ItemInfo.getStatus(lore, isTitanTool));
