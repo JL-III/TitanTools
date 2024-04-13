@@ -41,3 +41,4 @@ Players can charge their tools with power crystals by taking a PowerCrystal and 
 
 ### Plugins depending on this plugin:
 - [TheatriaUtils]
+- [TitanEnchants]
