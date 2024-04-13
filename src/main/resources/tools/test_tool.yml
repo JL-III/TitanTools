@@ -64,6 +64,8 @@ test_tool:
     enchants:
       DIG_SPEED: 11
       LOOT_BONUS_BLOCKS: 5
+    PublicBukkitValues:
+      titan-tools:is-titan-tool: 1b
     ItemFlags:
       - HIDE_ENCHANTS
       - HIDE_ATTRIBUTES

@@ -74,12 +74,8 @@ public class KitCommands implements CommandExecutor, TabCompleter {
 
                     add("titan_rod_red");
 
-                    add("immortal_helm");
-                    add("immortal_chestplate");
-                    add("immortal_leggings");
-                    add("immortal_boots");
+                    add("immortal_diadem");
 
-                    add("immortal_pack");
                 }};
             }
             if (args.length == 3) {
@@ -131,17 +127,8 @@ public class KitCommands implements CommandExecutor, TabCompleter {
 
                         case "titan_rod_red" -> reportResult(args[1], inventory.addItem(configManager.getTitanRodRed()), player_name);
 
-                        case "immortal_helm" -> reportResult(args[1], inventory.addItem(configManager.getImmortalHelm()), player_name);
-                        case "immortal_chestplate" -> reportResult(args[1], inventory.addItem(configManager.getImmortalChestplate()), player_name);
-                        case "immortal_leggings" -> reportResult(args[1], inventory.addItem(configManager.getImmortalLeggings()), player_name);
-                        case "immortal_boots" -> reportResult(args[1], inventory.addItem(configManager.getImmortalBoots()), player_name);
+                        case "immortal_diadem" -> reportResult(args[1], inventory.addItem(configManager.getImmortalDiadem()), player_name);
 
-                        case "immortal_pack" -> {
-                            reportResult("immortal_helm", inventory.addItem(configManager.getImmortalHelm()), player_name);
-                            reportResult("immortal_chestplate", inventory.addItem(configManager.getImmortalChestplate()), player_name);
-                            reportResult("immortal_leggings", inventory.addItem(configManager.getImmortalLeggings()), player_name);
-                            reportResult("immortal_boots", inventory.addItem(configManager.getImmortalBoots()), player_name);
-                        }
                         default -> sender.sendMessage(ChatColor.DARK_RED + "This kit does not exist");
                     }
                 }
