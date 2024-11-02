@@ -1,6 +1,7 @@
 package com.nessxxiii.titantools;
 
 import com.nessxxiii.titantools.commands.AdminCommands;
+import com.nessxxiii.titantools.commands.CrystalCommand;
 import com.nessxxiii.titantools.commands.KitCommands;
 import com.nessxxiii.titantools.commands.PlayerCommands;
 import com.nessxxiii.titantools.utils.ConfigManager;
@@ -30,5 +31,6 @@ public final class TitanTools extends JavaPlugin {
         Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, playerCommands, configManager));
         Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
         Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(configManager,  customLogger));
+        Objects.requireNonNull(getCommand("crystal")).setExecutor(new CrystalCommand());
     }
 }

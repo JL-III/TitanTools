@@ -11,3 +11,9 @@ commands:
       /<command> reload
   atitan:
   tkit:
+  crystal:
+    description: power crystal commands
+    usage: |
+      /<command> give <amount>
+      /<command> check
+      /<command> give <type> <amount>
