@@ -49,19 +49,6 @@ public enum PowerCrystal {
         return item;
     }
 
-    public Integer getCustomModelData() {
-        return customModelData;
-    }
-
-    public static boolean isPowerCrystal(ItemStack item) {
-        for (PowerCrystal crystal : PowerCrystal.values()) {
-            if (crystal.getItemStack().isSimilar(item)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static Result<PowerCrystal, Exception> getPowerCrystalType(ItemStack item) {
         for (PowerCrystal powerCrystal : PowerCrystal.values()) {
             if (powerCrystal.getItemStack().isSimilar(item)) {

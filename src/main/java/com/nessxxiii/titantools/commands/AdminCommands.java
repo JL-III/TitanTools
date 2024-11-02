@@ -200,7 +200,6 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
 
         if ("crystalcheck".equalsIgnoreCase(args[0]) && permissionCheck(player, "crystalcheck")) {
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-            Utils.sendPluginMessage(player, "Item is powercrystal: " + PowerCrystal.isPowerCrystal(itemInMainHand));
             Utils.sendPluginMessage(player, "PowerCrystal type: " + PowerCrystal.getPowerCrystalType(itemInMainHand));
             return true;
         }
