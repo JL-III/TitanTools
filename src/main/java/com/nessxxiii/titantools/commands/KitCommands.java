@@ -1,10 +1,12 @@
 package com.nessxxiii.titantools.commands;
 
+import com.nessxxiii.titantools.enums.PowerCrystal;
 import com.nessxxiii.titantools.utils.ConfigManager;
 import com.nessxxiii.titantools.itemmanagement.ItemCreator;
 import com.nessxxiii.titantools.utils.CustomLogger;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -95,41 +97,41 @@ public class KitCommands implements CommandExecutor, TabCompleter {
                     String player_name = player.getName();
                     Inventory inventory = player.getInventory();
                     switch (args[1]) {
-                        case "common" -> reportResult(args[1], inventory.addItem(ItemCreator.powerCrystalCommon), player_name);
-                        case "uncommon" -> reportResult(args[1], inventory.addItem(ItemCreator.powerCrystalUncommon), player_name);
-                        case "super" -> reportResult(args[1], inventory.addItem(ItemCreator.powerCrystalSuper), player_name);
-                        case "epic" -> reportResult(args[1], inventory.addItem(ItemCreator.powerCrystalEpic), player_name);
-                        case "ultra" -> reportResult(args[1], inventory.addItem(ItemCreator.powerCrystalUltra), player_name);
+                        case "crystal_common" -> reportResult(args[1], inventory.addItem(PowerCrystal.COMMON.getItemStack()), player_name);
+                        case "crystal_uncommon" -> reportResult(args[1], inventory.addItem(PowerCrystal.UNCOMMON.getItemStack()), player_name);
+                        case "crystal_super" -> reportResult(args[1], inventory.addItem(PowerCrystal.SUPER.getItemStack()), player_name);
+                        case "crystal_epic" -> reportResult(args[1], inventory.addItem(PowerCrystal.EPIC.getItemStack()), player_name);
+                        case "crystal_ultra" -> reportResult(args[1], inventory.addItem(PowerCrystal.ULTRA.getItemStack()), player_name);
 
                         case "excavator" -> reportResult(args[1], inventory.addItem(ItemCreator.excavator), player_name);
-                        case "sunfish" -> reportResult(args[1], inventory.addItem(ItemCreator.sunFish), player_name);
-                        case "nightfish" -> reportResult(args[1], inventory.addItem(ItemCreator.nightFish), player_name);
-                        case "etherealfragment" -> reportResult(args[1], inventory.addItem(ItemCreator.etherealFragment), player_name);
-                        case "christmaspick" -> reportResult(args[1], inventory.addItem(ItemCreator.christmasPick), player_name);
-                        case "gingerbreadman" -> reportResult(args[1], inventory.addItem(ItemCreator.gingerbreadMan), player_name);
+                        case "sun_fish" -> reportResult(args[1], inventory.addItem(ItemCreator.sunFish), player_name);
+                        case "night_fish" -> reportResult(args[1], inventory.addItem(ItemCreator.nightFish), player_name);
+                        case "ethereal_fragment" -> reportResult(args[1], inventory.addItem(ItemCreator.etherealFragment), player_name);
+                        case "christmas_pick" -> reportResult(args[1], inventory.addItem(ItemCreator.christmasPick), player_name);
+                        case "gingerbread_man" -> reportResult(args[1], inventory.addItem(ItemCreator.gingerbreadMan), player_name);
 
-                        case "titan_pick_red_fortune" -> reportResult(args[1], inventory.addItem(configManager.getTitanPickRedFortune()), player_name);
-                        case "titan_pick_red_silk" -> reportResult(args[1], inventory.addItem(configManager.getTitanPickRedSilk()), player_name);
-                        case "titan_pick_yellow_fortune" -> reportResult(args[1], inventory.addItem(configManager.getTitanPickYellowFortune()), player_name);
-                        case "titan_pick_yellow_silk" -> reportResult(args[1], inventory.addItem(configManager.getTitanPickYellowSilk()), player_name);
-                        case "titan_pick_blue_fortune" -> reportResult(args[1],  inventory.addItem(configManager.getTitanPickBlueFortune()), player_name);
-                        case "titan_pick_blue_silk" -> reportResult(args[1],  inventory.addItem(configManager.getTitanPickBlueSilk()), player_name);
+                        case "pick_red_fortune" -> reportResult(args[1], inventory.addItem(configManager.getPickRedFortune()), player_name);
+                        case "pick_red_silk" -> reportResult(args[1], inventory.addItem(configManager.getPickRedSilk()), player_name);
+                        case "pick_yellow_fortune" -> reportResult(args[1], inventory.addItem(configManager.getPickYellowFortune()), player_name);
+                        case "pick_yellow_silk" -> reportResult(args[1], inventory.addItem(configManager.getPickYellowSilk()), player_name);
+                        case "pick_blue_fortune" -> reportResult(args[1],  inventory.addItem(configManager.getPickBlueFortune()), player_name);
+                        case "pick_blue_silk" -> reportResult(args[1],  inventory.addItem(configManager.getPickBlueSilk()), player_name);
 
-                        case "titan_shovel_red" -> reportResult(args[1], inventory.addItem(configManager.getTitanShovelRed()), player_name);
+                        case "shovel_red" -> reportResult(args[1], inventory.addItem(configManager.getShovelRed()), player_name);
 
-                        case "titan_axe_red" -> reportResult(args[1], inventory.addItem(configManager.getTitanAxeRed()), player_name);
-                        case "titan_axe_yellow" -> reportResult(args[1], inventory.addItem(configManager.getTitanAxeYellow()), player_name);
-                        case "titan_axe_blue" -> reportResult(args[1], inventory.addItem(configManager.getTitanAxeBlue()), player_name);
+                        case "axe_red" -> reportResult(args[1], inventory.addItem(configManager.getAxeRed()), player_name);
+                        case "axe_yellow" -> reportResult(args[1], inventory.addItem(configManager.getAxeYellow()), player_name);
+                        case "axe_blue" -> reportResult(args[1], inventory.addItem(configManager.getAxeBlue()), player_name);
 
-                        case "titan_sword_red" -> reportResult(args[1], inventory.addItem(configManager.getTitanSwordRed()), player_name);
-                        case "titan_sword_yellow" -> reportResult(args[1], inventory.addItem(configManager.getTitanSwordYellow()), player_name);
-                        case "titan_sword_blue" -> reportResult(args[1], inventory.addItem(configManager.getTitanSwordBlue()), player_name);
+                        case "sword_red" -> reportResult(args[1], inventory.addItem(configManager.getSwordRed()), player_name);
+                        case "sword_yellow" -> reportResult(args[1], inventory.addItem(configManager.getSwordYellow()), player_name);
+                        case "sword_blue" -> reportResult(args[1], inventory.addItem(configManager.getSwordBlue()), player_name);
 
-                        case "titan_rod_red" -> reportResult(args[1], inventory.addItem(configManager.getTitanRodRed()), player_name);
+                        case "rod_red" -> reportResult(args[1], inventory.addItem(configManager.getRodRed()), player_name);
 
                         case "immortal_diadem" -> reportResult(args[1], inventory.addItem(configManager.getImmortalDiadem()), player_name);
 
-                        default -> sender.sendMessage(ChatColor.DARK_RED + "This kit does not exist");
+                        default -> sender.sendMessage(Component.text("This kit does not exist").color(NamedTextColor.DARK_RED));
                     }
                 }
             }

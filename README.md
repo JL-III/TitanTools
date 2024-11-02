@@ -37,7 +37,7 @@ Players can charge their tools with power crystals by taking a PowerCrystal and 
  Shovel can delete bedrock above Y -63
 
 ### Dependencies:
-- [TheatriaMMO]
+- GeneralUtils [![](https://jitpack.io/v/JL-III/GeneralUtils.svg)](https://jitpack.io/#JL-III/GeneralUtils)
 
 ### Plugins depending on this plugin:
 - [TheatriaUtils]

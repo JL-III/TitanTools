@@ -1,8 +1,8 @@
 package com.nessxxiii.titantools.commands;
 
+import com.nessxxiii.titantools.enums.PowerCrystal;
 import com.nessxxiii.titantools.utils.ConfigManager;
 import com.nessxxiii.titantools.itemmanagement.ItemCreator;
-import com.nessxxiii.titantools.itemmanagement.PowerCrystalInfo;
 import com.nessxxiii.titantools.itemmanagement.ItemInfo;
 import com.nessxxiii.titantools.utils.Utils;
 import com.playtheatria.jliii.generalutils.utils.Response;
@@ -43,10 +43,15 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
         if (sender instanceof Player player && player.hasPermission("titan.tools.admin.tabcomplete")) {
             return new ArrayList<>() {{
                 add("check");
+                add("check-pdc");
+                add("compare");
                 add("crystal");
+                add("crystal-check");
                 add("debug");
                 add("excavator");
+                add("model");
                 add("reload");
+                add("save");
             }};
         } else {
             return new ArrayList<>() {{
@@ -161,17 +166,17 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
             }
             Inventory inv = player.getInventory();
             if (args.length == 1) {
-                inv.addItem(ItemCreator.powerCrystalCommon);
-                inv.addItem(ItemCreator.powerCrystalUncommon);
-                inv.addItem(ItemCreator.powerCrystalSuper);
-                inv.addItem(ItemCreator.powerCrystalEpic);
-                inv.addItem(ItemCreator.powerCrystalUltra);
+                inv.addItem(PowerCrystal.COMMON.getItemStack());
+                inv.addItem(PowerCrystal.UNCOMMON.getItemStack());
+                inv.addItem(PowerCrystal.SUPER.getItemStack());
+                inv.addItem(PowerCrystal.EPIC.getItemStack());
+                inv.addItem(PowerCrystal.ULTRA.getItemStack());
                 Utils.sendPluginMessage(player, "Added 1 of each crystal.");
             } else if (args.length == 2) {
                 try {
                     int amount = Integer.parseInt(args[1]);
                     for (int i = 0; i < amount; i++) {
-                        inv.addItem(ItemCreator.powerCrystalCommon);
+                        inv.addItem(PowerCrystal.COMMON.getItemStack());
                     }
                 } catch (Exception ex) {
                     Utils.sendPluginMessage(player, "You must provide an integer amount.");
@@ -195,8 +200,8 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
 
         if ("crystalcheck".equalsIgnoreCase(args[0]) && permissionCheck(player, "crystalcheck")) {
             ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-            Utils.sendPluginMessage(player, "Item is powercrystal: " + PowerCrystalInfo.isPowerCrystal(itemInMainHand));
-            Utils.sendPluginMessage(player, "PowerCrystal type: " + PowerCrystalInfo.getPowerCrystalType(itemInMainHand));
+            Utils.sendPluginMessage(player, "Item is powercrystal: " + PowerCrystal.isPowerCrystal(itemInMainHand));
+            Utils.sendPluginMessage(player, "PowerCrystal type: " + PowerCrystal.getPowerCrystalType(itemInMainHand));
             return true;
         }
 

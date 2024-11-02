@@ -13,11 +13,6 @@ import java.util.List;
 
 public class ItemCreator {
 
-    public static ItemStack powerCrystalCommon;
-    public static ItemStack powerCrystalUncommon;
-    public static ItemStack powerCrystalSuper;
-    public static ItemStack powerCrystalEpic;
-    public static ItemStack powerCrystalUltra;
     public static ItemStack excavator;
     public static ItemStack sunFish;
     public static ItemStack nightFish;
@@ -26,92 +21,12 @@ public class ItemCreator {
     public static ItemStack gingerbreadMan;
 
     static {
-        createPowerCrystalCommon();
-        createPowerCrystalUncommon();
-        createPowerCrystalSuper();
-        createPowerCrystalEpic();
-        createPowerCrystalUltra();
         createExcavator();
         createSunFish();
         createNightFish();
         createEtherealFragment();
         createChristmasPick();
         createGingerbreadMan();
-    }
-
-    public static void createPowerCrystalCommon() {
-        ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
-        List<String> lore = new ArrayList<>();
-        lore.add(PowerCrystalInfo.POWER_CRYSTAL_COMMON_CHARGE);
-        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_COMMON);
-        item.setLore(lore);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_COMMON);
-        item.setItemMeta(meta);
-        item.addUnsafeEnchantment(Enchantment.CHANNELING,5);
-        powerCrystalCommon = item;
-    }
-
-    private static void createPowerCrystalUncommon() {
-        ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
-        List<String> lore = new ArrayList<>();
-        lore.add(PowerCrystalInfo.POWER_CRYSTAL_UNCOMMON_CHARGE);
-        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_UNCOMMON);
-        item.setLore(lore);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_UNCOMMON);
-        item.setItemMeta(meta);
-        item.addUnsafeEnchantment(Enchantment.CHANNELING,4);
-        powerCrystalUncommon = item;
-    }
-
-    private static void createPowerCrystalSuper() {
-        ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
-        List<String> lore = new ArrayList<>();
-        lore.add(PowerCrystalInfo.POWER_CRYSTAL_SUPER_CHARGE);
-        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_SUPER);
-        item.setLore(lore);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_SUPER);
-        item.setItemMeta(meta);
-        item.addUnsafeEnchantment(Enchantment.CHANNELING,3);
-        powerCrystalSuper = item;
-    }
-
-    private static void createPowerCrystalEpic() {
-        ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
-        List<String> lore = new ArrayList<>();
-        lore.add(PowerCrystalInfo.POWER_CRYSTAL_EPIC_CHARGE);
-        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_EPIC);
-        item.setLore(lore);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_EPIC);
-        item.setItemMeta(meta);
-        item.addUnsafeEnchantment(Enchantment.CHANNELING,2);
-        powerCrystalEpic = item;
-    }
-
-    private static void createPowerCrystalUltra() {
-        ItemStack item = new ItemStack(Material.AMETHYST_SHARD);
-        List<String> lore = new ArrayList<>();
-        lore.add(PowerCrystalInfo.POWER_CRYSTAL_ULTRA_CHARGE);
-        lore.add(PowerCrystalInfo.POWER_CRYSTAL_TYPE_ULTRA);
-        item.setLore(lore);
-        ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(PowerCrystalInfo.POWER_CRYSTAL_DISPLAY);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        meta.setCustomModelData(CustomModelData.POWER_CRYSTAL_ULTRA);
-        item.setItemMeta(meta);
-        item.addUnsafeEnchantment(Enchantment.CHANNELING,1);
-        powerCrystalUltra = item;
     }
 
     private static void createExcavator() {
@@ -126,7 +41,7 @@ public class ItemCreator {
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setCustomModelData(CustomModelData.EXCAVATOR);
         item.setItemMeta(meta);
-        item.addUnsafeEnchantment(Enchantment.DURABILITY, 5);
+        item.addUnsafeEnchantment(Enchantment.UNBREAKING, 5);
         item.addUnsafeEnchantment(Enchantment.MULTISHOT, 3);
         excavator = item;
     }
@@ -142,7 +57,7 @@ public class ItemCreator {
         meta.setLore(lore);
         meta.setCustomModelData(CustomModelData.SUN_FISH);
         item.setItemMeta(meta);
-        item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+        item.addUnsafeEnchantment(Enchantment.UNBREAKING, 1);
         sunFish = item;
     }
 
@@ -157,7 +72,7 @@ public class ItemCreator {
         meta.setLore(lore);
         meta.setCustomModelData(CustomModelData.NIGHT_FISH);
         item.setItemMeta(meta);
-        item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
+        item.addUnsafeEnchantment(Enchantment.UNBREAKING, 1);
         nightFish = item;
     }
 
@@ -197,10 +112,10 @@ public class ItemCreator {
         meta.setLore(lore);
         meta.setCustomModelData(CustomModelData.CHRISTMAS_PICK);
         item.setItemMeta(meta);
-        item.addUnsafeEnchantment(Enchantment.DIG_SPEED, 6);
-        item.addUnsafeEnchantment(Enchantment.LOOT_BONUS_BLOCKS, 3);
+        item.addUnsafeEnchantment(Enchantment.EFFICIENCY, 6);
+        item.addUnsafeEnchantment(Enchantment.FORTUNE, 3);
         item.addUnsafeEnchantment(Enchantment.MENDING, 1);
-        item.addUnsafeEnchantment(Enchantment.DURABILITY, 5);
+        item.addUnsafeEnchantment(Enchantment.UNBREAKING, 5);
         christmasPick = item;
     }
 
