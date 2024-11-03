@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CrystalCommand implements CommandExecutor, TabCompleter {
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (args.length == 0) return false;
@@ -39,24 +40,27 @@ public class CrystalCommand implements CommandExecutor, TabCompleter {
                 inv.addItem(PowerCrystal.EPIC.getItemStack());
                 inv.addItem(PowerCrystal.ULTRA.getItemStack());
                 Utils.sendPluginMessage(player, "Added 1 of each crystal.");
-            } else if (args.length == 2) {
-                try {
-                    int amount = Integer.parseInt(args[1]);
-                    for (int i = 0; i < amount; i++) {
-                        inv.addItem(PowerCrystal.COMMON.getItemStack());
-                    }
-                } catch (Exception ex) {
-                    Utils.sendPluginMessage(player, "You must provide an integer amount.");
-                    Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide an integer amount for /atitan crystal <number>.");
-                    return true;
-                }
-                Utils.sendPluginMessage(player, "Added " + args.length + " common crystals.");
             } else if (args.length == 3) {
+                int amount;
+                PowerCrystal powerCrystal;
                 try {
-                    int amount = Integer.parseInt(args[1]);
-                } catch (Exception ex) {
-                    //TODO fix this catch, change the parsing order, type will come before the amount
+                    amount = Integer.parseInt(args[2]);
+                } catch (NumberFormatException exception) {
+                    Utils.sendPluginMessage(player, "You must provide an integer amount.");
+                    Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide an integer amount for /crystal give <type> <amount>.");
+                    return false;
                 }
+                try {
+                    powerCrystal = Enum.valueOf(PowerCrystal.class, args[1]);
+                    for (int i = 0; i < amount; i++) {
+                        inv.addItem(powerCrystal.getItemStack());
+                    }
+                } catch (IllegalArgumentException ex) {
+                    Utils.sendPluginMessage(player, "You must provide a correct power crystal type.");
+                    Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide a correct power crystal type for /crystal give <type> <amount>.");
+                    return false;
+                }
+                Utils.sendPluginMessage(player, "Added " + amount + " " + powerCrystal  + " crystals.");
             }
             return true;
         }

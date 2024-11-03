@@ -11,9 +11,12 @@ commands:
       /<command> reload
   atitan:
   tkit:
+    description: kit commands for titan tools, crystals and other custom items
+    usage: |
+      /<command> <kit_type>
   crystal:
     description: power crystal commands
     usage: |
-      /<command> give <amount>
+      /<command> give
       /<command> check
       /<command> give <type> <amount>

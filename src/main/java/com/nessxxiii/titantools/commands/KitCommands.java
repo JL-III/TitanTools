@@ -39,48 +39,38 @@ public class KitCommands implements CommandExecutor, TabCompleter {
         if (sender instanceof Player player && player.hasPermission("titan.kit.admin.tabcomplete")) {
             if (args.length == 1) {
                 return new ArrayList<>() {{
-                    add("kit");
-                }};
-            }
-            if (args.length == 2) {
-                return new ArrayList<>() {{
-                    add("common");
-                    add("uncommon");
-                    add("super");
-                    add("epic");
-                    add("ultra");
                     add("excavator");
-                    add("sunfish");
-                    add("nightfish");
-                    add("etherealfragment");
-                    add("christmaspick");
-                    add("gingerbreadman");
+                    add("sun_fish");
+                    add("night_fish");
+                    add("ethereal_fragment");
+                    add("christmas_pick");
+                    add("gingerbread_man");
 
-                    add("titan_pick_red_fortune");
-                    add("titan_pick_red_silk");
-                    add("titan_pick_yellow_fortune");
+                    add("pick_red_fortune");
+                    add("pick_red_silk");
+                    add("pick_yellow_fortune");
 
-                    add("titan_pick_yellow_silk");
-                    add("titan_pick_blue_fortune");
-                    add("titan_pick_blue_silk");
+                    add("pick_yellow_silk");
+                    add("pick_blue_fortune");
+                    add("pick_blue_silk");
 
-                    add("titan_shovel_red");
+                    add("shovel_red");
 
-                    add("titan_axe_red");
-                    add("titan_axe_yellow");
-                    add("titan_axe_blue");
+                    add("axe_red");
+                    add("axe_yellow");
+                    add("axe_blue");
 
-                    add("titan_sword_red");
-                    add("titan_sword_yellow");
-                    add("titan_sword_blue");
+                    add("sword_red");
+                    add("sword_yellow");
+                    add("sword_blue");
 
-                    add("titan_rod_red");
+                    add("rod_red");
 
                     add("immortal_diadem");
 
                 }};
             }
-            if (args.length == 3) {
+            if (args.length == 2) {
                 return Bukkit.getOnlinePlayers().stream().collect(ArrayList::new, (list, p) -> list.add(p.getName()), ArrayList::addAll);
             }
         }
@@ -89,50 +79,46 @@ public class KitCommands implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender.hasPermission("titan.kit.give")) {
-            if ("kit".equalsIgnoreCase(args[0]) && args.length == 3) {
-                if (Bukkit.getPlayer(args[2]) != null) {
-                    Player player = Bukkit.getPlayer(args[2]);
-                    if (player == null) return false;
-                    String player_name = player.getName();
-                    Inventory inventory = player.getInventory();
-                    switch (args[1]) {
-                        case "crystal_common" -> reportResult(args[1], inventory.addItem(PowerCrystal.COMMON.getItemStack()), player_name);
-                        case "crystal_uncommon" -> reportResult(args[1], inventory.addItem(PowerCrystal.UNCOMMON.getItemStack()), player_name);
-                        case "crystal_super" -> reportResult(args[1], inventory.addItem(PowerCrystal.SUPER.getItemStack()), player_name);
-                        case "crystal_epic" -> reportResult(args[1], inventory.addItem(PowerCrystal.EPIC.getItemStack()), player_name);
-                        case "crystal_ultra" -> reportResult(args[1], inventory.addItem(PowerCrystal.ULTRA.getItemStack()), player_name);
+        if (!sender.hasPermission("titan.kit.give")) {
+            return false;
+        }
+        if (args.length >= 2) {
+            if (Bukkit.getPlayer(args[1]) != null) {
+                Player player = Bukkit.getPlayer(args[1]);
+                if (player == null) return false;
+                String player_name = player.getName();
+                Inventory inventory = player.getInventory();
+                String input = args[0];
+                switch (input) {
+                    case "excavator" -> reportResult(input, inventory.addItem(ItemCreator.excavator), player_name);
+                    case "sun_fish" -> reportResult(input, inventory.addItem(ItemCreator.sunFish), player_name);
+                    case "night_fish" -> reportResult(input, inventory.addItem(ItemCreator.nightFish), player_name);
+                    case "ethereal_fragment" -> reportResult(input, inventory.addItem(ItemCreator.etherealFragment), player_name);
+                    case "christmas_pick" -> reportResult(input, inventory.addItem(ItemCreator.christmasPick), player_name);
+                    case "gingerbread_man" -> reportResult(input, inventory.addItem(ItemCreator.gingerbreadMan), player_name);
 
-                        case "excavator" -> reportResult(args[1], inventory.addItem(ItemCreator.excavator), player_name);
-                        case "sun_fish" -> reportResult(args[1], inventory.addItem(ItemCreator.sunFish), player_name);
-                        case "night_fish" -> reportResult(args[1], inventory.addItem(ItemCreator.nightFish), player_name);
-                        case "ethereal_fragment" -> reportResult(args[1], inventory.addItem(ItemCreator.etherealFragment), player_name);
-                        case "christmas_pick" -> reportResult(args[1], inventory.addItem(ItemCreator.christmasPick), player_name);
-                        case "gingerbread_man" -> reportResult(args[1], inventory.addItem(ItemCreator.gingerbreadMan), player_name);
+                    case "pick_red_fortune" -> reportResult(input, inventory.addItem(configManager.getPickRedFortune()), player_name);
+                    case "pick_red_silk" -> reportResult(input, inventory.addItem(configManager.getPickRedSilk()), player_name);
+                    case "pick_yellow_fortune" -> reportResult(input, inventory.addItem(configManager.getPickYellowFortune()), player_name);
+                    case "pick_yellow_silk" -> reportResult(input, inventory.addItem(configManager.getPickYellowSilk()), player_name);
+                    case "pick_blue_fortune" -> reportResult(input,  inventory.addItem(configManager.getPickBlueFortune()), player_name);
+                    case "pick_blue_silk" -> reportResult(input,  inventory.addItem(configManager.getPickBlueSilk()), player_name);
 
-                        case "pick_red_fortune" -> reportResult(args[1], inventory.addItem(configManager.getPickRedFortune()), player_name);
-                        case "pick_red_silk" -> reportResult(args[1], inventory.addItem(configManager.getPickRedSilk()), player_name);
-                        case "pick_yellow_fortune" -> reportResult(args[1], inventory.addItem(configManager.getPickYellowFortune()), player_name);
-                        case "pick_yellow_silk" -> reportResult(args[1], inventory.addItem(configManager.getPickYellowSilk()), player_name);
-                        case "pick_blue_fortune" -> reportResult(args[1],  inventory.addItem(configManager.getPickBlueFortune()), player_name);
-                        case "pick_blue_silk" -> reportResult(args[1],  inventory.addItem(configManager.getPickBlueSilk()), player_name);
+                    case "shovel_red" -> reportResult(input, inventory.addItem(configManager.getShovelRed()), player_name);
 
-                        case "shovel_red" -> reportResult(args[1], inventory.addItem(configManager.getShovelRed()), player_name);
+                    case "axe_red" -> reportResult(input, inventory.addItem(configManager.getAxeRed()), player_name);
+                    case "axe_yellow" -> reportResult(input, inventory.addItem(configManager.getAxeYellow()), player_name);
+                    case "axe_blue" -> reportResult(input, inventory.addItem(configManager.getAxeBlue()), player_name);
 
-                        case "axe_red" -> reportResult(args[1], inventory.addItem(configManager.getAxeRed()), player_name);
-                        case "axe_yellow" -> reportResult(args[1], inventory.addItem(configManager.getAxeYellow()), player_name);
-                        case "axe_blue" -> reportResult(args[1], inventory.addItem(configManager.getAxeBlue()), player_name);
+                    case "sword_red" -> reportResult(input, inventory.addItem(configManager.getSwordRed()), player_name);
+                    case "sword_yellow" -> reportResult(input, inventory.addItem(configManager.getSwordYellow()), player_name);
+                    case "sword_blue" -> reportResult(input, inventory.addItem(configManager.getSwordBlue()), player_name);
 
-                        case "sword_red" -> reportResult(args[1], inventory.addItem(configManager.getSwordRed()), player_name);
-                        case "sword_yellow" -> reportResult(args[1], inventory.addItem(configManager.getSwordYellow()), player_name);
-                        case "sword_blue" -> reportResult(args[1], inventory.addItem(configManager.getSwordBlue()), player_name);
+                    case "rod_red" -> reportResult(input, inventory.addItem(configManager.getRodRed()), player_name);
 
-                        case "rod_red" -> reportResult(args[1], inventory.addItem(configManager.getRodRed()), player_name);
+                    case "immortal_diadem" -> reportResult(input, inventory.addItem(configManager.getImmortalDiadem()), player_name);
 
-                        case "immortal_diadem" -> reportResult(args[1], inventory.addItem(configManager.getImmortalDiadem()), player_name);
-
-                        default -> sender.sendMessage(Component.text("This kit does not exist").color(NamedTextColor.DARK_RED));
-                    }
+                    default -> sender.sendMessage(Component.text("This kit does not exist").color(NamedTextColor.DARK_RED));
                 }
             }
         }

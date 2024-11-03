@@ -1,7 +1,11 @@
 package com.nessxxiii.titantools.itemmanagement;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -37,18 +41,28 @@ public class ItemCreator {
         lore.add("§x§f§b§b§5§0§0amethyst blocks");
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
+        Multimap<Attribute, AttributeModifier> modifiers = meta.getAttributeModifiers();
+        if(modifiers == null) {
+            modifiers = HashMultimap.create();
+            meta.setAttributeModifiers(modifiers);
+        }
         meta.setDisplayName(ItemInfo.EXCAVATION_TOOL_DISPLAY_NAME);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setCustomModelData(CustomModelData.EXCAVATOR);
-        item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.UNBREAKING, 5);
         item.addUnsafeEnchantment(Enchantment.MULTISHOT, 3);
+        item.setItemMeta(meta);
         excavator = item;
     }
 
     private static void createSunFish() {
         ItemStack item = new ItemStack(Material.PUFFERFISH);
         ItemMeta meta = item.getItemMeta();
+        Multimap<Attribute, AttributeModifier> modifiers = meta.getAttributeModifiers();
+        if(modifiers == null) {
+            modifiers = HashMultimap.create();
+            meta.setAttributeModifiers(modifiers);
+        }
         meta.setDisplayName(ChatColor.YELLOW + "" +  ChatColor.ITALIC + "" + ChatColor.BOLD + "The Sun Fish");
         List<String> lore = new ArrayList<>();
         lore.add("Hold one in your hand");
@@ -56,14 +70,19 @@ public class ItemCreator {
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setLore(lore);
         meta.setCustomModelData(CustomModelData.SUN_FISH);
-        item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.UNBREAKING, 1);
+        item.setItemMeta(meta);
         sunFish = item;
     }
 
     private static void createNightFish() {
         ItemStack item = new ItemStack(Material.TROPICAL_FISH);
         ItemMeta meta = item.getItemMeta();
+        Multimap<Attribute, AttributeModifier> modifiers = meta.getAttributeModifiers();
+        if(modifiers == null) {
+            modifiers = HashMultimap.create();
+            meta.setAttributeModifiers(modifiers);
+        }
         meta.setDisplayName(ChatColor.BLUE + "" +  ChatColor.ITALIC + "" + ChatColor.BOLD + "Night Fish");
         List<String> lore = new ArrayList<>();
         lore.add("Hold one in your hand");
@@ -71,8 +90,8 @@ public class ItemCreator {
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setLore(lore);
         meta.setCustomModelData(CustomModelData.NIGHT_FISH);
-        item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.UNBREAKING, 1);
+        item.setItemMeta(meta);
         nightFish = item;
     }
 
@@ -85,11 +104,9 @@ public class ItemCreator {
         lore.add("material... collect 16");
         lore.add("and you can trade");
         lore.add("it in for a special tool");
-//        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setLore(lore);
         meta.setCustomModelData(CustomModelData.ETHEREAL_FRAGMENT);
         item.setItemMeta(meta);
-//        item.addUnsafeEnchantment(Enchantment.DURABILITY, 1);
         etherealFragment = item;
     }
 
@@ -97,6 +114,11 @@ public class ItemCreator {
     private static void createChristmasPick() {
         ItemStack item = new ItemStack(Material.NETHERITE_PICKAXE);
         ItemMeta meta = item.getItemMeta();
+        Multimap<Attribute, AttributeModifier> modifiers = meta.getAttributeModifiers();
+        if(modifiers == null) {
+            modifiers = HashMultimap.create();
+            meta.setAttributeModifiers(modifiers);
+        }
         meta.setDisplayName("§x§0§f§b§c§0§0§l§o" + ChatColor.MAGIC + " c " + ChatColor.RESET + "§x§0§f§b§c§0§0§l§oT§x§0§e§c§0§0§0§l§oh§x§0§e§c§5§0§0§l§oe §x§0§d§c§9§0§0§l§oC§x§0§c§c§d§0§0§l§oh§x§0§c§d§2§0§0§l§or§x§0§b§d§6§0§0§l§oi§x§0§a§d§a§0§0§l§os§x§0§a§d§f§0§0§l§ot§x§0§9§e§3§0§0§l§om§x§0§8§e§7§0§0§l§oa§x§0§8§e§c§0§0§l§os §x§0§7§f§0§0§0§l§oP§x§0§6§f§4§0§0§l§oi§x§0§6§f§9§0§0§l§oc§x§0§5§f§d§0§0§l§ok" + ChatColor.MAGIC + " c");
         List<String> lore = new ArrayList<>();
         lore.add("§x§f§f§0§0§0§0E§x§f§f§1§4§1§4f§x§f§f§2§8§2§8f§x§f§e§3§c§3§ci§x§f§e§5§0§5§0c§x§f§e§6§5§6§5i§x§f§e§7§9§7§9e§x§f§d§8§d§8§dn§x§f§d§a§1§a§1c§x§f§d§b§5§b§5y " + ChatColor.WHITE + "VI");
@@ -111,11 +133,11 @@ public class ItemCreator {
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setLore(lore);
         meta.setCustomModelData(CustomModelData.CHRISTMAS_PICK);
-        item.setItemMeta(meta);
         item.addUnsafeEnchantment(Enchantment.EFFICIENCY, 6);
         item.addUnsafeEnchantment(Enchantment.FORTUNE, 3);
         item.addUnsafeEnchantment(Enchantment.MENDING, 1);
         item.addUnsafeEnchantment(Enchantment.UNBREAKING, 5);
+        item.setItemMeta(meta);
         christmasPick = item;
     }
 
@@ -127,11 +149,9 @@ public class ItemCreator {
         lore.add("§x§0§f§b§c§0§0M§x§0§e§c§1§0§0e§x§0§e§c§5§0§0r§x§0§d§c§a§0§0r§x§0§c§c§f§0§0y §x§0§b§d§3§0§0C§x§0§b§d§8§0§0h§x§0§a§d§d§0§0r§x§0§9§e§1§0§0i§x§0§9§e§6§0§0s§x§0§8§e§a§0§0t§x§0§7§e§f§0§0m§x§0§6§f§4§0§0a§x§0§6§f§8§0§0s§x§0§5§f§d§0§0!");
         lore.add("§x§0§f§b§c§0§0-§x§0§e§c§1§0§0T§x§0§d§c§7§0§0h§x§0§d§c§c§0§0e§x§0§c§d§2§0§0a§x§0§b§d§7§0§0t§x§0§a§d§d§0§0r§x§0§9§e§2§0§0i§x§0§8§e§7§0§0a §x§0§8§e§d§0§02§x§0§7§f§2§0§00§x§0§6§f§8§0§02§x§0§5§f§d§0§02");
         lore.add("§x§f§f§0§0§0§0H§x§f§f§1§e§1§eo §x§f§e§3§c§3§cH§x§f§e§5§b§5§bo §x§f§e§7§9§7§9H§x§f§d§9§7§9§7o§x§f§d§b§5§b§5!");
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setLore(lore);
         meta.setCustomModelData(CustomModelData.GINGERBREAD_MAN);
         item.setItemMeta(meta);
         gingerbreadMan = item;
     }
-
 }
