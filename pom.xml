@@ -6,7 +6,7 @@
 
     <groupId>com.nessxxiii</groupId>
     <artifactId>titantools</artifactId>
-    <version>v2.0.1-alpha.29</version>
+    <version>v2.0.1-alpha.30</version>
     <packaging>jar</packaging>
 
     <name>TitanTools</name>
@@ -48,12 +48,6 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <relocations>
-                                <relocation>
-                                    <pattern>com.playtheatria.jliii.generalutils</pattern>
-                                    <shadedPattern>com.playtheatria.titantools.lib.com.github.JL-III</shadedPattern>
-                                </relocation>
-                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
