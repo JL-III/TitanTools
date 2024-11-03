@@ -2,6 +2,7 @@ package com.nessxxiii.titantools.utils;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class Utils {
 
@@ -28,5 +29,13 @@ public class Utils {
 
     public static void sendPluginMessage(CommandSender sender, String message) {
         sender.sendMessage(PLUGIN_PREFIX + message);
+    }
+
+    public static boolean permissionCheck(Player player, String permission) {
+        if (!player.hasPermission(Utils.PERMISSION_PREFIX_ADMIN + "." + permission)) {
+            Utils.sendPluginMessage(player, Utils.NO_PERMISSION);
+            return false;
+        }
+        return true;
     }
 }

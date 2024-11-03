@@ -1,12 +1,10 @@
 package com.nessxxiii.titantools.commands;
 
+import com.nessxxiii.titantools.enums.PowerCrystal;
 import com.nessxxiii.titantools.utils.ConfigManager;
-import com.nessxxiii.titantools.itemmanagement.ItemCreator;
-import com.nessxxiii.titantools.itemmanagement.PowerCrystalInfo;
 import com.nessxxiii.titantools.itemmanagement.ItemInfo;
 import com.nessxxiii.titantools.utils.Utils;
 import com.playtheatria.jliii.generalutils.utils.Response;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -15,7 +13,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -42,11 +39,13 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (sender instanceof Player player && player.hasPermission("titan.tools.admin.tabcomplete")) {
             return new ArrayList<>() {{
-                add("check");
-                add("crystal");
+                add("check-pdc");
+                add("compare");
                 add("debug");
                 add("excavator");
+                add("model");
                 add("reload");
+                add("save");
             }};
         } else {
             return new ArrayList<>() {{
@@ -63,13 +62,14 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
             return true;
         }
         // this command is allowed to be used by the console
-        if (args[0].equalsIgnoreCase("debug")) {
+        if ("debug".equalsIgnoreCase(args[0])) {
             ItemStack itemStack = !(sender instanceof Player player) ? configManager.getTestTool() : player.getInventory().getItemInMainHand();
             Response<List<String>> loreResponse = ItemInfo.getLore(itemStack);
             if (!loreResponse.isSuccess()) return false;
             Utils.sendPluginMessage(sender, ChatColor.LIGHT_PURPLE + "Begin-Debug");
             List<String> lore = loreResponse.value();
             boolean isTitanTool = ItemInfo.isTitanTool(lore);
+            Utils.sendPluginMessage(sender, "PowerCrystal type: " + PowerCrystal.getPowerCrystalType(itemStack));
             Utils.sendPluginMessage(sender, "isTitanTool: " + isTitanTool);
             Utils.sendPluginMessage(sender, "isImmortalDiadem: " + ItemInfo.isImmortalDiadem(itemStack));
             Utils.sendPluginMessage(sender, "Contains charge lore: " + ItemInfo.hasChargeLore(lore, isTitanTool));
@@ -93,7 +93,7 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
         }
 
         if ("check-pdc".equalsIgnoreCase(args[0]) && args.length == 2) {
-            if (!permissionCheck(player, "check-pdc")) {
+            if (!Utils.permissionCheck(player, "check-pdc")) {
                 return true;
             }
             if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
@@ -109,7 +109,7 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
         }
 
         if ("save".equalsIgnoreCase(args[0]) && args.length == 2) {
-            if (!permissionCheck(player, "save")) {
+            if (!Utils.permissionCheck(player, "save")) {
                 return true;
             }
             if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
@@ -121,7 +121,7 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
         }
 
         if ("model".equalsIgnoreCase(args[0])) {
-            if (!permissionCheck(player, "model")) {
+            if (!Utils.permissionCheck(player, "model")) {
                 return true;
             }
             if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
@@ -144,7 +144,7 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
         }
 
         if ("reload".equalsIgnoreCase(args[0])) {
-            if (!permissionCheck(player, "reload")) {
+            if (!Utils.permissionCheck(player, "reload")) {
                 return true;
             }
             Utils.sendPluginMessage(player, "Reloading config...");
@@ -155,53 +155,8 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        if ("crystal".equalsIgnoreCase(args[0])) {
-            if (!permissionCheck(player, "crystal")) {
-                return true;
-            }
-            Inventory inv = player.getInventory();
-            if (args.length == 1) {
-                inv.addItem(ItemCreator.powerCrystalCommon);
-                inv.addItem(ItemCreator.powerCrystalUncommon);
-                inv.addItem(ItemCreator.powerCrystalSuper);
-                inv.addItem(ItemCreator.powerCrystalEpic);
-                inv.addItem(ItemCreator.powerCrystalUltra);
-                Utils.sendPluginMessage(player, "Added 1 of each crystal.");
-            } else if (args.length == 2) {
-                try {
-                    int amount = Integer.parseInt(args[1]);
-                    for (int i = 0; i < amount; i++) {
-                        inv.addItem(ItemCreator.powerCrystalCommon);
-                    }
-                } catch (Exception ex) {
-                    Utils.sendPluginMessage(player, "You must provide an integer amount.");
-                    Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide an integer amount for /atitan crystal <number>.");
-                    return true;
-                }
-                Utils.sendPluginMessage(player, "Added " + args.length + " common crystals.");
-            }
-            return true;
-        }
-
-        if ("excavator".equalsIgnoreCase(args[0])) {
-            if (!permissionCheck(player, "excavator")) {
-                return true;
-            }
-            Inventory inv = player.getInventory();
-            inv.addItem(ItemCreator.excavator);
-            Utils.sendPluginMessage(player, "Excavator added to inventory");
-            return true;
-        }
-
-        if ("crystalcheck".equalsIgnoreCase(args[0]) && permissionCheck(player, "crystalcheck")) {
-            ItemStack itemInMainHand = player.getInventory().getItemInMainHand();
-            Utils.sendPluginMessage(player, "Item is powercrystal: " + PowerCrystalInfo.isPowerCrystal(itemInMainHand));
-            Utils.sendPluginMessage(player, "PowerCrystal type: " + PowerCrystalInfo.getPowerCrystalType(itemInMainHand));
-            return true;
-        }
-
         if ("compare".equalsIgnoreCase(args[0])) {
-            if (!permissionCheck(player, "compare")) {
+            if (!Utils.permissionCheck(player, "compare")) {
                 return true;
             }
             if (player.getInventory().getItemInMainHand().getType() == Material.AIR || player.getInventory().getItemInOffHand().getType() == Material.AIR) {
@@ -211,13 +166,5 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
                 Utils.sendPluginMessage(player, "isSimilar result: " + player.getInventory().getItemInMainHand().isSimilar(player.getInventory().getItemInOffHand()));             }
         }
         return false;
-    }
-
-    public boolean permissionCheck(Player player, String permission) {
-        if (!player.hasPermission(Utils.PERMISSION_PREFIX_ADMIN + "." + permission)) {
-            Utils.sendPluginMessage(player, Utils.NO_PERMISSION);
-            return false;
-        }
-        return true;
     }
 }

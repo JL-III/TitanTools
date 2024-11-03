@@ -12,20 +12,20 @@ import java.io.File;
 public class ConfigManager {
 
     private final Plugin plugin;
-    private ItemStack titan_pick_red_fortune;
-    private ItemStack titan_pick_red_silk;
-    private ItemStack titan_pick_yellow_fortune;
-    private ItemStack titan_pick_yellow_silk;
-    private ItemStack titan_pick_blue_fortune;
-    private ItemStack titan_pick_blue_silk;
-    private ItemStack titan_shovel_red;
-    private ItemStack titan_axe_red;
-    private ItemStack titan_axe_yellow;
-    private ItemStack titan_axe_blue;
-    private ItemStack titan_sword_red;
-    private ItemStack titan_sword_yellow;
-    private ItemStack titan_sword_blue;
-    private ItemStack titan_rod_red;
+    private ItemStack pick_red_fortune;
+    private ItemStack pick_red_silk;
+    private ItemStack pick_yellow_fortune;
+    private ItemStack pick_yellow_silk;
+    private ItemStack pick_blue_fortune;
+    private ItemStack pick_blue_silk;
+    private ItemStack shovel_red;
+    private ItemStack axe_red;
+    private ItemStack axe_yellow;
+    private ItemStack axe_blue;
+    private ItemStack sword_red;
+    private ItemStack sword_yellow;
+    private ItemStack sword_blue;
+    private ItemStack rod_red;
     private ItemStack test_tool;
     private ItemStack immortal_diadem;
 
@@ -42,20 +42,20 @@ public class ConfigManager {
         FileConfiguration rodsConfig = loadConfig("tools/rods.yml");
         FileConfiguration testToolConfig = loadConfig("tools/test_tool.yml");
         FileConfiguration immortalConfig = loadConfig("tools/immortal.yml");
-        titan_pick_red_fortune = loadItemStack("titan_pick_red_fortune", pickaxesConfig);
-        titan_pick_red_silk = loadItemStack("titan_pick_red_silk", pickaxesConfig);
-        titan_pick_yellow_fortune = loadItemStack("titan_pick_yellow_fortune", pickaxesConfig);
-        titan_pick_yellow_silk = loadItemStack("titan_pick_yellow_silk", pickaxesConfig);
-        titan_pick_blue_fortune = loadItemStack("titan_pick_blue_fortune", pickaxesConfig);
-        titan_pick_blue_silk = loadItemStack("titan_pick_blue_silk", pickaxesConfig);
-        titan_shovel_red = loadItemStack("titan_shovel_red", shovelsConfig);
-        titan_axe_red = loadItemStack("titan_axe_red", axesConfig);
-        titan_axe_yellow = loadItemStack("titan_axe_yellow", axesConfig);
-        titan_axe_blue = loadItemStack("titan_axe_blue", axesConfig);
-        titan_sword_red = loadItemStack("titan_sword_red", swordsConfig);
-        titan_sword_yellow = loadItemStack("titan_sword_yellow", swordsConfig);
-        titan_sword_blue = loadItemStack("titan_sword_blue", swordsConfig);
-        titan_rod_red = loadItemStack("titan_rod_red", rodsConfig);
+        pick_red_fortune = loadItemStack("titan_pick_red_fortune", pickaxesConfig);
+        pick_red_silk = loadItemStack("titan_pick_red_silk", pickaxesConfig);
+        pick_yellow_fortune = loadItemStack("titan_pick_yellow_fortune", pickaxesConfig);
+        pick_yellow_silk = loadItemStack("titan_pick_yellow_silk", pickaxesConfig);
+        pick_blue_fortune = loadItemStack("titan_pick_blue_fortune", pickaxesConfig);
+        pick_blue_silk = loadItemStack("titan_pick_blue_silk", pickaxesConfig);
+        shovel_red = loadItemStack("titan_shovel_red", shovelsConfig);
+        axe_red = loadItemStack("titan_axe_red", axesConfig);
+        axe_yellow = loadItemStack("titan_axe_yellow", axesConfig);
+        axe_blue = loadItemStack("titan_axe_blue", axesConfig);
+        sword_red = loadItemStack("titan_sword_red", swordsConfig);
+        sword_yellow = loadItemStack("titan_sword_yellow", swordsConfig);
+        sword_blue = loadItemStack("titan_sword_blue", swordsConfig);
+        rod_red = loadItemStack("titan_rod_red", rodsConfig);
         test_tool = loadItemStack("test_tool", testToolConfig);
         immortal_diadem = loadItemStack("immortal_diadem", immortalConfig);
     }
@@ -85,60 +85,60 @@ public class ConfigManager {
         return YamlConfiguration.loadConfiguration(file);
     }
 
-    public ItemStack getTitanPickRedFortune() {
-        return titan_pick_red_fortune;
+    public ItemStack getPickRedFortune() {
+        return pick_red_fortune;
     }
 
-    public ItemStack getTitanPickRedSilk() {
-        return titan_pick_red_silk;
+    public ItemStack getPickRedSilk() {
+        return pick_red_silk;
     }
 
-    public ItemStack getTitanPickYellowFortune() {
-        return titan_pick_yellow_fortune;
+    public ItemStack getPickYellowFortune() {
+        return pick_yellow_fortune;
     }
 
-    public ItemStack getTitanPickYellowSilk() {
-        return titan_pick_yellow_silk;
+    public ItemStack getPickYellowSilk() {
+        return pick_yellow_silk;
     }
 
-    public ItemStack getTitanPickBlueFortune() {
-        return titan_pick_blue_fortune;
+    public ItemStack getPickBlueFortune() {
+        return pick_blue_fortune;
     }
 
-    public ItemStack getTitanPickBlueSilk() {
-        return titan_pick_blue_silk;
+    public ItemStack getPickBlueSilk() {
+        return pick_blue_silk;
     }
 
-    public ItemStack getTitanShovelRed() {
-        return titan_shovel_red;
+    public ItemStack getShovelRed() {
+        return shovel_red;
     }
 
-    public ItemStack getTitanAxeRed() {
-        return titan_axe_red;
+    public ItemStack getAxeRed() {
+        return axe_red;
     }
 
-    public ItemStack getTitanAxeYellow() {
-        return titan_axe_yellow;
+    public ItemStack getAxeYellow() {
+        return axe_yellow;
     }
 
-    public ItemStack getTitanAxeBlue() {
-        return titan_axe_blue;
+    public ItemStack getAxeBlue() {
+        return axe_blue;
     }
 
-    public ItemStack getTitanSwordRed() {
-        return titan_sword_red;
+    public ItemStack getSwordRed() {
+        return sword_red;
     }
 
-    public ItemStack getTitanSwordYellow() {
-        return titan_sword_yellow;
+    public ItemStack getSwordYellow() {
+        return sword_yellow;
     }
 
-    public ItemStack getTitanSwordBlue() {
-        return titan_sword_blue;
+    public ItemStack getSwordBlue() {
+        return sword_blue;
     }
 
-    public ItemStack getTitanRodRed() {
-        return titan_rod_red;
+    public ItemStack getRodRed() {
+        return rod_red;
     }
 
     public ItemStack getTestTool() { return test_tool; }
