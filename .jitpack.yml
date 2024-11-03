@@ -1,7 +1,0 @@
-install:
-  - echo "Running a custom install command"
-  - export MAVEN_VERSION=3.8.6
-  - wget https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
-  - tar -xvzf apache-maven-${MAVEN_VERSION}-bin.tar.gz
-  - export PATH=$PWD/apache-maven-${MAVEN_VERSION}/bin:$PATH
-  - mvn --version
