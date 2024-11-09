@@ -1,6 +1,7 @@
 package com.nessxxiii.titantools.commands;
 
-import com.nessxxiii.titantools.enums.TheatriaTools;
+import com.nessxxiii.titantools.enums.TheatriaTool;
+import com.nessxxiii.titantools.enums.TitanTool;
 import com.nessxxiii.titantools.utils.ConfigManager;
 import com.nessxxiii.titantools.utils.CustomLogger;
 import net.kyori.adventure.text.Component;
@@ -36,9 +37,10 @@ public class KitCommands implements CommandExecutor, TabCompleter {
         if (sender instanceof Player player && player.hasPermission("titan.admin.tabcomplete")) {
             if (args.length == 1) {
                 return new ArrayList<>(){{
-                    addAll(Arrays.stream(TheatriaTools.values())
+                    addAll(Arrays.stream(TheatriaTool.values())
                             .map(Enum::name)
                             .toList());
+                    add("component_pick");
                     add("pick_red_fortune");
                     add("pick_red_silk");
                     add("pick_yellow_fortune");
@@ -82,12 +84,13 @@ public class KitCommands implements CommandExecutor, TabCompleter {
                 Inventory inventory = player.getInventory();
                 String input = args[0].toLowerCase();
                 switch (input) {
-                    case "excavator" -> reportResult(input, inventory.addItem(TheatriaTools.EXCAVATOR.getItemStack()), player_name);
-                    case "sun_fish" -> reportResult(input, inventory.addItem(TheatriaTools.SUN_FISH.getItemStack()), player_name);
-                    case "night_fish" -> reportResult(input, inventory.addItem(TheatriaTools.NIGHT_FISH.getItemStack()), player_name);
-                    case "ethereal_fragment" -> reportResult(input, inventory.addItem(TheatriaTools.ETHEREAL_FRAGMENT.getItemStack()), player_name);
-                    case "christmas_pick" -> reportResult(input, inventory.addItem(TheatriaTools.CHRISTMAS_PICK.getItemStack()), player_name);
-                    case "gingerbread_man" -> reportResult(input, inventory.addItem(TheatriaTools.GINGERBREAD_MAN.getItemStack()), player_name);
+                    case "component_pick" -> reportResult(input, inventory.addItem(TitanTool.PICK_RED_FORTUNE.getItemStack()), player_name);
+                    case "excavator" -> reportResult(input, inventory.addItem(TheatriaTool.EXCAVATOR.getItemStack()), player_name);
+                    case "sun_fish" -> reportResult(input, inventory.addItem(TheatriaTool.SUN_FISH.getItemStack()), player_name);
+                    case "night_fish" -> reportResult(input, inventory.addItem(TheatriaTool.NIGHT_FISH.getItemStack()), player_name);
+                    case "ethereal_fragment" -> reportResult(input, inventory.addItem(TheatriaTool.ETHEREAL_FRAGMENT.getItemStack()), player_name);
+                    case "christmas_pick" -> reportResult(input, inventory.addItem(TheatriaTool.CHRISTMAS_PICK.getItemStack()), player_name);
+                    case "gingerbread_man" -> reportResult(input, inventory.addItem(TheatriaTool.GINGERBREAD_MAN.getItemStack()), player_name);
 
                     case "pick_red_fortune" -> reportResult(input, inventory.addItem(configManager.getPickRedFortune()), player_name);
                     case "pick_red_silk" -> reportResult(input, inventory.addItem(configManager.getPickRedSilk()), player_name);

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public enum TheatriaTools {
+public enum TheatriaTool {
     EXCAVATOR(
             Material.GOLDEN_PICKAXE,
             ItemInfo.EXCAVATION_TOOL_DISPLAY_NAME,
@@ -104,7 +104,7 @@ public enum TheatriaTools {
     private final List<String> itemLore;
     private final HashMap<Enchantment, Integer> enchantments;
 
-    TheatriaTools(
+    TheatriaTool(
             Material material,
             String displayName,
             int customModelData,
