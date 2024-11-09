@@ -1,7 +1,6 @@
 package com.nessxxiii.titantools.enums;
 
 import com.nessxxiii.titantools.itemmanagement.CustomModelData;
-import com.nessxxiii.titantools.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Material;
@@ -9,6 +8,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,8 @@ public enum TitanTool {
             Material.DIAMOND_PICKAXE,
             ToolColor.RED,
             new HashMap<>(){{
-                put(Enchantment.UNBREAKING, 10);
+                put(Enchantment.EFFICIENCY, 7);
+                put(Enchantment.FORTUNE, 4);
             }},
             CustomModelData.UNCHARGED_TITAN_TOOL
     );
@@ -70,7 +71,7 @@ public enum TitanTool {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.displayName(displayName);
-        itemStack.lore(createLore());
+        itemMeta.lore(createLore());
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         itemMeta.setCustomModelData(customModelData);
         enchantments.forEach(itemStack::addUnsafeEnchantment);
@@ -105,20 +106,68 @@ public enum TitanTool {
         MiniMessage miniMessage = MiniMessage.miniMessage();
         List<Component> loreComponents = new ArrayList<>();
         for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-            if (Utils.romanNumeralMap.get(entry.getValue()) != null) {
-                loreComponents.add(miniMessage.deserialize("<dark_gray>" + entry.getKey() + "</dark_gray><color:" + toolColor.getBrightColorCode() + "> " + Utils.romanNumeralMap.get(entry.getValue()) + "</color>"));
+            if (romanNumeralMap.get(entry.getValue()) != null) {
+                loreComponents.add(miniMessage.deserialize("<dark_gray>" + formatEnchantmentName(entry.getKey().getKey().asString()) + "</dark_gray><color:" + toolColor.getBrightHexCode() + "> " + romanNumeralMap.get(entry.getValue()) + "</color>"));
             } else {
                 loreComponents.add(miniMessage.deserialize("<dark_gray>" + entry.getKey() + "</dark_gray>"));
             }
         }
         loreComponents.add(miniMessage.deserialize("<dark_gray>Unbreakable</dark_gray>"));
         loreComponents.add(miniMessage.deserialize("<gray> </gray>"));
-        loreComponents.add(miniMessage.deserialize("<color:" + toolColor.getBrightColorCode() + ">Ancient Power</color><color:" + toolColor.getBrightColorCode() + "> Ω</color>"));
-        loreComponents.add(miniMessage.deserialize("<color:" + toolColor.getBrightColorCode() + ">  ● Charge</color><color:" + toolColor.getBrightColorCode() + "> 0</color>"));
-        loreComponents.add(miniMessage.deserialize("<color:" + toolColor.getBrightColorCode() + ">  ● Status</color><color:" + toolColor.getBrightColorCode() + "> OFF</color>"));
+        loreComponents.add(miniMessage.deserialize("<color:" + toolColor.getDarkHexCode() + ">Ancient Power</color><color:" + toolColor.getBrightHexCode() + "> Ω</color>"));
+        loreComponents.add(miniMessage.deserialize("<color:" + toolColor.getDarkHexCode() + ">  ● Charge</color><color:" + toolColor.getBrightHexCode() + "> 0</color>"));
+        loreComponents.add(miniMessage.deserialize("<color:" + toolColor.getDarkHexCode() + ">  ● Status</color><color:" + toolColor.getBrightHexCode() + "> OFF</color>"));
         loreComponents.add(miniMessage.deserialize("<gray> </gray>"));
-        loreComponents.add(miniMessage.deserialize("<gradient:" + toolColor.getBrightColorCode() + ":" + toolColor.getDarkColorCode() + ">A relic from a time</gradient>"));
-        loreComponents.add(miniMessage.deserialize("<gradient:" + toolColor.getBrightColorCode() + ":" + toolColor.getDarkColorCode() + ">long past...</gradient>"));
+        loreComponents.add(miniMessage.deserialize("<gradient:" + toolColor.getDarkHexCode() + ":" + toolColor.getBrightHexCode() + ">A relic from a time</gradient>"));
+        loreComponents.add(miniMessage.deserialize("<gradient:" + toolColor.getDarkHexCode() + ":" + toolColor.getBrightHexCode() + ">long past...</gradient>"));
         return loreComponents;
+    }
+
+    public static final HashMap<Integer, String> romanNumeralMap = new HashMap<>(){{
+        put(1, "I");
+        put(2, "II");
+        put(3, "III");
+        put(4, "IV");
+        put(5, "V");
+        put(6, "VI");
+        put(7, "VII");
+        put(8, "VIII");
+        put(9, "IX");
+        put(10, "X");
+        put(11, "XI");
+        put(12, "XII");
+        put(13, "XIII");
+        put(14, "XIV");
+        put(15, "XV");
+    }};
+
+    /**
+     * Formats a Minecraft enchantment name by removing the namespace and capitalizing the first letter.
+     *
+     * @param enchantmentId The enchantment ID (e.g., "minecraft:unbreaking").
+     * @return The formatted enchantment name (e.g., "Unbreaking").
+     */
+    public static String formatEnchantmentName(@NotNull  String enchantmentId) {
+        if (enchantmentId.isEmpty()) {
+            return "";
+        }
+
+        String[] parts = enchantmentId.split(":");
+        String name = parts.length > 1 ? parts[1] : parts[0];
+
+        name = name.replace('_', ' ').toLowerCase();
+
+        String[] words = name.split(" ");
+        StringBuilder formattedName = new StringBuilder();
+
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                formattedName.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1))
+                        .append(" ");
+            }
+        }
+
+        return formattedName.toString().trim();
     }
 }
