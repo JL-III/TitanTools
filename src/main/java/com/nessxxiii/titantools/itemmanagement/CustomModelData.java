@@ -1,7 +1,5 @@
 package com.nessxxiii.titantools.itemmanagement;
 
-import com.nessxxiii.titantools.enums.PowerCrystal;
-
 public class CustomModelData {
 
     //This file serves as a library to keep track of all the custom model data.

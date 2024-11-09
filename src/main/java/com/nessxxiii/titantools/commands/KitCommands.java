@@ -1,8 +1,7 @@
 package com.nessxxiii.titantools.commands;
 
-import com.nessxxiii.titantools.enums.PowerCrystal;
+import com.nessxxiii.titantools.enums.TheatriaTools;
 import com.nessxxiii.titantools.utils.ConfigManager;
-import com.nessxxiii.titantools.itemmanagement.ItemCreator;
 import com.nessxxiii.titantools.utils.CustomLogger;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -18,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,9 +26,6 @@ public class KitCommands implements CommandExecutor, TabCompleter {
     private final CustomLogger logger;
     private final ConfigManager configManager;
 
-    //TODO this needs to be implemented.
-    private final String CASINO_KEY = "casinokey";
-
     public KitCommands(ConfigManager configManager, CustomLogger logger) {
         this.configManager = configManager;
         this.logger = logger;
@@ -36,16 +33,12 @@ public class KitCommands implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player player && player.hasPermission("titan.kit.admin.tabcomplete")) {
+        if (sender instanceof Player player && player.hasPermission("titan.admin.tabcomplete")) {
             if (args.length == 1) {
-                return new ArrayList<>() {{
-                    add("excavator");
-                    add("sun_fish");
-                    add("night_fish");
-                    add("ethereal_fragment");
-                    add("christmas_pick");
-                    add("gingerbread_man");
-
+                return new ArrayList<>(){{
+                    addAll(Arrays.stream(TheatriaTools.values())
+                            .map(Enum::name)
+                            .toList());
                     add("pick_red_fortune");
                     add("pick_red_silk");
                     add("pick_yellow_fortune");
@@ -67,7 +60,6 @@ public class KitCommands implements CommandExecutor, TabCompleter {
                     add("rod_red");
 
                     add("immortal_diadem");
-
                 }};
             }
             if (args.length == 2) {
@@ -88,14 +80,14 @@ public class KitCommands implements CommandExecutor, TabCompleter {
                 if (player == null) return false;
                 String player_name = player.getName();
                 Inventory inventory = player.getInventory();
-                String input = args[0];
+                String input = args[0].toLowerCase();
                 switch (input) {
-                    case "excavator" -> reportResult(input, inventory.addItem(ItemCreator.excavator), player_name);
-                    case "sun_fish" -> reportResult(input, inventory.addItem(ItemCreator.sunFish), player_name);
-                    case "night_fish" -> reportResult(input, inventory.addItem(ItemCreator.nightFish), player_name);
-                    case "ethereal_fragment" -> reportResult(input, inventory.addItem(ItemCreator.etherealFragment), player_name);
-                    case "christmas_pick" -> reportResult(input, inventory.addItem(ItemCreator.christmasPick), player_name);
-                    case "gingerbread_man" -> reportResult(input, inventory.addItem(ItemCreator.gingerbreadMan), player_name);
+                    case "excavator" -> reportResult(input, inventory.addItem(TheatriaTools.EXCAVATOR.getItemStack()), player_name);
+                    case "sun_fish" -> reportResult(input, inventory.addItem(TheatriaTools.SUN_FISH.getItemStack()), player_name);
+                    case "night_fish" -> reportResult(input, inventory.addItem(TheatriaTools.NIGHT_FISH.getItemStack()), player_name);
+                    case "ethereal_fragment" -> reportResult(input, inventory.addItem(TheatriaTools.ETHEREAL_FRAGMENT.getItemStack()), player_name);
+                    case "christmas_pick" -> reportResult(input, inventory.addItem(TheatriaTools.CHRISTMAS_PICK.getItemStack()), player_name);
+                    case "gingerbread_man" -> reportResult(input, inventory.addItem(TheatriaTools.GINGERBREAD_MAN.getItemStack()), player_name);
 
                     case "pick_red_fortune" -> reportResult(input, inventory.addItem(configManager.getPickRedFortune()), player_name);
                     case "pick_red_silk" -> reportResult(input, inventory.addItem(configManager.getPickRedSilk()), player_name);
@@ -120,6 +112,7 @@ public class KitCommands implements CommandExecutor, TabCompleter {
 
                     default -> sender.sendMessage(Component.text("This kit does not exist").color(NamedTextColor.DARK_RED));
                 }
+                return true;
             }
         }
         return false;
@@ -127,6 +120,7 @@ public class KitCommands implements CommandExecutor, TabCompleter {
 
     private void reportResult(String item_name, HashMap<Integer, ItemStack> droppedItems, String player_name) {
         if (droppedItems.isEmpty()) {
+
             logger.sendLog(player_name + " received their " + item_name);
         } else {
             logger.sendLog(player_name + " did not receive their " + item_name + " due to a full inventory.");

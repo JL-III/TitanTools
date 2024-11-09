@@ -2,7 +2,6 @@ package com.nessxxiii.titantools.itemmanagement;
 
 import com.nessxxiii.titantools.enums.ToolColor;
 import com.nessxxiii.titantools.enums.ToolStatus;
-import com.nessxxiii.titantools.utils.Utils;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -11,7 +10,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemInfo {
@@ -22,21 +20,6 @@ public class ItemInfo {
     public static final String STATUS_PREFIX = "● Status";
     public static final String CHARGE_PREFIX = "● Charge";
     public static final String INVALID_TOOL_CHECK = "Invalid call, This method is meant only for TitanTools!";
-    public static final List<Material> ALLOWED_TITAN_TYPES = new ArrayList<>() {
-        {
-            add(Material.DIAMOND_PICKAXE);
-            add(Material.NETHERITE_PICKAXE);
-            add(Material.DIAMOND_SHOVEL);
-            add(Material.NETHERITE_SHOVEL);
-            add(Material.DIAMOND_AXE);
-            add(Material.NETHERITE_AXE);
-//            add(Material.DIAMOND_HOE);
-//            add(Material.NETHERITE_HOE);
-            add(Material.DIAMOND_SWORD);
-            add(Material.NETHERITE_SWORD);
-            add(Material.FISHING_ROD);
-        }
-    };
 
     /**
      * Get the titan lore index.

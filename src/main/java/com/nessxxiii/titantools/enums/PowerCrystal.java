@@ -1,14 +1,9 @@
 package com.nessxxiii.titantools.enums;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import com.nessxxiii.titantools.utils.ConfigManager;
 import com.playtheatria.jliii.generalutils.result.Err;
 import com.playtheatria.jliii.generalutils.result.Ok;
 import com.playtheatria.jliii.generalutils.result.Result;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -46,11 +41,6 @@ public enum PowerCrystal {
         lore.add(POWER_CRYSTAL_TYPE_STRING_LITERAL + typeLore);
         item.setLore(lore);
         ItemMeta meta = item.getItemMeta();
-        Multimap<Attribute, AttributeModifier> modifiers = meta.getAttributeModifiers();
-        if(modifiers == null) {
-            modifiers = HashMultimap.create();
-            meta.setAttributeModifiers(modifiers);
-        }
         meta.setDisplayName(POWER_CRYSTAL_DISPLAY);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setCustomModelData(customModelData);
