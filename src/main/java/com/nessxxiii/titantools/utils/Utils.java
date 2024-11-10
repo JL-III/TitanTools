@@ -60,4 +60,12 @@ public class Utils {
     }
 
     private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("^#([A-Fa-f0-9]{6})$");
+
+    public static boolean permissionCheck(CommandSender sender, String prefix, String permission) {
+        if (sender.hasPermission(prefix + "." + permission)) {
+            return true;
+        }
+        Utils.sendPluginMessage(sender, Utils.NO_PERMISSION + " " + prefix + permission);
+        return false;
+    }
 }
