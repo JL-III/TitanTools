@@ -4,7 +4,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
@@ -18,9 +17,11 @@ public class Utils {
 
     private static final String PLUGIN_PREFIX = BRACKET_COLOR + "[" + PLUGIN_COLOR + "TitanTools" + BRACKET_COLOR + "] " + ChatColor.RESET;
 
-    public static final String PERMISSION_PREFIX_ADMIN = "titan.tools.admincommands";
+    public static final String PERMISSIONS_PREFIX = "titan.tools.commands";
 
-    public static final String NO_PERMISSION = ChatColor.RED + "No Permission.";
+    public static final String ADMIN_PERMISSIONS_PREFIX = PERMISSIONS_PREFIX + ".admin";
+
+    public static final String NO_PERMISSION = ChatColor.RED + "You cannot use permission ";
 
     public static void printBanner(CommandSender sender) {
         sendPluginMessage(sender, ChatColor.LIGHT_PURPLE + "################################################################################");
@@ -37,17 +38,8 @@ public class Utils {
         sender.sendMessage(PLUGIN_PREFIX + message);
     }
 
-    public static boolean permissionCheck(Player player, String permission) {
-        if (!player.hasPermission(Utils.PERMISSION_PREFIX_ADMIN + "." + permission)) {
-            Utils.sendPluginMessage(player, Utils.NO_PERMISSION);
-            return false;
-        }
-        return true;
-    }
-
     public static void reportResult(CustomLogger logger, String item_name, HashMap<Integer, ItemStack> droppedItems, String player_name) {
         if (droppedItems.isEmpty()) {
-
             logger.sendLog(player_name + " received their " + item_name);
         } else {
             logger.sendLog(player_name + " did not receive their " + item_name + " due to a full inventory.");

@@ -12,21 +12,13 @@ import java.util.Objects;
 
 public final class TitanTools extends JavaPlugin {
 
-    private PlayerCommands playerCommands;
 
     @Override
     public void onEnable() {
-        this.playerCommands = new PlayerCommands(this);
+        this.saveDefaultConfig();
         CustomLogger customLogger = new CustomLogger(getName(), NamedTextColor.DARK_RED, NamedTextColor.WHITE);
-        registerCommands(customLogger);
+        TitanCommands titanCommands = new TitanCommands(this, customLogger);
+        Objects.requireNonNull(getCommand("titan")).setExecutor(titanCommands);
         Utils.printBanner(Bukkit.getConsoleSender());
-    }
-
-    private void registerCommands(CustomLogger customLogger) {
-        Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, playerCommands));
-        Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
-        Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(customLogger));
-        Objects.requireNonNull(getCommand("crystal")).setExecutor(new CrystalCommand());
-        Objects.requireNonNull(getCommand("theatriatool")).setExecutor(new TheatriaToolCommand(customLogger));
     }
 }
