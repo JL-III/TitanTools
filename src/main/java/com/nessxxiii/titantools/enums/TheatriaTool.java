@@ -125,7 +125,7 @@ public enum TheatriaTool {
         meta.setDisplayName(displayName);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setCustomModelData(customModelData);
-        enchantments.forEach(item::addUnsafeEnchantment);
+        enchantments.forEach(((enchantment, integer) -> meta.addEnchant(enchantment, integer, true)));
         item.setItemMeta(meta);
         return item;
     }

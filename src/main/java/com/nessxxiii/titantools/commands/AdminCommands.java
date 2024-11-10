@@ -1,7 +1,7 @@
 package com.nessxxiii.titantools.commands;
 
 import com.nessxxiii.titantools.enums.PowerCrystal;
-import com.nessxxiii.titantools.utils.ConfigManager;
+import com.nessxxiii.titantools.enums.TitanTool;
 import com.nessxxiii.titantools.itemmanagement.ItemInfo;
 import com.nessxxiii.titantools.utils.Utils;
 import com.playtheatria.jliii.generalutils.utils.Response;
@@ -27,12 +27,10 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
 
     private final Plugin plugin;
     private final PlayerCommands playerCommands;
-    private final ConfigManager configManager;
 
-    public AdminCommands(Plugin plugin, PlayerCommands playerCommands, ConfigManager configManager) {
+    public AdminCommands(Plugin plugin, PlayerCommands playerCommands) {
         this.plugin = plugin;
         this.playerCommands = playerCommands;
-        this.configManager = configManager;
     };
 
     @Override
@@ -63,7 +61,7 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
         }
         // this command is allowed to be used by the console
         if ("debug".equalsIgnoreCase(args[0])) {
-            ItemStack itemStack = !(sender instanceof Player player) ? configManager.getTestTool() : player.getInventory().getItemInMainHand();
+            ItemStack itemStack = !(sender instanceof Player player) ? TitanTool.PICK_RED_FORTUNE.getItemStack() : player.getInventory().getItemInMainHand();
             Response<List<String>> loreResponse = ItemInfo.getLore(itemStack);
             if (!loreResponse.isSuccess()) return false;
             Utils.sendPluginMessage(sender, ChatColor.LIGHT_PURPLE + "Begin-Debug");
@@ -150,7 +148,6 @@ public class AdminCommands implements CommandExecutor, TabCompleter {
             Utils.sendPluginMessage(player, "Reloading config...");
             plugin.reloadConfig();
             playerCommands.reload();
-            configManager.loadConfig();
             Utils.sendPluginMessage(player, ChatColor.GREEN + "Successfully reloaded config.");
             return true;
         }

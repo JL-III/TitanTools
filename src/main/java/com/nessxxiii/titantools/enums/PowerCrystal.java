@@ -44,7 +44,7 @@ public enum PowerCrystal {
         meta.setDisplayName(POWER_CRYSTAL_DISPLAY);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         meta.setCustomModelData(customModelData);
-        item.addUnsafeEnchantment(Enchantment.CHANNELING,5);
+        meta.addEnchant(Enchantment.CHANNELING,5, true);
         item.setItemMeta(meta);
         return item;
     }

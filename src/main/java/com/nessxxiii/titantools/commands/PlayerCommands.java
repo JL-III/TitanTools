@@ -72,8 +72,7 @@ public class PlayerCommands implements CommandExecutor, TabCompleter {
             }
             return true;
         }
-
-    return true;
+        return true;
     }
 }
 
