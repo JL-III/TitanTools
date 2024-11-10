@@ -8,19 +8,4 @@ commands:
   titan:
     description: Dev tools for titanEnchants
     usage: |
-      /<command> reload
-  atitan:
-  tkit:
-    description: kit commands for titan tools, crystals and other custom items
-    usage: |
-      /<command> <kit_type>
-  crystal:
-    description: power crystal commands
-    usage: |
-      /<command> give
-      /<command> check
-      /<command> give <type> <amount>
-  theatriatool:
-    description: theatriatool commands
-    usage: |
-      /<command> give <type> <amount>
+      /<command> <subcommand>

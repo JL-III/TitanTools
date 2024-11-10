@@ -1,0 +1,206 @@
+package com.nessxxiii.titantools.commands;
+
+import com.nessxxiii.titantools.enums.PowerCrystal;
+import com.nessxxiii.titantools.enums.TheatriaTool;
+import com.nessxxiii.titantools.enums.TitanTool;
+import com.nessxxiii.titantools.utils.CustomLogger;
+import com.nessxxiii.titantools.utils.Utils;
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+
+public class TitanCommands implements CommandExecutor, TabCompleter {
+
+    private final Plugin plugin;
+    private final CustomLogger logger;
+    private FileConfiguration fileConfig;
+
+    public TitanCommands(Plugin plugin, CustomLogger logger) {
+        this.plugin = plugin;
+        this.logger = logger;
+        this.fileConfig = plugin.getConfig();
+    };
+
+    public void reload() {
+        this.fileConfig = plugin.getConfig();
+    }
+
+    @Override
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+        if (!Utils.permissionCheck(sender, Utils.PERMISSIONS_PREFIX, "tab-complete")) {
+            return new ArrayList<>();
+        }
+        String input = args[0].toLowerCase();
+        switch (input) {
+            case "pack", "unpack" -> {
+                return new ArrayList<>();
+            }
+            case "kit" -> {
+                if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return new ArrayList<>();
+                if (args.length == 2) {
+                    return new ArrayList<>(){{
+                        addAll(Arrays.stream(TitanTool.values())
+                                .map(Enum::name)
+                                .map(String::toLowerCase)
+                                .toList());
+                    }};
+                }
+                if (args.length == 3) {
+                    return Bukkit.getOnlinePlayers().stream().collect(ArrayList::new, (list, p) -> list.add(p.getName()), ArrayList::addAll);
+                }
+            }
+            case "crystal" -> {
+                if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return new ArrayList<>();
+                switch (args.length) {
+                    case 1 -> {
+                        return new ArrayList<>(){{
+                            add("give");
+                        }};
+                    }
+                    case 2 -> {
+                        return Arrays.stream(PowerCrystal.values())
+                                .map(Enum::name)
+                                .map(String::toLowerCase)
+                                .toList();
+                    }
+                    case 3 -> {
+                        return new ArrayList<>(){{
+                            add("<amount>");
+                        }};
+                    }
+                }
+            }
+            case "custom-item" -> {
+                switch (args.length) {
+                    case 1 -> {
+                        return new ArrayList<>(){{
+                            add("give");
+                        }};
+                    }
+                    case 2 -> {
+                        return Arrays.stream(TheatriaTool.values())
+                                .map(Enum::name)
+                                .map(String::toLowerCase)
+                                .toList();
+                    }
+                    case 3 -> {
+                        return new ArrayList<>(){{
+                            add("<amount>");
+                        }};
+                    }
+                }
+            }
+        }
+        if (args.length == 1) {
+            if (Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, "tab-complete")) {
+                return new ArrayList<>(){{
+                    add("check-pdc");
+                    add("compare");
+                    add("debug");
+                    add("model");
+                    add("reload");
+                    add("kit");
+                    add("crystal");
+                    add("custom-item");
+                }};
+            } else {
+                return new ArrayList<>(){{
+                    add("pack");
+                    add("unpack");
+                }};
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
+        if (args.length == 0) return false;
+        if (!Utils.permissionCheck(sender, Utils.PERMISSIONS_PREFIX, "use")) {
+            return true;
+        }
+        String input = args[0].toLowerCase();
+        switch (input) {
+            case "pack" -> {
+                CommandMethods.packCommand(sender, input, fileConfig);
+                return true;
+            }
+            case "unpack" -> {
+                CommandMethods.unpackCommand(sender, input, fileConfig);
+                return true;
+            }
+            case "kit" -> {
+                if (args.length == 3) {
+                    CommandMethods.kitCommand(sender, args, input, logger);
+                    return true;
+                }
+                return false;
+            }
+            case "crystal" -> {
+                if (args.length == 3) {
+                    CommandMethods.crystalCommand(sender, args, input);
+                    return true;
+                }
+                return false;
+            }
+            case "compare" -> {
+                CommandMethods.compareCommand(sender, input);
+                return true;
+            }
+            case "custom-item" -> {
+                if (args.length == 3) {
+                    CommandMethods.customItemCommand(sender, args, input);
+                    return true;
+                }
+                return false;
+            }
+            case "debug" -> {
+                CommandMethods.debugCommand(sender, input);
+                return true;
+            }
+            case "check-pdc" -> {
+                if (args.length == 2) {
+                    CommandMethods.checkPDCCommand(sender, args, input);
+                    return true;
+                }
+                return false;
+            }
+            case "model" -> {
+                if (args.length == 2) {
+                    CommandMethods.setModelCommand(sender, args, input);
+                    return true;
+                }
+                return false;
+            }
+            case "reload" -> {
+                CommandMethods.reloadCommand(sender, input, plugin);
+            }
+        }
+        return false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
