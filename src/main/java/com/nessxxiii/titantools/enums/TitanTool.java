@@ -18,63 +18,119 @@ import java.util.regex.Pattern;
 
 public enum TitanTool {
     PICK_RED_FORTUNE(
-            MiniMessage.miniMessage().deserialize(
-                    "<obfuscated><color:#7F0000> %</color></obfuscated>"
-                    + "<bold><gradient:#880001:#F50001>The Titan Pick</gradient></bold>"
-                    + "<obfuscated><color:#FF0000> %</color></obfuscated>"),
             Material.DIAMOND_PICKAXE,
             ToolColor.RED,
             new HashMap<>(){{
                 put(Enchantment.EFFICIENCY, 7);
                 put(Enchantment.FORTUNE, 4);
-            }},
-            CustomModelData.UNCHARGED_TITAN_TOOL
+            }}
+    ),
+    PICK_RED_SILK(
+            Material.DIAMOND_PICKAXE,
+            ToolColor.RED,
+            new HashMap<>(){{
+                put(Enchantment.EFFICIENCY, 9);
+                put(Enchantment.SILK_TOUCH, 1);
+            }}
+    ),
+    PICK_YELLOW_FORTUNE(
+            Material.DIAMOND_PICKAXE,
+            ToolColor.YELLOW,
+            new HashMap<>(){{
+                put(Enchantment.EFFICIENCY, 9);
+                put(Enchantment.FORTUNE, 4);
+            }}
+    ),
+    PICK_YELLOW_SILK(
+            Material.DIAMOND_PICKAXE,
+            ToolColor.YELLOW,
+            new HashMap<>(){{
+                put(Enchantment.EFFICIENCY, 11);
+                put(Enchantment.SILK_TOUCH, 1);
+            }}
+    ),
+    PICK_BLUE_FORTUNE(
+            Material.DIAMOND_PICKAXE,
+            ToolColor.BLUE,
+            new HashMap<>(){{
+                put(Enchantment.EFFICIENCY, 11);
+                put(Enchantment.FORTUNE, 5);
+            }}
+    ),
+    PICK_BLUE_SILK(
+            Material.DIAMOND_PICKAXE,
+            ToolColor.BLUE,
+            new HashMap<>(){{
+                put(Enchantment.EFFICIENCY, 13);
+                put(Enchantment.SILK_TOUCH, 1);
+            }}
+    ),
+    SHOVEL_RED(
+            Material.DIAMOND_SHOVEL,
+            ToolColor.RED,
+            new HashMap<>(){{
+                put(Enchantment.EFFICIENCY, 10);
+                put(Enchantment.SILK_TOUCH, 1);
+            }}
+    ),
+    AXE_RED(
+            Material.DIAMOND_AXE,
+            ToolColor.RED,
+            new HashMap<>()
+    ),
+    AXE_YELLOW(
+            Material.DIAMOND_AXE,
+            ToolColor.YELLOW,
+            new HashMap<>()
+    ),
+    AXE_BLUE(
+            Material.DIAMOND_AXE,
+            ToolColor.BLUE,
+            new HashMap<>()
+    ),
+    SWORD_RED(
+            Material.DIAMOND_SWORD,
+            ToolColor.RED,
+            new HashMap<>()
+    ),
+    SWORD_YELLOW(
+            Material.DIAMOND_SWORD,
+            ToolColor.YELLOW,
+            new HashMap<>()
+    ),
+    SWORD_BLUE(
+            Material.DIAMOND_SWORD,
+            ToolColor.BLUE,
+            new HashMap<>()
+    ),
+    ROD_RED(
+            Material.FISHING_ROD,
+            ToolColor.RED,
+            new HashMap<>()
     );
-//    PICK_RED_SILK,
-//    PICK_YELLOW_FORTUNE,
-//    PICK_YELLOW_SILK,
-//    PICK_BLUE_FORTUNE,
-//    PICK_BLUE_SILK,
-//    SHOVEL_RED,
-//    AXE_RED,
-//    AXE_YELLOW,
-//    AXE_BLUE,
-//    SWORD_RED,
-//    SWORD_YELLOW,
-//    SWORD_BLUE,
-//    ROD_RED,
-//    TEST_TOOL,
-//    IMMORTAL_DIADEM;
 
-    private final Component displayName;
     private final Material material;
-    private List<Component> lore;
     private final ToolColor toolColor;
     private final HashMap<Enchantment, Integer> enchantments;
-    private final int customModelData;
 
     TitanTool(
-            Component displayName,
             Material material,
             ToolColor toolColor,
-            HashMap<Enchantment, Integer> enchantments,
-            int customModelData
+            HashMap<Enchantment, Integer> enchantments
     ) {
-        this.displayName =displayName;
         this.material = material;
         this.toolColor = toolColor;
         this.enchantments = enchantments;
-        this.customModelData = customModelData;
     }
 
     public ItemStack getItemStack() {
         ItemStack itemStack = new ItemStack(material);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.displayName(displayName);
+        itemMeta.displayName(createDisplayName());
         itemMeta.lore(createLore());
         itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        itemMeta.setCustomModelData(customModelData);
-        enchantments.forEach(itemStack::addUnsafeEnchantment);
+        itemMeta.setCustomModelData(CustomModelData.UNCHARGED_TITAN_TOOL);
+        enchantments.forEach((enchantment, level) -> itemMeta.addEnchant(enchantment, level, true));
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }
@@ -83,33 +139,21 @@ public enum TitanTool {
         return toolColor;
     }
 
-    public int getCustomModelData() {
-        return customModelData;
+    private Component createDisplayName() {
+        return MiniMessage.miniMessage().deserialize(
+                "<obfuscated><color:" + toolColor.getDarkHexCode() + ">%</color></obfuscated>"
+                        + "<bold><gradient:" + toolColor.getDarkHexCode() + ":" + toolColor.getBrightHexCode() + "> The Titan " + formatToolName() + "</gradient></bold>"
+                        + "<obfuscated><color:" + toolColor.getBrightHexCode() + "> %</color></obfuscated>");
     }
-
-    public static Component gradientText(String text, String startHex, String endHex) {
-        if (!isValidHexColor(startHex) || !isValidHexColor(endHex)) {
-            throw new IllegalArgumentException("Invalid hex color string provided.");
-        }
-
-        String miniMessageString = "<gradient:" + startHex + ":" + endHex + ">" + text + "</gradient>";
-        return MiniMessage.miniMessage().deserialize(miniMessageString);
-    }
-
-    private static boolean isValidHexColor(String hex) {
-        return HEX_COLOR_PATTERN.matcher(hex).matches();
-    }
-
-    private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("^#([A-Fa-f0-9]{6})$");
 
     public List<Component> createLore() {
         MiniMessage miniMessage = MiniMessage.miniMessage();
         List<Component> loreComponents = new ArrayList<>();
         for (Map.Entry<Enchantment, Integer> entry : enchantments.entrySet()) {
-            if (romanNumeralMap.get(entry.getValue()) != null) {
+            if (romanNumeralMap.get(entry.getValue()) != null && !entry.getKey().equals(Enchantment.SILK_TOUCH)) {
                 loreComponents.add(miniMessage.deserialize("<dark_gray>" + formatEnchantmentName(entry.getKey().getKey().asString()) + "</dark_gray><color:" + toolColor.getBrightHexCode() + "> " + romanNumeralMap.get(entry.getValue()) + "</color>"));
             } else {
-                loreComponents.add(miniMessage.deserialize("<dark_gray>" + entry.getKey() + "</dark_gray>"));
+                loreComponents.add(miniMessage.deserialize("<dark_gray>" + formatEnchantmentName(entry.getKey().getKey().asString()) + "</dark_gray>"));
             }
         }
         loreComponents.add(miniMessage.deserialize("<dark_gray>Unbreakable</dark_gray>"));
@@ -147,7 +191,7 @@ public enum TitanTool {
      * @param enchantmentId The enchantment ID (e.g., "minecraft:unbreaking").
      * @return The formatted enchantment name (e.g., "Unbreaking").
      */
-    public static String formatEnchantmentName(@NotNull  String enchantmentId) {
+    public static String formatEnchantmentName(@NotNull String enchantmentId) {
         if (enchantmentId.isEmpty()) {
             return "";
         }
@@ -167,7 +211,29 @@ public enum TitanTool {
                         .append(" ");
             }
         }
-
         return formattedName.toString().trim();
+    }
+
+    public String formatToolName() {
+        switch (material) {
+            case Material.DIAMOND_PICKAXE -> {
+                return "Pick";
+            }
+            case Material.DIAMOND_AXE -> {
+                return "Axe";
+            }
+            case Material.DIAMOND_SWORD -> {
+                return "Sword";
+            }
+            case Material.DIAMOND_SHOVEL -> {
+                return "Shovel";
+            }
+            case Material.FISHING_ROD -> {
+                return "Rod";
+            }
+            default -> {
+                return material.name();
+            }
+        }
     }
 }

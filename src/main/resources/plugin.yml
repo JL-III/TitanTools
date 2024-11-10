@@ -20,3 +20,7 @@ commands:
       /<command> give
       /<command> check
       /<command> give <type> <amount>
+  theatriatool:
+    description: theatriatool commands
+    usage: |
+      /<command> give <type> <amount>

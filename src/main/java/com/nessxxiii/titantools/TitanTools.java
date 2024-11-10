@@ -1,10 +1,6 @@
 package com.nessxxiii.titantools;
 
-import com.nessxxiii.titantools.commands.AdminCommands;
-import com.nessxxiii.titantools.commands.CrystalCommand;
-import com.nessxxiii.titantools.commands.KitCommands;
-import com.nessxxiii.titantools.commands.PlayerCommands;
-import com.nessxxiii.titantools.utils.ConfigManager;
+import com.nessxxiii.titantools.commands.*;
 import com.nessxxiii.titantools.utils.CustomLogger;
 import com.nessxxiii.titantools.utils.Utils;
 
@@ -20,17 +16,17 @@ public final class TitanTools extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        ConfigManager configManager = new ConfigManager(this);
         this.playerCommands = new PlayerCommands(this);
         CustomLogger customLogger = new CustomLogger(getName(), NamedTextColor.DARK_RED, NamedTextColor.WHITE);
-        registerCommands(configManager, customLogger);
+        registerCommands(customLogger);
         Utils.printBanner(Bukkit.getConsoleSender());
     }
 
-    private void registerCommands(ConfigManager configManager, CustomLogger customLogger) {
-        Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, playerCommands, configManager));
+    private void registerCommands(CustomLogger customLogger) {
+        Objects.requireNonNull(getCommand("atitan")).setExecutor(new AdminCommands(this, playerCommands));
         Objects.requireNonNull(getCommand("titan")).setExecutor(playerCommands);
-        Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(configManager,  customLogger));
+        Objects.requireNonNull(getCommand("tkit")).setExecutor(new KitCommands(customLogger));
         Objects.requireNonNull(getCommand("crystal")).setExecutor(new CrystalCommand());
+        Objects.requireNonNull(getCommand("theatriatool")).setExecutor(new TheatriaToolCommand(customLogger));
     }
 }

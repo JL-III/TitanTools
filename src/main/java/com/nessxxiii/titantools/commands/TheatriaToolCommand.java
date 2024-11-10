@@ -1,6 +1,7 @@
 package com.nessxxiii.titantools.commands;
 
-import com.nessxxiii.titantools.enums.PowerCrystal;
+import com.nessxxiii.titantools.enums.TheatriaTool;
+import com.nessxxiii.titantools.utils.CustomLogger;
 import com.nessxxiii.titantools.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -16,7 +17,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CrystalCommand implements CommandExecutor, TabCompleter {
+public class TheatriaToolCommand implements CommandExecutor, TabCompleter {
+
+    private final CustomLogger logger;
+
+    public TheatriaToolCommand(CustomLogger logger) {
+        this.logger = logger;
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -33,34 +40,27 @@ public class CrystalCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
             Inventory inv = player.getInventory();
-            if (args.length == 1) {
-                inv.addItem(PowerCrystal.COMMON.getItemStack());
-                inv.addItem(PowerCrystal.UNCOMMON.getItemStack());
-                inv.addItem(PowerCrystal.SUPER.getItemStack());
-                inv.addItem(PowerCrystal.EPIC.getItemStack());
-                inv.addItem(PowerCrystal.ULTRA.getItemStack());
-                Utils.sendPluginMessage(player, "Added 1 of each crystal.");
-            } else if (args.length == 3) {
+            if (args.length == 3) {
                 int amount;
-                PowerCrystal powerCrystal;
+                TheatriaTool theatriaTool;
                 try {
                     amount = Integer.parseInt(args[2]);
                 } catch (NumberFormatException exception) {
                     Utils.sendPluginMessage(player, "You must provide an integer amount.");
-                    Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide an integer amount for /crystal give <type> <amount>.");
+                    Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide an integer amount for /theatriatool give <type> <amount>.");
                     return false;
                 }
                 try {
-                    powerCrystal = Enum.valueOf(PowerCrystal.class, args[1].toUpperCase());
+                    theatriaTool = Enum.valueOf(TheatriaTool.class, args[1].toUpperCase());
                     for (int i = 0; i < amount; i++) {
-                        inv.addItem(powerCrystal.getItemStack());
+                        inv.addItem(theatriaTool.getItemStack());
                     }
                 } catch (IllegalArgumentException ex) {
-                    Utils.sendPluginMessage(player, "You must provide a correct power crystal type.");
-                    Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide a correct power crystal type for /crystal give <type> <amount>.");
+                    Utils.sendPluginMessage(player, "You must provide a correct TheatriaTool type.");
+                    Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide a correct TheatriaTool type for /theatriatool give <type> <amount>.");
                     return false;
                 }
-                Utils.sendPluginMessage(player, "Added " + amount + " " + powerCrystal  + " crystals.");
+                Utils.sendPluginMessage(player, "Added " + amount + " " + theatriaTool  + " " + args[2] + ".");
             }
             return true;
         }
@@ -79,7 +79,7 @@ public class CrystalCommand implements CommandExecutor, TabCompleter {
                 }};
             }
             case 2 -> {
-                return Arrays.stream(PowerCrystal.values())
+                return Arrays.stream(TheatriaTool.values())
                         .map(Enum::name)
                         .map(String::toLowerCase)
                         .toList();

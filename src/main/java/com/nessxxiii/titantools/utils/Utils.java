@@ -1,10 +1,14 @@
 package com.nessxxiii.titantools.utils;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class Utils {
 
@@ -40,4 +44,28 @@ public class Utils {
         }
         return true;
     }
+
+    public static void reportResult(CustomLogger logger, String item_name, HashMap<Integer, ItemStack> droppedItems, String player_name) {
+        if (droppedItems.isEmpty()) {
+
+            logger.sendLog(player_name + " received their " + item_name);
+        } else {
+            logger.sendLog(player_name + " did not receive their " + item_name + " due to a full inventory.");
+        }
+    }
+
+    public static Component gradientText(String text, String startHex, String endHex) {
+        if (!isValidHexColor(startHex) || !isValidHexColor(endHex)) {
+            throw new IllegalArgumentException("Invalid hex color string provided.");
+        }
+
+        String miniMessageString = "<gradient:" + startHex + ":" + endHex + ">" + text + "</gradient>";
+        return MiniMessage.miniMessage().deserialize(miniMessageString);
+    }
+
+    private static boolean isValidHexColor(String hex) {
+        return HEX_COLOR_PATTERN.matcher(hex).matches();
+    }
+
+    private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("^#([A-Fa-f0-9]{6})$");
 }
