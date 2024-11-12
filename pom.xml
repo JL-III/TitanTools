@@ -79,10 +79,6 @@
             <id>enginehub-maven</id>
             <url>https://maven.enginehub.org/repo/</url>
         </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -93,9 +89,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.JL-III</groupId>
-            <artifactId>GeneralUtils</artifactId>
-            <version>v1.0.4-alpha.6</version>
+            <groupId>com.playtheatria.jl-iii</groupId>
+            <artifactId>generalutils</artifactId>
+            <version>v2.0.0-alpha.1</version>
         </dependency>
     </dependencies>
 </project>
