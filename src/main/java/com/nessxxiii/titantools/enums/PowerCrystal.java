@@ -57,4 +57,12 @@ public enum PowerCrystal {
         }
         return new Err<>(new Exception("This is not a power crystal."));
     }
+
+    public int getCharge() {
+        return charge;
+    }
+
+    public int getCustomModelData() {
+        return customModelData;
+    }
 }
