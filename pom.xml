@@ -6,7 +6,7 @@
 
     <groupId>com.nessxxiii</groupId>
     <artifactId>titantools</artifactId>
-    <version>v2.0.1-alpha.34</version>
+    <version>v2.0.1-alpha.35</version>
     <packaging>jar</packaging>
 
     <name>TitanTools</name>
