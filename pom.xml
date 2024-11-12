@@ -6,7 +6,7 @@
 
     <groupId>com.nessxxiii</groupId>
     <artifactId>titantools</artifactId>
-    <version>v2.0.1-alpha.39</version>
+    <version>v2.0.1-alpha.40</version>
     <packaging>jar</packaging>
 
     <name>TitanTools</name>
@@ -98,7 +98,7 @@
         <dependency>
             <groupId>com.playtheatria.jl-iii</groupId>
             <artifactId>generalutils</artifactId>
-            <version>v2.0.0-alpha.1</version>
+            <version>v2.0.0-alpha.2</version>
         </dependency>
     </dependencies>
 </project>
