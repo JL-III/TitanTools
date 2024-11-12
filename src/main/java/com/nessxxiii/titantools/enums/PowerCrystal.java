@@ -66,13 +66,4 @@ public enum PowerCrystal {
     public int getCustomModelData() {
         return customModelData;
     }
-
-    public static boolean isPowerCrystal(ItemStack itemStack) {
-        if (!(itemStack.getType() == Material.AMETHYST_SHARD)) return false;
-        if (!(itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData())) return false;
-        if (!(itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore())) return false;
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        int customModelData = itemMeta.getCustomModelData();
-        return customModelData >= CustomModelData.POWER_CRYSTAL_COMMON && customModelData <= CustomModelData.POWER_CRYSTAL_ULTRA;
-    }
 }
