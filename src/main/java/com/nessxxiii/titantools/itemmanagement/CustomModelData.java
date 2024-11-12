@@ -7,6 +7,13 @@ public class CustomModelData {
     //Private fields are here strictly for reference.
     //Public fields are used natively inside this plugin.
 
+    // POWER CRYSTALS
+    public static final int POWER_CRYSTAL_COMMON = 1000000;
+    public static final int POWER_CRYSTAL_UNCOMMON = 1000001;
+    public static final int POWER_CRYSTAL_SUPER = 1000002;
+    public static final int POWER_CRYSTAL_EPIC = 1000003;
+    public static final int POWER_CRYSTAL_ULTRA = 1000004;
+
     //TITAN STUFF
     public static final int EXCAVATOR = 1999999;
 

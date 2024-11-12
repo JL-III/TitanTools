@@ -1,5 +1,6 @@
 package com.nessxxiii.titantools.enums;
 
+import com.nessxxiii.titantools.itemmanagement.CustomModelData;
 import com.playtheatria.jliii.generalutils.result.Err;
 import com.playtheatria.jliii.generalutils.result.Ok;
 import com.playtheatria.jliii.generalutils.result.Result;
@@ -14,11 +15,11 @@ import java.util.List;
 
 public enum PowerCrystal {
 
-    COMMON("§x§7§7§7§7§7§7C§x§8§1§8§1§8§1o§x§8§b§8§b§8§bm§x§9§6§9§6§9§6m§x§a§0§a§0§a§0o§x§a§a§a§a§a§an", 1000000, 5),
-    UNCOMMON("§x§2§f§8§e§2§fU§x§3§4§9§e§3§4n§x§3§a§a§e§3§ac§x§3§f§b§e§3§fo§x§4§5§c§f§4§5m§x§4§a§d§f§4§am§x§5§0§e§f§5§0o§x§5§5§f§f§5§5n", 1000001, 50),
-    SUPER("§x§4§9§4§9§d§aS§x§4§c§4§c§e§3u§x§4§f§4§f§e§dp§x§5§2§5§2§f§6e§x§5§5§5§5§f§fr", 1000002, 100),
-    EPIC("§x§d§d§4§a§d§dE§x§e§8§4§e§e§8p§x§f§4§5§1§f§4i§x§f§f§5§5§f§fc", 1000003, 250),
-    ULTRA("§x§f§b§6§9§0§0U§x§f§c§7§9§0§0l§x§f§c§8§8§0§0t§x§f§d§9§8§0§0r§x§f§d§a§7§0§0a", 1000004, 1000);
+    COMMON("§x§7§7§7§7§7§7C§x§8§1§8§1§8§1o§x§8§b§8§b§8§bm§x§9§6§9§6§9§6m§x§a§0§a§0§a§0o§x§a§a§a§a§a§an", CustomModelData.POWER_CRYSTAL_COMMON, 5),
+    UNCOMMON("§x§2§f§8§e§2§fU§x§3§4§9§e§3§4n§x§3§a§a§e§3§ac§x§3§f§b§e§3§fo§x§4§5§c§f§4§5m§x§4§a§d§f§4§am§x§5§0§e§f§5§0o§x§5§5§f§f§5§5n", CustomModelData.POWER_CRYSTAL_UNCOMMON, 50),
+    SUPER("§x§4§9§4§9§d§aS§x§4§c§4§c§e§3u§x§4§f§4§f§e§dp§x§5§2§5§2§f§6e§x§5§5§5§5§f§fr", CustomModelData.POWER_CRYSTAL_SUPER, 100),
+    EPIC("§x§d§d§4§a§d§dE§x§e§8§4§e§e§8p§x§f§4§5§1§f§4i§x§f§f§5§5§f§fc", CustomModelData.POWER_CRYSTAL_EPIC, 250),
+    ULTRA("§x§f§b§6§9§0§0U§x§f§c§7§9§0§0l§x§f§c§8§8§0§0t§x§f§d§9§8§0§0r§x§f§d§a§7§0§0a", CustomModelData.POWER_CRYSTAL_ULTRA, 1000);
 
     public static final String POWER_CRYSTAL_DISPLAY = "§x§8§0§0§0§f§f§lP§x§8§c§0§8§f§f§lo§x§9§7§0§f§f§f§lw§x§a§3§1§7§f§f§le§x§a§e§1§f§f§f§lr §x§b§a§2§7§f§f§lC§x§c§5§2§e§f§f§lr§x§d§1§3§6§f§f§ly§x§d§c§3§e§f§f§ls§x§e§8§4§6§f§f§lt§x§f§3§4§d§f§f§la§x§f§f§5§5§f§f§ll";
     public static final String ANCIENT_CHARGE_STRING_LITERAL = "§x§c§1§0§0§8§bA§x§c§6§0§0§8§6n§x§c§b§0§0§8§1c§x§d§1§0§0§7§bi§x§d§6§0§0§7§6e§x§d§b§0§0§7§1n§x§e§0§0§0§6§ct §x§e§5§0§0§6§6C§x§e§a§0§0§6§1h§x§f§0§0§0§5§ca§x§f§5§0§0§5§7r§x§f§a§0§0§5§1g§x§f§f§0§0§4§ce ";
@@ -64,5 +65,14 @@ public enum PowerCrystal {
 
     public int getCustomModelData() {
         return customModelData;
+    }
+
+    public boolean isPowerCrystal(ItemStack itemStack) {
+        if (!(itemStack.getType() == Material.AMETHYST_SHARD)) return false;
+        if (!(itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData())) return false;
+        if (!(itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore())) return false;
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        int customModelData = itemMeta.getCustomModelData();
+        return customModelData >= CustomModelData.POWER_CRYSTAL_COMMON && customModelData <= CustomModelData.POWER_CRYSTAL_ULTRA;
     }
 }
