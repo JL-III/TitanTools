@@ -101,6 +101,32 @@ public class TitanCommands implements CommandExecutor, TabCompleter {
                     }
                 }
             }
+            case "lore" -> {
+                switch (args.length) {
+                    case 2 -> {
+                        return new ArrayList<>() {{
+                            add("remove-all");
+                            add("remove");
+                            add("add");
+                        }};
+                    }
+                    case 3, 4 -> {
+                        if (args[1].equalsIgnoreCase("add")) {
+                            return new ArrayList<>(){{
+                                add("#hexcolor");
+                            }};
+                        }
+                    }
+                    case 5 -> {
+                        if (args[1].equalsIgnoreCase("add")) {
+                            return new ArrayList<>() {{
+                                add("<message>");
+                            }};
+                        }
+                    }
+                }
+                return new ArrayList<>();
+            }
         }
         if (args.length == 1) {
             if (Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, "tab-complete")) {
@@ -113,6 +139,8 @@ public class TitanCommands implements CommandExecutor, TabCompleter {
                     add("kit");
                     add("crystal");
                     add("custom-item");
+                    add("display-name");
+                    add("lore");
                 }};
             } else {
                 return new ArrayList<>(){{
@@ -185,6 +213,28 @@ public class TitanCommands implements CommandExecutor, TabCompleter {
             }
             case "reload" -> {
                 CommandMethods.reloadCommand(sender, input, plugin);
+                return true;
+            }
+            case "display-name" -> {
+                if (args.length >= 5 && args[1].equalsIgnoreCase("add")) {
+                    CommandMethods.gradientComponentCommand(sender, args, input, false);
+                    return true;
+                }
+            }
+            case "lore" -> {
+                if (args.length >= 5 && args[1].equalsIgnoreCase("add")) {
+                    CommandMethods.gradientComponentCommand(sender, args, input, true);
+                    return true;
+                }
+                if (args.length == 2 && args[1].equalsIgnoreCase("remove")) {
+                    CommandMethods.loreRemoveCommand(sender, input);
+                    return true;
+                }
+                if (args.length == 2 && args[1].equalsIgnoreCase("remove-all")) {
+                    CommandMethods.loreRemoveAllCommand(sender, input);
+                    return true;
+                }
+                return false;
             }
         }
         return false;

@@ -7,6 +7,9 @@ import com.nessxxiii.titantools.itemmanagement.ItemInfo;
 import com.nessxxiii.titantools.utils.CustomLogger;
 import com.nessxxiii.titantools.utils.Utils;
 import com.playtheatria.jliii.generalutils.utils.Response;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -20,17 +23,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CommandMethods {
 
     static void packCommand(CommandSender sender, String input, FileConfiguration fileConfig) {
-        if (!(sender instanceof Player player)) {
-            return;
-        }
-        if (!Utils.permissionCheck(player, Utils.PERMISSIONS_PREFIX, input)) {
-            return;
-        }
+        if (!(sender instanceof Player player)) return;
+        if (!Utils.permissionCheck(player, Utils.PERMISSIONS_PREFIX, input)) return;
         try {
             if (fileConfig.getString("resource-pack") == null || fileConfig.getString("resource-pack").length() < 3) {
                 Utils.sendPluginMessage(player, ChatColor.RED + "File does not exist, please contact an admin for this issue.");
@@ -44,12 +45,8 @@ public class CommandMethods {
     }
 
     static void unpackCommand(CommandSender sender, String input, FileConfiguration fileConfig) {
-        if (!(sender instanceof Player player)) {
-            return;
-        }
-        if (!Utils.permissionCheck(player, Utils.PERMISSIONS_PREFIX, input)) {
-            return;
-        }
+        if (!(sender instanceof Player player)) return;
+        if (!Utils.permissionCheck(player, Utils.PERMISSIONS_PREFIX, input)) return;
         try {
             if (fileConfig.getString("resource-pack") == null) {
                 throw new RuntimeException("File does not exist, please make sure the link is correct.");
@@ -62,9 +59,7 @@ public class CommandMethods {
     }
 
     static void kitCommand(CommandSender sender, String[] args, String input, CustomLogger logger) {
-        if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) {
-            return;
-        }
+        if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
         if (Bukkit.getPlayer(args[2]) != null) {
             Player player = Bukkit.getPlayer(args[2]);
             if (player == null) return;
@@ -82,12 +77,8 @@ public class CommandMethods {
     }
 
     static void crystalCommand(CommandSender sender, String[] args, String input) {
-        if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) {
-            return;
-        }
-        if (!(sender instanceof Player player)) {
-            return;
-        }
+        if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
+        if (!(sender instanceof Player player)) return;
         Inventory inv = player.getInventory();
         int amount;
         PowerCrystal powerCrystal;
@@ -112,12 +103,8 @@ public class CommandMethods {
     }
 
     static void customItemCommand(CommandSender sender, String[] args, String input) {
-        if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) {
-            return;
-        }
-        if (!(sender instanceof Player player)) {
-            return;
-        }
+        if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
+        if (!(sender instanceof Player player)) return;
         Inventory inv = player.getInventory();
         int amount;
         TheatriaTool theatriaTool;
@@ -169,9 +156,7 @@ public class CommandMethods {
 
     static void checkPDCCommand(CommandSender sender, String[] args, String input) {
         if (!(sender instanceof Player player)) return;
-        if (!Utils.permissionCheck(player, Utils.ADMIN_PERMISSIONS_PREFIX, input)) {
-            return;
-        }
+        if (!Utils.permissionCheck(player, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
         if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
             NamespacedKey key = new NamespacedKey("titan-tools", args[1]);
             ItemStack item = player.getInventory().getItemInMainHand();
@@ -186,9 +171,7 @@ public class CommandMethods {
 
     static void setModelCommand(CommandSender sender, String[] args, String input) {
         if (!(sender instanceof Player player)) return;
-        if (!Utils.permissionCheck(player, Utils.ADMIN_PERMISSIONS_PREFIX, input)) {
-            return;
-        }
+        if (!Utils.permissionCheck(player, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
         if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
             Utils.sendPluginMessage(player, "You must be holding an item.");
             return;
@@ -208,23 +191,81 @@ public class CommandMethods {
     }
 
     static void reloadCommand(CommandSender sender, String input, Plugin plugin) {
-        if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) {
-            return;
-        }
+        if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
         Utils.sendPluginMessage(sender, "Reloading config...");
         plugin.reloadConfig();
         Utils.sendPluginMessage(sender, ChatColor.GREEN + "Successfully reloaded config.");
     }
 
     static void compareCommand(CommandSender sender, String input) {
-        if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) {
-            return;
-        }
+        if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
         if (!(sender instanceof Player player)) return;
         if (player.getInventory().getItemInMainHand().getType() == Material.AIR || player.getInventory().getItemInOffHand().getType() == Material.AIR) {
             Utils.sendPluginMessage(player, "You cannot compare air");
         } else {
             Utils.sendPluginMessage(player, "isSimilar result: " + player.getInventory().getItemInMainHand().isSimilar(player.getInventory().getItemInOffHand()));
         }
+    }
+
+    static void loreRemoveAllCommand(CommandSender sender, String input) {
+        if (!(sender instanceof Player player)) return;
+        if (!Utils.permissionCheck(player, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.lore(null);
+        itemStack.setItemMeta(itemMeta);
+    }
+
+    static void loreRemoveCommand(CommandSender sender, String input) {
+        if (!(sender instanceof Player player)) return;
+        if (!Utils.permissionCheck(player, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        if (itemMeta.hasLore()) {
+            List<Component> lore = itemMeta.lore();
+            assert lore != null;
+            lore.removeLast();
+            itemMeta.lore(null);
+            itemStack.setItemMeta(itemMeta);
+        }
+    }
+
+    static void gradientComponentCommand(CommandSender sender, String[] args, String input, boolean isLore) {
+        if (!(sender instanceof Player player)) return;
+        if (!Utils.permissionCheck(player, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
+
+        if (args[4].isEmpty()) {
+            Utils.sendPluginMessage(sender, "args[4] is empty");
+            return;
+        }
+        String message = String.join(" ", Arrays.copyOfRange(args, 4, args.length));
+        TextColor startColor = TextColor.fromHexString(args[2]);
+        TextColor endColor = TextColor.fromHexString(args[3]);
+        if (startColor == null || endColor == null) {
+            Utils.sendPluginMessage(sender, "startColor or endColor is null");
+            return;
+        }
+
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        Component componentMessage = MiniMessage.miniMessage().deserialize("<gradient:" + startColor + ":" + endColor + ">" + message + "</gradient>");
+        if (isLore) {
+            if (itemMeta.hasLore()) {
+                List<Component> lore = itemMeta.lore();
+                assert lore != null;
+                lore.add(componentMessage);
+                itemMeta.lore(lore);
+                itemStack.setItemMeta(itemMeta);
+                Utils.sendPluginMessage(sender, "set items lore after detecting it had lore");
+                return;
+            }
+            List<Component> lore = new ArrayList<>();
+            lore.add(componentMessage);
+            itemMeta.lore(lore);
+        } else {
+            itemMeta.displayName(componentMessage);
+        }
+        itemStack.setItemMeta(itemMeta);
     }
 }
