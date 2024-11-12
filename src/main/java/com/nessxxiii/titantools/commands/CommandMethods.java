@@ -226,7 +226,7 @@ public class CommandMethods {
             List<Component> lore = itemMeta.lore();
             assert lore != null;
             lore.removeLast();
-            itemMeta.lore(null);
+            itemMeta.lore(lore);
             itemStack.setItemMeta(itemMeta);
         }
     }
