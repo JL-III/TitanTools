@@ -67,7 +67,7 @@ public enum PowerCrystal {
         return customModelData;
     }
 
-    public boolean isPowerCrystal(ItemStack itemStack) {
+    public static boolean isPowerCrystal(ItemStack itemStack) {
         if (!(itemStack.getType() == Material.AMETHYST_SHARD)) return false;
         if (!(itemStack.hasItemMeta() && itemStack.getItemMeta().hasCustomModelData())) return false;
         if (!(itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore())) return false;
