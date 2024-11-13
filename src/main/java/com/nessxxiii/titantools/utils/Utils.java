@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Utils {
@@ -38,11 +39,15 @@ public class Utils {
         sender.sendMessage(PLUGIN_PREFIX + message);
     }
 
-    public static void reportResult(CustomLogger logger, String item_name, HashMap<Integer, ItemStack> droppedItems, String player_name) {
+    public static void addItemAndReportResult(CustomLogger logger, String item_name, HashMap<Integer, ItemStack> droppedItems, String player_name) {
         if (droppedItems.isEmpty()) {
             logger.sendLog(player_name + " received their " + item_name);
         } else {
-            logger.sendLog(player_name + " did not receive their " + item_name + " due to a full inventory.");
+            int amount = 0;
+            for (Map.Entry<Integer, ItemStack> ignored : droppedItems.entrySet()) {
+                amount++;
+            }
+            logger.sendLog(player_name + " did not receive " + amount + " of their " + item_name + " due to a full inventory.");
         }
     }
 

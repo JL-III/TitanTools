@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
+import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -54,51 +55,23 @@ public class TitanCommands implements CommandExecutor, TabCompleter {
                                 .map(Enum::name)
                                 .map(String::toLowerCase)
                                 .toList());
+                        addAll(Arrays.stream(TheatriaTool.values())
+                                .map(Enum::name)
+                                .map(String::toLowerCase)
+                                .toList());
+                        addAll(Arrays.stream(PowerCrystal.values())
+                                .map(Enum::name)
+                                .map(String::toLowerCase)
+                                .toList());
                     }};
                 }
                 if (args.length == 3) {
                     return Bukkit.getOnlinePlayers().stream().collect(ArrayList::new, (list, p) -> list.add(p.getName()), ArrayList::addAll);
                 }
-            }
-            case "crystal" -> {
-                if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return new ArrayList<>();
-                switch (args.length) {
-                    case 1 -> {
-                        return new ArrayList<>(){{
-                            add("give");
-                        }};
-                    }
-                    case 2 -> {
-                        return Arrays.stream(PowerCrystal.values())
-                                .map(Enum::name)
-                                .map(String::toLowerCase)
-                                .toList();
-                    }
-                    case 3 -> {
-                        return new ArrayList<>(){{
-                            add("<amount>");
-                        }};
-                    }
-                }
-            }
-            case "custom-item" -> {
-                switch (args.length) {
-                    case 1 -> {
-                        return new ArrayList<>(){{
-                            add("give");
-                        }};
-                    }
-                    case 2 -> {
-                        return Arrays.stream(TheatriaTool.values())
-                                .map(Enum::name)
-                                .map(String::toLowerCase)
-                                .toList();
-                    }
-                    case 3 -> {
-                        return new ArrayList<>(){{
-                            add("<amount>");
-                        }};
-                    }
+                if (args.length == 4) {
+                    return new ArrayList<>(){{
+                        add("<amount>");
+                    }};
                 }
             }
             case "lore" -> {
@@ -137,8 +110,6 @@ public class TitanCommands implements CommandExecutor, TabCompleter {
                     add("model");
                     add("reload");
                     add("kit");
-                    add("crystal");
-                    add("custom-item");
                     add("display-name");
                     add("lore");
                 }};
@@ -169,15 +140,8 @@ public class TitanCommands implements CommandExecutor, TabCompleter {
                 return true;
             }
             case "kit" -> {
-                if (args.length == 3) {
+                if (args.length >= 3) {
                     CommandMethods.kitCommand(sender, args, input, logger);
-                    return true;
-                }
-                return false;
-            }
-            case "crystal" -> {
-                if (args.length == 3) {
-                    CommandMethods.crystalCommand(sender, args, input);
                     return true;
                 }
                 return false;
@@ -185,13 +149,6 @@ public class TitanCommands implements CommandExecutor, TabCompleter {
             case "compare" -> {
                 CommandMethods.compareCommand(sender, input);
                 return true;
-            }
-            case "custom-item" -> {
-                if (args.length == 3) {
-                    CommandMethods.customItemCommand(sender, args, input);
-                    return true;
-                }
-                return false;
             }
             case "debug" -> {
                 CommandMethods.debugCommand(sender, input);

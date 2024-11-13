@@ -6,6 +6,9 @@ import com.nessxxiii.titantools.enums.TitanTool;
 import com.nessxxiii.titantools.itemmanagement.ItemInfo;
 import com.nessxxiii.titantools.utils.CustomLogger;
 import com.nessxxiii.titantools.utils.Utils;
+import com.playtheatria.jliii.generalutils.result.Err;
+import com.playtheatria.jliii.generalutils.result.Ok;
+import com.playtheatria.jliii.generalutils.result.Result;
 import com.playtheatria.jliii.generalutils.utils.Response;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
@@ -60,72 +63,36 @@ public class CommandMethods {
 
     static void kitCommand(CommandSender sender, String[] args, String input, CustomLogger logger) {
         if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
-        if (Bukkit.getPlayer(args[2]) != null) {
-            Player player = Bukkit.getPlayer(args[2]);
-            if (player == null) return;
-            String player_name = player.getName();
-            Inventory inventory = player.getInventory();
-            TitanTool titanTool;
+
+        Player player = Bukkit.getPlayer(args[2]);
+        if (player == null) {
+            Utils.sendPluginMessage(sender, "The specified player is not online!");
+            return;
+        }
+
+        String player_name = player.getName();
+        Inventory inventory = player.getInventory();
+        String toolName = args[1].toUpperCase();
+        int amount = 1;
+        // Parse amount if provided
+        if (args.length > 3) {
             try {
-                titanTool = Enum.valueOf(TitanTool.class, args[1].toUpperCase());
-                Utils.reportResult(logger, args[1], inventory.addItem(titanTool.getItemStack()), player_name);
-            } catch (IllegalArgumentException e) {
-                Utils.sendPluginMessage(player, "You must provide a correct titan tool type.");
-                Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide a correct titan tool type for /tkit <type> <username>.");
-            }
+                amount = Integer.parseInt(args[3]);
+            } catch (NumberFormatException ignored) {}
         }
-    }
 
-    static void crystalCommand(CommandSender sender, String[] args, String input) {
-        if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
-        if (!(sender instanceof Player player)) return;
-        Inventory inv = player.getInventory();
-        int amount;
-        PowerCrystal powerCrystal;
-        try {
-            amount = Integer.parseInt(args[2]);
-        } catch (NumberFormatException exception) {
-            Utils.sendPluginMessage(player, "You must provide an integer amount.");
-            Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide an integer amount for /titan crystal give <type> <amount>.");
-            return;
-        }
-        try {
-            powerCrystal = Enum.valueOf(PowerCrystal.class, args[1].toUpperCase());
-            for (int i = 0; i < amount; i++) {
-                inv.addItem(powerCrystal.getItemStack());
+        Result<ItemStack, Exception> result = getToolItemStack(toolName, amount);
+        switch (result) {
+            case Ok<ItemStack, Exception> ok -> {
+                Utils.addItemAndReportResult(logger, toolName, inventory.addItem(ok.value()), player_name);
             }
-        } catch (IllegalArgumentException ex) {
-            Utils.sendPluginMessage(player, "You must provide a correct power crystal type.");
-            Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide a correct power crystal type for /titan crystal give <type> <amount>.");
-            return;
-        }
-        Utils.sendPluginMessage(player, "Added " + amount + " " + powerCrystal + " crystals.");
-    }
-
-    static void customItemCommand(CommandSender sender, String[] args, String input) {
-        if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
-        if (!(sender instanceof Player player)) return;
-        Inventory inv = player.getInventory();
-        int amount;
-        TheatriaTool theatriaTool;
-        try {
-            amount = Integer.parseInt(args[2]);
-        } catch (NumberFormatException exception) {
-            Utils.sendPluginMessage(player, "You must provide an integer amount.");
-            Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide an integer amount for /titan custom-item <type> <amount>.");
-            return;
-        }
-        try {
-            theatriaTool = Enum.valueOf(TheatriaTool.class, args[1].toUpperCase());
-            for (int i = 0; i < amount; i++) {
-                inv.addItem(theatriaTool.getItemStack());
+            case Err<ItemStack, Exception> err -> {
+                Utils.sendPluginMessage(player, "You must provide a correct TitanTool or TheatriaTool type.");
+                Utils.sendPluginMessage(Bukkit.getConsoleSender(),
+                        String.format("Error: Player %s provided an invalid tool type for /titan kit %s %s. %s",
+                                player_name, args[1], args[2], err.error().getMessage()));
             }
-        } catch (IllegalArgumentException ex) {
-            Utils.sendPluginMessage(player, "You must provide a correct TheatriaTool type.");
-            Utils.sendPluginMessage(Bukkit.getConsoleSender(), "Error: " + "Player " + player.getName() + " Failed to provide a correct TheatriaTool type for /titan custom-item <type> <amount>.");
-            return;
         }
-        Utils.sendPluginMessage(player, "Added " + amount + " " + theatriaTool + " " + args[2] + ".");
     }
 
     static void debugCommand(CommandSender sender, String input) {
@@ -267,5 +234,39 @@ public class CommandMethods {
             itemMeta.displayName(componentMessage);
         }
         itemStack.setItemMeta(itemMeta);
+    }
+
+    private static Result<ItemStack, Exception> getToolItemStack(String toolName, int amount) {
+        // Attempt to retrieve a TitanTool
+        try {
+            TitanTool titanTool = Enum.valueOf(TitanTool.class, toolName);
+            ItemStack itemStack = titanTool.getItemStack();
+            itemStack.setAmount(amount);
+            return new Ok<>(itemStack);
+        } catch (IllegalArgumentException ignored) {
+            // Continue to the next attempt
+        }
+
+        // Attempt to retrieve a TheatriaTool
+        try {
+            TheatriaTool theatriaTool = Enum.valueOf(TheatriaTool.class, toolName);
+            ItemStack itemStack = theatriaTool.getItemStack();
+            itemStack.setAmount(amount);
+            return new Ok<>(itemStack);
+        } catch (IllegalArgumentException ignored) {
+            // Continue to the next attempt
+        }
+
+        // Attempt to retrieve a PowerCrystal
+        try {
+            PowerCrystal powerCrystal = Enum.valueOf(PowerCrystal.class, toolName);
+            ItemStack itemStack = powerCrystal.getItemStack();
+            itemStack.setAmount(amount);
+            return new Ok<>(itemStack);
+        } catch (IllegalArgumentException ignored) {
+            // No valid tool found, return error
+        }
+
+        return new Err<>(new Exception("Could not parse a TitanTool, TheatriaTool, or PowerCrystal."));
     }
 }

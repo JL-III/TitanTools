@@ -25,7 +25,7 @@ public enum TheatriaTool {
             }},
             new HashMap<>(){{
                 put(Enchantment.UNBREAKING, 5);
-
+                put(Enchantment.MULTISHOT, 3);
             }}
     ),
     SUN_FISH(

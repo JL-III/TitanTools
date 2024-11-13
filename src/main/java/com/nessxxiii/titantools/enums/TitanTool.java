@@ -75,37 +75,80 @@ public enum TitanTool {
     AXE_RED(
             Material.DIAMOND_AXE,
             ToolColor.RED,
-            new HashMap<>()
+            new HashMap<>(){{
+                put(Enchantment.EFFICIENCY, 10);
+                put(Enchantment.SILK_TOUCH, 1);
+            }}
     ),
     AXE_YELLOW(
             Material.DIAMOND_AXE,
             ToolColor.YELLOW,
-            new HashMap<>()
+            new HashMap<>(){{
+                put(Enchantment.BANE_OF_ARTHROPODS, 5);
+                put(Enchantment.EFFICIENCY, 10);
+                put(Enchantment.KNOCKBACK, 2);
+                put(Enchantment.LOOTING, 4);
+                put(Enchantment.SHARPNESS, 5);
+                put(Enchantment.SMITE, 5);
+            }}
     ),
     AXE_BLUE(
             Material.DIAMOND_AXE,
             ToolColor.BLUE,
-            new HashMap<>()
+            new HashMap<>(){{
+                put(Enchantment.BANE_OF_ARTHROPODS, 5);
+                put(Enchantment.EFFICIENCY, 13);
+                put(Enchantment.KNOCKBACK, 3);
+                put(Enchantment.LOOTING, 7);
+                put(Enchantment.SHARPNESS, 7);
+                put(Enchantment.SMITE, 5);
+            }}
     ),
     SWORD_RED(
             Material.DIAMOND_SWORD,
             ToolColor.RED,
-            new HashMap<>()
+            new HashMap<>(){{
+                put(Enchantment.BANE_OF_ARTHROPODS, 5);
+                put(Enchantment.FIRE_ASPECT, 2);
+                put(Enchantment.KNOCKBACK, 2);
+                put(Enchantment.LOOTING, 5);
+                put(Enchantment.SHARPNESS, 5);
+                put(Enchantment.SMITE, 5);
+                put(Enchantment.SWEEPING_EDGE, 3);
+            }}
     ),
     SWORD_YELLOW(
             Material.DIAMOND_SWORD,
             ToolColor.YELLOW,
-            new HashMap<>()
+            new HashMap<>(){{
+                put(Enchantment.BANE_OF_ARTHROPODS, 5);
+                put(Enchantment.FIRE_ASPECT, 2);
+                put(Enchantment.KNOCKBACK, 2);
+                put(Enchantment.LOOTING, 5);
+                put(Enchantment.SHARPNESS, 7);
+                put(Enchantment.SMITE, 5);
+                put(Enchantment.SWEEPING_EDGE, 3);
+            }}
     ),
     SWORD_BLUE(
             Material.DIAMOND_SWORD,
             ToolColor.BLUE,
-            new HashMap<>()
+            new HashMap<>(){{
+                put(Enchantment.BANE_OF_ARTHROPODS, 5);
+                put(Enchantment.KNOCKBACK, 2);
+                put(Enchantment.LOOTING, 6);
+                put(Enchantment.SHARPNESS, 7);
+                put(Enchantment.SMITE, 5);
+                put(Enchantment.SWEEPING_EDGE, 3);
+            }}
     ),
     ROD_RED(
             Material.FISHING_ROD,
             ToolColor.RED,
-            new HashMap<>()
+            new HashMap<>(){{
+                put(Enchantment.LURE, 5);
+                put(Enchantment.LUCK_OF_THE_SEA, 5);
+            }}
     );
 
     private final Material material;
