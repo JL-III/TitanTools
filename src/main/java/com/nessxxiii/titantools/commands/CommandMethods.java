@@ -77,7 +77,8 @@ public class CommandMethods {
         // Parse amount if provided
         if (args.length > 3) {
             try {
-                amount = Integer.parseInt(args[3]);
+                // limit to a max of 64 per command
+                amount = Math.min(Integer.parseInt(args[3]), 64);
             } catch (NumberFormatException ignored) {}
         }
 

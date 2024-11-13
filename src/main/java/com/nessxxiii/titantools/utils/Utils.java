@@ -70,7 +70,7 @@ public class Utils {
         if (sender.hasPermission(prefix + "." + permission)) {
             return true;
         }
-        Utils.sendPluginMessage(sender, Utils.NO_PERMISSION + " " + prefix + permission);
+        Utils.sendPluginMessage(sender, Utils.NO_PERMISSION + ": " + prefix + "." + permission);
         return false;
     }
 }

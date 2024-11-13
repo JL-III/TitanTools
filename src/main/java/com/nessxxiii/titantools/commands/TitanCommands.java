@@ -39,7 +39,7 @@ public class TitanCommands implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (!Utils.permissionCheck(sender, Utils.PERMISSIONS_PREFIX, "tab-complete")) {
+        if (!sender.hasPermission(Utils.PERMISSIONS_PREFIX + ".tab-complete")) {
             return new ArrayList<>();
         }
         String input = args[0].toLowerCase();
@@ -48,7 +48,7 @@ public class TitanCommands implements CommandExecutor, TabCompleter {
                 return new ArrayList<>();
             }
             case "kit" -> {
-                if (!Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return new ArrayList<>();
+                if (!sender.hasPermission(Utils.ADMIN_PERMISSIONS_PREFIX + "." + input)) return new ArrayList<>();
                 if (args.length == 2) {
                     return new ArrayList<>(){{
                         addAll(Arrays.stream(TitanTool.values())
@@ -102,7 +102,7 @@ public class TitanCommands implements CommandExecutor, TabCompleter {
             }
         }
         if (args.length == 1) {
-            if (Utils.permissionCheck(sender, Utils.ADMIN_PERMISSIONS_PREFIX, "tab-complete")) {
+            if (sender.hasPermission(Utils.ADMIN_PERMISSIONS_PREFIX + ".tab-complete")) {
                 return new ArrayList<>(){{
                     add("check-pdc");
                     add("compare");
