@@ -21,6 +21,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
@@ -197,6 +198,16 @@ public class CommandMethods {
             itemMeta.lore(lore);
             itemStack.setItemMeta(itemMeta);
         }
+    }
+
+    static void hideEnchants(CommandSender sender, String input) {
+        if (!(sender instanceof Player player)) return;
+        if (!Utils.permissionCheck(player, Utils.ADMIN_PERMISSIONS_PREFIX, input)) return;
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        ItemMeta itemMeta = itemStack.getItemMeta();
+
+        itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        itemStack.setItemMeta(itemMeta);
     }
 
     static void gradientComponentCommand(CommandSender sender, String[] args, String input, boolean isLore) {

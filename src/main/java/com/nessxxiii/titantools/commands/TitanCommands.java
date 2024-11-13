@@ -12,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
-import org.checkerframework.checker.units.qual.A;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -112,6 +111,7 @@ public class TitanCommands implements CommandExecutor, TabCompleter {
                     add("kit");
                     add("display-name");
                     add("lore");
+                    add("hide-enchants");
                 }};
             } else {
                 return new ArrayList<>(){{
@@ -160,6 +160,10 @@ public class TitanCommands implements CommandExecutor, TabCompleter {
                     return true;
                 }
                 return false;
+            }
+            case "hide-enchants" -> {
+                CommandMethods.hideEnchants(sender, input);
+                return true;
             }
             case "model" -> {
                 if (args.length == 2) {
