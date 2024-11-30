@@ -39,15 +39,15 @@ public class Utils {
         sender.sendMessage(PLUGIN_PREFIX + message);
     }
 
-    public static void addItemAndReportResult(CustomLogger logger, String item_name, HashMap<Integer, ItemStack> droppedItems, String player_name) {
+    public static void addItemAndReportResult(CustomLogger logger, String toolName, ItemStack itemStack, HashMap<Integer, ItemStack> droppedItems, String player_name) {
         if (droppedItems.isEmpty()) {
-            logger.sendLog(player_name + " received their " + item_name);
+            logger.sendLog(player_name + " received their kit " + toolName);
+            logger.sendLog("Type: " + itemStack.getType() + " Amount: " + itemStack.getAmount());
         } else {
-            int amount = 0;
-            for (Map.Entry<Integer, ItemStack> ignored : droppedItems.entrySet()) {
-                amount++;
+            logger.sendLog(player_name + " did not receive their " + itemStack + " due to a full inventory.");
+            for (Map.Entry<Integer,ItemStack> itemStackEntry : droppedItems.entrySet()) {
+                logger.sendLog("Type: " + itemStackEntry.getValue().getType() + " Amount: " + itemStackEntry.getKey());
             }
-            logger.sendLog(player_name + " did not receive " + amount + " of their " + item_name + " due to a full inventory.");
         }
     }
 

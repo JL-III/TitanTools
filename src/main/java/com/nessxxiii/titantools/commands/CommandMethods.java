@@ -78,17 +78,23 @@ public class CommandMethods {
         // Parse amount if provided
         if (args.length > 3) {
             try {
-                // limit to a max of 64 per command
-                amount = Math.min(Integer.parseInt(args[3]), 64);
+                amount = Integer.parseInt(args[3]);
             } catch (NumberFormatException ignored) {}
         }
 
-        Result<ItemStack, Exception> result = getToolItemStack(toolName, amount);
+        int numberOfItemStacks = amount / 64;
+        int remainder = amount % 64;
+        logger.sendLog("amount: " + amount);
+        logger.sendLog("remainder: " + remainder);
+        logger.sendLog("numberOfItemStacks: " + numberOfItemStacks);
+        Result<List<ItemStack>, Exception> result = getToolItemStack(toolName, numberOfItemStacks, remainder);
         switch (result) {
-            case Ok<ItemStack, Exception> ok -> {
-                Utils.addItemAndReportResult(logger, toolName, inventory.addItem(ok.value()), player_name);
+            case Ok<List<ItemStack>, Exception> ok -> {
+                for (ItemStack itemStack : ok.value()) {
+                    Utils.addItemAndReportResult(logger, toolName, itemStack, inventory.addItem(itemStack), player_name);
+                }
             }
-            case Err<ItemStack, Exception> err -> {
+            case Err<List<ItemStack>, Exception> err -> {
                 Utils.sendPluginMessage(player, "You must provide a correct TitanTool or TheatriaTool type.");
                 Utils.sendPluginMessage(Bukkit.getConsoleSender(),
                         String.format("Error: Player %s provided an invalid tool type for /titan kit %s %s. %s",
@@ -248,13 +254,11 @@ public class CommandMethods {
         itemStack.setItemMeta(itemMeta);
     }
 
-    private static Result<ItemStack, Exception> getToolItemStack(String toolName, int amount) {
+    private static Result<List<ItemStack>, Exception> getToolItemStack(String toolName, int numberOfStacks, int remainder) {
         // Attempt to retrieve a TitanTool
         try {
             TitanTool titanTool = Enum.valueOf(TitanTool.class, toolName);
-            ItemStack itemStack = titanTool.getItemStack();
-            itemStack.setAmount(amount);
-            return new Ok<>(itemStack);
+            return new Ok<>(getItemStacks(titanTool.getItemStack(), numberOfStacks, remainder));
         } catch (IllegalArgumentException ignored) {
             // Continue to the next attempt
         }
@@ -262,9 +266,7 @@ public class CommandMethods {
         // Attempt to retrieve a TheatriaTool
         try {
             TheatriaTool theatriaTool = Enum.valueOf(TheatriaTool.class, toolName);
-            ItemStack itemStack = theatriaTool.getItemStack();
-            itemStack.setAmount(amount);
-            return new Ok<>(itemStack);
+            return new Ok<>(getItemStacks(theatriaTool.getItemStack(), numberOfStacks, remainder));
         } catch (IllegalArgumentException ignored) {
             // Continue to the next attempt
         }
@@ -272,13 +274,22 @@ public class CommandMethods {
         // Attempt to retrieve a PowerCrystal
         try {
             PowerCrystal powerCrystal = Enum.valueOf(PowerCrystal.class, toolName);
-            ItemStack itemStack = powerCrystal.getItemStack();
-            itemStack.setAmount(amount);
-            return new Ok<>(itemStack);
+            return new Ok<>(getItemStacks(powerCrystal.getItemStack(), numberOfStacks, remainder));
         } catch (IllegalArgumentException ignored) {
             // No valid tool found, return error
         }
-
         return new Err<>(new Exception("Could not parse a TitanTool, TheatriaTool, or PowerCrystal."));
+    }
+    private static List<ItemStack> getItemStacks(ItemStack itemStack, int numberOfStacks, int remainder) {
+        List<ItemStack> items = new ArrayList<>();
+        for (int i = 0; i < numberOfStacks; i++) {
+            itemStack.setAmount(64);
+            items.add(itemStack);
+        }
+        if (remainder > 0) {
+            itemStack.setAmount(remainder);
+            items.add(itemStack);
+        }
+        return items;
     }
 }
