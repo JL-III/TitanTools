@@ -1,6 +1,7 @@
 package com.nessxxiii.titantools;
 
 import com.nessxxiii.titantools.commands.*;
+import com.nessxxiii.titantools.listeners.ItemDamageEvent;
 import com.nessxxiii.titantools.utils.CustomLogger;
 import com.nessxxiii.titantools.utils.Utils;
 
@@ -19,6 +20,7 @@ public final class TitanTools extends JavaPlugin {
         CustomLogger customLogger = new CustomLogger(getName(), NamedTextColor.DARK_RED, NamedTextColor.WHITE);
         TitanCommands titanCommands = new TitanCommands(this, customLogger);
         Objects.requireNonNull(getCommand("titan")).setExecutor(titanCommands);
+        Bukkit.getPluginManager().registerEvents(new ItemDamageEvent(), this);
         Utils.printBanner(Bukkit.getConsoleSender());
     }
 }
